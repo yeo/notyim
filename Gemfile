@@ -44,6 +44,7 @@ group :development, :test do
   gem 'pry'
   gem 'awesome_print'
   gem 'rubocop'
+  gem 'rspec-rails'
 end
 
 group :development do
