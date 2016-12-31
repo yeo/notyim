@@ -44,6 +44,8 @@ GEM
     bcrypt (3.1.11)
     bson (4.2.1)
     builder (3.2.2)
+    bulma-rails (0.2.3)
+      sass (~> 3.2)
     byebug (9.0.6)
     coderay (1.1.1)
     coffee-rails (4.2.1)
@@ -236,9 +238,11 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  bulma-rails (~> 0.2.3)
   byebug
   devise
   jbuilder (~> 2.5)
+  jquery-rails
   listen (~> 3.0.5)
   mongoid (~> 6.0.0)
   pry
