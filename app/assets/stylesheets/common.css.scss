@@ -1,0 +1,18 @@
+$link_color: #FF7473;
+
+
+a,
+.footer a {
+  color: $link_color;
+}
+
+.pricing {
+  margin-top: 10px;
+  background: #fff;
+
+  &__price {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+}

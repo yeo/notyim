@@ -1,0 +1,10 @@
+<div class="container-fluid flash">
+  <% flash.each do |key, value|%>
+     <div class="alert alert-<%=key%>">
+       <%= value %>
+     <a href="#">
+     <span id="toggleflash" style="color: gray; float: right;">x</span>
+     </a>
+     </div>
+  <% end %>
+</div>
