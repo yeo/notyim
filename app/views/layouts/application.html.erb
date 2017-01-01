@@ -1,14 +1,129 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Trinity</title>
+    <title>NotyIM - Uptime monitoring</title>
     <%= csrf_meta_tags %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application'  %>
   </head>
 
-  <body>
-    <%= yield %>
-  </body>
+  <body class="layout-default">
+
+<section class="hero is-medium has-text-centered">
+  <div class="hero-head">
+    <div class="container">
+      <nav class="nav">
+  <div class="nav-left">
+    <a class="nav-item is-brand" href="http://bulma.io/">Noty</a>
+  </div>
+
+  <div class="nav-center">
+    <a class="nav-item" href="https://github.com/jgthms/bulma">
+      <span class="icon">
+        <i class="fa fa-github"></i>
+      </span>
+    </a>
+    <a class="nav-item" href="https://twitter.com/jgthms">
+      <span class="icon">
+        <i class="fa fa-twitter"></i>
+      </span>
+    </a>
+  </div>
+
+  <span id="nav-toggle" class="nav-toggle">
+    <span></span>
+    <span></span>
+    <span></span>
+  </span>
+
+  <div id="nav-menu" class="nav-right nav-menu">
+    <a class="nav-item is-active" href="http://bulma.io/">
+      Home
+    </a>
+    <a class="is-hidden nav-item  " href="http://bulma.io/templates/">
+      <span>Templates</span>
+      <span class="tag is-small is-success">New!</span>
+    </a>
+    <a class="nav-item  " href="/documentation/overview/start/">
+      Documentation
+    </a>
+    <a class="nav-item " href="http://bulma.io/blog/">
+      Blog
+    </a>
+
+
+      <span class="nav-item">
+        <a id="twitter" class="button" data-social-network="Twitter" data-social-action="tweet" data-social-target="http://bulma.io" target="_blank" href="https://twitter.com/intent/tweet?text=Bulma: a modern CSS framework based on Flexbox&amp;url=http://bulma.io&amp;via=jgthms">
+          <span class="icon">
+            <i class="fa fa-twitter"></i>
+          </span>
+          <span>Tweet</span>
+        </a>
+        <a class="button is-primary" href="https://github.com/jgthms/bulma/archive/0.2.3.zip">
+          <span class="icon">
+            <i class="fa fa-download"></i>
+          </span>
+          <span>Download</span>
+        </a>
+      </span>
+
+  </div>
+</nav>
+
+    </div>
+  </div>
+
+  <div class="hero-body">
+    <div class="container">
+      <p id="b">
+        <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+<svg width="480px" height="480px" viewBox="0 0 480 480" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="#00d1b2" fill-rule="evenodd">
+      <polygon id="Path" points="136 296 156 156 236 76 336 176 276 236 356 316 236 396"></polygon>
+    </g>
+</svg>
+
+        <!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+<svg width="480px" height="480px" viewBox="0 0 480 480" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="#00d1b2" fill-rule="evenodd">
+      <polygon id="Path" points="136 296 156 156 236 76 336 176 276 236 356 316 236 396"></polygon>
+    </g>
+</svg>
+
+      </p>
+      <h1 id="bulma" class="title">
+        Bulma
+      </h1>
+      <h2 id="modern-framework" class="subtitle">
+        A <strong>modern</strong> CSS framework based on <strong>Flexbox</strong>
+      </h2>
+      <pre id="npm"><code>npm install bulma</code></pre>
+      <div id="ghbtns" class="block">
+        <iframe src="https://ghbtns.com/github-btn.html?user=jgthms&amp;repo=bulma&amp;type=star&amp;count=true&amp;size=large" frameborder="0" scrolling="0" width="160px" height="30px"></iframe>
+        <iframe src="https://ghbtns.com/github-btn.html?user=jgthms&amp;repo=bulma&amp;type=fork&amp;count=false&amp;size=large" frameborder="0" scrolling="0" width="80px" height="30px"></iframe>
+      </div>
+      <div id="carbon" class="box">
+        <script async="" src="https://www.google-analytics.com/analytics.js"></script><script async="" type="text/javascript" src="//cdn.carbonads.com/carbon.js?zoneid=1673&amp;serve=C6AILKT&amp;placement=bulmaio" id="_carbonads_js"></script>
+      </div>
+
+      <p id="download" class="hero-buttons">
+      <a class="button is-primary is-large" href="https://github.com/jgthms/bulma/archive/0.2.3.zip">
+        <span class="icon">
+          <i class="fa fa-download"></i>
+        </span>
+        <span>Download</span>
+        <small>v0.2.3</small>
+      </a>
+      <a class="button is-large" href="/documentation/overview/start/">
+        View docs
+      </a>
+      </p>
+    </div>
+  </div>
+  </section>
+
+
+  <%= yield %>
+</body>
 </html>
