@@ -1,0 +1,50 @@
+<section class="hero is-medium has-text-centered">
+<div class="hero-head">
+  <div class="container">
+    <nav class="nav">
+    <div class="nav-left">
+      <a class="nav-item is-brand" href="/">Noty</a>
+    </div>
+
+    <!--
+    <div class="nav-center">
+      <a class="nav-item" href="https://github.com/jgthms/bulma">
+        <span class="icon">
+          <i class="fa fa-github"></i>
+        </span>
+      </a>
+      <a class="nav-item" href="https://twitter.com/jgthms">
+        <span class="icon">
+          <i class="fa fa-twitter"></i>
+        </span>
+      </a>
+    </div>
+    -->
+
+    <span id="nav-toggle" class="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+
+    <div id="nav-menu" class="nav-right nav-menu">
+      <a class="nav-item is-active" href="/#pricing">Price</a>
+      <a class="nav-item" href="/docs">Docs</a>
+      <a class="nav-item" href="//blog.noty.im">Blog</a>
+      <span class="nav-item">
+        <a class="button" href="<%= url_for(new_user_registration_path) %>">
+          <span class="icon"><i class="fa fa-user"></i></span>
+          <span>Register</span>
+        </a>
+        <a class="button is-primary" href="<%= url_for(new_user_session_path) %>">
+          <span class="icon"><i class="fa fa-sign-in"></i></span>
+          <span>Login</span>
+        </a>
+      </span>
+    </div>
+    </nav>
+  </div>
+</div>
+</section>
+
+
