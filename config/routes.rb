@@ -6,5 +6,9 @@ Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
 
   root to: 'home#index'
+  get '/terms', to: 'page#term', as: 'show_term'
+  get '/feedbacks', to: 'page#feedback', as: 'show_feedback'
+  get '/docs', to: 'page#doc', as: 'show_doc'
+
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
