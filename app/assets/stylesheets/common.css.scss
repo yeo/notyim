@@ -1,9 +1,9 @@
-$link_color: #FF7473;
+$primary: #FF7473;
 
+@import "bulma";
 
-a,
-.footer a {
-  color: $link_color;
+.hero .nav {
+  padding: 20px 0;
 }
 
 .pricing {
