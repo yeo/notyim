@@ -1,0 +1,10 @@
+<% if user_signed_in? %>
+  <div class="nav-center">
+    <%= link_to new_team_path, class: 'nav-item' do %>
+      <span class="icon"><i class="fa fa-plus"></i></span>
+      <span>Team</span>
+    <% end %>
+  </div>
+<% end %>
+
+
