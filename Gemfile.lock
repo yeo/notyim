@@ -43,6 +43,7 @@ GEM
     awesome_print (1.7.0)
     bcrypt (3.1.11)
     bson (4.2.1)
+    bugsnag (5.0.1)
     builder (3.2.2)
     bulma-rails (0.2.3)
       sass (~> 3.2)
@@ -247,6 +248,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  bugsnag
   bulma-rails (~> 0.2.3)
   byebug
   devise
