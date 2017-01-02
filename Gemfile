@@ -38,6 +38,7 @@ gem 'react-rails'
 # gem 'capistrano-rails', group: :development
 gem 'mongoid', '~> 6.0.0'
 gem 'devise'
+gem 'omniauth-github'
 gem 'rails_admin'
 gem 'sidekiq'
 gem 'bugsnag'
@@ -50,6 +51,7 @@ group :development, :test do
   gem 'awesome_print'
   gem 'rubocop'
   gem 'rspec-rails'
+  gem 'dotenv-rails'
 end
 
 group :development do
