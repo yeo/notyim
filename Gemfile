@@ -27,6 +27,8 @@ gem 'jquery-rails'
 # gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
+gem "bulma-rails", "~> 0.2.3"
+gem 'react-rails'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
@@ -38,6 +40,7 @@ gem 'mongoid', '~> 6.0.0'
 gem 'devise'
 gem 'rails_admin'
 gem 'sidekiq'
+gem 'bugsnag'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -57,9 +60,6 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 end
-
-gem "bulma-rails", "~> 0.2.3"
-gem 'bugsnag'
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
