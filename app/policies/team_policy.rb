@@ -1,3 +1,5 @@
+require 'trinity/policy'
+
 class TeamPolicy
   extend Trinity::Policy::Base
 
