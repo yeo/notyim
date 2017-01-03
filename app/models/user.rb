@@ -1,5 +1,7 @@
 class User
   include Mongoid::Document
+  include Mongoid::Timestamps
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -46,6 +48,9 @@ class User
   # field :locked_at,       type: Time
 
   has_many :teams
+  has_many :checks
+
+  after_create :create_team
 
   def self.from_omniauth(payload)
     email = payload.info.email
@@ -67,5 +72,12 @@ class User
     end
 
     user
+  end
+
+  # Attempt create first team automatically
+  def create_team
+    unless self.teams.present?
+      self.teams = Team.create!(name: 'default team')
+    end
   end
 end

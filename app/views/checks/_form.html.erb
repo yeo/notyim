@@ -1,0 +1,32 @@
+<%= form_for(check) do |f| %>
+  <% if check.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(check.errors.count, "error") %> prohibited this check from being saved:</h2>
+
+      <ul>
+      <% check.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :name %>
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :uri %>
+    <%= f.text_field :uri %>
+  </div>
+
+  <div class="field">
+    <%= f.label :type %>
+    <%= f.select :type, format_type_enum_for_select(check) %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

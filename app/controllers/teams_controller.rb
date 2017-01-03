@@ -67,6 +67,9 @@ class TeamsController < DashboardController
     # Use callbacks to share common setup or constraints between actions.
     def set_team
       @team = Team.find(params[:id])
+      if @team.persisted?
+        head :forbidden unless TeamPolicy::can_manage?(@team, current.user)
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
