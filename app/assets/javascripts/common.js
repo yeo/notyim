@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-
   var $toggle = $('#nav-toggle');
   var $menu = $('#nav-menu');
 
@@ -48,11 +47,4 @@ jQuery(document).ready(function ($) {
   $('.highlight .expand').click(function() {
     $(this).parent().children('pre').css('max-height', 'none');
   });
-
-  new Clipboard('.copy', {
-    target: function(trigger) {
-      return trigger.previousSibling;
-    }
-  });
-
-});
+})
