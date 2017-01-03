@@ -5,6 +5,8 @@ class User
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  devise :omniauthable, :omniauth_providers => [:github, :twitter]
+
   ## Database authenticatable
   field :email,              type: String, default: ""
   field :encrypted_password, type: String, default: ""
@@ -25,7 +27,13 @@ class User
 
   field :name,               type: String
   field :admin,              type: Boolean, default: false
+  field :providers,           type: Hash
 
+  index({email: 1}, {background: true})
+  index({admin: 1}, {background: true})
+
+  validates_presence_of :email
+  validates_uniqueness_of :email
   ## Confirmable
   # field :confirmation_token,   type: String
   # field :confirmed_at,         type: Time
@@ -38,4 +46,26 @@ class User
   # field :locked_at,       type: Time
 
   has_many :teams
+
+  def self.from_omniauth(payload)
+    email = payload.info.email
+    return unless email
+
+    user = User.where(email: email).first
+    if !user
+      user = User.create!(
+        name: payload.info.name,
+        email: payload.info.email,
+        password: Devise.friendly_token[0,20],
+        providers: {payload.provider => payload.uid}
+      )
+    else
+      if !user.providers
+        user.providers = {payload.provider => payload.uid}
+        user.save
+      end
+    end
+
+    user
+  end
 end
