@@ -11,7 +11,7 @@ class TeamPicker extends React.Component {
     return (
       <div>
         <div className="nav-center">
-          <a href="{this.props.newTeamPath}" className='nav-item'>
+          <a href="{{ this.props.newTeamPath }}" className='nav-item'>
             <span className="icon"><i className="fa fa-plus"></i></span>
             <span>Team</span>
           </a>
