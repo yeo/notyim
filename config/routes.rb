@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/terms', to: 'page#term', as: 'show_term'
   get '/feedbacks', to: 'page#feedback', as: 'show_feedback'
   get '/docs', to: 'page#doc', as: 'show_doc'
+  get '/dashboard', to: 'checks#index', as: 'user_root'
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
