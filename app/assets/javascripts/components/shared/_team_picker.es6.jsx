@@ -10,18 +10,19 @@ class TeamPicker extends React.Component {
 
     return (
       <div>
-        <div class="nav-center">
-          <%= link_to new_team_path, class: 'nav-item' do %>
-            <span class="icon"><i class="fa fa-plus"></i></span>
+        <div className="nav-center">
+          <a href="{this.props.newTeamPath}" className='nav-item'>
+            <span className="icon"><i className="fa fa-plus"></i></span>
             <span>Team</span>
-          <% end %>
+          </a>
         </div>
-        <div>Teams: {this.props.teams}</div>
+        <div>{items}</div>
       </div>
-    );
+    )
   }
 }
 
 TeamPicker.propTypes = {
-  teams: React.PropTypes.string
-};
+  teams: React.PropTypes.array,
+  newTeamPath: React.PropTypes.string,
+}
