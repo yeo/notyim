@@ -1,5 +1,6 @@
 class AssertionsController < DashboardController
   before_action :set_assertion, only: [:show, :edit, :update, :destroy]
+  before_action :set_check
 
   # GET /assertions
   # GET /assertions.json
@@ -25,7 +26,7 @@ class AssertionsController < DashboardController
   # POST /assertions.json
   def create
     @assertion = Assertion.new(assertion_params)
-    head :bad_request if !@assertion.check?
+    @assertion.check = @check
 
     respond_to do |format|
       if @assertion.save
@@ -73,6 +74,18 @@ class AssertionsController < DashboardController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def assertion_params
-      params.require(:assertion).permit(:check_id, :subject, :condition)
+      params.require(:assertion).permit(:subject, :condition, :operand)
+    end
+
+    def set_check
+      begin
+        @check = Check.find(params['assertion'][:check_id])
+      rescue
+      end
+
+      if !@check || !CheckPolicy::can_manage?(@check, current.user)
+        head :bad_request
+      end
+
     end
 end
