@@ -9,7 +9,7 @@ module Trinity
 
     class << self
       def instance(user)
-        @instance ||= new(user)
+        @instance = new(user)
       end
 
       def current

@@ -3,9 +3,9 @@ require 'trinity/policy'
 class TeamPolicy
   extend Trinity::Policy::Base
 
-  def can_manage?(team, user)
+  def self.can_manage?(team, user)
     if user && team
-      user.team.id == team.id
+      team.user.id == user.id
     end
   end
 end
