@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Receivers</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>User</th>
+      <th>Provider</th>
+      <th>Handler</th>
+      <th colspan="4"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @receivers.each do |receiver| %>
+      <tr>
+        <td><%= receiver.user %></td>
+        <td><%= receiver.provider %></td>
+        <td><%= receiver.handler %></td>
+        <td><%= link_to 'Show', receiver %></td>
+        <td><%= link_to 'Edit', edit_receiver_path(receiver) %></td>
+        <td><%= link_to 'Destroy', receiver, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+        <%= if receiver.require_verify? && !receiver.verified? %>
+        <%= end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Receiver', new_receiver_path %>

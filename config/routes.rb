@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
-  resources :assertions
+  resources :receivers
+  resources :receiver_verification, only: [:create]
+
+  resources :assertions do
+    resources :alerts, only: [:create]
+  end
+  resources :alerts, only: [:update, :destroy]
+
   resources :checks
   resources :teams
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

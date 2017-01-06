@@ -1,0 +1,31 @@
+<% Yeller::Provider.providers.each do |provider| %>
+  <div class='box'>
+  <%= form_for(receiver) do |f| %>
+    <% if receiver.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(receiver.errors.count, "error") %> prohibited this receiver from being saved:</h2>
+
+        <ul>
+        <% receiver.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= f.hidden_field :provider %>
+
+    <h3>Add <%= provider.identity %></h3>
+    <div class="field">
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+
+    <%= render "receivers/providers/#{provider.identity.downcase}", f: f, receiver: receiver, provider: provider %>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+  <% end %>
+  </div>
+<% end %>

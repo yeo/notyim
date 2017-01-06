@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>User:</strong>
+  <%= @receiver.user %>
+</p>
+
+<p>
+  <strong>Provider:</strong>
+  <%= @receiver.provider %>
+</p>
+
+<p>
+  <strong>Handler:</strong>
+  <%= @receiver.handler %>
+</p>
+
+<p>
+  <strong>Require verify:</strong>
+  <%= @receiver.require_verify %>
+</p>
+
+<p>
+  <strong>Verified:</strong>
+  <%= @receiver.verified %>
+</p>
+
+<%= link_to 'Edit', edit_receiver_path(@receiver) %> |
+<%= link_to 'Back', receivers_path %>

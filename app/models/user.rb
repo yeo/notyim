@@ -49,6 +49,7 @@ class User
 
   has_many :teams,  dependent: :destroy
   has_many :checks,  dependent: :destroy
+  has_many :receivers, dependent: :destroy
 
   after_create :create_team
 
