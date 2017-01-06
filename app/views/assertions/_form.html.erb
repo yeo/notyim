@@ -1,0 +1,34 @@
+<%= form_for(assertion) do |f| %>
+  <%= f.hidden_field :check_id  %>
+
+  <% if assertion.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(assertion.errors.count, "error") %> prohibited this assertion from being saved:</h2>
+
+      <ul>
+      <% assertion.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :subject %>
+    <%= f.select :subject, format_subject_enum_for_select(assertion) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :condition %>
+    <%= f.select :condition, grouped_options_for_select(format_condition_enum_for_select(assertion)) %>
+  </div>
+
+  <div class="field">
+    <%= f.label 'Match with' %>
+    <%= f.text_field :operand %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

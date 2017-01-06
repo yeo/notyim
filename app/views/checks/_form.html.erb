@@ -30,3 +30,9 @@
     <%= f.submit %>
   </div>
 <% end %>
+
+<% if check.persisted? %>
+  <%= render 'assertions/index', assertions: check.assertions %>
+
+  <%= render 'assertions/form', assertion: Assertion.new(check: check) %>
+<% end %>

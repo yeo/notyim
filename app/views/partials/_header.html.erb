@@ -34,6 +34,9 @@
 
       <% if user_signed_in? %>
         <span class="nav-item">
+          <a class="button" href="<%= url_for(checks_path) %>">Checks</a>
+          <a class="button" href="<%= url_for(teams_path) %>">Team</a>
+
         <%= form_tag(destroy_user_session_path, :method => :delete) do |f| %>
           <%= button_tag(class: 'button') do %>
           <span class="icon"><i class="fa fa-sign-out"></i></span>

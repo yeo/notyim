@@ -7,18 +7,25 @@ class DashboardController < ApplicationController
 
   private
   def current
-    @__current ||= Trinity::Current.instance current_user
+    # TODO Write about thread safe here
+    #@__current ||= Trinity::Current.instance current_user
+    @__current ||= Trinity::Current.new current_user
   end
 
   def team_pick!
-    if team = session[:team]
-      if TeamPolicy.can_manage?(team, current.user)
-        current.team = team
+    begin
+      if session[:team] && (team = Team.find(session[:team]))
+        if TeamPolicy.can_manage?(team, current.user)
+          current.team = team
+        else
+          current.team = session[:team] = nil
+        end
       else
-        current.team = session[:team] = nil
+        current.team = session[:team] = current.user.teams.first.id.to_s
       end
-    else
-      current.team = session[:team] = current.user.teams.first
+    rescue => e
+      session[:team] = nil
+      # TODO Log it
     end
   end
 end

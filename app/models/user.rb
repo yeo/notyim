@@ -47,10 +47,15 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  has_many :teams
-  has_many :checks
+  has_many :teams,  dependent: :destroy
+  has_many :checks,  dependent: :destroy
 
   after_create :create_team
+
+  # Get all assertion of this users, which is on their check
+  def assertions
+    Assertion.where(:check.in => check)
+  end
 
   def self.from_omniauth(payload)
     email = payload.info.email

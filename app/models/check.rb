@@ -10,6 +10,7 @@ class Check
 
   belongs_to :user, index: true
   belongs_to :team, index: true
+  has_many :assertions, dependent: :destroy
 
   index({type: 1}, {background: true})
   validates_presence_of :name, :uri, :type
