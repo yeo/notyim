@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
   resources :receivers
-  resources :verification, only: [:create] do
+  resources :verification, only: [:show, :create] do
     member do
       get 'verify'
+      match 'interactive_voice', via: [:get, :post]
     end
   end
 

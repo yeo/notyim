@@ -25,6 +25,13 @@ module Yeller
         # TODO: maybe queue this in future
         VerificationMailer.confirm_contact(receiver.id.to_s).deliver_now
       end
+
+      def self.acknowledge_verification(receiver)
+        user = receiver.user
+        raise MissingUserForReceiver unless user
+        # TODO: maybe queue this in future
+        VerificationMailer.acknowledge(receiver.id.to_s).deliver_now
+      end
     end
   end
 end

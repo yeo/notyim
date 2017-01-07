@@ -29,7 +29,7 @@ class ReceiversController < DashboardController
     @receiver.user = current.user
 
     respond_to do |format|
-      if @receiver.save
+      if ReceiverService.save(@receiver)
         format.html { redirect_to @receiver, notice: 'Receiver was successfully created.' }
         format.json { render :show, status: :created, location: @receiver }
       else
@@ -71,6 +71,6 @@ class ReceiversController < DashboardController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def receiver_params
-      params.require(:receiver).permit(:provider, :handler, :require_verify, :verified)
+      params.require(:receiver).permit(:name, :provider, :handler)
     end
 end

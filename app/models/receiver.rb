@@ -20,6 +20,11 @@ class Receiver
   validates_presence_of :provider, :name, :handler
   validates :provider, :inclusion => { :in => Yeller::Provider.providers.keys }
 
+  index({provider: 1}, {background: true})
+  index({handler: 1}, {background: true})
+  index({handler: 1, user_id: 1}, {background: true})
+  validates_uniqueness_of :handler, :scope => :user
+
   def provider_class
     @__klass ||= Yeller::Provider.class_of(provider)
   end

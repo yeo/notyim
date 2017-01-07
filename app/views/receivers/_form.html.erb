@@ -1,4 +1,4 @@
-<% Yeller::Provider.providers.each do |provider| %>
+<% Yeller::Provider.providers.keys.each do |provider| %>
   <div class='box'>
   <%= form_for(receiver) do |f| %>
     <% if receiver.errors.any? %>
@@ -13,15 +13,15 @@
       </div>
     <% end %>
 
-    <%= f.hidden_field :provider %>
+    <%= hidden_field :receiver, :provider, value: provider %>
 
-    <h3>Add <%= provider.identity %></h3>
+    <h3>Add <%= provider %></h3>
     <div class="field">
       <%= f.label :name %>
       <%= f.text_field :name %>
     </div>
 
-    <%= render "receivers/providers/#{provider.identity.downcase}", f: f, receiver: receiver, provider: provider %>
+    <%= render "receivers/providers/#{provider.downcase}", f: f, receiver: receiver, provider: provider %>
 
     <div class="actions">
       <%= f.submit %>

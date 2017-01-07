@@ -23,6 +23,11 @@ module Yeller
       def self.create_verification_request!(receiver)
         raise "Please implement"
       end
+
+      # verification by interactive request, mean entering an user input
+      def self.interactive_request
+
+      end
     end
   end
 end
