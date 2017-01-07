@@ -41,6 +41,7 @@ gem 'omniauth-twitter'
 gem 'rails_admin'
 gem 'sidekiq'
 gem 'bugsnag'
+gem 'twilio-ruby', '~> 4.11.1'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
