@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :receivers
-  resources :receiver_verification, only: [:create]
+  resources :verification, only: [:create] do
+    member do
+      get 'verify'
+    end
+  end
 
   resources :assertions do
     resources :alerts, only: [:create]
