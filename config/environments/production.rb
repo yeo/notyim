@@ -56,6 +56,9 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "trinity_#{Rails.env}"
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = {
+    :host => "noty.im",
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -80,4 +83,6 @@ Rails.application.configure do
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
   end
+
+  config.active_job.queue_adapter = :sidekiq
 end
