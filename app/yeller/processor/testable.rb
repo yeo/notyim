@@ -1,7 +1,7 @@
 module Yeller
   module Processor
-    module Verifiable
-      def verify(payload)
+    module Testable
+      def perform_test(payload)
 
       end
     end

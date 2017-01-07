@@ -5,12 +5,16 @@ module Yeller
 
     def register(klass)
       LOCK.synchronize do
-        providers.push(klass) unless providers.include?(klass)
+        providers[klass.to_s.split('::').last] = klass
       end
     end
 
     def providers
-      @__providers ||= []
+      @__providers ||= {}
+    end
+
+    def class_of(identify)
+      providers.fetch(identify)
     end
   end
 end
