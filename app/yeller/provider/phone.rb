@@ -8,6 +8,7 @@ module Yeller
 
       configure do
         require_verify!
+        require_input_verification_code!
       end
 
       # Generate a verification code

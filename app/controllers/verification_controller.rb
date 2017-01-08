@@ -6,7 +6,23 @@ class VerificationController < ApplicationController
   # POST /receivers.json
   def create
     # TODO Impelement this
+    if params[:receiver_id].empty?
+      return head :bad_request
+    end
+
+    receiver = Receiver.find(params[:reciever_id])
+    # TODO check permission
+
     render :nothing
+  end
+
+  # Resend verification. We may re-create if old one is expire
+  def resend
+    if VerificationService.generate(@verification.verifiable)
+      redirect_back fallback_location: root_path, notice: 'Verification is resend.'
+    else
+      redirect_back fallback_location: root_path, alert: 'An error has occure. Please try again'
+    end
   end
 
   def verify
@@ -26,17 +42,9 @@ class VerificationController < ApplicationController
     end
   end
 
+  # Return twilioml for Twilio
   def interactive_voice
-    response = Twilio::TwiML::Response.new do |r|
-      r.Say 'Hi, this is noty.im. Please enter this verification code on website', voice: 'alice'
-      3.times do
-        r.Say @verification.code, voice: 'alice'
-        r.Pause length: 2
-        r.Say "Repeat: ", voice: 'alice'
-      end
-    end.text
-
-    render inline: response
+    render inline: VerificationService.render_twilio_response(@verification)
   end
 
   private

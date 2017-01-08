@@ -20,13 +20,22 @@ module Yeller
         end
       end
 
+      def self.require_input_verification_code!
+        @__attributes[:require_input_verification_code] = true
+      end
+
+      def self.require_input_verification_code?
+        if @__attributes
+          @__attributes[:require_input_verification_code]
+        end
+      end
+
       def self.create_verification_request!(receiver)
         raise "Please implement"
       end
 
-      # verification by interactive request, mean entering an user input
-      def self.interactive_request
-
+      def self.acknowledge_verification(receiver)
+        raise "Please implement"
       end
     end
   end

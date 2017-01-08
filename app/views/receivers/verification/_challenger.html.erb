@@ -1,0 +1,12 @@
+<%= form_tag(resend_verification_path(receiver.last_verification)) do |f| %>
+  <p>If you didn't get your verification code. You can request it again here</p>
+  <%= submit_tag 'Resend verification code' %>
+<% end %>
+
+<% if receiver.provider_class.require_input_verification_code? %>
+  <%= form_tag(verify_verification_path(receiver.last_verification), method: 'GET') do |f| %>
+    <p>Enter verification code</p>
+    <%= text_field_tag :code, nil %>
+    <%= submit_tag 'Verify' %>
+  <% end %>
+<% end %>

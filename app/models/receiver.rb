@@ -23,12 +23,14 @@ class Receiver
   index({provider: 1}, {background: true})
   index({handler: 1}, {background: true})
   index({handler: 1, user_id: 1}, {background: true})
-  validates_uniqueness_of :handler, :scope => :user
+  validates :handler, uniqueness: { scope: [:user, :provider] }
 
+  # Return provider class that hold utilities method for this provider
   def provider_class
     @__klass ||= Yeller::Provider.class_of(provider)
   end
 
+  # Callback to set verification class depend on provider
   def set_verification
     if provider_class.require_verify?
       self.require_verify = true

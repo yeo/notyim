@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :verification, only: [:show, :create] do
     member do
       get 'verify'
+      post 'resend'
       match 'interactive_voice', via: [:get, :post]
     end
   end

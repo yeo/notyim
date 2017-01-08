@@ -23,16 +23,7 @@
         <td><%= link_to 'Destroy', receiver, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <td>
           <% if receiver.require_verify? && !receiver.verified? %>
-            <%= form_for(receiver.last_verification, url: verify_verification_path(receiver.last_verification)) do |f| %>
-              <p>Didn't got your verification request for this contact? Resend verification request</p>
-            <% end %>
-
-            <%= form_tag(verify_verification_path(receiver.last_verification), method: 'GET') do |f| %>
-              <p>Enter verification code</p>
-              <%= text_field_tag :code, nil %>
-              <%= submit_tag 'Verify' %>
-            <% end %>
-
+            <%= render 'receivers/verification/challenger', receiver: receiver %>
           <% end %>
         </td>
       </tr>

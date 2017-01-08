@@ -1,28 +1,32 @@
 <p id="notice"><%= notice %></p>
 
+<% if @receiver.require_verify? && !@receiver.verified? %>
+  <%= render 'receivers/verification/challenger', receiver: @receiver %>
+<% end %>
+
 <p>
-  <strong>User:</strong>
-  <%= @receiver.user %>
+<strong>User:</strong>
+<%= @receiver.user %>
 </p>
 
 <p>
-  <strong>Provider:</strong>
-  <%= @receiver.provider %>
+<strong>Provider:</strong>
+<%= @receiver.provider %>
 </p>
 
 <p>
-  <strong>Handler:</strong>
-  <%= @receiver.handler %>
+<strong>Handler:</strong>
+<%= @receiver.handler %>
 </p>
 
 <p>
-  <strong>Require verify:</strong>
-  <%= @receiver.require_verify %>
+<strong>Require verify:</strong>
+<%= @receiver.require_verify %>
 </p>
 
 <p>
-  <strong>Verified:</strong>
-  <%= @receiver.verified %>
+<strong>Verified:</strong>
+<%= @receiver.verified %>
 </p>
 
 <%= link_to 'Edit', edit_receiver_path(@receiver) %> |
