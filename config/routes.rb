@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :charges
   resources :verification, only: [:show, :create] do
     member do
       get 'verify'

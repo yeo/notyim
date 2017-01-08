@@ -1,0 +1,19 @@
+<%= form_tag charges_path do %>
+  <article>
+    <% if flash[:error].present? %>
+      <div id="error_explanation">
+        <p><%= flash[:error] %></p>
+      </div>
+    <% end %>
+
+    <label class="amount">
+      <span>Amount: $9.99</span>
+    </label>
+  </article>
+
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+    data-key="<%= stripe_publish_key %>"
+    data-description="A month's subscription"
+    data-amount="$9.99"
+    data-locale="auto"></script>
+<% end %>
