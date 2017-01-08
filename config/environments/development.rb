@@ -56,7 +56,6 @@ Rails.application.configure do
   # Those setting isn't on Rails, we store theme here to access them later on
   # Those need to take care when we update Rails
   # TODO: Update
-  config.twilio = {from: ENV.fetch('PHONE_FROM')}
-  # End custom configuration
   config.local_proxy_public = ENV.fetch("NGROK")
+  # End custom configuration
 end

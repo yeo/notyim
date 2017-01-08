@@ -85,10 +85,4 @@ Rails.application.configure do
   end
 
   config.active_job.queue_adapter = :sidekiq
-  # Custom configuration
-  # Those setting isn't on Rails, we store theme here to access them later on
-  # Those need to take care when we update Rails
-  # TODO: Update
-  config.twilio = {from: ENV.fetch('PHONE_FROM')}
-  # End custom configuration
 end

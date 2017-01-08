@@ -39,11 +39,4 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
-# Custom configuration
-  # Those setting isn't on Rails, we store theme here to access them later on
-  # Those need to take care when we update Rails
-  # TODO: Update
-  config.twilio = {from: ENV.fetch('PHONE_FROM')}
-  # End custom configuration
-
 end
