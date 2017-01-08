@@ -58,4 +58,5 @@ Rails.application.configure do
   # TODO: Update
   config.twilio = {from: ENV.fetch('PHONE_FROM')}
   # End custom configuration
+  config.local_proxy_public = ENV.fetch("NGROK")
 end
