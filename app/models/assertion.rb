@@ -31,6 +31,7 @@ class Assertion
     }
 
   belongs_to :check
+  has_many :incidents # We don't want to destroy incident when removing assertion
 
   validates_presence_of :subject, :condition
   validates :subject, :inclusion => { :in => SUBJECT_TYPES }

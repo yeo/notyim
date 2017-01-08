@@ -34,6 +34,7 @@
 
       <% if user_signed_in? %>
         <span class="nav-item">
+          <a class="button" href="<%= url_for(incidents_path) %>">Incidents</a>
           <a class="button" href="<%= url_for(receivers_path) %>">Alert service</a>
           <a class="button" href="<%= url_for(checks_path) %>">Checks</a>
           <a class="button" href="<%= url_for(teams_path) %>">Team</a>

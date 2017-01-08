@@ -53,6 +53,12 @@ class User
 
   after_create :create_team
 
+  # Get a list of verifi receiver
+  # @return Criteria[Receiver]
+  def verified_receivers
+    Receiver.of_user(self).verified
+  end
+
   # Get all assertion of this users, which is on their check
   def assertions
     Assertion.where(:check.in => check)

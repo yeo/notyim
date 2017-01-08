@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :receivers
   resources :verification, only: [:show, :create] do
     member do
       get 'verify'
@@ -8,12 +7,12 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :assertions do
-    resources :alerts, only: [:create]
-  end
-  resources :alerts, only: [:update, :destroy]
-
   resources :checks
+  resources :assertions
+  resources :incidents
+  resources :receivers
+  post '/incident_receivers/:check_id', to: 'incident_receivers#create', as: :register_incident_receivers
+
   resources :teams
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   #devise_for :users

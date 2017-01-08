@@ -15,6 +15,7 @@ class Receiver
   field :provider_params
 
   belongs_to :user, index: true
+
   before_create :set_verification
 
   validates_presence_of :provider, :name, :handler
@@ -24,6 +25,9 @@ class Receiver
   index({handler: 1}, {background: true})
   index({handler: 1, user_id: 1}, {background: true})
   validates :handler, uniqueness: { scope: [:user, :provider] }
+
+  scope :of_user, ->(user) { where(user: user) }
+  scope :verified,  ->() { where(verified: true) }
 
   # Return provider class that hold utilities method for this provider
   def provider_class

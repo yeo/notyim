@@ -1,0 +1,11 @@
+<div class="box">
+Who will receive alert for this service
+
+<%= form_tag(register_incident_receivers_path(check_id: check.id.to_s)) do |f| %>
+  <% @current.user.verified_receivers.each do |receiver| %>
+    <%= check_box_tag 'contact_receivers[]', receiver.id.to_s, check.register_receiver?(receiver), id: receiver.id.to_s  %>
+    <%= label_tag     receiver.id.to_s, receiver.handler %>
+  <% end %>
+  <%= submit_tag 'Save' %>
+<% end %>
+</div>
