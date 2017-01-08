@@ -26,6 +26,8 @@ class Check
   # Check if the receiver was register to receiver notificatio for this check
   # @param Receiver|String
   def register_receiver?(r)
+    return false if !receivers
+
     r = if r.respond_to? :id
       r.id.to_s
     end
