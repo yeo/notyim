@@ -130,6 +130,7 @@ GEM
     multipart-post (2.0.0)
     nested_form (0.3.2)
     netrc (0.11.0)
+    newrelic_rpm (3.14.0.305)
     nio4r (1.2.1)
     nokogiri (1.7.0)
       mini_portile2 (~> 2.1.0)
@@ -322,6 +323,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   mongoid (~> 6.0.0)
   mongoid_paranoia
+  newrelic_rpm
   omniauth-github
   omniauth-twitter
   pry
