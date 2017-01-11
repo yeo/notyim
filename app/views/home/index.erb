@@ -8,15 +8,15 @@
 
     <h3 class="subtitle is-3">It's free to try. Signup instantly now with</h3>
     <p class="hero-buttons">
-      <%= link_to user_github_omniauth_authorize_path, class: 'button is-primary is-large' do %>
-        <span class="icon"><i class="fa fa-github"></i></span><span>Github</span>
-      <% end %>
-      <a class="button is-primary is-large" href="<%= url_for(new_user_session_path) %>">
-        <span class="icon"><i class="fa fa-envelope"></i></span><span>Email</span>
-      </a>
-      <%= link_to user_twitter_omniauth_authorize_path, class: 'button is-primary is-large' do %>
-        <span class="icon"><i class="fa fa-twitter"></i></span><span>Twitter</span>
-      <% end %>
+    <%= link_to user_github_omniauth_authorize_path, class: 'button is-primary is-large' do %>
+      <span class="icon"><i class="fa fa-github"></i></span><span>Github</span>
+    <% end %>
+    <a class="button is-primary is-large" href="<%= url_for(new_user_session_path) %>">
+      <span class="icon"><i class="fa fa-envelope"></i></span><span>Email</span>
+    </a>
+    <%= link_to user_twitter_omniauth_authorize_path, class: 'button is-primary is-large' do %>
+      <span class="icon"><i class="fa fa-twitter"></i></span><span>Twitter</span>
+    <% end %>
     </p>
   </div>
 </div>
@@ -116,26 +116,27 @@
 
 <section class='section'>
 <div class='container'>
+
   <section class='hero  has-text-centered'>
-  <div class="hero-head">
-    <h2 id="pricing" class="title">Pricing</h2>
-    <p>Your first month will have unlimited features. After first month, we will ask you to select a plan.</p>
-    <h4 class="subtitle is-4">Sign up now, no creditcard require</h4>
-  </div>
+    <div class="hero-head">
+      <h2 id="pricing" class="title">Pricing</h2>
+      <p>Your first month will have unlimited features. After first month, we will ask you to select a plan.</p>
+      <h4 class="subtitle is-4">Sign up now, no creditcard require</h4>
+    </div>
+  </section>
 
   <div class="columns">
     <div class="column">
       <div class="pricing pricing-1 text-center">
-        <i class="icon icon--lg icon-Mustache-2"></i>
         <h6>Free</h6>
         <div class="pricing__price">
           <span class="h1">$0</span>
         </div>
-        <p>Up to 2 checks</p>
+        <p>Up to 50 checks</p>
         <p>Single region</p>
         <p>Unlimited alert</p>
         <p>No SMS or phone call</p>
-        <a class="btn btn--primary vpe" href="#get-started">
+        <a class="button is-primary" href="<%= new_user_registration_path %>">
           <span class="btn__text btn-lg btn btn-orange">SIGN UP NOW</span>
         </a>
       </div>
@@ -143,17 +144,16 @@
 
     <div class="column">
       <div class="pricing pricing-1 text-center">
-        <i class="icon icon--lg icon-Mustache-3"></i>
         <h6>Premium</h6>
         <div class="pricing__price">
           <span class="pricing__dollar h5">$</span>
           <span class="h1">10</span>
         </div>
-        <p>Up to 50 checks.</p>
+        <p>Up to 500 checks.</p>
         <p>Multiple regions.</p>
         <p>Unlimited alert</p>
         <p>100 SMS or 100 phone call.</p>
-        <a class="btn btn--primary vpe" href="#get-started">
+        <a class="button is-primary" href="<%= new_user_registration_path %>">
           <span class="btn__text btn-lg btn btn-orange">SIGN UP NOW</span>
         </a>
       </div>
@@ -161,7 +161,6 @@
 
     <div class="column">
       <div class="pricing pricing-1 text-center">
-        <i class="icon icon--lg icon-Mustache-4"></i>
         <h6>Awesome</h6>
         <div class="pricing__price">
           <span class="pricing__dollar h5">$</span>
@@ -171,34 +170,34 @@
         <p>Multiple regions.</p>
         <p>Unlimited alert</p>
         <p>No hard limit on SMS or phone call.</p>
-        <a class="btn btn--primary vpe" href="#get-started">
+        <a class="button is-primary" href="<%= new_user_registration_path %>">
           <span class="btn__text btn-lg btn btn-orange">SIGN UP NOW</span>
-        </a>
-      </div>
-    </div>  
-
-  </div>
-  </section>
-
-  <section class='hero is-medium has-text-centered'>
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-2">Open source</h2>
-      <h3 class="subtitle is-3">The power of NotyIM behind your firewall</h3>
-
-      <p>
-      noty is an open source software, free and always will be. You can install and configure it yourself.
-      <br>We also give professional installation service. We'll install noty for you
-      </p>
-
-      <div class='hero-buttons'>
-        <a href="mailto:vinh@noty.im?subject=NotyIM Installation" class="button is-primary is-large">
-          Get in touch
         </a>
       </div>
     </div>
   </div>
-  </section>
 
+</div>
+</section>
+
+<hr class='is-marginless'>
+<section class='hero is-medium has-text-centered'>
+<div class="hero-body">
+  <div class="container">
+    <h2 class="title is-2">Open source</h2>
+    <h3 class="subtitle is-3">The power of NotyIM behind your firewall</h3>
+
+    <p>
+    <a href="/">noty</a> is an open source software, free and always will be. You can get the source
+    and self-hosted it.
+    <br>We also give premium support to install, configure and monitor your self-hosted <a href="/">noty</a> inside
+      your infrastructure
+    </p>
+    <div class='hero-buttons'>
+      <a href="mailto:vinh@noty.im?subject=NotyIM Installation" class="button is-primary is-large">
+        Get in touch for premium support
+      </a>
+    </div>
+  </div>
 </div>
 </section>

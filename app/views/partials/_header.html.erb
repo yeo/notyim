@@ -46,6 +46,7 @@
           <% end %>
         <% end %>
 
+        <a class="button is-primary" href="<%= url_for(users_show_plans_path) %>">Plan</a>
         <a class="button is-primary" href="<%= url_for(edit_user_registration_path) %>">
           <span class="icon"><i class="fa fa-user"></i></span>
           <span><%= current_user.name %></span>

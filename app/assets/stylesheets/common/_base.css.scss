@@ -1,5 +1,4 @@
 $primary: #FF7473;
-
 @import "bulma";
 
 .hero .nav {
@@ -12,13 +11,5 @@ a,
   color: $primary;
 }
 
-.pricing {
-  margin-top: 10px;
-  background: #fff;
-
-  &__price {
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 20px;
-    margin-bottom: 20px;
-  }
+.footer {
 }
