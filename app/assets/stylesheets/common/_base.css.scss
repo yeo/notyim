@@ -11,13 +11,13 @@ a,
   color: $primary;
 }
 
-.footer {
-}
-
 .notification-is-notice {
-  @extend .is-info;
+  background-color: nth(map-get($colors, info), 1);
+  color: nth(map-get($colors, info), 2);
 }
 
+.notification-is-alert,
 .notification-is-error {
-  @extend .is-danger;
+  background-color: nth(map-get($colors, danger), 1);
+  color: nth(map-get($colors, danger), 2);
 }
