@@ -1,10 +1,12 @@
-<div class="container-fluid flash">
-  <% flash.each do |key, value|%>
-     <div class="alert alert-<%=key%>">
-       <%= value %>
-     <a href="#">
-     <span id="toggleflash" style="color: gray; float: right;">x</span>
-     </a>
-     </div>
-  <% end %>
-</div>
+<% if flash %>
+  <section class='section'>
+    <div class="container">
+      <% flash.each do |key, value|%>
+       <div class="notification notification-is-<%=key%>">
+        <button href="#" class="delete">_</button>
+         <%= value %>
+       </div>
+      <% end %>
+    </div>
+  </section>
+<% end %>

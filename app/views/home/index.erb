@@ -23,16 +23,16 @@
 </section>
 
 <section class="section has-text-centered">
-<div class="container">
-  <h1 class="title">Features</h1>
+<div class="container feature">
+  <h1 class="title is-1">Features</h1>
   <h2 class="subtitle">
     Simple, Flexible, <strong>Reliable</strong>
   </h2>
 
-  <div class="columns">
+  <div class="columns feature__row">
     <div class="column">
-      <div class="box">
-        <h4 class="title"><i class="ion-heart is-hidden-mobile"></i> Flexible check</h4>
+      <div class="">
+        <h1 class="title is-3"><i class="ion-heart is-hidden-mobile"></i> Flexible check</h1>
         <div class="content">
           <p>Define check on <strong>multiple conditions</strong>, based on response time, response content, header</p>
           <p>Not just HTTP check, we can run any TCP check</p>
@@ -41,8 +41,8 @@
     </div>
 
     <div class="column">
-      <div class="box">
-        <h4 class="title"><i class="ion-wand is-hidden-mobile"></i> Fast check</h4>
+      <div class="">
+        <h1 class="title is-3"><i class="ion-wand is-hidden-mobile"></i> Fast check</h1>
         <div class="content">
           <p>We try to run check every 5-10 seconds, or even continously if possible.</p>
         </div>
@@ -50,8 +50,8 @@
     </div>
 
     <div class="column">
-      <div class="box">
-        <h4 class="title"><i class="ion-earth is-hidden-mobile"></i> Granular alert routing</h4>
+      <div class="">
+        <h1 class="title is-3"><i class="ion-earth is-hidden-mobile"></i> Granular alert routing</h1>
         <div class="content">
           <p>Very granular on define alert target for checks.</p>
         </div>
@@ -59,26 +59,26 @@
     </div>
   </div>
 
-  <div class="columns">
+  <div class="columns  feature__row">
     <div class="column">
-      <div class="box">
-        <h4 class="title"><i class="ion-settings is-hidden-mobile"></i> Data retention</h4>
+      <div class="">
+        <h1 class="title is-3"><i class="ion-settings is-hidden-mobile"></i> Data retention</h1>
         <div class="content">
           <p>Your data is stored up to 3 months for free accounts and up to several years in paid plan. If you need more than that, just contact us directly.</p>
         </div>
       </div>
     </div>
     <div class="column">
-      <div class="box">
-        <h4 class="title"><i class="ion-stats-bars is-hidden-mobile"></i> Multiple integrations</h4>
+      <div class="">
+        <h1 class="title is-3"><i class="ion-stats-bars is-hidden-mobile"></i> Multiple integrations</h1>
         <div class="content">
           <p>We support many service integration: slack, hipchat, telegram, twilio(sms, phone call) and many more service</p>
         </div>
       </div>
     </div>
     <div class="column">
-      <div class="box">
-        <h4 class="title"><i class="ion-key is-hidden-mobile"></i> Webhook</h4>
+      <div class="">
+        <h1 class="title is-3"><i class="ion-key is-hidden-mobile"></i> Webhook</h1>
         <div class="content">
           <p>Need custom intergration with your own service? Use webhook to trigger actions when alert occurs.</p>
         </div>
@@ -86,25 +86,25 @@
     </div>
   </div>
 
-  <div class="columns">
+  <div class="columns feature__row">
     <div class="column">
-      <div class="box">
-        <h4 class="title"><i class="ion-key is-hidden-mobile"></i> Distribute checks</h4>
+      <div class="">
+        <h1 class="title is-3"><i class="ion-key is-hidden-mobile"></i> Distribute checks</h1>
         <div class="content">
           <p>We run check on multiple locations to avoid false positive.</p>
         </div>
       </div>
     </div>
     <div class="column">
-      <div class="box">
-        <h4 class='title'>Simple</h4>
+      <div class="">
+        <h1 class='title is-3'>Simple</h1>
         <div class="content">One click sign in using your social account</div>
       </div>
 
     </div>
     <div class="column">
-      <div class="box">
-        <h4 class="title">Multi Team</h4>
+      <div class="">
+        <h1 class="title is-3">Multi Team</h1>
         <div class="content">
           <p>Easily manage multiple team(work, persoanl) using a single account with multiple associated email</p>
         </div>
@@ -119,59 +119,63 @@
 
   <section class='hero  has-text-centered'>
     <div class="hero-head">
-      <h2 id="pricing" class="title">Pricing</h2>
-      <p>Your first month will have unlimited features. After first month, we will ask you to select a plan.</p>
-      <h4 class="subtitle is-4">Sign up now, no creditcard require</h4>
+      <h1 id="pricing" class="title is-1">Pricing</h1>
+      <h2 class="subtitle is-4">Your first month will have unlimited features. After first month, we will ask you to select a plan.</h2>
+      <h2 class="subtitle">Sign up now, no creditcard require</h2>
     </div>
   </section>
 
-  <div class="columns">
+  <div class="columns has-text-centered">
     <div class="column">
-      <div class="pricing pricing-1 text-center">
-        <h6>Free</h6>
-        <div class="pricing__price">
-          <span class="h1">$0</span>
-        </div>
-        <p>Up to 50 checks</p>
-        <p>Single region</p>
-        <p>Unlimited alert</p>
-        <p>No SMS or phone call</p>
-        <a class="button is-primary" href="<%= new_user_registration_path %>">
-          <span class="btn__text btn-lg btn btn-orange">SIGN UP NOW</span>
+      <div class="pricing">
+        <h1 class="title is-2">Free</h1>
+        <h1 class="subtitle is-3">$0</h1>
+        <section class="section">
+          <ul>
+            <li>Uli to 50 checks</li>
+            <li>Single region</li>
+            <li>Unlimited alert</li>
+            <li>No SMS or lihone call</li>
+          </ul>
+        </section>
+        <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
+        SIGN UP NOW
         </a>
       </div>
     </div>
 
     <div class="column">
-      <div class="pricing pricing-1 text-center">
-        <h6>Premium</h6>
-        <div class="pricing__price">
-          <span class="pricing__dollar h5">$</span>
-          <span class="h1">10</span>
-        </div>
-        <p>Up to 500 checks.</p>
-        <p>Multiple regions.</p>
-        <p>Unlimited alert</p>
-        <p>100 SMS or 100 phone call.</p>
-        <a class="button is-primary" href="<%= new_user_registration_path %>">
-          <span class="btn__text btn-lg btn btn-orange">SIGN UP NOW</span>
+      <div class="pricing">
+        <h1 class="title is-2">Premium</h1>
+        <h1 class="subtitle is-3">$10</h1>
+        <section class="section">
+          <ul>
+          <li>Uli to 500 checks.</li>
+          <li>Multilile regions.</li>
+          <li>Unlimited alert</li>
+          <li>100 SMS or 100 lihone call.</li>
+          </ul>
+        </section>
+        <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
+          SIGN UP NOW
         </a>
       </div>
     </div>
 
     <div class="column">
-      <div class="pricing pricing-1 text-center">
-        <h6>Awesome</h6>
-        <div class="pricing__price">
-          <span class="pricing__dollar h5">$</span>
-          <span class="h1">20</span>
-        </div>
-        <p>Unlimited checks.</p>
-        <p>Multiple regions.</p>
-        <p>Unlimited alert</p>
-        <p>No hard limit on SMS or phone call.</p>
-        <a class="button is-primary" href="<%= new_user_registration_path %>">
-          <span class="btn__text btn-lg btn btn-orange">SIGN UP NOW</span>
+      <div class="pricing">
+        <h1 class="title is-2">Awesome</h1>
+        <h1 class="subtitle is-3">$20</h1>
+        <section class="section">
+          <ul>
+            <li>Unlimited checks.</li>
+            <li>Multilile regions.</li>
+            <li>Unlimited alert</li>
+            <li>No <a href="/faq#sms_limit">hard limit</a> on SMS or lihone call.</li>
+          </ul>
+        </section>
+        <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
+          SIGN UP NOW
         </a>
       </div>
     </div>
@@ -194,7 +198,7 @@
       your infrastructure
     </p>
     <div class='hero-buttons'>
-      <a href="mailto:vinh@noty.im?subject=NotyIM Installation" class="button is-primary is-large">
+      <a href="mailto:vinh@noty.im?subject=NotyIM Installation" class="button is-info is-large">
         Get in touch for premium support
       </a>
     </div>

@@ -13,3 +13,11 @@ a,
 
 .footer {
 }
+
+.notification-is-notice {
+  @extend .is-info;
+}
+
+.notification-is-error {
+  @extend .is-danger;
+}

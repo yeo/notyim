@@ -1,3 +1,5 @@
+$space: 10px;
+
 .intro {
   padding: 50px 0;
   background: image-url('/assets/bg/intro.jpg') no-repeat bottom center scroll;
@@ -9,9 +11,20 @@
   color: white;
 }
 
+.feature {
+  &__row {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
 .pricing {
-  margin-top: 10px;
+  margin-top: $space *4;
   background: #fff;
+
+  .title {
+    margin-bottom: $space;
+  }
 
   &__price {
     border-bottom: 1px solid #ddd;
