@@ -21,3 +21,63 @@ a,
   background-color: nth(map-get($colors, danger), 1);
   color: nth(map-get($colors, danger), 2);
 }
+
+
+
+.aside-left-nav, .aside-left-menu {
+  display: -webkit-box;
+  display: box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+.aside-left-nav {
+  -webkit-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 70px;
+  background: #555;
+  overflow: visible;
+}
+
+.aside-item {
+  -webkit-box-flex: 0;
+  box-flex: 0;
+  -webkit-flex: 0 1 70px;
+  flex: 0 1 70px;
+  display: -webkit-box;
+  display: box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  box-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-orient: vertical;
+  box-orient: vertical;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  background: transparent;
+  white-space: nowrap;
+  transition: 100ms ease-in-out;
+  min-height: 1.5em;
+}
+
+.aside-left-nav a:not(:hover) {
+  color: #eee;
+}
+
+.aside-left-nav a {
+  outline: none;
+  text-decoration: none;
+  cursor: pointer;
+}

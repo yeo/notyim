@@ -6,8 +6,6 @@
       <a class="nav-item is-brand" href="/">Noty</a>
     </div>
 
-    <%= render 'partials/menu/team_picker' %>
-
     <span id="nav-toggle" class="nav-toggle">
       <span></span>
       <span></span>
@@ -15,49 +13,31 @@
     </span>
 
     <div id="nav-menu" class="nav-right nav-menu">
-      <% if !user_signed_in? %>
       <a class="nav-item is-active" href="/#features">Features</a>
       <a class="nav-item is-active" href="/#pricing">Price</a>
       <a class="nav-item" href="/docs">Docs</a>
       <a class="nav-item" href="//blog.noty.im">Blog</a>
 
-      <span class="nav-item">
-        <a class="button" href="<%= url_for(new_user_registration_path) %>">
-          <span class="icon"><i class="fa fa-user"></i></span>
-          <span>Register</span>
-        </a>
-        <a class="button is-primary" href="<%= url_for(new_user_session_path) %>">
-          <span class="icon"><i class="fa fa-sign-in"></i></span>
-          <span>Login</span>
-        </a>
-      </span>
+      <% if !user_signed_in? %>
+        <span class="nav-item">
+          <a class="button" href="<%= url_for(new_user_registration_path) %>">
+            <span class="icon"><i class="fa fa-user"></i></span>
+            <span>Register</span>
+          </a>
+          <a class="button is-primary" href="<%= url_for(new_user_session_path) %>">
+            <span class="icon"><i class="fa fa-sign-in"></i></span>
+            <span>Login</span>
+          </a>
+        </span>
       <% end %>
 
       <% if user_signed_in? %>
         <span class="nav-item">
-          <a class="button" href="<%= url_for(incidents_path) %>">Incidents</a>
-          <a class="button" href="<%= url_for(receivers_path) %>">Alert service</a>
-          <a class="button" href="<%= url_for(checks_path) %>">Checks</a>
-          <a class="button" href="<%= url_for(teams_path) %>">Team</a>
-
-        <%= form_tag(destroy_user_session_path, :method => :delete) do |f| %>
-          <%= button_tag(class: 'button') do %>
-          <span class="icon"><i class="fa fa-sign-out"></i></span>
-          <span>Log out</span>
-          <% end %>
-        <% end %>
-
-        <a class="button is-primary" href="<%= url_for(users_show_plans_path) %>">Plan</a>
-        <a class="button is-primary" href="<%= url_for(edit_user_registration_path) %>">
-          <span class="icon"><i class="fa fa-user"></i></span>
-          <span><%= current_user.name %></span>
-        </a>
-      </span>
+          <%= link_to("Go to dashboard", user_root_path, class:"button is-primary") %>
+        </span>
       <% end %>
     </div>
     </nav>
   </div>
 </div>
 </section>
-
-

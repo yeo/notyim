@@ -1,0 +1,43 @@
+<section class="hero is-medium has-text-centered">
+<div class="hero-head">
+  <div class="container">
+    <nav class="nav">
+    <div class="nav-left">
+      <a class="nav-item is-brand" href="/">Noty</a>
+      <% if user_signed_in? %>
+        <%= link_to("Checks", checks_path, class: 'nav-item is-tab is-active') %>
+        <%= link_to("Incidents", incidents_path, class: 'nav-item is-tab') %>
+        <%= link_to("Alert Contact", receivers_path, class: 'nav-item is-tab') %>
+        <a class="nav-item is-tab" href="<%= url_for(teams_path) %>">Notification</a>
+        <!-- <a class="nav-item is-tab" href="<%= url_for(teams_path) %>">Team</a> -->
+      <% end %>
+    </div>
+
+    <span id="nav-toggle" class="nav-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+
+    <div id="nav-menu" class="nav-right nav-menu">
+      <% if user_signed_in? %>
+        <a class="nav-item is-primary" href="<%= url_for(edit_user_registration_path) %>">
+          <span class="icon"><i class="fa fa-user"></i></span>
+          <span>Account</span>
+        </a>
+
+        <span class="nav-item">
+          <%= form_tag(destroy_user_session_path, :method => :delete) do |f| %>
+            <%= button_tag(class: 'button ') do %>
+              <span class="icon"><i class="fa fa-sign-out"></i></span>
+              <span>Log out</span>
+            <% end %>
+          <% end %>
+        </span>
+        <!--<%= render 'partials/menu/team_picker' %>-->
+      <% end %>
+    </div>
+    </nav>
+  </div>
+</div>
+</section>
