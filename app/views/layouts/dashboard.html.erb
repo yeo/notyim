@@ -13,7 +13,11 @@
     <%= render 'partials/dashboard/header' %>
     <%= render 'partials/flash' %>
 
-    <%= yield %>
+    <section class="section">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </section>
 
     <%= render 'partials/footer' %>
     <%= render 'partials/tracking' %>

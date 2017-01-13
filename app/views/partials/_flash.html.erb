@@ -1,5 +1,5 @@
-<% if flash %>
-  <section class='section'>
+<% unless flash.empty? %>
+  <section class='section flash-message'>
     <div class="container">
       <% flash.each do |key, value|%>
        <div class="notification notification-is-<%=key%>">
