@@ -1,0 +1,22 @@
+{
+  "name": "trinity",
+  "version": "0.0.1",
+  "description": "Trinity",
+  "main": "index.js",
+  "repository": "git@github.com:NotyIm/trinity.git",
+  "author": "Vinh Nguyen <kurei@axcoto.com>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babelify": "7.2.0",
+    "browserify": "^13.3.0",
+    "browserify-incremental": "^3.1.1",
+    "jquery-ujs": "^1.2.2",
+    "react": "15.3.0",
+    "react-dom": "15.3.0"
+  },
+  "devDependencies": {
+    "victory": "0.15.0"
+  }
+}

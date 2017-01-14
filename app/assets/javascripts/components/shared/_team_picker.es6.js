@@ -1,3 +1,5 @@
+import React from 'react'
+
 class TeamPicker extends React.Component {
   render () {
     const items= this.props.teams.map((team) => {
@@ -26,3 +28,5 @@ TeamPicker.propTypes = {
   teams: React.PropTypes.array,
   newTeamPath: React.PropTypes.string,
 }
+
+module.exports = TeamPicker
