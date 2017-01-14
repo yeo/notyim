@@ -1,31 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Checks</h1>
+<div class="section has-text-centered">
+  <%= link_to 'Create New Check', new_check_path, class: 'button is-primary is-large' %>
+</div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Uri</th>
-      <th>Type</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+<div class="check-list">
+  <% @checks.each do |check| %>
+    <div class="card is-fullwidth check-item">
+      <header class="card-header">
+      <%= content_tag :p, check.name, class: "card-header-title" %>
+      </header>
 
-  <tbody>
-    <% @checks.each do |check| %>
-      <tr>
-        <td><%= check.name %></td>
-        <td><%= check.uri %></td>
-        <td><%= check.type %></td>
-        <td><%= link_to 'Show', check %></td>
-        <td><%= link_to 'Edit', edit_check_path(check) %></td>
-        <td><%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <div class="card-content">
+        <%= content_tag :h4, check.uri, class: "subtitle is-6" %>
+        <div class="content">
+          <%= react_component 'app.Check', check: check.to_json %>
+        </div>
+      </div>
 
-<br>
+      <footer class="card-footer">
+        <%= link_to 'Detail', check, class: 'card-footer-item' %>
+        <%= link_to 'Edit', edit_check_path(check), class: 'card-footer-item' %>
+        <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'card-footer-item' %>
+      </footer>
+    </div>
+  <% end %>
+</div>
 
-<%= link_to 'New Check', new_check_path %>
+<div class="section has-text-centered">
+  <%= link_to 'Create New Check', new_check_path, class: 'button is-primary is-large' %>
+</div>

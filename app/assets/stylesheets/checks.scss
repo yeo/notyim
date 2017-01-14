@@ -1,3 +1,10 @@
 // Place all the styles related to the Checks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+$space: 10px;
+
+.check-list {
+}
+.check-item {
+  margin: $space 0 ($space * 2) 0;
+}
