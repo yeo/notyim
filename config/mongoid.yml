@@ -1,7 +1,7 @@
 production:
   clients:
     default:
-      uri: <%= ENV['MONGODB_URI'] %>
+      uri: <%= ENV['MONGODB_URI'] || "mongodb://127.0.0.1:27017/noty_production" %>
       options:
         write:
           w: 1
