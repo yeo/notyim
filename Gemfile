@@ -47,11 +47,6 @@ gem 'mongoid_paranoia'
 gem 'stripe'
 gem 'kaminari-mongoid'
 #gem 'newrelic_rpm'
-group :deployment do
-  gem 'capistrano'
-  gem 'capistrano-rvm'
-  gem 'capistrano-rails'
-end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -62,6 +57,11 @@ group :development, :test do
   gem 'rubocop'
   gem 'rspec-rails'
   gem 'dotenv-rails'
+
+  gem 'capistrano'
+  gem 'capistrano-rvm'
+  gem 'capistrano-rails'
+  gem 'capistrano-bundler'
 end
 
 group :development do

@@ -348,6 +348,7 @@ DEPENDENCIES
   bulma-rails (~> 0.2.3)
   byebug
   capistrano
+  capistrano-bundler
   capistrano-rails
   capistrano-rvm
   devise

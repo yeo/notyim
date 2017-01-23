@@ -14,9 +14,7 @@
     "browserify-incremental": "^3.1.1",
     "jquery-ujs": "^1.2.2",
     "react": "15.3.0",
-    "react-dom": "15.3.0"
-  },
-  "devDependencies": {
+    "react-dom": "15.3.0",
     "victory": "0.15.0"
   }
 }
