@@ -34,3 +34,5 @@ set :pty, true
 
 # Default value for keep_releases is 5
 set :keep_releases, 3
+
+set :rvm_ruby_version, '2.3.3@trinity'
