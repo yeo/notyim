@@ -6,6 +6,7 @@ class User
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+         #:confirmable
 
   devise :omniauthable, :omniauth_providers => [:github, :twitter]
 
@@ -37,10 +38,10 @@ class User
   validates_presence_of :email
   validates_uniqueness_of :email
   ## Confirmable
-  # field :confirmation_token,   type: String
-  # field :confirmed_at,         type: Time
-  # field :confirmation_sent_at, type: Time
-  # field :unconfirmed_email,    type: String # Only if using reconfirmable
+  #field :confirmation_token,   type: String
+  #field :confirmed_at,         type: Time
+  #field :confirmation_sent_at, type: Time
+  #field :unconfirmed_email,    type: String # Only if using reconfirmable
 
   ## Lockable
   # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
@@ -90,7 +91,7 @@ class User
   # Attempt create first team automatically
   def create_team
     unless self.teams.present?
-      self.teams = Team.create!(name: 'default team')
+      self.teams << Team.create!(name: 'My team', user: self)
     end
   end
 end
