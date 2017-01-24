@@ -28,9 +28,8 @@ Rails.application.routes.draw do
   get '/about', to: 'page#about', as: 'show_about'
   get '/docs', to: 'page#doc', as: 'show_doc'
   get '/dashboard', to: 'checks#index', as: 'user_root'
+
   namespace :users do
     get 'plans', to: 'plans#show', as: 'show_plans'
   end
-
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
