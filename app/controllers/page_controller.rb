@@ -7,4 +7,7 @@ class PageController < ApplicationController
 
   def feedback
   end
+
+  def about
+  end
 end
