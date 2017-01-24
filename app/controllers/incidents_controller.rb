@@ -1,4 +1,4 @@
-class IncidentsController < ApplicationController
+class IncidentsController < DashboardController
   before_action :set_incident, only: [:show, :edit, :update, :destroy]
 
   # GET /incidents
