@@ -18,7 +18,7 @@
         <td><%= assertion.check %></td>
         <td><%= assertion.subject %></td>
         <td><%= assertion.condition %></td>
-        <td><%= link_to 'Show', assertion %></td>
+        <td><%= link_to 'Show', assertion, class: 'button' %></td>
         <td><%= link_to 'Edit', edit_assertion_path(assertion) %></td>
         <td><%= link_to 'Destroy', assertion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
