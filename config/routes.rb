@@ -20,7 +20,9 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
 
   require 'sidekiq/web'
-  mount Sidekiq::Web => '/sidekiq'
+  authenticate :user, -> (u) { u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   root to: 'home#index'
   get '/terms', to: 'page#term', as: 'show_term'
