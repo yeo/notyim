@@ -13,8 +13,8 @@ class CheckToCreateIncidentWorker
 
     # TODO check for down/non 2xx,3xx event if no assertion was created
     check.assertions.each do |assertion|
-      inspector = Inspector.new assertion
-      if inspector.check(check_response)
+      inspector = CheckInspector.new assertion
+      if inspector.match?(check_response)
         IncidentService.create_for_assertion(assertion, check_response)
       end
     end

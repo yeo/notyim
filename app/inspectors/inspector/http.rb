@@ -10,7 +10,7 @@ module Inspector
         ::Inspector::Eval.slow(check_response, 9000)
       when 'eq', 'ne', 'gt', 'lt', 'contain', 'in'
         value_to_check = case check_property
-                         when 'status' then check_response.error
+                         when 'status' then check_response.status
                          when 'body' then check_response.body
                          when 'code' then check_response.code
                          when 'response_time' then check_response.time('response')
