@@ -1,9 +1,8 @@
-# This wraps around assertion
-require 'http_inspector'
+require 'inspector/eval'
+require 'inspector/http'
 
 class CheckInspector
   include Inspector::Http
-  include Inspector::Tcp
 
   attr_reader :assertion, :check_response
 
