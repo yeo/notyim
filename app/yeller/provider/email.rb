@@ -1,5 +1,6 @@
 require_relative 'base'
 require 'securerandom'
+require 'trinity/decorator'
 
 module Yeller
   module Provider
@@ -31,6 +32,17 @@ module Yeller
         raise MissingUserForReceiver unless user
         # TODO: maybe queue this in future
         VerificationMailer.acknowledge(receiver.id.to_s).deliver_now
+      end
+
+      # Send out notification for an incident. This is
+      # a complex logic including
+      #   - generate the message
+      #   - fanout the message to receiver
+      # @param Receiver receiver
+      # @param Incident incident
+      def self.notify_incident(incident, receiver)
+        incident = ::Trinity::Decorator.for(incident)
+        IncidentMailer.notify(receiver, incident).deliver
       end
     end
   end

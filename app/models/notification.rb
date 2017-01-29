@@ -1,6 +1,8 @@
 class Notification
   include Mongoid::Document
+
+  field :subject, type: String
   field :content, type: String
-  embedded_in :assertion
-  embedded_in :check
+
+  belongs_to :assertion
 end

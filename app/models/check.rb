@@ -2,6 +2,7 @@ class Check
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  TYPE_HTTP = 'http'.freeze
   TYPES = %w(http tcp heartbeat).freeze
 
   field :name, type: String
@@ -33,5 +34,14 @@ class Check
     end
 
     receivers.include? r
+  end
+
+  # @return Array<Receiver>
+  def fetch_receivers
+    if receivers.empty?
+      return []
+    end
+
+    receivers.map { |id| Receiver.find(id) }
   end
 end

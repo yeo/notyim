@@ -39,6 +39,9 @@ class Receiver
     if provider_class.require_verify?
       self.require_verify = true
       self.verified = false
+    else
+      self.require_verify = false
+      self.verified = true # since we don't require, let's assume it's true
     end
   end
 

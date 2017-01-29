@@ -79,13 +79,19 @@ class AssertionsController < DashboardController
 
     def set_check
       begin
-        @check = Check.find(params['assertion'][:check_id])
+        if @assertion
+          @check = @assertion.check
+        else
+          if check_id = params['assertion'][:check_id]
+            @check = Check.find(check_id)
+          end
+        end
       rescue
+        head :bad_request
       end
 
       if !@check || !CheckPolicy::can_manage?(@check, current.user)
         head :bad_request
       end
-
     end
 end

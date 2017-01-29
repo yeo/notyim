@@ -46,6 +46,10 @@ gem 'twilio-ruby', '~> 4.11.1'
 gem 'mongoid_paranoia'
 gem 'stripe'
 gem 'kaminari-mongoid'
+gem 'slack-notifier'
+
+# We have to temp disabel newrelic cuz it doesn't support our Rails version yet
+# We are too bleeding edge
 #gem 'newrelic_rpm'
 
 group :development, :test do

@@ -1,0 +1,3 @@
+class AssertionService < SimpleDelegator
+
+end

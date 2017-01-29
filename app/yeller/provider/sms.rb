@@ -29,6 +29,27 @@ module Yeller
         # TODO: maybe queue this in future
         Yeller::Transporter::Sms.send(receiver.handler, "Hi, your phone number is confirm. Alert will be alow to send to this number")
       end
+
+      # Send out notification for an incident. This is
+      # a complex logic including
+      #   - generate the message
+      #   - fanout the message to receiver
+      # @param Receiver receiver
+      # @param Incident incident
+      def self.notify_incident(incident, receiver)
+        #TODO we should make sure phone # is valid to avoid waste money
+        incident = ::Trinity::Decorator.for(incident)
+        content = <<~HEREDOC
+        #{incident.short_summary}
+        Service: #{incident.check.uri}
+        Type: #{incident.assertion.subject}
+        Condition: #{incident.assertion.condition}
+        Match: #{incident.assertion.operand}
+        HEREDOC
+
+        Yeller::Transporter::Sms.send(receiver.handler, content)
+      end
+
     end
   end
 end

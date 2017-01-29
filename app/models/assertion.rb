@@ -7,28 +7,36 @@ class Assertion
   field :operand
 
   SUBJECT_TYPES = %w(
-    status
-    http.response_body
-    http.response_code
-    http.response_time
-    http.response_headers
-    )
-  CONDITION_TYPES = {
-      :status => {
-        :down => 'Down',
-        :up => 'Up',
-        :slow => 'Slow',
-      },
+    tcp.status
+    tcp.body
+    tcp.response_time
 
-      :http => {
-        :eq => 'Equal',
-        :ne => 'Not equal',
-        :gt => 'Greater than',
-        :lt => 'Less than',
-        :contain => 'Contains',
-        :in => 'Includes in'
-      }
+    http.status
+    http.body
+    http.code
+    http.response_time
+  )
+
+  CONDITION_TYPES = {
+    :tcp => {
+      :down => 'Down',
+      :up   => 'Up',
+      :slow => 'Slow',
+    },
+
+    :http => {
+      :down => 'Down',
+      :up   => 'Up',
+      :slow => 'Slow',
+
+      :eq => 'Equal',
+      :ne => 'Not equal',
+      :gt => 'Greater than',
+      :lt => 'Less than',
+      :contain => 'Contains',
+      :in => 'Includes in'
     }
+  }
 
   belongs_to :check
   has_many :incidents # We don't want to destroy incident when removing assertion

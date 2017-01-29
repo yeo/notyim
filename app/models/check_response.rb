@@ -1,27 +1,58 @@
 class CheckResponse
-  attr_reader :raw_result
-  def initialize(result)
-    @raw_result = result
-    @hash = JSON.parse(result)
-  end
+  include Mongoid::Document
+
+  # raw result is a hash include these fields:
+  #   - type: string either http|tcp currently
+  #   - time:
+  #       - action: value in seconds
+  #   - body:
+  #       - body of response
+  #   - error: true/false
+  #   - error_message
+  #   - http:
+  #       - http field
+  #   - tcp:
+  #       - tcp field
+  #   - attbs:
+  #       - name: value
+  field :raw_result, type: Hash
+
+  belongs_to :assertion
 
   def body
-    @hash['body']
+    raw_result['body']
+  end
+
+  def total_response_time
+    time('total')
   end
 
   def time(action)
-    @hash['time'][action]
+    raw_result['time'][action]
   end
 
-  def response_code
-    @hash['response_code']
+  def code
+    raw_result['http']['code']
+  end
+
+  def status
+    if error.nil? || error
+      'up'.freeze
+    else
+      'down'.freeze
+    end
   end
 
   def error
-    Array.new @hash['error'], @hash['error_message']
+    raw_result['error']
+  end
+
+  def errors
+    Array.new raw_result['error'], raw_result['error_message']
   end
 
   def self.create_from_raw_result(result)
-    new result
+    raw_result = JSON.parse(result)
+    new(raw_result: raw_result)
   end
 end
