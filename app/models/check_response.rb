@@ -2,13 +2,14 @@ class CheckResponse
   include Mongoid::Document
 
   # raw result is a hash include these fields:
+  #   - check_id: string reference to the check
   #   - type: string either http|tcp currently
   #   - time:
   #       - action: value in seconds
-  #   - body:
-  #       - body of response
+  #       ...
+  #   - body: string body of response
   #   - error: true/false
-  #   - error_message
+  #   - error_message: string
   #   - http:
   #       - http field
   #   - tcp:
