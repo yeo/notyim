@@ -15,8 +15,10 @@ class Incident
 
   belongs_to :assertion
 
+  scope :open, -> () { where(status: STATUS_OPEN).desc(:id) }
+
   def check
-    assertion.check
+    assertion&.check
   end
 
   def open?

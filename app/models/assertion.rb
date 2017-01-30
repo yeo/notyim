@@ -51,4 +51,8 @@ class Assertion
   def condition_enum
     CONDITION_TYPES
   end
+
+  def ongoing_incident
+    @__ongoing_incident ||= incidents.open.first
+  end
 end

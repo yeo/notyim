@@ -37,7 +37,7 @@ class CheckResponse
   end
 
   def status
-    if error.nil? || error
+    if error.nil? || !error
       'up'.freeze
     else
       'down'.freeze

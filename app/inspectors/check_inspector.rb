@@ -16,6 +16,7 @@ class CheckInspector
     case @assertion.check.type
     when Check::TYPE_HTTP
       check_http(assertion, check_response)
+    else raise "Unsupport check type #{@assertion.check.type}"
     end
   end
 end
