@@ -1,5 +1,4 @@
 RailsAdmin.config do |config|
-
   ### Popular gems integration
 
   # == Devise ==
@@ -39,5 +38,12 @@ RailsAdmin.config do |config|
     # history_show
   end
 
-  config.included_models = %w(User Team Check)
+  config.included_models = %(User
+    Team
+    Check
+    Incident
+    Assertion
+    Notification
+    Receiver
+    Verification)
 end
