@@ -28,6 +28,20 @@ module Yeller
       def self.acknowledge_verification(receiver)
         # No need to to acknowledge since user interactive with the phone
       end
+
+      def self.notify_incident(incident, receiver)
+        #TODO we should make sure phone # is valid to avoid waste money
+        incident = ::Trinity::Decorator.for(incident)
+        content = <<~HEREDOC
+        #{incident.short_summary}
+        Service: #{incident.check.uri}
+          Type: #{incident.assertion.subject}
+          Condition: #{incident.assertion.condition}
+          Match: #{incident.assertion.operand}
+          HEREDOC
+
+        Yeller::Transporter::Sms.send(receiver.handler, content)
+      end
     end
   end
 end

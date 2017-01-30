@@ -1,0 +1,8 @@
+<%= @incident.short_summary %>
+
+Service: <%= @incident.check.name %>
+URL: <%= @incident.check.uri %>
+
+Type: <%= @incident.assertion.subject %>
+Condition: <%= @incident.assertion.condition %>
+Match: <%= @incident.assertion.operand %>
