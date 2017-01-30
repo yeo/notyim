@@ -38,12 +38,14 @@ RailsAdmin.config do |config|
     # history_show
   end
 
-  config.included_models = %(User
+  config.included_models = %w(
+    User
     Team
     Check
     Incident
     Assertion
     Notification
     Receiver
-    Verification)
+    Verification
+  )
 end
