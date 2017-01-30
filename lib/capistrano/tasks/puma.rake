@@ -5,7 +5,7 @@ namespace :puma do
       within current_path do
         with rack_env: fetch(:stage) do
           #execute :sudo, '/bin/systemctl', :restart, 'trinity.service'
-          puts capture("pgrep -f 'puma' | xargs kill -s SIGUSR2")
+          puts capture("ps aux | grep [p]uma |awk '{print $2}' | xargs kill -s SIGUSR2")
         end
       end
     end
