@@ -5,8 +5,8 @@ class User
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
-         #:confirmable
+         :recoverable, :rememberable, :trackable, :validatable,
+         :confirmable
 
   devise :omniauthable, :omniauth_providers => [:github, :twitter]
 
@@ -38,10 +38,12 @@ class User
   validates_presence_of :email
   validates_uniqueness_of :email
   ## Confirmable
-  #field :confirmation_token,   type: String
-  #field :confirmed_at,         type: Time
-  #field :confirmation_sent_at, type: Time
-  #field :unconfirmed_email,    type: String # Only if using reconfirmable
+  field :confirmation_token,   type: String
+  field :confirmed_at,         type: Time
+  field :confirmation_sent_at, type: Time
+  field :unconfirmed_email,    type: String # Only if using reconfirmable
+  index({confirmation_token: 1}, {background: true})
+  validates_uniqueness_of :confirmation_token
 
   ## Lockable
   # field :failed_attempts, type: Integer, default: 0 # Only if lock strategy is :failed_attempts
