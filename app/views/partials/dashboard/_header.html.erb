@@ -5,10 +5,10 @@
     <div class="nav-left">
       <a class="nav-item is-brand" href="/">Noty</a>
       <% if user_signed_in? %>
-        <%= link_to("Checks", checks_path, class: 'nav-item is-tab is-active') %>
-        <%= link_to("Incidents", incidents_path, class: 'nav-item is-tab') %>
-        <%= link_to("Alert Contact", receivers_path, class: 'nav-item is-tab') %>
-        <a class="nav-item is-tab" href="<%= url_for(teams_path) %>">Notification</a>
+        <%= link_to("Checks", checks_path, class: "nav-item is-tab #{cp(checks_path)}") %>
+        <%= link_to("Incidents", incidents_path, class: "nav-item is-tab #{cp(incidents_path)}") %>
+        <%= link_to("Alert Contact", receivers_path, class: "nav-item is-tab #{cp(receivers_path)}") %>
+        <%= link_to("Notification", notifications_path, class: "nav-item is-tab #{cp(notifications_path)}") %>
         <!-- <a class="nav-item is-tab" href="<%= url_for(teams_path) %>">Team</a> -->
       <% end %>
     </div>
