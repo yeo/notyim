@@ -33,7 +33,7 @@ class CheckResponse
   end
 
   def code
-    raw_result['http']['code']
+    raw_result['http']['code'] if raw_result['http']
   end
 
   def status
