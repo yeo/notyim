@@ -12,4 +12,12 @@ namespace :puma do
   end
 end
 
+namespace :pumactl do
+  task :restart do
+    on roles fetch(:app) do |role|
+      execute :pumactl, '-C', 'tcp://127.0.0.1:9293', '-T', fetch(:PUMACTL_TOKEN), :restart
+    end
+  end
+end
+
 after 'deploy:published', 'puma:restart'
