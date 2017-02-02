@@ -1,6 +1,18 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Receivers</h1>
+<div class="tile is-ancestor">
+  <% @receivers.each_slice(3) do |receivers| %>
+    <div class="title is-vertical is-parent alertcontact-item">
+      <% receivers.each do |receiver| %>
+        <div class="tile is-child box">
+          <h2 class="title alertcontact-item__provider"><%= receiver.provider %></h4>
+          <h4 class="subtitle alertcontact-item__handler"><%= receiver.handler %></h4>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
 
 <table>
   <thead>
