@@ -1,48 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<div class="tile is-ancestor">
-  <% @receivers.each_slice(3) do |receivers| %>
-    <div class="title is-vertical is-parent alertcontact-item">
-      <% receivers.each do |receiver| %>
-        <div class="tile is-child box">
-          <h2 class="title alertcontact-item__provider"><%= receiver.provider %></h4>
-          <h4 class="subtitle alertcontact-item__handler"><%= receiver.handler %></h4>
+<div class="section has-text-centered">
+  <%= link_to 'Add new alert receiver', new_receiver_path, class: 'button is-primary is-large' %>
+</div>
+
+<div class="box">
+  <% @receivers.each do |receiver| %>
+    <div class="media">
+      <div class="media-content">
+        <div class="content">
+          <h4 class="title">
+            <%= receiver.provider %>
+          </h4>
+          <h4 class-"subtitle"><%= link_to receiver.handler, edit_receiver_path(receiver) %></h4>
+          <% if receiver.require_verify? && !receiver.verified? %>
+            <%= render 'receivers/verification/challenger', receiver: receiver %>
+          <% end %>
         </div>
-      <% end %>
+      </div>
+      <div class="media-right">
+        <%= link_to receiver, method: :delete, data: { confirm: 'Are you sure?' } do %>
+          <button class="delete is-medium"></button>
+        <% end %>
+      </div>
     </div>
   <% end %>
 </div>
 
-
-<table>
-  <thead>
-    <tr>
-      <th>User</th>
-      <th>Provider</th>
-      <th>Handler</th>
-      <th colspan="4"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @receivers.each do |receiver| %>
-      <tr>
-        <td><%= receiver.user %></td>
-        <td><%= receiver.provider %></td>
-        <td><%= receiver.handler %></td>
-        <td><%= link_to 'Show', receiver %></td>
-        <td><%= link_to 'Edit', edit_receiver_path(receiver) %></td>
-        <td><%= link_to 'Destroy', receiver, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-        <td>
-          <% if receiver.require_verify? && !receiver.verified? %>
-            <%= render 'receivers/verification/challenger', receiver: receiver %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Receiver', new_receiver_path %>
+<div class="section has-text-centered">
+  <%= link_to 'Add new alert receiver', new_receiver_path, class: 'button is-primary is-large' %>
+</div>
