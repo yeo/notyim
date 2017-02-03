@@ -1,6 +1,6 @@
 <%= form_tag(resend_verification_path(receiver.last_verification)) do |f| %>
-  <p>If you didn't get your verification code. You can request it again here</p>
-  <%= submit_tag 'Resend verification code' %>
+  <p class="notification">If you didn't get your verification code or confirmation email. You can request another one.</p>
+  <%= submit_tag 'Resend verification code', class: 'button is-black' %>
 <% end %>
 
 <% if receiver.provider_class.require_input_verification_code? %>
