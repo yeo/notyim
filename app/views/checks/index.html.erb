@@ -6,9 +6,58 @@
 
 <div class="check-list">
   <% @checks.each do |check| %>
+    <div class='columns'>
+      <div class="card is-fullwidth check-item">
+        <div class="column">
+          <nav class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <span class="tag is-primary is-medium">200 OK</span>
+            </div>
+            <div class="level-item">
+              <%= link_to check.uri, check, class: 'subtitle' %>
+            </div>
+          </div>
+
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Uptime</p>
+              <p class="title">100%</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Mean</p>
+              <p class="title">258ms</p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div class="chart tile" style="border-top: 2px solid #00d1b2">
+            <% 24.times.each do |i| %>
+              <div class="tile is-warning" style="width: 1px; margin: 0 1px; height: 100px; background: whitesmoke">
+                <div class="inner message notification is-primary" style="height: <%= rand(100) %>px;"></div>
+              </div>
+            <% end %>
+            </div>
+          </div>
+
+          <div class="level-right">
+            <div class="level-item">
+              <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
+            </div>
+          </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div class="check-list">
+  <% @checks.each do |check| %>
     <div class="card is-fullwidth check-item">
       <header class="card-header">
-        <%= content_tag :p, check.name, class: "card-header-title" %>
+      <%= content_tag :p, check.name, class: "card-header-title" %>
       </header>
 
       <div class="card-content">
@@ -19,9 +68,9 @@
       </div>
 
       <footer class="card-footer">
-        <%= link_to 'Detail', check, class: 'card-footer-item' %>
-        <%= link_to 'Edit', edit_check_path(check), class: 'card-footer-item' %>
-        <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'card-footer-item' %>
+      <%= link_to 'Detail', check, class: 'card-footer-item' %>
+      <%= link_to 'Edit', edit_check_path(check), class: 'card-footer-item' %>
+      <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'card-footer-item' %>
       </footer>
     </div>
   <% end %>
