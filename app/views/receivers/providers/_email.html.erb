@@ -1,4 +1,6 @@
-<div class="field">
-  <%= f.label :handler %>
-  <%= f.text_field :handler %>
-</div>
+<p class="control">
+<%= f.label :handler, class: 'label' %>
+<%= f.text_field :handler, class: 'input' %>
+</p>
+
+<p class="notification is-warning">We will send an email with a confirmation link to this email. You will need to click on that link to verify the email ownership</p>

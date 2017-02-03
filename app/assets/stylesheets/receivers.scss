@@ -1,6 +1,5 @@
-// Place all the styles related to the Receivers controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+$space: 10px;
+
 .alertcontact-item {
   .alertcontact-item__handler {
     max-width: 100px;
@@ -8,3 +7,6 @@
   }
 }
 
+.alertcontact-provider {
+  margin: 0 $space*4 $space*2;
+}

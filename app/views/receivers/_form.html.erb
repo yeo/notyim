@@ -1,31 +1,39 @@
-<% Yeller::Provider.providers.keys.each do |provider| %>
-  <div class='box'>
-  <%= form_for(receiver) do |f| %>
-    <% if receiver.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(receiver.errors.count, "error") %> prohibited this receiver from being saved:</h2>
+<div class="container">
+  <% Yeller::Provider.providers.keys.each_slice(2) do |providers| %>
+    <div class="columns">
+      <% providers.each do |provider| %>
+        <div class="column is-half">
+          <div class='box alertcontact-provider'>
+            <h4 class="subtitle"><%= provider %></h4>
+            <%= form_for(receiver) do |f| %>
+              <%= hidden_field :receiver, :provider, value: provider %>
 
-        <ul>
-        <% receiver.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-        </ul>
-      </div>
-    <% end %>
+              <% if receiver.errors.any? %>
+                <div id="error_explanation">
+                  <h2><%= pluralize(receiver.errors.count, "error") %> prohibited this receiver from being saved:</h2>
 
-    <%= hidden_field :receiver, :provider, value: provider %>
+                  <ul>
+                    <% receiver.errors.full_messages.each do |message| %>
+                      <li><%= message %></li>
+                    <% end %>
+                  </ul>
+                </div>
+              <% end %>
 
-    <h3>Add <%= provider %></h3>
-    <div class="field">
-      <%= f.label :name %>
-      <%= f.text_field :name %>
-    </div>
+              <%= f.label :name, 'Nickname', class: 'label' %>
+              <p class="control">
+                <%= f.text_field :name, class: 'input' %>
+              </p>
 
-    <%= render "receivers/providers/#{provider.downcase}", f: f, receiver: receiver, provider: provider %>
+              <%= render "receivers/providers/#{provider.downcase}", f: f, receiver: receiver, provider: provider %>
 
-    <div class="actions">
-      <%= f.submit %>
+              <p class="control">
+              <%= f.submit "Save", class: 'button is-primary' %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% end %>
-  </div>
-<% end %>
+</div>
