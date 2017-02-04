@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   resources :teams
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   #devise_for :users
-  devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+  devise_for :users, :controllers => { omniauth_callbacks: "users/omniauth_callbacks", registrations: "users/registrations" }
 
   require 'sidekiq/web'
   authenticate :user, -> (u) { u.admin? } do
