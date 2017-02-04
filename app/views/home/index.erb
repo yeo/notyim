@@ -5,7 +5,8 @@
     <h2 class="subtitle is-2">
       Be <strong>the first</strong> to know about <strong>the outage</strong>
     </h2>
-
+  </div>
+  <div class="container">
     <h3 class="subtitle is-3">It's free to try. Signup instantly now with</h3>
     <p class="hero-buttons">
     <%= link_to user_github_omniauth_authorize_path, class: 'button is-primary is-large' do %>
@@ -147,11 +148,11 @@
 <div class='container'>
 
   <section class='hero  has-text-centered'>
-    <div class="hero-head">
-      <h1 id="pricing" class="title is-1">Pricing</h1>
-      <h2 class="subtitle is-4">Your first month will have unlimited features. After first month, we will ask you to select a plan.</h2>
-      <h2 class="subtitle">Sign up now, no creditcard require</h2>
-    </div>
+  <div class="hero-head">
+    <h1 id="pricing" class="title is-1">Pricing</h1>
+    <h2 class="subtitle is-4">Your first month will have unlimited features. After first month, we will ask you to select a plan.</h2>
+    <h2 class="subtitle">Sign up now, no creditcard require</h2>
+  </div>
   </section>
 
   <div class="columns has-text-centered">
@@ -160,15 +161,15 @@
         <h1 class="title is-2">Free</h1>
         <h1 class="subtitle is-3">$0</h1>
         <section class="section">
-          <ul>
-            <li>Uli to 50 checks</li>
-            <li>Single region</li>
-            <li>Unlimited alert</li>
-            <li>No SMS or lihone call</li>
-          </ul>
+        <ul>
+          <li>Uli to 50 checks</li>
+          <li>Single region</li>
+          <li>Unlimited alert</li>
+          <li>No SMS or lihone call</li>
+        </ul>
         </section>
         <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
-        SIGN UP NOW
+          SIGN UP NOW
         </a>
       </div>
     </div>
@@ -178,12 +179,12 @@
         <h1 class="title is-2">Premium</h1>
         <h1 class="subtitle is-3">$10</h1>
         <section class="section">
-          <ul>
+        <ul>
           <li>Uli to 500 checks.</li>
           <li>Multilile regions.</li>
           <li>Unlimited alert</li>
           <li>100 SMS or 100 lihone call.</li>
-          </ul>
+        </ul>
         </section>
         <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
           SIGN UP NOW
@@ -196,12 +197,12 @@
         <h1 class="title is-2">Awesome</h1>
         <h1 class="subtitle is-3">$20</h1>
         <section class="section">
-          <ul>
-            <li>Unlimited checks.</li>
-            <li>Multilile regions.</li>
-            <li>Unlimited alert</li>
-            <li>No <a href="/faq#sms_limit">hard limit</a> on SMS or lihone call.</li>
-          </ul>
+        <ul>
+          <li>Unlimited checks.</li>
+          <li>Multilile regions.</li>
+          <li>Unlimited alert</li>
+          <li>No <a href="/faq#sms_limit">hard limit</a> on SMS or lihone call.</li>
+        </ul>
         </section>
         <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
           SIGN UP NOW
@@ -224,13 +225,9 @@
     <a href="/">noty</a> is an open source software, free and always will be. You can get the source
     and self-hosted it.
     <br>We also give premium support to install, configure and monitor your self-hosted <a href="/">noty</a> inside
-      your infrastructure
+    your infrastructure
     </p>
-    <div class='hero-buttons'>
-      <a href="mailto:vinh@noty.im?subject=NotyIM Installation" class="button is-info is-large">
-        Get in touch for premium support
-      </a>
-    </div>
+    <div class='hero-buttons'><a href="mailto:support@noty.im?subject=NotyIM Installation" class="button is-primaryis-large">Get in touch</a></div>
   </div>
 </div>
 </section>
