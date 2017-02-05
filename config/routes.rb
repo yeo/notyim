@@ -34,5 +34,7 @@ Rails.application.routes.draw do
 
   namespace :users do
     get 'plans', to: 'plans#show', as: 'show_plans'
+    get 'billing', to: 'billing#show', as: 'show_billings'
+    get '/api_tokens', to: 'api#index', as: 'api_tokens'
   end
 end
