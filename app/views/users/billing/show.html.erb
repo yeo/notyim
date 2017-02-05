@@ -1,18 +1,44 @@
-<section class='hero is-bold'>
-<div class="hero-body">
-  <div class="container">
-    <div class="columns">
-      <div class="column">
-        <%= render "users/shareds/tabs" %>
+<div class="container">
+  <div class="columns">
+    <div class="column">
+      <%= render "users/shareds/tabs" %>
+      Current Credit: 100
 
-        <hr>
-        <h2 class="title">Invoices</h2>
-        <div class="box">
 
-        </div>
-
+      <hr>
+      <h2 class="title">Invoices</h2>
+      <div class="box">
       </div>
     </div>
   </div>
 </div>
-</section>
+
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+  var handler = StripeCheckout.configure({
+  key: '<%= stripe_publish_key %>',
+  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+  locale: 'auto',
+  token: function(token) {
+  // You can access the token ID with `token.id`.
+  // Get the token ID to your server-side code for use.
+  }
+  });
+
+  document.getElementById('customButton').addEventListener('click', function(e) {
+  // Open Checkout with further options:
+  handler.open({
+  name: 'Stripe.com',
+  description: '2 widgets',
+  zipCode: true,
+  amount: 2000
+  });
+  e.preventDefault();
+  });
+
+  // Close Checkout on page navigation:
+  window.addEventListener('popstate', function() {
+  handler.close();
+  });
+</script>
