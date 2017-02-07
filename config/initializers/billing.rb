@@ -4,19 +4,19 @@ Cashier.configure do |config|
   config.sms_price  0.07
   config.minute_price 0.3
 
-  config.plan :free, 0, {
+  config.subscription :free, 0, {
     check: 50,
     sms: 0,
     minute: 0,
   }
 
-  config.plan :premium, 10, {
+  config.subscription :premium, 10, {
     check: 100,
     sms: 200,
     minute: 10,
   }
 
-  config.plan :awesome, 20, {
+  config.subscription :awesome, 20, {
     check: 200,
     sms: 500,
     minute: 30,

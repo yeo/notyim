@@ -4,6 +4,75 @@
       <%= render "users/shareds/tabs" %>
       Current Credit: 100
 
+      <h2 class="title">Buy credit or subscribe to a plan</h2>
+      <p>We have two payment type: pre-paid or a subscription plan.
+      With pre-paid, you purchase credit, an credit is used to run a check
+      request. 100 credit can used to send a SMS and 1000 credit<br/>
+      When you run out of credit, we pause your check and also notify
+      you when you are low on credit so you can refill. We can also
+      do auto-refill for you if you allow us to do so.<br/>
+      </p>
+
+      <p>
+      We also have a subscription plan where you pay for a set mou
+      </p>
+
+      <a href="prepaid">Prepaid Credit</a>
+      <table class="table">
+        <thead>
+          <tr>
+            <td>Package</td>
+            <td>Estimate</td>
+            <td>Price</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              129,600 checks<br>
+              10 SMS. 10 mins phone call<br>
+            </td>
+            <td>Check 1 website every 20 seconds in a month</td>
+            <td>
+              <button class="button is-primary checkout" data-package=1>Buy</button>
+
+              <%= form_tag charges_path do %>
+                <script src="https://checkout.stripe.com/checkout.js"
+                  class="stripe-button"
+                  data-key="<%= stripe_publish_key %>"
+                  data-name="noty"
+                  data-description="Purchase 129,600 checks pack"
+                  data-amount="$3"
+                  data-label="Buy $3"
+                  data-panel-label="Pay {{amount}}"
+                  data-email="<%= current_user.email %>"
+                  data-locale="auto"></script>
+              <% end %>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              259200 checks<br>
+              20 SMS. 20 mins phone call<br>
+            </td>
+            <td>Check 2 website every 20 seconds in a month</td>
+            <td>
+              <%= form_tag charges_path do %>
+                <script src="https://checkout.stripe.com/checkout.js"
+                  data-key="<%= stripe_publish_key %>"
+                  class="stripe-button"
+                  data-description="A month's subscription"
+                  data-amount="$5"
+                  data-name="Buy"
+                  data-email="g@g.com"
+                  data-locale="auto"></script>
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+      <a href="prepaid">Or subscribe to a plan</a>
 
       <hr>
       <h2 class="title">Invoices</h2>

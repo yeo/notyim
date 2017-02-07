@@ -1,8 +1,10 @@
-require 'cashier/plan'
+require 'cashier/subscription'
+require 'cashier/package'
 
 module Cashier
   class Configure
-    attr_reader :plans
+    attr_reader :packages
+    attr_reader :subscriptions
     attr_reader :sms_price, :minute_price
 
     def sms_price(p)
@@ -13,9 +15,14 @@ module Cashier
       @minute_price = p
     end
 
-    def plan(name, price, opts = {})
-      @plans ||= {}
-      @plans << Plan.new(name, price, opts)
+    def subscription(name, price, opts = {})
+      @subscriptions ||= Hash.new
+      @subscriptions[name] = Subscription.new(name, price, opts)
+    end
+
+    def package(name, price, opts = {})
+      @packages ||= Hash.new
+      @packages[name] = Package.new(name, price, opts)
     end
   end
 end
