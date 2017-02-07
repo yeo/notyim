@@ -34,19 +34,8 @@
             </td>
             <td>Check 1 website every 20 seconds in a month</td>
             <td>
-              <button class="button is-primary checkout" data-package=1>Buy</button>
-
               <%= form_tag charges_path do %>
-                <script src="https://checkout.stripe.com/checkout.js"
-                  class="stripe-button"
-                  data-key="<%= stripe_publish_key %>"
-                  data-name="noty"
-                  data-description="Purchase 129,600 checks pack"
-                  data-amount="$3"
-                  data-label="Buy $3"
-                  data-panel-label="Pay {{amount}}"
-                  data-email="<%= current_user.email %>"
-                  data-locale="auto"></script>
+                <button class="button is-primary checkout" data-package=1 data-amount=200>Buy</button>
               <% end %>
             </td>
           </tr>
@@ -58,19 +47,13 @@
             <td>Check 2 website every 20 seconds in a month</td>
             <td>
               <%= form_tag charges_path do %>
-                <script src="https://checkout.stripe.com/checkout.js"
-                  data-key="<%= stripe_publish_key %>"
-                  class="stripe-button"
-                  data-description="A month's subscription"
-                  data-amount="$5"
-                  data-name="Buy"
-                  data-email="g@g.com"
-                  data-locale="auto"></script>
+                <button class="button is-primary checkout" data-package=2 data-amount=400>Buy</button>
               <% end %>
             </td>
           </tr>
         </tbody>
       </table>
+
       <hr>
       <a href="prepaid">Or subscribe to a plan</a>
 
@@ -82,32 +65,32 @@
   </div>
 </div>
 
-
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script>
   var handler = StripeCheckout.configure({
-  key: '<%= stripe_publish_key %>',
-  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-  locale: 'auto',
-  token: function(token) {
-  // You can access the token ID with `token.id`.
-  // Get the token ID to your server-side code for use.
-  }
-  });
+    key: '<%= stripe_publish_key %>',
+    email: '<%= current_user.email %>',
+    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+    locale: 'auto',
+    token: function(token) {
+      // You can access the token ID with `token.id`.
+      // Get the token ID to your server-side code for use.
+    }
+  })
 
-  document.getElementById('customButton').addEventListener('click', function(e) {
-  // Open Checkout with further options:
-  handler.open({
-  name: 'Stripe.com',
-  description: '2 widgets',
-  zipCode: true,
-  amount: 2000
-  });
-  e.preventDefault();
-  });
+  $('.checkout').on('click', function(e) {
+    var amount = parseFloat($(this).data('amount'))
 
-  // Close Checkout on page navigation:
+    handler.open({
+      name: 'noty.im',
+      description: 'Package',
+      zipCode: true,
+      amount: amount
+    })
+    e.preventDefault()
+  })
+
   window.addEventListener('popstate', function() {
-  handler.close();
-  });
+    handler.close()
+    })
 </script>
