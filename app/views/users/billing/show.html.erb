@@ -18,41 +18,39 @@
       </p>
 
       <a href="prepaid">Prepaid Credit</a>
-      <table class="table">
-        <thead>
-          <tr>
-            <td>Package</td>
-            <td>Estimate</td>
-            <td>Price</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              129,600 checks<br>
-              10 SMS. 10 mins phone call<br>
-            </td>
-            <td>Check 1 website every 20 seconds in a month</td>
-            <td>
-              <%= form_tag charges_path do %>
+      <%= form_tag charges_path, id: 'prepaid-payment-form' do %>
+        <table class="table">
+          <thead>
+            <tr>
+              <td>Package</td>
+              <td>Estimate</td>
+              <td>Price</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                129,600 checks<br>
+                10 SMS. 10 mins phone call<br>
+              </td>
+              <td>Check 1 website every 20 seconds in a month</td>
+              <td>
                 <button class="button is-primary checkout" data-package=1 data-amount=200>Buy</button>
-              <% end %>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              259200 checks<br>
-              20 SMS. 20 mins phone call<br>
-            </td>
-            <td>Check 2 website every 20 seconds in a month</td>
-            <td>
-              <%= form_tag charges_path do %>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                259200 checks<br>
+                20 SMS. 20 mins phone call<br>
+              </td>
+              <td>Check 2 website every 20 seconds in a month</td>
+              <td>
                 <button class="button is-primary checkout" data-package=2 data-amount=400>Buy</button>
-              <% end %>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
 
       <hr>
       <a href="prepaid">Or subscribe to a plan</a>
@@ -68,17 +66,20 @@
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script>
   var handler = StripeCheckout.configure({
-    key: '<%= stripe_publish_key %>',
-    email: '<%= current_user.email %>',
-    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-    locale: 'auto',
-    token: function(token) {
-      // You can access the token ID with `token.id`.
-      // Get the token ID to your server-side code for use.
+  key: '<%= stripe_publish_key %>',
+  email: '<%= current_user.email %>',
+  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+  locale: 'auto',
+  token: function(token) {
+    console.log(token)
+    var form = $('#prepaid-payment-form')
+    form.append($('<input type="hidden" name="stripeToken" />').val(token.id))
+    form.submit()
     }
   })
 
   $('.checkout').on('click', function(e) {
+    e.preventDefault()
     var amount = parseFloat($(this).data('amount'))
 
     handler.open({
@@ -87,10 +88,9 @@
       zipCode: true,
       amount: amount
     })
-    e.preventDefault()
   })
 
   window.addEventListener('popstate', function() {
     handler.close()
-    })
+  })
 </script>
