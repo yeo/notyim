@@ -55,6 +55,66 @@
       <hr>
       <a href="prepaid">Or subscribe to a plan</a>
 
+      <a href="#plan">Plan</a>
+      <%= form_tag charges_path, id: 'prepaid-payment-form' do %>
+          <%- active_subscriptions.each do |plan| %>
+<nav class="level">
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Plan</p>
+      <p class="title"><%= plan.name %></p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Price</p>
+      <p class="title"><%= plan.price %> USD/m</p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Checks</p>
+      <p class="title"><%= plan.opts[:check] %></p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">SMS</p>
+      <p class="title"><%= plan.opts[:check] %></p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="heading">Minute</p>
+      <p class="title"><%= plan.opts[:check] %></p>
+    </div>
+  </div>
+  <div class="level-item has-text-centered">
+    <div>
+      <p class="title"><button class="button is-primary checkout" data-package= data-amount=200>Select plan</button></p>
+    </div>
+  </div>
+</nav>
+          <% end -%>
+
+
+        <table class="table">
+          <tbody>
+          <%- active_subscriptions.each do |plan| %>
+            <tr>
+              <td>
+                129,600 checks<br>
+                10 SMS. 10 mins phone call<br>
+              </td>
+              <td>Check 1 website every 20 seconds in a month</td>
+              <td>
+                <button class="button is-primary checkout" data-package= data-amount=200>Select plan</button>
+              </td>
+            </tr>
+          <% end -%>
+          </tbody>
+        </table>
+      <% end %>
       <hr>
       <h2 class="title">Invoices</h2>
       <div class="box">
