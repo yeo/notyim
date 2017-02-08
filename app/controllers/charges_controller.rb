@@ -3,11 +3,10 @@ class ChargesController < DashboardController
   end
 
   def create
-    # Amount in cents
-    @amount = (9.99 * 100).to_i
-    ChargeService.create_customer(current.user, params)
+    ChargeService.charge!(current.user, params[:type], params[:item])
+    #ChargeService.create_customer(current.user, params)
   rescue Stripe::CardError => e
     flash[:error] = e.message
-    redirect_to new_charge_path
+    redirect_back fallback_location: user_show_billings_path
   end
 end

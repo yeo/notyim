@@ -1,4 +1,8 @@
 class ChargeService
+  def self.charge(user, tx_type, item)
+
+  end
+
   def self.create_customer(user, params)
     user.stripe_tokens << StripeToken.new(
       :source  => params[:stripeToken],

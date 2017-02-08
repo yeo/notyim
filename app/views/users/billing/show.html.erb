@@ -19,6 +19,7 @@
 
       <a href="prepaid">Prepaid Credit</a>
       <%= form_tag charges_path, id: 'prepaid-payment-form' do %>
+        <%= hidden_field_tag 'tx_type', 'package' %>
         <table class="table">
           <%- active_packages.each do |_name, package| %>
           <tbody>
@@ -29,17 +30,7 @@
               </td>
               <td>Check 1 website every 20 seconds in a month</td>
               <td>
-                <button class="button is-primary checkout" data-package=1 data-amount=200>Buy</button>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                259200 checks<br>
-                20 SMS. 20 mins phone call<br>
-              </td>
-              <td>Check 2 website every 20 seconds in a month</td>
-              <td>
-                <button class="button is-primary checkout" data-package=2 data-amount=400>Buy</button>
+                <button class="button is-primary checkout" data-item=<%= package.name %> data-amount=<%= package.price %>>Buy</button>
               </td>
             </tr>
           </tbody>
@@ -52,6 +43,7 @@
 
       <a href="#plan">Plan</a>
       <%= form_tag charges_path, id: 'prepaid-payment-form' do %>
+        <%= hidden_field_tag 'tx_type', 'plan' %>
         <%- active_subscriptions.each do |_name, plan| %>
           <nav class="level">
             <div class="level-item has-text-centered">
@@ -86,7 +78,7 @@
             </div>
             <div class="level-item has-text-centered">
               <div>
-                <p class="title"><button class="button is-primary checkout" data-subscription=<%= plan.name %> data-amount=<%= plan.price * 100 %>>Select plan</button></p>
+                <p class="title"><button class="button is-primary checkout" data-item=<%= plan.name %> data-amount=<%= plan.price %>>Select plan</button></p>
               </div>
             </div>
           </nav>
@@ -109,6 +101,7 @@
   locale: 'auto',
   token: function(token) {
     var form = $('#prepaid-payment-form')
+    $( 
     form.append($('<input type="hidden" name="stripeToken" />').val(token.id))
     form.submit()
     }
