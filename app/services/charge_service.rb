@@ -18,4 +18,9 @@ class ChargeService
       :currency    => 'usd'
     )
   end
+
+  # Charge user moeny and set expired day
+  def self.charge_user_for_plan(user, plan)
+  
+  end
 end

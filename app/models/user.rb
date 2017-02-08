@@ -50,6 +50,10 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
+  field :credit, type: Float
+  field :plan, type: String
+  field :plan_expire_at, type: Time
+
   has_many :teams,  dependent: :destroy
   has_many :checks,  dependent: :destroy
   has_many :receivers, dependent: :destroy
