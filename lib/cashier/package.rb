@@ -1,5 +1,8 @@
+require 'cashier/item'
 module Cashier
-  # A package is almost identical to a subscription at this moment
-  class Package < Subscription
+  class Package < Item
+    def description
+      "package #{name}"
+    end
   end
 end

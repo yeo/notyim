@@ -1,10 +1,8 @@
+require 'cashier/item'
 module Cashier
-  class Subscription
-    attr_reader :name, :price, :opts
-    def initialize(name, price, opts = {})
-      @name = name
-      @price = price
-      @opts = opts
+  class Subscription < Item
+    def description
+      "subscription plan #{name}"
     end
   end
 end
