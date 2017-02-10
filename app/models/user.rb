@@ -50,7 +50,7 @@ class User
   # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
   # field :locked_at,       type: Time
 
-  field :credit, type: Float, default: 0
+  field :credit, type: Float, default: 0 # user balance in our credit
   field :subscription_expire_at, type: Time
 
   has_many :teams,  dependent: :destroy

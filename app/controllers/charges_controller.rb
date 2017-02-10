@@ -3,7 +3,7 @@ class ChargesController < DashboardController
   end
 
   def create
-    ChargeService.charge!(current.user, params[:stripeToken], OpenStruct(type: params[:type], id: params[:item]))
+    ChargeService.purchase(current.user, OpenStruct.new(type: params[:tx_type], id: params[:item]), params[:stripeToken])
     #ChargeService.create_customer(current.user, params)
   rescue Stripe::CardError => e
     flash[:error] = e.message

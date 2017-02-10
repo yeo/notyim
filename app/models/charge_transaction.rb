@@ -11,6 +11,7 @@ class ChargeTransaction
   field :item, type: String
   field :summary, type: String
   field :source, type: String, default: 'stripe'
+  field :event_source, type: Hash
 
   validates_presence_of :amount
   validates_numericality_of :amount, only_integer: false

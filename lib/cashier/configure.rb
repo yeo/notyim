@@ -22,12 +22,12 @@ module Cashier
 
     def subscription(name, price, opts = {})
       @subscriptions ||= Hash.new
-      @subscriptions[name] = Subscription.new(name, price, opts)
+      @subscriptions[name] = Subscription.new(name, price * 100, opts)
     end
 
     def package(name, price, opts = {})
       @packages ||= Hash.new
-      @packages[name] = Package.new(name, price, opts)
+      @packages[name] = Package.new(name, price * 100, opts)
     end
   end
 end

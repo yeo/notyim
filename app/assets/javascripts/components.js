@@ -4,6 +4,7 @@
 const ReactDOMServer = window.ReactDOMServer = global.ReactDOMServer = require('react-dom/server')
 
 import Check from './components/check.es6.js'
+import Checkout from './components/checkout.es6.js'
 import TeamPicker from './components/shared/_team_picker.es6.js'
 
 // Global namespace, accessiable from anywhere to hold those ReactComponent
@@ -11,3 +12,4 @@ import TeamPicker from './components/shared/_team_picker.es6.js'
 const app = window.app = global.app = {}
 app.Check = Check
 app.TeamPicker = TeamPicker
+app.Checkout = Checkout

@@ -1,36 +1,56 @@
 class ChargeService
-  def self.charge!(user, item, stripe_token=nil)
-    customer = if stripe_token
-                 create_customer(user, stripe_token)
-               else
-                 user.stripe_tokens.latest
-               end
+  def self.purchase(user, item, stripe_token=nil)
+    customer = get_or_create_token(user, stripe_token)
     raise "Missing stripe token" unless customer
 
-    case item
-    when Float
-      charge = Stripe::Charge.create(
-        :customer    => customer.customer,
-        :amount      => item,
-        :description => 'https://noty.im payment',
-        :currency    => 'usd'
-      )
-    else
-      purchase = case item.type
-                 when 'package' then Cashier::Package.find(item.id)
-                 when 'subscription' then Cashier::Subscription.find(item.id)
-                 end
-      raise "Purchase not found" unless purchase
-      charge = Stripe::Charge.create(
-        customer: customer.customer,
-        amount: purchase.price,
-        description: "https://noty.im #{purchase.description}",
-        currency: 'usd'
-      )
+    purchase = case item.type
+               when 'package' then Cashier::Package.find(item.id)
+               when 'subscription' then Cashier::Subscription.find(item.id)
+               end
+    raise "Purchase not found" unless purchase
+
+    charge = charge!(customer, purchase)
+    ChargeTransaction.create(
+      amount: purchase.price,
+      charge_type: item.type,
+      item: item.id,
+      summary: 'System payment',
+      event_source: charge.to_hash,
+      user: user
+    )
+
+    user.credit += purchase.credit
+    user.save!
+    charge
+  end
+
+  # Charge given token
+  # @param User|StripeToken model
+  #         in case of user, we will charge the lastest linked card
+  # @param Object purchase has to include
+  #        - price amount in cent
+  #        - description 
+  def self.charge!(token, purchase)
+    case token
+    when User
+      token = user.stripe_tokens.desc(:id).first
     end
 
-    # TODO: Store into Transaction Log
+    charge = Stripe::Charge.create(
+      customer: token.customer,
+      amount: purchase.price,
+      description: "https://noty.im #{purchase.description}",
+      currency: 'usd'
+    )
     charge
+  end
+
+  def self.get_or_create_token(user, stripe_token)
+    if stripe_token
+      create_customer(user, stripe_token)
+    else
+      user.stripe_tokens.latest
+    end
   end
 
   # @param User user model
@@ -42,10 +62,10 @@ class ChargeService
     )
 
     # The token is single-time used only but we store it for reference/debug purpose
-    user.stripe_tokens << StripeToken.new(
+    (user.stripe_tokens << StripeToken.new(
       :token  => stripe_token,
       :customer => customer.id
-    )
+    )).last
   end
 
   def self.charge_user

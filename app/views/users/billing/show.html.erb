@@ -17,9 +17,13 @@
       We also have a subscription plan where you pay for a set mou
       </p>
 
+      <%= react_component('app.Checkout', {packages: active_packages, subscriptions: active_subscriptions}) %>
+
       <a href="prepaid">Prepaid Credit</a>
-      <%= form_tag charges_path, id: 'prepaid-payment-form' do %>
-        <%= hidden_field_tag 'tx_type', 'package' %>
+      <%= form_tag charges_path, id: 'payment-form' do %>
+        <%= hidden_field_tag 'tx_type', '' %>
+        <%= hidden_field_tag 'item', '', class: 'item-id' %>
+
         <table class="table">
           <%- active_packages.each do |_name, package| %>
           <tbody>
@@ -30,20 +34,17 @@
               </td>
               <td>Check 1 website every 20 seconds in a month</td>
               <td>
-                <button class="button is-primary checkout" data-item=<%= package.name %> data-amount=<%= package.price %>>Buy</button>
+                <button class="button is-primary checkout" data-type=package data-item=<%= package.name %> data-amount=<%= package.price %>>Buy</button>
               </td>
             </tr>
           </tbody>
         <% end -%>
         </table>
-      <% end %>
 
       <hr>
       <a href="prepaid">Or subscribe to a plan</a>
 
       <a href="#plan">Plan</a>
-      <%= form_tag charges_path, id: 'prepaid-payment-form' do %>
-        <%= hidden_field_tag 'tx_type', 'plan' %>
         <%- active_subscriptions.each do |_name, plan| %>
           <nav class="level">
             <div class="level-item has-text-centered">
@@ -78,7 +79,7 @@
             </div>
             <div class="level-item has-text-centered">
               <div>
-                <p class="title"><button class="button is-primary checkout" data-item=<%= plan.name %> data-amount=<%= plan.price %>>Select plan</button></p>
+                <p class="title"><button class="button is-primary checkout" data-type=subscription data-item=<%= plan.name %> data-amount=<%= plan.price %>>Select plan</button></p>
               </div>
             </div>
           </nav>
@@ -95,27 +96,29 @@
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script>
   var handler = StripeCheckout.configure({
-  key: '<%= stripe_publish_key %>',
-  email: '<%= current_user.email %>',
-  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-  locale: 'auto',
-  token: function(token) {
-    var form = $('#prepaid-payment-form')
-    form.append($('<input type="hidden" name="item" />').val(token.id))
-    form.append($('<input type="hidden" name="stripeToken" />').val(token.id))
-    form.submit()
+    key: '<%= stripe_publish_key %>',
+    email: '<%= current_user.email %>',
+    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+    locale: 'auto',
+    token: function(token) {
+      var form = $('#payment-form')
+      $(form).append($('<input type="hidden" name="stripeToken" />').val(token.id))
+      $(form).submit()
     }
   })
 
   $('.checkout').on('click', function(e) {
     e.preventDefault()
     var amount = parseFloat($(this).data('amount'))
+    var form = $('#payment-form')
+    form.find('[name="item"]').val($(this).data('item'))
+    form.find('[name="tx_type"]').val($(this).data('type'))
 
     handler.open({
       name: 'noty.im',
       description: 'Package',
       zipCode: true,
-      amount: amount
+      amount: amount,
     })
   })
 
