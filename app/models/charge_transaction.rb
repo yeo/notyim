@@ -9,7 +9,6 @@ class ChargeTransaction
   field :charge_type, type: String
   # Plan or package
   field :item, type: String
-  field :summary, type: String
   field :source, type: String, default: 'stripe'
   field :event_source, type: Hash
 

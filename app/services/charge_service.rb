@@ -14,12 +14,24 @@ class ChargeService
       amount: purchase.price,
       charge_type: item.type,
       item: item.id,
-      summary: 'System payment',
       event_source: charge.to_hash,
       user: user
     )
 
-    user.credit += purchase.credit
+    case purchase.type.downcase
+    when 'package'
+      user.credit += purchase.credit
+    when 'subscription'
+      user.active_subscription = purchase.name
+      if user.subscription_expire_at < Time.now
+        user.subscription_expire_at = 30.days.from.now
+      else
+        user.subscription_expire_at += 30.days
+      end
+
+      Subscription.create!(start_at: Time.now, expire_at: 30.days.from.now, user: user)
+    end
+
     user.save!
     charge
   end

@@ -1,9 +1,17 @@
 <div class="container">
   <div class="columns">
     <div class="column">
-      <%= render "users/shareds/tabs" %>
-      Current Credit: 100
+      <%= render "users/shareds/tabs", tab: 'billing' %>
+      
+      <%= form_tag charges_path, id: 'payment-form' do %>
+        <%= hidden_field_tag 'tx_type', '' %>
+        <%= hidden_field_tag 'item', '', class: 'item-id' %>
 
+        <h2 class="title">
+          Current Plan: <span class="tag"><%= current_user.active_subscription %></span>
+        </h2>
+
+      <!--
       <h2 class="title">Buy credit or subscribe to a plan</h2>
       <p>We have two payment type: pre-paid or a subscription plan.
       With pre-paid, you purchase credit, an credit is used to run a check
@@ -13,17 +21,9 @@
       do auto-refill for you if you allow us to do so.<br/>
       </p>
 
-      <p>
-      We also have a subscription plan where you pay for a set mou
-      </p>
-
       <%= react_component('app.Checkout', {packages: active_packages, subscriptions: active_subscriptions}) %>
 
       <a href="prepaid">Prepaid Credit</a>
-      <%= form_tag charges_path, id: 'payment-form' do %>
-        <%= hidden_field_tag 'tx_type', '' %>
-        <%= hidden_field_tag 'item', '', class: 'item-id' %>
-
         <table class="table">
           <%- active_packages.each do |_name, package| %>
           <tbody>
@@ -43,8 +43,18 @@
 
       <hr>
       <a href="prepaid">Or subscribe to a plan</a>
+      -->
 
-      <a href="#plan">Plan</a>
+      <h2 class="subtitle">
+      <% if current_user.subscription_expire_at && current_user.subscription_expire_at > Time.now %>
+        Switch to another plan? Easy, you will also get extra month
+      <% else %>
+        Select a plan to start
+      <% end %>
+    </h2>
+    <hr>
+
+
         <%- active_subscriptions.each do |_name, plan| %>
           <nav class="level">
             <div class="level-item has-text-centered">
@@ -86,12 +96,15 @@
         <% end -%>
       <% end %>
       <hr>
-      <h2 class="title">Invoices</h2>
-      <div class="box">
-      </div>
     </div>
   </div>
 </div>
+
+<div class="">
+  <h2 class="title">Invoices</h2>
+  <div class="box">Coming soon...</div>
+</div>
+
 
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script>

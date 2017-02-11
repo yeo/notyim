@@ -12,5 +12,10 @@ module Cashier
       config = ::Cashier.configure
       config.send(self.name.demodulize.pluralize.downcase).fetch(id)
     end
+
+    # Type of item
+    def type
+      self.class.name.demodulize
+    end
   end
 end

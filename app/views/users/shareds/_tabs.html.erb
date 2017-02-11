@@ -1,14 +1,8 @@
 <div class="tabs is-toggle is-fullwidth is-medium">
   <ul>
-    <li class=""><a>Profile</a></li>
-    <li class="">
-      <%= link_to 'Billing', users_show_billings_path  %>
-    </li>
-    <li class="">
-      <%= link_to 'Api Tokens', users_api_tokens_path  %>
-    </li>
-    <li class="is-active">
-      <%= link_to 'Authentication', edit_user_registration_path %>
-    </li>
+    <li class="<%= tab == 'billing' ? 'is-active' : '' %>"><%= link_to 'Billing', users_show_billings_path  %></li>
+    <li class="<%= tab == 'authentication' ? 'is-active' : '' %>"><%= link_to 'Authentication', edit_user_registration_path %></li>
+    <!--<li class=""><a>Profile</a></li>
+    <li class=""><%= link_to 'Api Tokens', users_api_tokens_path  %></li>-->
   </ul>
 </div>
