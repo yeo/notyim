@@ -21,7 +21,6 @@
 
     <div id="nav-menu" class="nav-right nav-menu">
       <% if user_signed_in? %>
-        <span><%= current_user.credit.to_i %></span>
         <a class="nav-item is-primary" href="<%= url_for(edit_user_registration_path) %>">
           <span class="icon"><i class="fa fa-user"></i></span>
           <span>Account</span>

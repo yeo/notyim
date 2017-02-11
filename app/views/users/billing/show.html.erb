@@ -2,96 +2,95 @@
   <div class="columns">
     <div class="column">
       <%= render "users/shareds/tabs", tab: 'billing' %>
-      
+
       <%= form_tag charges_path, id: 'payment-form' do %>
         <%= hidden_field_tag 'tx_type', '' %>
         <%= hidden_field_tag 'item', '', class: 'item-id' %>
 
-        <h2 class="title">
-          Current Plan: <span class="tag"><%= current_user.active_subscription %></span>
-        </h2>
+        <% if current_user.active_subscription %>
+          <h2 class="title">Current Plan: <span class="tag"><%= current_user.active_subscription %></span></h2>
+        <% end %>
 
-      <!--
-      <h2 class="title">Buy credit or subscribe to a plan</h2>
-      <p>We have two payment type: pre-paid or a subscription plan.
-      With pre-paid, you purchase credit, an credit is used to run a check
-      request. 100 credit can used to send a SMS and 1000 credit<br/>
-      When you run out of credit, we pause your check and also notify
-      you when you are low on credit so you can refill. We can also
-      do auto-refill for you if you allow us to do so.<br/>
-      </p>
+        <!--
+        <h2 class="title">Buy credit or subscribe to a plan</h2>
+        <p>We have two payment type: pre-paid or a subscription plan.
+        With pre-paid, you purchase credit, an credit is used to run a check
+        request. 100 credit can used to send a SMS and 1000 credit<br/>
+        When you run out of credit, we pause your check and also notify
+        you when you are low on credit so you can refill. We can also
+        do auto-refill for you if you allow us to do so.<br/>
+        </p>
 
-      <%= react_component('app.Checkout', {packages: active_packages, subscriptions: active_subscriptions}) %>
-
-      <a href="prepaid">Prepaid Credit</a>
+        <a href="prepaid">Prepaid Credit</a>
         <table class="table">
           <%- active_packages.each do |_name, package| %>
-          <tbody>
-            <tr>
-              <td>
-                <%= package.name %><br>
-                10 SMS. 10 mins phone call<br>
-              </td>
-              <td>Check 1 website every 20 seconds in a month</td>
-              <td>
-                <button class="button is-primary checkout" data-type=package data-item=<%= package.name %> data-amount=<%= package.price %>>Buy</button>
-              </td>
-            </tr>
-          </tbody>
-        <% end -%>
+            <tbody>
+              <tr>
+                <td>
+                  <%= package.name %><br>
+                  10 SMS. 10 mins phone call<br>
+                </td>
+                <td>Check 1 website every 20 seconds in a month</td>
+                <td>
+                  <button class="button is-primary checkout" data-type=package data-item=<%= package.name %> data-amount=<%= package.price %>>Buy</button>
+                </td>
+              </tr>
+            </tbody>
+          <% end -%>
         </table>
 
-      <hr>
-      <a href="prepaid">Or subscribe to a plan</a>
-      -->
+        <hr>
+        <a href="prepaid">Or subscribe to a plan</a>
+        -->
 
-      <h2 class="subtitle">
-      <% if current_user.subscription_expire_at && current_user.subscription_expire_at > Time.now %>
-        Switch to another plan? Easy, you will also get extra month
-      <% else %>
-        Select a plan to start
-      <% end %>
-    </h2>
-    <hr>
+        <h2 class="subtitle">
+          <% if current_user.subscription_expire_at && current_user.subscription_expire_at > Time.now %>
+            Switch to another plan? Easy, you will also get extra month
+          <% else %>
+            Select a plan to start
+          <% end %>
+        </h2>
+        <hr>
 
+        <!--<%= react_component('app.Checkout', {packages: active_packages, subscriptions: active_subscriptions}) %> -->
 
         <%- active_subscriptions.each do |_name, plan| %>
           <nav class="level">
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Plan</p>
-                <p class="title"><%= plan.name %></p>
-              </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Plan</p>
+              <p class="title"><%= plan.name %></p>
             </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Price</p>
-                <p class="title"><%= plan.price %> USD/m</p>
-              </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Price</p>
+              <p class="title"><%= plan.price %> USD/m</p>
             </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Checks</p>
-                <p class="title"><%= plan.opts[:check] %></p>
-              </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Checks</p>
+              <p class="title"><%= plan.opts[:check] %></p>
             </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">SMS</p>
-                <p class="title"><%= plan.opts[:sms] %></p>
-              </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">SMS</p>
+              <p class="title"><%= plan.opts[:sms] %></p>
             </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Phone minute alert</p>
-                <p class="title"><%= plan.opts[:minute] %></p>
-              </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Phone minute alert</p>
+              <p class="title"><%= plan.opts[:minute] %></p>
             </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="title"><button class="button is-primary checkout" data-type=subscription data-item=<%= plan.name %> data-amount=<%= plan.price %>>Select plan</button></p>
-              </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="title"><button class="button is-primary checkout" data-type=subscription data-item=<%= plan.name %> data-amount=<%= plan.price %>>Select plan</button></p>
             </div>
+          </div>
           </nav>
         <% end -%>
       <% end %>
@@ -109,33 +108,33 @@
 <script src="https://checkout.stripe.com/checkout.js"></script>
 <script>
   var handler = StripeCheckout.configure({
-    key: '<%= stripe_publish_key %>',
-    email: '<%= current_user.email %>',
-    image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
-    locale: 'auto',
-    token: function(token) {
-      var form = $('#payment-form')
-      $(form).append($('<input type="hidden" name="stripeToken" />').val(token.id))
-      $(form).submit()
-    }
+  key: '<%= stripe_publish_key %>',
+  email: '<%= current_user.email %>',
+  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+  locale: 'auto',
+  token: function(token) {
+  var form = $('#payment-form')
+  $(form).append($('<input type="hidden" name="stripeToken" />').val(token.id))
+  $(form).submit()
+  }
   })
 
   $('.checkout').on('click', function(e) {
-    e.preventDefault()
-    var amount = parseFloat($(this).data('amount'))
-    var form = $('#payment-form')
-    form.find('[name="item"]').val($(this).data('item'))
-    form.find('[name="tx_type"]').val($(this).data('type'))
+  e.preventDefault()
+  var amount = parseFloat($(this).data('amount'))
+  var form = $('#payment-form')
+  form.find('[name="item"]').val($(this).data('item'))
+  form.find('[name="tx_type"]').val($(this).data('type'))
 
-    handler.open({
-      name: 'noty.im',
-      description: 'Package',
-      zipCode: true,
-      amount: amount,
-    })
+  handler.open({
+  name: 'noty.im',
+  description: 'Package',
+  zipCode: true,
+  amount: amount,
+  })
   })
 
   window.addEventListener('popstate', function() {
-    handler.close()
+  handler.close()
   })
 </script>
