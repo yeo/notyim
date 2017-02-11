@@ -48,6 +48,7 @@ gem 'stripe'
 gem 'kaminari-mongoid'
 gem 'slack-notifier'
 gem 'whenever', :require => false
+gem 'redis-rails'
 
 # We have to temp disabel newrelic cuz it doesn't support our Rails version yet
 # We are too bleeding edge
