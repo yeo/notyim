@@ -2,9 +2,82 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 $space: 10px;
+$chart_height: 100px;
 
 .check-list {
 }
 .check-item {
   margin: $space 0 ($space * 2) 0;
+
+  .check-item__title {
+    max-width: 200px;
+    text-overflow: ellipsis;
+  }
+}
+
+.chart{
+  display:table;
+  table-layout: fixed;
+
+  width:300px;
+  max-width:700px;
+  height: $chart_height;
+  margin:0 auto;
+
+  background-image:linear-gradient(bottom, rgba(0, 0, 0, 0.1) 2%, transparent 2%);
+  background-size: 100% 50px;
+  background-position: left top;
+
+
+  //http://www.lolcolors.com/palettes/63/like
+  .is-standard {
+    background: #FF7473;
+  }
+  .is-fast {
+    background: #30A9DE;
+  }
+
+  .is-good {
+    background: #EFDC05;
+  }
+
+  .is-normal {
+    background: #E53A40;
+  }
+
+  .is-slow {
+    background: #090707;
+  }
+
+  li{
+    position:relative;
+    display:table-cell;
+    vertical-align:bottom;
+    height: $chart_height;
+    width: 2px;
+    padding: 0 1px;
+    border-radius: 2px;
+    background: #F7AA97;
+  }
+
+  span{
+    margin:0 1em;
+    display: block;
+    background: rgba(#d1ecfa, .75);
+    animation: draw 1s ease-in-out;
+
+    &:before{
+      position:absolute;
+      left:0;right:0;top:100%;
+      padding:5px 1em 0;
+      display:block;
+      text-align:center;
+      content:attr(title);
+      word-wrap: break-word;
+    }
+  }
+}
+
+@keyframes draw{
+  0%{height:0;}
 }

@@ -12,6 +12,8 @@
 // require_self
 //= require react_ujs
 //= require components
+// NPM Modules
+//= require chart.js/dist/Chart.bundle.min
 // require_tree .
 
 // https://github.com/reactjs/react-rails/issues/413

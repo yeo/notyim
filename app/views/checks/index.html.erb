@@ -5,74 +5,76 @@
 </div>
 
 <div class="check-list">
-  <% @checks.each do |check| %>
-    <div class='columns'>
-      <div class="card is-fullwidth check-item">
-        <div class="column">
-          <nav class="level is-mobile">
-          <div class="level-left">
-            <div class="level-item">
-              <span class="tag is-primary is-medium">200 OK</span>
-            </div>
-            <div class="level-item">
-              <%= link_to check.uri, check, class: 'subtitle' %>
-            </div>
-          </div>
-
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">Uptime</p>
-              <p class="title">100%</p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div>
-              <p class="heading">Mean</p>
-              <p class="title">258ms</p>
-            </div>
-          </div>
-          <div class="level-item has-text-centered">
-            <div class="chart tile" style="border-top: 2px solid #00d1b2">
-            <% 24.times.each do |i| %>
-              <div class="tile is-warning" style="width: 1px; margin: 0 1px; height: 100px; background: whitesmoke">
-                <div class="inner message notification is-primary" style="height: <%= rand(100) %>px;"></div>
+  <% @checks.each do |c| %>
+    <% decorate(c) do |check| %>
+      <div class='columns'>
+        <div class="card is-fullwidth check-item">
+          <div class="column check-item">
+            <nav class="level is-mobile">
+            <div class="level-left check">
+              <div class="level-item">
+                <span class="tag is-primary is-medium"><%= check.current_status %></span>
               </div>
-            <% end %>
+              <div class="level-item check-item__title">
+                <%= link_to check.uri, check, class: 'subtitle' %>
+              </div>
             </div>
-          </div>
 
-          <div class="level-right">
-            <div class="level-item">
-              <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Uptime</p>
+                <p class="title"><%= check.uptime_stat %></p>
+              </div>
             </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Mean</p>
+                <p class="title"><%= check.mean_time %></p>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
+                <p class="heading">Last 24hour(ms)</p>
+                <div style="width: 300px; height: 100px">
+                  <canvas id="chart<%= check.id.to_s %>" width="300px" height="100px"></canvas>
+                </div>
+              </div>
+
+              <script>
+                var ctx = document.getElementById("chart<%= check.id.to_s %>")
+                var myChart = new Chart(ctx, {
+                  type: 'line',
+                  data: <%= check.simple_line_chart_data %>,
+                  options: {
+                    legend: {
+                      labels: {
+                        fontSize: 10,
+                        fontFamily: '"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif'
+                      }
+                    },
+                    scales: {
+                      yAxes: [{
+                        ticks: {
+                          beginAtZero:true
+                        }
+                      }]
+                    }
+                  }
+                });
+              </script>
+            </div>
+
+            <div class="level-right">
+              <div class="level-item">
+                <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
+                <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
+              </div>
+            </div>
+            </nav>
           </div>
-          </nav>
         </div>
       </div>
-    </div>
-  <% end %>
-</div>
-
-<div class="check-list">
-  <% @checks.each do |check| %>
-    <div class="card is-fullwidth check-item">
-      <header class="card-header">
-      <%= content_tag :p, check.name, class: "card-header-title" %>
-      </header>
-
-      <div class="card-content">
-        <%= content_tag :h4, check.uri, class: "subtitle is-6" %>
-        <div class="content">
-          <%= react_component 'app.Check', check: check.to_json %>
-        </div>
-      </div>
-
-      <footer class="card-footer">
-      <%= link_to 'Detail', check, class: 'card-footer-item' %>
-      <%= link_to 'Edit', edit_check_path(check), class: 'card-footer-item' %>
-      <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'card-footer-item' %>
-      </footer>
-    </div>
+    <% end %>
   <% end %>
 </div>
 

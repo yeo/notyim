@@ -1,8 +1,13 @@
 module Trinity
   module Decorator
-    def self.for(model)
-      klass = "#{model.class.to_s}Decorator".constantize
-      klass.new model
+    def decorate(model, klass=nil)
+      klass = klass || "#{model.class}Decorator".constantize
+      decorator = klass.new(model)
+      if block_given?
+        yield(decorator)
+      else
+        decorator
+      end
     end
   end
 end

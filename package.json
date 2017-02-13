@@ -12,9 +12,11 @@
     "babelify": "7.2.0",
     "browserify": "^13.3.0",
     "browserify-incremental": "^3.1.1",
+    "chart.js": "^2.5.0",
     "jquery-ujs": "^1.2.2",
     "react": "15.3.0",
     "react-dom": "15.3.0",
+    "react-elm-components": "^1.0.1",
     "victory": "0.15.0"
   }
 }
