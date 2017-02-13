@@ -35,29 +35,32 @@
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Last 24hour(ms)</p>
-                <div style="width: 300px; height: 100px">
-                  <canvas id="chart<%= check.id.to_s %>" width="300px" height="100px"></canvas>
+                <div id="chart<%= check.id.to_s %>" style="width: 300px; height: 100px">
                 </div>
               </div>
 
               <script>
-                var ctx = document.getElementById("chart<%= check.id.to_s %>")
-                var myChart = new Chart(ctx, {
-                  type: 'line',
-                  data: <%= check.simple_line_chart_data %>,
-                  options: {
-                    legend: {
-                      labels: {
-                        fontSize: 10,
-                        fontFamily: '"Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif'
-                      }
-                    },
-                    scales: {
-                      yAxes: [{
-                        ticks: {
-                          beginAtZero:true
-                        }
-                      }]
+                new Chartist.Line("#chart<%= check.id.to_s %>", <%= check.simple_line_chart_data %>, {
+                  // Don't draw the line chart points
+                  showPoint: false,
+                  // Disable line smoothing
+                  lineSmooth: false,
+                  // X-Axis specific configuration
+                  axisX: {
+                    // We can disable the grid for this axis
+                    showGrid: false,
+                    // and also don't show the label
+                    showLabel: false
+                  },
+                  // Y-Axis specific configuration
+                  axisY: {
+                    // Lets offset the chart a bit from the labels
+                    offset: 60,
+                    // The label interpolation function enables you to modify the values
+                    // used for the labels on each axis. Here we are converting the
+                    // values into million pound.
+                    labelInterpolationFnc: function(value) {
+                      return value + 'ms';
                     }
                   }
                 });

@@ -1,6 +1,9 @@
 // Place all the styles related to the Checks controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+@import "common/_chartist-settings.scss";
+@import "chartist/dist/scss/chartist.scss";
+
 $space: 10px;
 $chart_height: 100px;
 
