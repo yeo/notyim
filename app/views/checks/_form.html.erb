@@ -11,24 +11,26 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
-  </div>
+  <p class="control">
+    <%= f.label :name, class: 'label' %>
+    <%= f.text_field :name, class: 'input' %>
+  </p>
 
-  <div class="field">
-    <%= f.label :uri %>
-    <%= f.text_field :uri %>
-  </div>
+  <p class="control">
+    <%= f.label :uri, class: 'label'%>
+    <%= f.text_field :uri, class: 'input' %>
+  </p>
 
-  <div class="field">
-    <%= f.label :type %>
-    <%= f.select :type, format_type_enum_for_select(check) %>
-  </div>
+  <p class="control">
+    <%= f.label :type, class: 'label' %>
+    <span class='select'>
+      <%= f.select :type, format_type_enum_for_select(check) %>
+    </span>
+  </p>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+  <p class="actions">
+    <%= f.submit 'Save', class: 'button is-primary' %>
+  </p>
 <% end %>
 
 <% if check.persisted? %>
