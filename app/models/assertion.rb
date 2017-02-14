@@ -6,25 +6,29 @@ class Assertion
   field :condition, type: String
   field :operand
 
-  SUBJECT_TYPES = %w(
-    tcp.status
-    tcp.body
-    tcp.response_time
+  # Part before dot has to match
+  # @reference Check::Types
+  SUBJECT_TYPES = %W(
+    #{Check::TYPE_TCP}.status
+    #{Check::TYPE_TCP}.body
+    #{Check::TYPE_TCP}.response_time
 
-    http.status
-    http.body
-    http.code
-    http.response_time
-  )
+    #{Check::TYPE_HTTP}.status
+    #{Check::TYPE_HTTP}.body
+    #{Check::TYPE_HTTP}.code
+    #{Check::TYPE_HTTP}.response_time
+  ).freeze
 
+  # Condition key has to match with check type:
+  # @reference Check::Types
   CONDITION_TYPES = {
-    :tcp => {
+    Check::TYPE_TCP => {
       :down => 'Down',
       :up   => 'Up',
       :slow => 'Slow',
     },
 
-    :http => {
+    Check::TYPE_HTTP => {
       :down => 'Down',
       :up   => 'Up',
       :slow => 'Slow',
@@ -36,7 +40,7 @@ class Assertion
       :contain => 'Contains',
       :in => 'Includes in'
     }
-  }
+  }.freeze
 
   belongs_to :check
   has_many :incidents # We don't want to destroy incident when removing assertion

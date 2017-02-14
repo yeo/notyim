@@ -14,7 +14,12 @@ class IncidentsController < DashboardController
 
   # GET /incidents/new
   def new
-    @incident = Incident.new
+    unless params[:check_id]
+      head 400
+      return
+    end
+
+    @incident = Incident.new(check: Check.find(params[:check_id]))
   end
 
   # GET /incidents/1/edit
@@ -65,6 +70,7 @@ class IncidentsController < DashboardController
     # Use callbacks to share common setup or constraints between actions.
     def set_incident
       @incident = Incident.find(params[:id])
+      abort(400) unless @incident
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

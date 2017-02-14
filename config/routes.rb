@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   resources :checks
   resources :assertions
-  resources :incidents
+  resources :incidents, only: [:index, :show]
   resources :receivers
   post '/incident_receivers/:check_id', to: 'incident_receivers#create', as: :register_incident_receivers
 

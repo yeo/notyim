@@ -1,5 +1,16 @@
 <p id="notice"><%= notice %></p>
 
+<% decorate @incident do |incident| %>
+<ul>
+  <li>
+    <span class="tag <%= incident.short_status == 'open' ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span>
+  </li>
+  <li>
+    <%= incident.check.uri %>
+  </li>
+</ul>
+<% end %>
+
 <p>
   <strong>Check:</strong>
   <%= @incident.check %>
@@ -15,5 +26,4 @@
   <%= @incident.acknowledged_at %>
 </p>
 
-<%= link_to 'Edit', edit_incident_path(@incident) %> |
 <%= link_to 'Back', incidents_path %>

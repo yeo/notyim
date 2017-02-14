@@ -1,9 +1,12 @@
 class Check
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paranoia
 
   TYPE_HTTP = 'http'.freeze
-  TYPES = %w(http tcp heartbeat).freeze
+  TYPE_TCP  = 'tcp'.freeze
+  TYPE_HEARTBEAT = 'hearbeat'.freeze
+  TYPES = [TYPE_HTTP, TYPE_TCP, TYPE_HEARTBEAT].freeze
 
   field :name, type: String
   field :uri, type: String
