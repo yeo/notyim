@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Incident, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe '#send_alert callback' do
+    it 'queue the job when' do
+
+    end
+  end
 end
