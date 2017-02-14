@@ -3,6 +3,7 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 @import "common/_chartist-settings.scss";
 @import "chartist/dist/scss/chartist.scss";
+@import "balloon-css/src/balloon.scss";
 
 $space: 10px;
 $chart_height: 100px;
@@ -17,6 +18,22 @@ $chart_height: 100px;
     text-overflow: ellipsis;
   }
 }
+
+.day-uptime {
+  &.is-up {
+    background: #2ECC41;
+  }
+  &.is-slow {
+    background: #FFC952;
+  }
+  &.is-down {
+    background: #EF5252;
+  }
+  &.is-nodata {
+    background: #ddd;
+  }
+}
+
 
 .chart{
   display:table;

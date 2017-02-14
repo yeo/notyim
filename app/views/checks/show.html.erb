@@ -1,19 +1,120 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @check.name %>
-</p>
+<% decorate(@check) do |check| %>
+  <div class="card is-fullwidth check-item">
+    <div class="column check-item">
+      <nav class="level is-mobile">
+      <div class="level-left check">
+        <div class="level-item">
+          <span class="tag is-primary is-medium"><%= check.current_status %></span>
+        </div>
+        <div class="level-item check-item__title">
+          <%= link_to check.uri, check, class: 'subtitle' %>
+        </div>
+      </div>
 
-<p>
-  <strong>Uri:</strong>
-  <%= @check.uri %>
-</p>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Uptime</p>
+          <p class="title"><%= check.uptime_stat %></p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Mean</p>
+          <p class="title"><%= check.mean_time %></p>
+        </div>
+      </div>
+      <div class="level-item has-text-centered">
+        <div>
+          <p class="heading">Last check</p>
+          <p class="title">30 seconds ago</p>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
+          <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
+        </div>
+      </div>
+      </nav>
+    </div>
+  </div>
 
-<p>
-  <strong>Type:</strong>
-  <%= @check.type %>
-</p>
+  <section class="section">
+  <div class="container">
+    <h1 class="title">Last hour</h1>
+    <div class="container has-text-centered">
+      <h2 class="subtitle">100% Uptime</h2>
+      <progress class="progress is-success is-small" value="99" max="100">99.88% uptime</progress>
+    </div>
+    <hr>
 
-<%= link_to 'Edit', edit_check_path(@check) %> |
-<%= link_to 'Back', checks_path %>
+    <div id="chart<%= check.id.to_s %>"></div>
+    <script>
+      new Chartist.Line("#chart<%= check.id.to_s %>", <%= check.last_hour_chart_data %>, {
+      showPoint: false,
+      lineSmooth: false,
+      axisX: {
+      showGrid: false,
+      showLabel: false
+      },
+      axisY: {
+      offset: 60,
+      labelInterpolationFnc: function(value) {
+      return value + 'ms';
+      }
+      }
+      });
+    </script>
+  </div>
+  </section>
+
+  <section class="section">
+  <div class="container">
+    <h1 class="title">Response time</h1>
+    <div class="container has-text-centered">
+      <h2 class="subtitle">Uptime</h2>
+      <progress class="progress is-success is-small" value="99" max="100">99.88% uptime</progress>
+    </div>
+    <hr>
+    <div id="chart24<%= check.id.to_s %>"></div>
+    <script>
+      new Chartist.Line("#chart24<%= check.id.to_s %>", <%= check.last_hour_chart_data %>, {
+      showPoint: false,
+      lineSmooth: false,
+      axisX: {
+      showGrid: false,
+      showLabel: false
+      },
+      axisY: {
+      offset: 60,
+      labelInterpolationFnc: function(value) {
+      return value + 'ms';
+      }
+      }
+      });
+    </script>
+  </div>
+  </section>
+
+  <section class="section">
+  <div class="container">
+    <h1 class="title">Uptime</h1>
+    <h2 class="subtitle">Statistic per day in last 12 month</h1>
+    <hr>
+
+    <div id="chart24<%= check.id.to_s %>"></div>
+    <div class="columns">
+      <% check.last_year_uptime.each do |month| %>
+        <div class="column">
+          <h1 class="title is-6"><%= month.time.strftime("%Y-%m") %></h1>
+          <% month.days.each do |day| %>
+            <span data-balloon="<%= day.desc %>" data-balloon-pos="up" class="day-uptime is-<%= day.stat %>" style="width: 10px; height: 10px; display: inline-block;"></span>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  </section>
+<% end %>
