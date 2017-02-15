@@ -4,30 +4,8 @@
   <%= render 'receivers/verification/challenger', receiver: @receiver %>
 <% end %>
 
-<p>
-<strong>User:</strong>
-<%= @receiver.user %>
-</p>
-
-<p>
-<strong>Provider:</strong>
-<%= @receiver.provider %>
-</p>
-
-<p>
-<strong>Handler:</strong>
-<%= @receiver.handler %>
-</p>
-
-<p>
-<strong>Require verify:</strong>
-<%= @receiver.require_verify %>
-</p>
-
-<p>
-<strong>Verified:</strong>
-<%= @receiver.verified %>
-</p>
+<h1 class="title"><%= @receiver.provider %></h1>
+<h2 class="subtitle"><%= @receiver.handler %></h2>
 
 <%= link_to 'Edit', edit_receiver_path(@receiver) %> |
 <%= link_to 'Back', receivers_path %>
