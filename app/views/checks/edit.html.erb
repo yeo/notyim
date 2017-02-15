@@ -1,7 +1,8 @@
-<h1 class="title">Editing Check</h1>
-
 <%= render 'form', check: @check %>
-<%= render 'receiver', check: @check %>
+
+<section class="section">
+  <%= render 'receiver', check: @check %>
+</section>
 
 <hr>
 <%= link_to 'View check stat', @check, class: 'button' %>

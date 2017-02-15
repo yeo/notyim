@@ -1,31 +1,21 @@
+<section class="section">
 <p id="notice"><%= notice %></p>
 
-<h1>Assertions</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Check</th>
-      <th>Subject</th>
-      <th>Condition</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% assertions.each do |assertion| %>
-      <tr>
-        <td><%= assertion.check %></td>
-        <td><%= assertion.subject %></td>
-        <td><%= assertion.condition %></td>
-        <td><%= link_to 'Show', assertion, class: 'button' %></td>
-        <td><%= link_to 'Edit', edit_assertion_path(assertion) %></td>
-        <td><%= link_to 'Destroy', assertion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<%= link_to 'New Assertion', new_assertion_path %>
+<div class="container">
+  <h1 class="title">Alert Condition</h1>
+  <hr>
+  <table class="table">
+    <tbody>
+      <% assertions.each do |assertion| %>
+        <tr>
+          <td><%= assertion.subject %></td>
+          <td><%= assertion.condition %></td>
+          <td><%= link_to 'Show', assertion, class: 'button' %></td>
+          <td><%= link_to 'Configure', edit_assertion_path(assertion) %></td>
+          <td><%= link_to 'Remove', assertion, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+</section>

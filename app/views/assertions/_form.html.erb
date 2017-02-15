@@ -1,44 +1,50 @@
+<section class="section">
 <div class="container">
   <div class="columns">
     <div class="column">
-      <%= form_for(assertion) do |f| %>
-        <%= f.hidden_field :check_id  %>
+      <div class="box">
+        <h2 class="subtitle">Create a new alert condition</h2>
+        <hr>
+        <%= form_for(assertion) do |f| %>
+          <%= f.hidden_field :check_id  %>
 
-        <% if assertion.errors.any? %>
-          <div id="error_explanation">
-            <h2><%= pluralize(assertion.errors.count, "error") %> prohibited this assertion from being saved:</h2>
+          <% if assertion.errors.any? %>
+            <div id="error_explanation">
+              <h2><%= pluralize(assertion.errors.count, "error") %> prohibited this assertion from being saved:</h2>
 
-            <ul>
-              <% assertion.errors.full_messages.each do |message| %>
-                <li><%= message %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
+              <ul>
+                <% assertion.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
 
-        <p class="control">
+          <p class="control">
           <%= f.label :subject, class: :label %>
           <span class="select">
             <%= f.select :subject, format_subject_enum_for_select(assertion) %>
           </span>
-        </p>
+          </p>
 
-        <p class="control">
+          <p class="control">
           <%= f.label :condition, class: :label %>
           <span class="select">
             <%= f.select :condition, grouped_options_for_select(format_condition_enum_for_select(assertion)) %>
           </span>
-        </p>
+          </p>
 
-        <p class="control">
+          <p class="control">
           <%= f.label 'Match with', class: :label %>
           <%= f.text_field :operand, class: 'input' %>
-        </p>
+          </p>
 
-        <p class="control">
+          <p class="control">
           <%= f.submit "Save", class: 'button is-primary' %>
-        </p>
-      <% end %>
+          </p>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
+</section>

@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   end
 
   resources :checks
-  resources :assertions
+  resources :assertions, only: [:create, :edit, :destroy]
   resources :incidents, only: [:index, :show]
   resources :receivers
   post '/incident_receivers/:check_id', to: 'incident_receivers#create', as: :register_incident_receivers
