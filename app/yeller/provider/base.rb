@@ -1,6 +1,10 @@
+require 'trinity/decorator'
+
 module Yeller
   module Provider
     class Base
+      extend ::Trinity::Decorator
+
       def self.identity
         name.split('::').last
       end

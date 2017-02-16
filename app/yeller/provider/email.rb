@@ -41,7 +41,7 @@ module Yeller
       # @param Receiver receiver
       # @param Incident incident
       def self.notify_incident(incident, receiver)
-        incident = ::Trinity::Decorator.for(incident)
+        incident = decorate(incident)
         IncidentMailer.notify(receiver, incident).deliver
       end
     end

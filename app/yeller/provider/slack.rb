@@ -12,7 +12,7 @@ module Yeller
       # @param Receiver receiver
       # @param Incident incident
       def self.notify_incident(incident, receiver)
-        incident = ::Trinity::Decorator.for(incident)
+        incident = decorate(incident)
         notifier = ::Slack::Notifier.new receiver.handler
         notifier.ping <<~HEREDOC
         #{incident.short_summary}

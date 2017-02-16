@@ -31,7 +31,7 @@ module Yeller
 
       def self.notify_incident(incident, receiver)
         #TODO we should make sure phone # is valid to avoid waste money
-        incident = ::Trinity::Decorator.for(incident)
+        incident = decorate(incident)
         content = <<~HEREDOC
         #{incident.short_summary}
         Service: #{incident.check.uri}
