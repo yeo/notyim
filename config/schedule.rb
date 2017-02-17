@@ -16,5 +16,8 @@
 # every 4.days do
 #   runner "AnotherModel.prune_old_records"
 # end
-
 # Learn more: http://github.com/javan/whenever
+#
+every 1.hour do
+  runner "UptimeCalculateWorker.new.perform"
+end
