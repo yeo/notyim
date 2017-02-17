@@ -3,7 +3,7 @@
 <table class='table'>
   <tbody>
     <% @incidents.each do |incident| %>
-      <% present(incident) do |incident| %>
+      <% decorate(incident) do |incident| %>
         <tr>
           <td><span class="tag <%= incident.status == Incident::STATUS_OPEN ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span></td>
           <td>
