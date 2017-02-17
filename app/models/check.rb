@@ -12,6 +12,9 @@ class Check
   field :uri, type: String
   field :type, type: String
   field :receivers, type: Array
+  field :uptime_1hour
+  field :uptime_1day
+  field :uptime_1month
 
   belongs_to :user, index: true
   belongs_to :team, index: true

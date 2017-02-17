@@ -16,7 +16,7 @@
       <div class="level-item has-text-centered">
         <div>
           <p class="heading">Uptime</p>
-          <p class="title"><%= check.uptime_stat %></p>
+          <p class="title"><%= check.uptime_1month.round(2) %>%(1m)</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
@@ -47,8 +47,8 @@
   <div class="container">
     <h1 class="title">Last hour</h1>
     <div class="container has-text-centered">
-      <h2 class="subtitle">100% Uptime</h2>
-      <progress class="progress is-success is-small" value="99" max="100">99.88% uptime</progress>
+      <h2 class="subtitle"><%= check.uptime_1hour %>% Uptime</h2>
+      <progress class="progress is-success is-small" value="<%= check.uptime_1hour %>" max="100">99.88% uptime</progress>
     </div>
     <hr>
 
@@ -76,8 +76,8 @@
   <div class="container">
     <h1 class="title">Last 24 hour</h1>
     <div class="container has-text-centered">
-      <h2 class="subtitle">Uptime</h2>
-      <progress class="progress is-success is-small" value="99" max="100">99.88% uptime</progress>
+      <h2 class="subtitle"><%= check.uptime_1day %>% Uptime</h2>
+      <progress class="progress is-success is-small" value="<%= check.uptime_1day %>" max="100">99.88% uptime</progress>
     </div>
     <hr>
     <div id="chart24<%= check.id.to_s %>"></div>

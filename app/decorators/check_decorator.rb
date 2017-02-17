@@ -17,7 +17,7 @@ class CheckDecorator < SimpleDelegator
   end
 
   def uptime_stat
-    "#{rand(100)}%"
+    uptime_1hour
   end
 
   def simple_line_chart_data(duration = 24, group = 5)
