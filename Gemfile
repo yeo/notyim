@@ -24,7 +24,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-gem 'bulma-rails', "~> 0.2.3"
+gem 'bulma-rails'
 gem 'react-rails'
 gem 'browserify-rails'
 
