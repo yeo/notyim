@@ -3,27 +3,31 @@
 <table class='table'>
   <tbody>
     <% @incidents.each do |incident| %>
-      <tr>
-        <td><span class="tag <%= incident.status == Incident::STATUS_OPEN ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span></td>
-        <td>
-          <%= link_to incident do %> <%= incident.check.name %> <% end %>
-        </td>
-        <td>
-          <% present(incident.assertion) do |assertion| %>
-            <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
-          <% end %>
-        </td>
-        <td>
-          <% if incident.acknowledged_by %>
-            <%= incident.acknowledged_by %> acknowledged <%= incident.acknowledged_at %>
-          <% else %>
-            No one acknowledge yet
-          <% end %>
-        </td>
-        <td>
-          <%= link_to 'Detail', incident, class: 'button is-primary' %>
-        </td>
-      </tr>
+      <% present(incident) do |incident| %>
+        <tr>
+          <td><span class="tag <%= incident.status == Incident::STATUS_OPEN ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span></td>
+          <td>
+            <%= link_to incident do %> <%= incident.check.name %> <% end %>
+          </td>
+          <td>
+            <% present(incident.assertion) do |assertion| %>
+              <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
+            <% end %>
+          </td>
+          <td>
+            Occured at: <strong><%= incident.created_at %></strong><br>
+            <% if incident.close? %>
+              in <strong><%= incident.duration %></strong><br>
+            <% end %>
+            <% if incident.acknowledged_by %>
+              <%= incident.acknowledged_by %> acknowledged <%= incident.acknowledged_at %>
+            <% end %>
+          </td>
+          <td>
+            <%= link_to 'Detail', incident, class: 'button is-primary' %>
+          </td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

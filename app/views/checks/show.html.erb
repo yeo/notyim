@@ -1,12 +1,12 @@
 <p id="notice"><%= notice %></p>
 
 <% decorate(@check) do |check| %>
-  <div class="card is-fullwidth check-item">
+  <div class="card is-fullwidth">
     <div class="column check-item">
       <nav class="level is-mobile">
       <div class="level-left check">
         <div class="level-item">
-          <span class="tag is-primary is-medium"><%= check.current_status %></span>
+          <span class="tag is-<%= check.up? ? 'success' : 'danger' %> is-medium"><%= check.current_status %></span>
         </div>
         <div class="level-item check-item__title">
           <%= link_to check.uri, check, class: 'subtitle' %>
@@ -33,8 +33,10 @@
       </div>
       <div class="level-right">
         <div class="level-item">
-          <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
-          <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
+          <div class="block">
+            <%= link_to 'Show', edit_check_path(check), class: 'button is-primary' %>
+            <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
+          </div>
         </div>
       </div>
       </nav>
@@ -54,25 +56,25 @@
     <script>
       new Chartist.Line("#chart<%= check.id.to_s %>", <%= check.last_hour_chart_data %>, {
       showPoint: false,
-      lineSmooth: false,
+      lineSmooth: true,
       axisX: {
-      showGrid: false,
-      showLabel: false
+        showGrid: true,
+        showLabel: false
       },
       axisY: {
-      offset: 60,
-      labelInterpolationFnc: function(value) {
-      return value + 'ms';
+        offset: 60,
+        labelInterpolationFnc: function(value) {
+        return value + 'ms';
+        }
       }
-      }
-      });
+      })
     </script>
   </div>
   </section>
 
   <section class="section">
   <div class="container">
-    <h1 class="title">Response time</h1>
+    <h1 class="title">Last 24 hour</h1>
     <div class="container has-text-centered">
       <h2 class="subtitle">Uptime</h2>
       <progress class="progress is-success is-small" value="99" max="100">99.88% uptime</progress>
@@ -82,9 +84,9 @@
     <script>
       new Chartist.Line("#chart24<%= check.id.to_s %>", <%= check.last_hour_chart_data %>, {
       showPoint: false,
-      lineSmooth: false,
+      lineSmooth: true,
       axisX: {
-      showGrid: false,
+      showGrid: true,
       showLabel: false
       },
       axisY: {

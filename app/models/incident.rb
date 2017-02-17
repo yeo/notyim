@@ -14,12 +14,10 @@ class Incident
   index({created_at: 1}, {background: true})
 
   belongs_to :assertion
+  belongs_to :check
+  belongs_to :user
 
   scope :open, -> () { where(status: STATUS_OPEN).desc(:id) }
-
-  def check
-    assertion&.check
-  end
 
   def open?
     status == STATUS_OPEN

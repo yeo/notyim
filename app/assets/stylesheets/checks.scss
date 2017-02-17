@@ -4,20 +4,34 @@
 @import "common/_chartist-settings.scss";
 @import "chartist/dist/scss/chartist.scss";
 @import "balloon-css/src/balloon.scss";
+@import "sass/utilities/variables.sass";
+@import "common/_var.scss";
 
 $space: 10px;
 $chart_height: 100px;
+.ct-series-a .ct-line {
+  /* Set the colour of this series line */
+  stroke: $color-orange;
+  /* Control the thikness of your lines */
+  stroke-width: 1px;
+}
+
 
 .check-list {
 }
 .check-item {
-  margin: $space 0 ($space * 2) 0;
+  margin: $space $space ($space * 2) $space;
 
   .check-item__title {
     max-width: 200px;
     text-overflow: ellipsis;
   }
+
+  &.is-down {
+    border: 1px solid $red;
+  }
 }
+
 
 .day-uptime {
   &.is-up {

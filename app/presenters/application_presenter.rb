@@ -1,0 +1,2 @@
+class ApplicationPresenter < SimpleDelegator
+end

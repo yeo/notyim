@@ -7,74 +7,74 @@
 <div class="check-list">
   <% @checks.each do |c| %>
     <% decorate(c) do |check| %>
-      <div class='columns'>
-        <div class="card is-fullwidth check-item">
-          <div class="column check-item">
-            <nav class="level is-mobile">
-            <div class="level-left check">
-              <div class="level-item">
-                <span class="tag is-primary is-medium"><%= check.current_status %></span>
-              </div>
-              <div class="level-item check-item__title">
-                <%= link_to check.uri, check, class: 'subtitle' %>
+      <div class="container">
+        <div class="card check">
+          <nav class="level check-item">
+          <div class="level-left">
+            <div class="level-item">
+              <span class="tag is-<%= check.up? ? 'success' : 'danger' %> is-medium"><%= check.current_status %></span>
+            </div>
+            <div class="level-item check-item__title">
+              <%= link_to check.name, check, class: 'subtitle' %>
+            </div>
+          </div>
+
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Uptime</p>
+              <p class="title"><%= check.uptime_stat %></p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Mean</p>
+              <p class="title"><%= check.mean_time %></p>
+            </div>
+          </div>
+          <div class="level-item has-text-centered">
+            <div>
+              <p class="heading">Last 24hour(ms)</p>
+              <div id="chart<%= check.id.to_s %>" style="width: 300px; height: 100px">
               </div>
             </div>
 
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Uptime</p>
-                <p class="title"><%= check.uptime_stat %></p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Mean</p>
-                <p class="title"><%= check.mean_time %></p>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Last 24hour(ms)</p>
-                <div id="chart<%= check.id.to_s %>" style="width: 300px; height: 100px">
-                </div>
-              </div>
-
-              <script>
-                new Chartist.Line("#chart<%= check.id.to_s %>", <%= check.simple_line_chart_data %>, {
-                  // Don't draw the line chart points
-                  showPoint: false,
-                  // Disable line smoothing
-                  lineSmooth: false,
-                  // X-Axis specific configuration
-                  axisX: {
-                    // We can disable the grid for this axis
-                    showGrid: false,
-                    // and also don't show the label
-                    showLabel: false
-                  },
-                  // Y-Axis specific configuration
-                  axisY: {
-                    // Lets offset the chart a bit from the labels
-                    offset: 60,
-                    // The label interpolation function enables you to modify the values
-                    // used for the labels on each axis. Here we are converting the
-                    // values into million pound.
-                    labelInterpolationFnc: function(value) {
-                      return value + 'ms';
-                    }
+            <script>
+              new Chartist.Line("#chart<%= check.id.to_s %>", <%= check.simple_line_chart_data %>, {
+                // Don't draw the line chart points
+                showPoint: false,
+                lineSmooth: true,
+                // X-Axis specific configuration
+                axisX: {
+                  // We can disable the grid for this axis
+                  showGrid: false,
+                  // and also don't show the label
+                  showLabel: false
+                },
+                // Y-Axis specific configuration
+                axisY: {
+                  showGrid: false,
+                  // Lets offset the chart a bit from the labels
+                  offset: 60,
+                  // The label interpolation function enables you to modify the values
+                  // used for the labels on each axis. Here we are converting the
+                  // values into million pound.
+                  labelInterpolationFnc: function(value) {
+                    return value + 'ms';
                   }
-                });
-              </script>
-            </div>
+                }
+              });
+            </script>
+          </div>
 
-            <div class="level-right">
-              <div class="level-item">
+          <div class="level-right">
+            <div class="level-item">
+              <div class="block">
                 <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
                 <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
               </div>
             </div>
-            </nav>
           </div>
+          </nav>
         </div>
       </div>
     <% end %>

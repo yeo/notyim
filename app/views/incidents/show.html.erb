@@ -1,29 +1,20 @@
 <p id="notice"><%= notice %></p>
 
-<% decorate @incident do |incident| %>
-<ul>
-  <li>
-    <span class="tag <%= incident.short_status == 'open' ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span>
-  </li>
-  <li>
-    <%= incident.check.uri %>
-  </li>
-</ul>
-<% end %>
-
-<p>
-  <strong>Check:</strong>
-  <%= @incident.check %>
-</p>
-
-<p>
-  <strong>Status:</strong>
-  <%= @incident.status %>
-</p>
-
-<p>
-  <strong>Acknowledged at:</strong>
-  <%= @incident.acknowledged_at %>
-</p>
+<table class="table">
+  <% decorate @incident do |incident| %>
+    <tr>
+      <td>
+      <td>
+        <span class="tag <%= incident.short_status == 'open' ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span>
+      </td>
+      <td>
+        <%= incident.check.uri %>
+      </td>
+      <% present(incident.assertion) do |assertion| %>
+        <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
+      <% end %>
+    </tr>
+  <% end %>
+</table>
 
 <%= link_to 'Back', incidents_path %>

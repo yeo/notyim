@@ -27,6 +27,10 @@ class Check
     TYPES
   end
 
+  def up?
+    incidents.open.length == 0
+  end
+
   # Check if the receiver was register to receiver notificatio for this check
   # @param Receiver|String
   def register_receiver?(r)
