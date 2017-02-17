@@ -1,5 +1,10 @@
 <p id="notice"><%= notice %></p>
 
+<p class="control has-addons has-addons-centered">
+  <a class="button is-primary" href="?status=open">Open incidents</a>
+  <a class="button " href="?">All incidents</a>
+</p>
+
 <table class='table'>
   <tbody>
     <% @incidents.each do |incident| %>
@@ -7,27 +12,27 @@
         <tr>
           <td><span class="tag <%= incident.status == Incident::STATUS_OPEN ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span></td>
           <td>
-            <%= link_to incident do %> <%= incident.check.name %> <% end %>
-          </td>
-          <td>
-            <% present(incident.assertion) do |assertion| %>
-              <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
-            <% end %>
-          </td>
-          <td>
-            Occured at: <strong><%= incident.created_at %></strong><br>
-            <% if incident.close? %>
-              in <strong><%= incident.duration %></strong><br>
-            <% end %>
-            <% if incident.acknowledged_by %>
-              <%= incident.acknowledged_by %> acknowledged <%= incident.acknowledged_at %>
-            <% end %>
-          </td>
-          <td>
-            <%= link_to 'Detail', incident, class: 'button is-primary' %>
-          </td>
-        </tr>
-      <% end %>
+            Check: <%= link_to incident do %> <%= incident.check.name %> <% end %>
+        </td>
+        <td>
+          <% present(incident.assertion) do |assertion| %>
+            <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
+          <% end %>
+        </td>
+        <td>
+          Occured at <strong><%= incident.created_at.to_formatted_s(:short) %></strong><br>
+          <% if incident.close? %>
+            in <strong><%= incident.duration %></strong><br>
+          <% end %>
+          <% if incident.acknowledged_by %>
+            <%= incident.acknowledged_by %> acknowledged <%= incident.acknowledged_at %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to 'Detail', incident, class: 'button is-primary' %>
+        </td>
+      </tr>
     <% end %>
-  </tbody>
+  <% end %>
+</tbody>
 </table>

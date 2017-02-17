@@ -3,29 +3,31 @@
 <% decorate @incident do |incident| %>
   <div class="section">
   <h1 class="title">Incident #<%= incident.id %></h1>
-  <div class="hero is-primary">
+  <div class="hero is-primary incident-bar">
     <div class="hero-body">
       <div class="container">
         <nav class="columns">
         <div class="column has-text-centered">
           <p class="title is-4"><strong>Status</strong></p>
-          <span class="tag is-large <%= incident.status == Incident::STATUS_OPEN ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span>
+          <span class="tag incident-badge is-large <%= incident.status == Incident::STATUS_OPEN ? 'is-warning' : 'is-success'  %>"><%= incident.status %></span>
           <p class="subtitle">
           <% if incident.close? %>
-            in <strong><%= incident.duration %></strong> since<br>
+            In <strong><%= incident.duration %></strong> since <%= incident.created_at.to_formatted_s(:short) %>
+          <% else %>
+            Since <%= incident.created_at.to_formatted_s(:short) %>
           <% end %>
           </p>
         </div>
 
         <%= link_to incident.check, class: 'column has-text-centered' do %>
           <p class="title is-4"><strong>Check</strong></p>
-          <span class="tag is-large"><%= incident.check.name %></span>
+          <span class="tag incident-badge is-large"><%= incident.check.name %></span>
           <p class="subtitle"><%= incident.check.uri %></p>
         <% end %>
 
         <div class="column has-text-centered">
           <p class="title is-4"><strong>Error</strong></p>
-          <span class="tag is-large is-warning"><%= incident.check.type %></span>
+          <span class="tag incident-badge is-large is-warning"><%= incident.check.type %></span>
           <p class="subtitle">
           <% present(incident.assertion) do |assertion| %>
             <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
@@ -35,7 +37,7 @@
 
         <a class="column has-text-centered" href="https://github.com/jgthms/bulma">
           <p class="title is-4"><strong>Frequency</strong></p>
-          <span class="tag is-large">1</span>
+          <span class="tag incident-badge is-large">1</span>
           <p class="subtitle">How many times this happen</p>
         </a>
         </nav>
