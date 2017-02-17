@@ -59,7 +59,7 @@
       lineSmooth: true,
       axisX: {
         showGrid: true,
-        showLabel: false
+        showLabel: true
       },
       axisY: {
         offset: 60,
@@ -82,12 +82,11 @@
     <hr>
     <div id="chart24<%= check.id.to_s %>"></div>
     <script>
-      new Chartist.Line("#chart24<%= check.id.to_s %>", <%= check.last_hour_chart_data %>, {
+      new Chartist.Line("#chart24<%= check.id.to_s %>", <%= check.last_day_chart_data %>, {
       showPoint: false,
       lineSmooth: true,
       axisX: {
       showGrid: true,
-      showLabel: false
       },
       axisY: {
       offset: 60,

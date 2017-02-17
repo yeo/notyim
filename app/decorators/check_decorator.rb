@@ -1,32 +1,42 @@
 class CheckDecorator < SimpleDelegator
   def current_status
-    '200 OK'
+    status = '200 OK'
+    influxdb.query "select * from http_response where check_id = '#{id.to_s}' order by time desc limit 1" do |name, tags, points|
+    end
+
+    status
   end
 
   def mean_time(unit: :ms)
-    "#{rand(4000)}ms"
+    result = influxdb.query "select mean(time_Total) from http_response where check_id = '#{id.to_s}' AND time > now() - 1h"
+    if result&.first && m = result&.first['values']&.first['mean']
+      "#{m.round(2)}ms"
+    else
+      "0ms"
+    end
   end
 
   def uptime_stat
     "#{rand(100)}%"
   end
 
-  def simple_line_chart_data(duration = 24.hour)
-    {
-      labels: ["", "", "", "", "", ""],
-      series: [
-        Array.new(24) { rand(200.2000) },
-      ]
-    }.to_json.html_safe
+  def simple_line_chart_data(duration = 24, group = 5)
+    if result = influxdb.query("select mean(time_Total) from http_response where check_id = '#{id.to_s}' AND time > now() - #{duration}h GROUP BY time(#{group}m)").try(:first)
+      {
+        labels: result['values'].each_with_index.map { |p, i| Time.parse(p['time']).strftime("%H:%M") if i % (group * 5) == 0},
+        series: [result['values'].map { |p| p['mean']&.round(2) || 0 }],
+      }.to_json.html_safe
+    else
+      { labels: [], series: [] }.to_json.html_safe
+    end
   end
 
   def last_hour_chart_data
-    {
-      labels: Array.new(60) { rand(200.2000) },
-      series: [
-        Array.new(60) { rand(200.2000) },
-      ]
-    }.to_json.html_safe
+    simple_line_chart_data(1, 1)
+  end
+
+  def last_day_chart_data
+    simple_line_chart_data(24, 4)
   end
 
   # Return chart for last year uptime
@@ -46,5 +56,10 @@ class CheckDecorator < SimpleDelegator
         end
       )
     end
+  end
+
+  private
+  def influxdb
+    @__c ||= Trinity::InfluxDB.client
   end
 end
