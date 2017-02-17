@@ -13,6 +13,7 @@
     "balloon-css": "^0.4.0",
     "browserify": "^13.3.0",
     "browserify-incremental": "^3.1.1",
+    "bulma": "^0.3.1",
     "chartist": "^0.10.1",
     "jquery-ujs": "^1.2.2",
     "react": "15.3.0",
