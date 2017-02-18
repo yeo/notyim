@@ -1,6 +1,7 @@
 class Assertion
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Mongoid::Paranoia
 
   field :subject, type: String
   field :condition, type: String
@@ -43,7 +44,7 @@ class Assertion
   }.freeze
 
   belongs_to :check
-  has_many :incidents # We don't want to destroy incident when removing assertion
+  has_many :incidents, dependent: :destroy # We don't want to destroy incident when removing assertion
 
   validates_presence_of :subject, :condition
   validates :subject, :inclusion => { :in => SUBJECT_TYPES }

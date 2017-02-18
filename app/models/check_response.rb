@@ -18,7 +18,10 @@ class CheckResponse
   #       - name: value
   field :raw_result, type: Hash
 
+  # The reason we use two associated here is to improve
+  # how we fetch the incident since we don't have join
   belongs_to :assertion
+  belongs_to :incident
 
   def body
     raw_result['body']
@@ -48,8 +51,8 @@ class CheckResponse
     raw_result['error']
   end
 
-  def errors
-    Array.new raw_result['error'], raw_result['error_message']
+  def error_message
+    raw_result['error_message']
   end
 
   def self.create_from_raw_result(result)
