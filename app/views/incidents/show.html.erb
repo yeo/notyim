@@ -29,7 +29,7 @@
           <p class="title is-4"><strong>Error</strong></p>
           <span class="tag incident-badge is-large is-warning"><%= incident.check.type %></span>
           <p class="subtitle">
-          <% present(incident.assertion) do |assertion| %>
+          <% incident.assertion and present(incident.assertion) do |assertion| %>
             <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
           <% end %>
           </p>
@@ -47,6 +47,11 @@
 </div>
 
   <div class="section">
+    <h1 class="title">Error</h1>
+    <p>
+      <%= incident.error_message %>
+    </p>
+
     <h1 class="title">Timeline</h1>
     <table class="table">
       <thead>

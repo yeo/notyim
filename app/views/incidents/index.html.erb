@@ -15,8 +15,12 @@
             Check: <%= link_to incident do %> <%= incident.check.name %> <% end %>
         </td>
         <td>
-          <% present(incident.assertion) do |assertion| %>
-            <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
+          <% if incident.assertion %>
+            <% present(incident.assertion) do |assertion| %>
+              <%= assertion.subject %> matches <%= assertion.condition %> <%= assertion.operand %><br>
+            <% end %>
+          <% else %>
+            The alert condition for this incident was remove.
           <% end %>
         </td>
         <td>
