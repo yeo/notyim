@@ -1,7 +1,9 @@
+require 'mongoid/archivable'
+
 class Incident
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Paranoia
+  include Mongoid::Archivable
 
   STATUS_OPEN = 'open'.freeze
   STATUS_CLOSE = 'close'.freeze

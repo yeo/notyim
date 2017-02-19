@@ -1,7 +1,9 @@
+require 'mongoid/archivable'
+
 class Team
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Paranoia
+  include Mongoid::Archivable
 
   field :name, type: String
   belongs_to :user

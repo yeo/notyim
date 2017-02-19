@@ -1,7 +1,6 @@
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Paranoia
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -91,6 +90,8 @@ class User
         password: Devise.friendly_token[0,20],
         providers: {payload.provider => payload.uid}
       )
+      # Auto confirm omni auth since it rely on upstream provider
+      user.confirm
     else
       if !user.providers
         user.providers = {payload.provider => payload.uid}

@@ -1,7 +1,9 @@
+require 'mongoid/archivable'
+
 class Assertion
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Paranoia
+  include Mongoid::Archivable
 
   field :subject, type: String
   field :condition, type: String

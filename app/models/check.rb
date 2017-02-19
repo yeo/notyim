@@ -1,7 +1,9 @@
+require 'mongoid/archivable'
+
 class Check
   include Mongoid::Document
   include Mongoid::Timestamps
-  include Mongoid::Paranoia
+  include Mongoid::Archivable
 
   TYPE_HTTP = 'http'.freeze
   TYPE_TCP  = 'tcp'.freeze
