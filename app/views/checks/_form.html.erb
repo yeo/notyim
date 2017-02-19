@@ -4,33 +4,39 @@
       <h2><%= pluralize(check.errors.count, "error") %> prohibited this check from being saved:</h2>
 
       <ul>
-      <% check.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% check.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
-  <p class="control">
-    <%= f.label :name, class: 'label' %>
-    <%= f.text_field :name, class: 'input' %>
-  </p>
+  <div class="card">
+    <div class="card-content">
 
-  <p class="control">
-    <%= f.label :uri, class: 'label'%>
-    <%= f.text_field :uri, class: 'input' %>
-  </p>
+      <div class="control has-addons">
+        <div class='control-label'>
+          <%= f.label :type, class: 'label' %>
+        </div>
+        <span class='select'>
+          <%= f.select :type, format_type_enum_for_select(check) %>
+        </span>
 
-  <p class="control">
-    <%= f.label :type, class: 'label' %>
-    <span class='select'>
-      <%= f.select :type, format_type_enum_for_select(check) %>
-    </span>
-  </p>
+        <div class='control-label'>
+          <%= f.label :name, class: 'label' %>
+        </div>
+        <%= f.text_field :name, class: 'input', placeholder: 'Name' %>
 
-  <p class="actions">
-    <%= f.submit 'Save', class: 'button is-primary' %>
-  </p>
+        <div class='control-label'>
+          <%= f.label :uri, class: 'label' %>
+        </div>
+
+        <%= f.text_field :uri, class: 'input is-expanded', placeholder: 'URL to check' %>
+        <%= f.submit 'Save', class: 'button is-primary' %>
+      </div>
+
+    </div>
+  </div>
 <% end %>
 
 <% if check.persisted? %>

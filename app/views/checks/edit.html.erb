@@ -1,8 +1,8 @@
+<h1 class="title">Configure Check <strong><%= @check.name %></strong><code class="is-small">(#<%= @check.id %>)</code></h1>
+ 
 <%= render 'form', check: @check %>
 
-<section class="section">
-  <%= render 'receiver', check: @check %>
-</section>
+<%= render 'receiver', check: @check %>
 
 <hr>
 <%= link_to 'View check stat', @check, class: 'button' %>

@@ -15,8 +15,8 @@
 
       <div class="level-item has-text-centered">
         <div>
-          <p class="heading">Uptime</p>
-          <p class="title"><%= check.uptime_1month.round(2) %>%(1m)</p>
+          <p class="heading">30 days Uptime</p>
+          <p class="title"><%= check.uptime_1month.round(2) %>%</p>
         </div>
       </div>
       <div class="level-item has-text-centered">
@@ -34,7 +34,7 @@
       <div class="level-right">
         <div class="level-item">
           <div class="block">
-            <%= link_to 'Show', edit_check_path(check), class: 'button is-primary' %>
+            <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
             <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
           </div>
         </div>
@@ -95,6 +95,19 @@
       }
       }
       });
+    </script>
+  </div>
+
+  <div class="container">
+    <div class="container has-text-centered">
+      <h2 class="subtitle">Distributed Latency</h2>
+    </div>
+    <hr>
+    <div id="chart-distributed<%= check.id.to_s %>"></div>
+    <script>
+      new Chartist.Bar("#chart-distributed<%= check.id.to_s %>", <%= check.last_day_distributed_chart_data %>, {
+        distributeSeries: true
+      })
     </script>
   </div>
   </section>

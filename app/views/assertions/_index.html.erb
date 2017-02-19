@@ -2,7 +2,10 @@
 <p id="notice"><%= notice %></p>
 
 <div class="container">
-  <h1 class="title">Alert Condition</h1>
+  <h1 class="title">Alert Conditions</h1>
+  <p>
+  An incident will be created, whever these conditions are meet
+  </p>
   <hr>
   <table class="table">
     <tbody>
@@ -10,9 +13,12 @@
         <tr>
           <td><%= assertion.subject %></td>
           <td><%= assertion.condition %></td>
-          <td><%= link_to 'Show', assertion, class: 'button' %></td>
-          <td><%= link_to 'Configure', edit_assertion_path(assertion) %></td>
-          <td><%= link_to 'Remove', assertion, method: :delete, data: { confirm: 'Are you sure?' }, class: 'delete' %></td>
+          <td>
+            <div class='block'>
+              <%= link_to 'Configure', edit_assertion_path(assertion), class: 'button is-primary' %>
+              <%= link_to 'Remove', assertion, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button is-danger' %>
+            </div>
+          </td>
         </tr>
       <% end %>
     </tbody>
