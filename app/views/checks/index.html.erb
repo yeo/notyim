@@ -39,7 +39,7 @@
             </div>
 
             <script>
-              new Chartist.Line("#chart<%= check.id.to_s %>", <%= check.simple_line_chart_data %>, {
+              new Chartist.Line("#chart<%= check.id.to_s %>", <%= check.last_day_chart_data %>, {
                 // Don't draw the line chart points
                 showPoint: false,
                 lineSmooth: true,

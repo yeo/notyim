@@ -20,23 +20,44 @@ class CheckDecorator < SimpleDelegator
     uptime_1hour
   end
 
-  def simple_line_chart_data(duration = 24, group = 5)
+  def simple_line_chart_data(duration = 24, group = 5, label_step = 5)
     if result = influxdb.query("select mean(time_Total) from http_response where check_id = '#{id.to_s}' AND time > now() - #{duration}h GROUP BY time(#{group}m)").try(:first)
       {
-        labels: result['values'].each_with_index.map { |p, i| Time.parse(p['time']).strftime("%H:%M") if i % (group * 5) == 0},
+        labels: result['values'].each_with_index.map { |p, i| i % label_step == 0 ? Time.parse(p['time']).strftime("%H:%M") : ''},
         series: [result['values'].map { |p| p['mean']&.round(2) || 0 }],
-      }.to_json.html_safe
+      }
     else
-      { labels: [], series: [] }.to_json.html_safe
+      { labels: [], series: [] }
     end
   end
 
   def last_hour_chart_data
-    simple_line_chart_data(1, 1)
+    simple_line_chart_data(1, 1).to_json.html_safe
   end
 
   def last_day_chart_data
-    simple_line_chart_data(24, 4)
+    simple_line_chart_data(24, 20, 5).to_json.html_safe
+  end
+
+  # Build histogram with 50ms step
+  def last_day_distributed_chart_data(duration = 24)
+    histogram = nil
+    influxdb.query("select mean(time_Total) from http_response where check_id = '#{id.to_s}' AND time > now() - #{duration}h group by time(5m)") do |name, tag, points|
+      histogram = Hash[*points.select { |p| p['mean'].present? }.
+        map { |p| ((p['mean'] || 0).to_i / 50 ) * 50 }.
+        group_by { |v| v }.
+        flat_map { |k, v| [k, v.length] }].
+        sort_by { |k| k }.flatten
+    end
+
+    if histogram
+      {
+        labels: histogram.each_with_index.select { |v, k| k % 2 == 0}.map { |e| "#{e.first}ms" },
+        series: histogram.each_with_index.select { |v, k| k % 2 == 1}.map(&:first),
+      }.to_json.html_safe
+    else
+      "{}"
+    end
   end
 
   # Return chart for last year uptime
