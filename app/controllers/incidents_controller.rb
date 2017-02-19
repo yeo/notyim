@@ -4,7 +4,14 @@ class IncidentsController < DashboardController
   # GET /incidents
   # GET /incidents.json
   def index
-    @incidents = Incident.all
+    case params[:status]
+    when 'close'.freeze
+      @incidents = current.user.incidents.close.desc(:id).page(params[:page])
+    when 'all'.freeze
+      @incidents = current.user.incidents.desc(:id).page(params[:page])
+    else
+      @incidents = current.user.incidents.open.desc(:id).page(params[:page])
+    end
   end
 
   # GET /incidents/1
@@ -67,14 +74,14 @@ class IncidentsController < DashboardController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_incident
-      @incident = Incident.find(params[:id])
-      abort(400) unless @incident
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_incident
+    @incident = Incident.find(params[:id])
+    abort(400) unless @incident
+  end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def incident_params
-      params.require(:incident).permit(:check_id, :status, :acknowledged_at)
-    end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def incident_params
+    params.require(:incident).permit(:check_id, :status, :acknowledged_at)
+  end
 end
