@@ -36,7 +36,7 @@ class IncidentService
   # @CheckResponse check response
   # @return Incident created incident
   def self.open_incident(assertion, check_result)
-    incident = Incident.new(status: Incident::STATUS_OPEN, check: assertion.check, user: assertion.check.user)
+    incident = Incident.new(status: Incident::STATUS_OPEN, check: assertion.check, user: assertion.check.user, error_message: check_result.error_message)
     incident.assertion = assertion
     incident.save!
 
