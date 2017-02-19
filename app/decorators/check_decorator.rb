@@ -1,4 +1,6 @@
 class CheckDecorator < SimpleDelegator
+  include CheckHelper
+
   def current_status
     status = '200 OK'
     influxdb.query "select * from http_response where check_id = '#{id.to_s}' order by time desc limit 1" do |name, tags, points|
@@ -60,22 +62,24 @@ class CheckDecorator < SimpleDelegator
     end
   end
 
-  # Return chart for last year uptime
+  # Return chart data for last year uptime
+  # The structure is organize into a 2 dimmension array
+  # first index is the week. second index is day of week
   def last_year_uptime
-    now = Time.current
-    Array.new(12) do |m|
-      shift = now - m.month
-      OpenStruct.new(
-        time: shift,
-        days: Array.new(Time.days_in_month(shift.month, shift.year)) do |d|
-          OpenStruct.new(
-            up: '90%',
-            summary: 'up',
-            desc: "#{shift.year}/#{shift.month}/#{d}: No down time",
-            stat: ['up', 'down', 'slow'].sample
-          )
-        end
-      )
+    return @__last_year_uptime if @__last_year_uptime
+
+    first_sunday = first_dow_one_year_ago
+    @__last_year_uptime ||= Array.new(52) do |week|
+      Array.new(7) do |day_of_week|
+        shift = first_sunday + week.week + day_of_week.day
+        OpenStruct.new(
+          time: shift,
+          up: '90%',
+          summary: 'up',
+          desc: "#{shift.year}/#{shift.month}/#{shift.day}: No down time",
+          stat: ['up', 'down', 'slow'].sample
+        )
+      end
     end
   end
 

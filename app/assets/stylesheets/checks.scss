@@ -31,19 +31,29 @@ $chart_height: 100px;
   }
 }
 
-
 .day-uptime {
-  &.is-up {
-    background: #2ECC41;
+  font-size: 0.8em;
+
+  .is-calendar {
+    border: 1px solid white;
   }
-  &.is-slow {
-    background: #FFC952;
-  }
-  &.is-down {
-    background: #EF5252;
-  }
-  &.is-nodata {
-    background: #ddd;
+
+  &-item {
+    border: 1px solid whitesmoke;
+    height: 16px;
+    
+    &.is-up {
+      background: #2ECC41;
+    }
+    &.is-slow {
+      background: #FFC952;
+    }
+    &.is-down {
+      background: #EF5252;
+    }
+    &.is-nodata {
+      background: #ddd;
+    }
   }
 }
 

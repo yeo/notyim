@@ -5,6 +5,10 @@
 </div>
 
 <div class="check-list">
+  <% if @checks.empty? %>
+    <h1 class="title has-text-centered">Let's get start by adding your first check</h1>
+  <% end %>
+
   <% @checks.each do |c| %>
     <% decorate(c) do |check| %>
       <div class="container">
@@ -81,6 +85,8 @@
   <% end %>
 </div>
 
-<div class="section has-text-centered">
-  <%= link_to 'Create New Check', new_check_path, class: 'button is-primary is-large' %>
-</div>
+<% if @checks.present? %>
+  <div class="section has-text-centered">
+    <%= link_to 'Create New Check', new_check_path, class: 'button is-primary is-large' %>
+  </div>
+<% end %>

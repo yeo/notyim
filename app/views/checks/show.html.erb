@@ -118,17 +118,53 @@
     <h2 class="subtitle">Statistic per day in last 12 month</h1>
     <hr>
 
-    <div id="chart24<%= check.id.to_s %>"></div>
-    <div class="columns">
-      <% check.last_year_uptime.each do |month| %>
-        <div class="column">
-          <h1 class="title is-6"><%= month.time.strftime("%Y-%m") %></h1>
-          <% month.days.each do |day| %>
-            <span data-balloon="<%= day.desc %>" data-balloon-pos="up" class="day-uptime is-<%= day.stat %>" style="width: 10px; height: 10px; display: inline-block;"></span>
+    <div class="container day-uptime">
+      <div class="columns is-gapless is-marginless is-paddingless">
+        <div class="column is-1">
+        </div>
+        <div class="column is-11">
+          <div class="columns is-gapless is-marginless is-paddingless">
+            <div class="column">Jan</div>
+            <div class="column">Feb</div>
+            <div class="column">Mar</div>
+            <div class="column">Apr</div>
+            <div class="column">May</div>
+            <div class="column">Jun</div>
+            <div class="column">Jul</div>
+            <div class="column">Aug</div>
+            <div class="column">Sep</div>
+            <div class="column">Oct</div>
+            <div class="column">Nov</div>
+            <div class="column">Dec</div>
+          </div>
+        </div>
+      </div>
+      <div class="columns is-gapless is-marginless is-paddingless">
+        <div class="column is-1">
+          <div class="tile is-vertical">
+            <div class="has-text-right tile is-calendar">&nbsp;</div>
+            <div class="has-text-right tile is-calendar">Mon </div>
+            <div class="has-text-right tile is-calendar"> &nbsp;</div>
+            <div class="has-text-right tile is-calendar">Web </div>
+            <div class="has-text-right tile is-calendar"> &nbsp;</div>
+            <div class="has-text-right tile is-calendar">Fri </div>
+            <div class="has-text-right tile is-calendar"> &nbsp;</div>
+          </div>
+        </div>
+        <div class="column is-11">
+          <% 7.times do |day| %>
+            <div class="tile is-gapless is-marginless is-paddingless">
+              <div class="tile">
+                <% 52.times do |week| %>
+                  <span data-balloon="<%= check.last_year_uptime[week][day].desc %>" data-balloon-pos="up" class="tile day-uptime-item is-<%= check.last_year_uptime[week][day].stat %> %>">&nbsp;</span>
+                <% end %>
+              </div>
+            </div>
           <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
+
   </div>
   </section>
 <% end %>
