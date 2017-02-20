@@ -2,11 +2,15 @@ class CheckDecorator < SimpleDelegator
   include CheckHelper
 
   def current_status
-    status = '200 OK'
-    influxdb.query "select * from http_response where check_id = '#{id.to_s}' order by time desc limit 1" do |name, tags, points|
-    end
+    @__current_status ||= if record = current_metric
+      return record['status_code'] if record['status_code'].present? && record['status_code'] != 0
 
-    status
+      if record['status'] == "0" || record['error'] == true
+        "Down"
+      end
+    else
+      "Unknow"
+    end
   end
 
   def mean_time(unit: :ms)
@@ -86,5 +90,15 @@ class CheckDecorator < SimpleDelegator
   private
   def influxdb
     @__c ||= Trinity::InfluxDB.client
+  end
+
+  def current_metric
+    return @__current_metric if @__current_metric
+
+    influxdb.query "select * from http_response where check_id = '#{id.to_s}' order by time desc limit 1" do |name, tags, points|
+      @__current_metric = points.first
+    end
+
+    return @__current_metric
   end
 end

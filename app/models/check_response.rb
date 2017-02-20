@@ -23,10 +23,12 @@ class CheckResponse
   belongs_to :assertion
   belongs_to :incident
 
+  # Response body
   def body
     raw_result['body']
   end
 
+  # Timing
   def total_response_time
     time('total')
   end
@@ -37,6 +39,10 @@ class CheckResponse
 
   def code
     raw_result['http']['code'] if raw_result['http']
+  end
+
+  def status_code
+    raw_result['status_code']
   end
 
   def status
