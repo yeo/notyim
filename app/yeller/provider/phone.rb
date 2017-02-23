@@ -22,7 +22,7 @@ module Yeller
         verification = receiver.last_verification
         raise MissingUserForReceiver unless user
         url = Trinity::Utils::Url.to(:interactive_voice_verification, verification)
-        Yeller::Transporter::Phone.call(receiver.handler, url)
+        ::Yeller::Transporter::Phone.call(receiver.handler, url)
       end
 
       def self.acknowledge_verification(receiver)
@@ -40,7 +40,7 @@ module Yeller
           Match: #{incident.assertion.operand}
           HEREDOC
 
-        Yeller::Transporter::Sms.send(receiver.handler, content)
+        ::Yeller::Transporter::Sms.send(receiver.handler, content)
       end
     end
   end
