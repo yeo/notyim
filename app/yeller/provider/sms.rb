@@ -20,14 +20,14 @@ module Yeller
         user = receiver.user
         raise MissingUserForReceiver unless user
         # TODO: maybe queue this in future
-        Yeller::Transporter::Sms.send(receiver.handler, "Hi, enter this code to cofirm your account: #{receiver.last_verification.code}.\n")
+        ::Yeller::Transporter::Sms.send(receiver.handler, "Hi, enter this code to cofirm your account: #{receiver.last_verification.code}.\n")
       end
 
       def self.acknowledge_verification(receiver)
         user = receiver.user
         raise MissingUserForReceiver unless user
         # TODO: maybe queue this in future
-        Yeller::Transporter::Sms.send(receiver.handler, "Hi, your phone number is confirm. Alert will be alow to send to this number")
+        ::Yeller::Transporter::Sms.send(receiver.handler, "Hi, your phone number is confirm. Alert will be alow to send to this number")
       end
 
       # Send out notification for an incident. This is
@@ -47,7 +47,7 @@ module Yeller
         Match: #{incident.assertion.operand}
         HEREDOC
 
-        Yeller::Transporter::Sms.send(receiver.handler, content)
+        ::Yeller::Transporter::Sms.send(receiver.handler, content)
       end
 
     end
