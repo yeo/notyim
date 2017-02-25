@@ -1,3 +1,5 @@
+require 'trinity'
+
 class IncidentService
 
   attr_reader :incident
@@ -19,9 +21,11 @@ class IncidentService
       return false
     end
 
-    incident = open_incident(assertion, check_response)
-    notify incident, Incident::STATUS_OPEN
-    incident
+    Trinity::Semaphore.run_once [assertion.check.id.to_s, assertion.id.to_s] do
+      incident = open_incident(assertion, check_response)
+      notify incident, Incident::STATUS_OPEN
+      incident
+    end
   end
 
   # Close an incident and trigger its flow
