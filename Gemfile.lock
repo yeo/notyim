@@ -377,6 +377,7 @@ DEPENDENCIES
   capistrano-bundler
   capistrano-rails
   capistrano-rvm
+  connection_pool
   database_cleaner
   devise
   dotenv-rails
@@ -395,6 +396,7 @@ DEPENDENCIES
   rails (~> 5.0.1)
   rails_admin!
   react-rails
+  redis (~> 3.2)
   redis-rails
   rspec-rails
   rubocop

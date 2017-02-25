@@ -48,8 +48,10 @@ gem 'slack-notifier'
 gem 'kaminari', '~> 1.0'
 gem 'kaminari-mongoid'
 gem 'whenever', :require => false
-gem 'redis-rails'
 gem 'influxdb'
+gem 'redis-rails'
+gem 'redis', '~>3.2'
+gem 'connection_pool'
 
 # We have to temp disabel newrelic cuz it doesn't support our Rails version yet
 # We are too bleeding edge
