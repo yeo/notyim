@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/NotyIm/trinity.png?label=ready&title=Ready)](https://waffle.io/NotyIm/trinity)
 # Trinity Project
 
 With all love, for a better life, to my daughter and my wife.
