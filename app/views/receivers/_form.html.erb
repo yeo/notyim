@@ -3,6 +3,7 @@
     <div class="columns">
       <% providers.each do |provider| %>
         <% next if receiver.persisted? && receiver.provider != provider %>
+
         <div class="column is-half">
           <div class='box alertcontact-provider'>
             <h4 class="subtitle"><%= provider %></h4>
