@@ -1,6 +1,12 @@
 @import "_var.scss";
 @import "bulma";
 
+.logo, .nav-item.logo {
+  font-size: 2em;
+  color: $color-orange;
+  //background: image-url("noty.png") no-repeat;
+}
+
 .hero .nav {
   padding: 20px 0;
 }

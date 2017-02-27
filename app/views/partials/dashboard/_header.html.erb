@@ -3,7 +3,7 @@
   <div class="container">
     <nav class="nav">
     <div class="nav-left">
-      <a class="nav-item is-brand" href="/">Noty</a>
+      <a class="nav-item is-brand logo" href="/">Noty</a>
       <% if user_signed_in? %>
         <%= link_to("Checks", checks_path, class: "nav-item is-tab #{cp(checks_path)}") %>
         <%= link_to incidents_path, class: "nav-item is-tab #{cp(incidents_path)}" do %>
@@ -39,7 +39,7 @@
             <% end %>
           <% end %>
         </span>
-        <!--<%= render 'partials/menu/team_picker' %>-->
+        <%# render 'partials/menu/team_picker' %>
       <% end %>
     </div>
     </nav>
