@@ -11,7 +11,7 @@ end
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.1'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -56,6 +56,7 @@ gem 'connection_pool'
 # We have to temp disabel newrelic cuz it doesn't support our Rails version yet
 # We are too bleeding edge
 #gem 'newrelic_rpm'
+gem 'newrelic_rpm', :git => 'git@github.com:NotyIm/rpm.git'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
