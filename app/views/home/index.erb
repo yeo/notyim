@@ -10,13 +10,13 @@
     <h3 class="subtitle is-3">It's free to try. Signup instantly now with</h3>
     <p class="hero-buttons">
     <%= link_to user_github_omniauth_authorize_path, class: 'button is-primary is-large' do %>
-      <span class="icon"><i class="fa fa-github"></i></span><span>Github</span>
+      <span>Github</span>
     <% end %>
     <a class="button is-primary is-large" href="<%= url_for(new_user_session_path) %>">
-      <span class="icon"><i class="fa fa-envelope"></i></span><span>Email</span>
+      <span>Email</span>
     </a>
     <%= link_to user_twitter_omniauth_authorize_path, class: 'button is-primary is-large' do %>
-      <span class="icon"><i class="fa fa-twitter"></i></span><span>Twitter</span>
+      <span>Twitter</span>
     <% end %>
     </p>
   </div>

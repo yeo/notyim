@@ -21,11 +21,9 @@
       <% if !user_signed_in? %>
         <span class="nav-item">
           <a class="button" href="<%= url_for(new_user_registration_path) %>">
-            <span class="icon"><i class="fa fa-user"></i></span>
             <span>Register</span>
           </a>
           <a class="button is-primary" href="<%= url_for(new_user_session_path) %>">
-            <span class="icon"><i class="fa fa-sign-in"></i></span>
             <span>Login</span>
           </a>
         </span>

@@ -1,0 +1,17 @@
+<p class="control">
+  <%= f.label :handler, 'Webhook url', class: 'label' %>
+  <%= f.text_field :handler, class: 'input'  %>
+</p>
+
+<p class="notification is-warning">We will sen a post request with below payload to this webhook url</p>
+<figure class="highlight">
+  <pre>
+    <code class="language-html" data-lang="html">
+      {
+        id: check id,
+        uri: check uri,
+        message: message explain the incident
+      }
+    </code>
+  </pre>
+</figure>

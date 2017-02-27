@@ -10,14 +10,12 @@
 <div id="nav-menu" class="nav-right nav-menu">
   <% if user_signed_in? %>
     <a class="nav-item is-primary" href="<%= url_for(edit_user_registration_path) %>">
-      <span class="icon"><i class="fa fa-user"></i></span>
       <span>Account</span>
     </a>
 
     <span class="nav-item">
       <%= form_tag(destroy_user_session_path, :method => :delete) do |f| %>
         <%= button_tag(class: 'button ') do %>
-          <span class="icon"><i class="fa fa-sign-out"></i></span>
           <span>Log out</span>
         <% end %>
       <% end %>
