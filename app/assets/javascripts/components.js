@@ -6,6 +6,7 @@ const ReactDOMServer = window.ReactDOMServer = global.ReactDOMServer = require('
 import Check from './components/check.es6.js'
 import Checkout from './components/checkout.es6.js'
 import TeamPicker from './components/shared/_team_picker.es6.js'
+import {AssertEditor} from './components/AssertEditor.js'
 
 // Global namespace, accessiable from anywhere to hold those ReactComponent
 // because we expose those via Sprocket
@@ -13,3 +14,4 @@ const app = window.app = global.app = {}
 app.Check = Check
 app.TeamPicker = TeamPicker
 app.Checkout = Checkout
+app.AssertEditor = AssertEditor
