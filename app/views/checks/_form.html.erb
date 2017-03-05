@@ -41,5 +41,17 @@
 
 <% if check.persisted? %>
   <%= render 'assertions/index', assertions: check.assertions %>
-  <%= render 'assertions/form', assertion: Assertion.new(check: check) %>
+
+  <section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column">
+        <div class="box">
+          <%= render 'assertions/form', assertion: Assertion.new(check: check) %>
+        </div>
+      </div>
+    </div>
+  </div>
+  </section>
+
 <% end %>

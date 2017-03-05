@@ -1,10 +1,7 @@
-<section class="section">
-<div class="container">
-  <div class="columns">
-    <div class="column">
-      <div class="box">
-        <h2 class="subtitle">Create a new alert condition</h2>
-        <hr>
+
+        <% if !assertion.persisted? %>
+        <h2 class="subtitle">Add a new alert condition</h2>
+        <% end %>
         <%= form_for(assertion) do |f| %>
           <%= f.hidden_field :check_id  %>
 
@@ -22,17 +19,18 @@
 
           <%= elm_component('AssertEditor',
                 flags: {
-                  assert: {subject: "foo", condition: "bar", operand: "1"},
-                  subjects: format_subject_enum_for_select(assertion),
-                  conditions: format_condition_enum_for_select_elm(assertion),
-                })%>
+                  assert: {subject: assertion.subject || "http.status", condition: assertion.condition || "", operand: assertion.operand || ""},
+                  subjects: elm_format_subject_enum_for_select(assertion),
+                  conditions: elm_format_condition_enum_for_select(assertion),
+          }) %>
+          <!--
           <div class="control is-horizontal">
             <p class="control-label">
               <%= f.label :subject, 'When', class: :label %>
             </p>
             <p class="control">
               <span class="select">
-                <%= f.select :subject, format_subject_enum_for_select(assertion) %>
+                <%# f.select :subject, format_subject_enum_for_select(assertion) %>
               </span>
             </p>
 
@@ -52,9 +50,6 @@
               <%= f.submit "Save", class: 'button is-primary' %>
             </p>
           </div>
+          -->
         <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
+

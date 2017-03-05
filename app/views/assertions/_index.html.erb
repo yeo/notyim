@@ -11,14 +11,13 @@
     <tbody>
       <% assertions.each do |assertion| %>
         <tr>
-          <td><%= assertion.subject %></td>
-          <td><%= assertion.condition %></td>
-          <td>
+          <td><%= render 'assertions/form', assertion: assertion %></td>
+          <td><%= link_to 'Remove', assertion, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button is-danger' %></td>
+          <!--
             <div class='block'>
               <%= link_to 'Configure', edit_assertion_path(assertion), class: 'button is-primary' %>
-              <%= link_to 'Remove', assertion, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button is-danger' %>
             </div>
-          </td>
+          -->
         </tr>
       <% end %>
     </tbody>
