@@ -2,22 +2,6 @@ class AssertionsController < DashboardController
   before_action :set_assertion, only: [:show, :edit, :update, :destroy]
   before_action :set_check
 
-  # GET /assertions
-  # GET /assertions.json
-  def index
-    @assertions = current.user.assertions
-  end
-
-  # GET /assertions/1
-  # GET /assertions/1.json
-  def show
-  end
-
-  # GET /assertions/new
-  def new
-    @assertion = Assertion.new
-  end
-
   # GET /assertions/1/edit
   def edit
   end
