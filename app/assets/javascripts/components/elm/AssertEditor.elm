@@ -1,7 +1,7 @@
 port module AssertEditor exposing (..)
 
 import Html exposing (Html, beginnerProgram, programWithFlags, div, button, text, h2, p, label, select, option, span, input)
-import Html.Attributes exposing (class, placeholder, type_, size, value, selected, name)
+import Html.Attributes exposing (class, placeholder, type_, size, value, selected, name, disabled)
 import Html.Events exposing (onClick, onInput)
 import String
 import Debug
@@ -64,18 +64,17 @@ view model =
               option [ value subject, selected (subject == model.assert.subject) ] [ text label ]) model.subjects)
           ]
         ]
-    , p [class "control-label" ] [ label [ class "label" ] [ text "is" ] ]
+    , p [class "control-label" ] [ label [ class "label" ] [ text "Is" ] ]
     , p [class "control"]
         [span [ class "select" ]
           [ select [name "assertion[condition]", onInput SelectCondition ]
             (List.map (viewCondition model) (model.conditions |> List.filter (findCondition model)))
           ]
         ]
-    , p [class "control-label" ] [ label [ class "label" ] [ text "threshold" ] ]
+    , p [class "control-label" ] [ label [ class "label" ] [ text "Value" ] ]
     , p [class "control"]
-        [ viewOperand model ]
-    , p [ class "control is-expanded" ]
-         [ input [ type_ "submit", value "Save", class "button is-primary" ] []]
+        [ input [ name "assertion[operand]", type_ "text", placeholder "threshold", class "input is-expanded", size 20, onInput Operand, value model.assert.operand, disabled (disabledOperand model) ] []
+        , input [ type_ "submit", value "Save", class "button is-primary" ] []]
     ]
 
 findCondition : Model -> ConditionItem -> Bool
@@ -95,9 +94,11 @@ viewCondition : Model -> ConditionItem -> Html Msg
 viewCondition model condition =
   option [ selected (condition.op == model.assert.condition) ] [ text condition.text ]
 
-viewOperand : Model -> Html Msg
-viewOperand model =
-  input [ name "assertion[operand]", type_ "text", placeholder "threshold", class "input", size 20, onInput Operand, value model.assert.operand ] []
+disabledOperand : Model -> Bool
+disabledOperand model =
+  case model.assert.subject of
+    "http.status" -> True
+    _ -> False
 
 -- Update
 type Msg

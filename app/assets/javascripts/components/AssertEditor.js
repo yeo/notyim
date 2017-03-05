@@ -8313,6 +8313,14 @@ var _user$project$AssertEditor$update = F2(
 				};
 		}
 	});
+var _user$project$AssertEditor$disabledOperand = function (model) {
+	var _p2 = model.assert.subject;
+	if (_p2 === 'http.status') {
+		return true;
+	} else {
+		return false;
+	}
+};
 var _user$project$AssertEditor$viewCondition = F2(
 	function (model, condition) {
 		return A2(
@@ -8331,11 +8339,11 @@ var _user$project$AssertEditor$viewCondition = F2(
 	});
 var _user$project$AssertEditor$findCondition = F2(
 	function (model, conditionItem) {
-		var _p2 = A2(_elm_lang$core$String$split, '.', model.assert.subject);
-		_v1_4:
+		var _p3 = A2(_elm_lang$core$String$split, '.', model.assert.subject);
+		_v2_4:
 		do {
-			if (((_p2.ctor === '::') && (_p2._1.ctor === '::')) && (_p2._1._1.ctor === '[]')) {
-				switch (_p2._1._0) {
+			if (((_p3.ctor === '::') && (_p3._1.ctor === '::')) && (_p3._1._1.ctor === '[]')) {
+				switch (_p3._1._0) {
 					case 'status':
 						return A2(
 							_elm_lang$core$List$member,
@@ -8397,10 +8405,10 @@ var _user$project$AssertEditor$findCondition = F2(
 								}
 							});
 					default:
-						break _v1_4;
+						break _v2_4;
 				}
 			} else {
-				break _v1_4;
+				break _v2_4;
 			}
 		} while(false);
 		return false;
@@ -8430,40 +8438,6 @@ var _user$project$AssertEditor$Assert = F3(
 	});
 var _user$project$AssertEditor$Operand = function (a) {
 	return {ctor: 'Operand', _0: a};
-};
-var _user$project$AssertEditor$viewOperand = function (model) {
-	return A2(
-		_elm_lang$html$Html$input,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$name('assertion[operand]'),
-			_1: {
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$type_('text'),
-				_1: {
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$placeholder('threshold'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('input'),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$size(20),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Events$onInput(_user$project$AssertEditor$Operand),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$value(model.assert.operand),
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}
-				}
-			}
-		},
-		{ctor: '[]'});
 };
 var _user$project$AssertEditor$SelectCondition = function (a) {
 	return {ctor: 'SelectCondition', _0: a};
@@ -8537,24 +8511,24 @@ var _user$project$AssertEditor$view = function (model) {
 									},
 									A2(
 										_elm_lang$core$List$map,
-										function (_p3) {
-											var _p4 = _p3;
-											var _p5 = _p4._0;
+										function (_p4) {
+											var _p5 = _p4;
+											var _p6 = _p5._0;
 											return A2(
 												_elm_lang$html$Html$option,
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$value(_p5),
+													_0: _elm_lang$html$Html_Attributes$value(_p6),
 													_1: {
 														ctor: '::',
 														_0: _elm_lang$html$Html_Attributes$selected(
-															_elm_lang$core$Native_Utils.eq(_p5, model.assert.subject)),
+															_elm_lang$core$Native_Utils.eq(_p6, model.assert.subject)),
 														_1: {ctor: '[]'}
 													}
 												},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html$text(_p4._1),
+													_0: _elm_lang$html$Html$text(_p5._1),
 													_1: {ctor: '[]'}
 												});
 										},
@@ -8583,7 +8557,7 @@ var _user$project$AssertEditor$view = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('is'),
+									_0: _elm_lang$html$Html$text('Is'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
@@ -8650,7 +8624,7 @@ var _user$project$AssertEditor$view = function (model) {
 										},
 										{
 											ctor: '::',
-											_0: _elm_lang$html$Html$text('threshold'),
+											_0: _elm_lang$html$Html$text('Value'),
 											_1: {ctor: '[]'}
 										}),
 									_1: {ctor: '[]'}
@@ -8666,19 +8640,44 @@ var _user$project$AssertEditor$view = function (model) {
 									},
 									{
 										ctor: '::',
-										_0: _user$project$AssertEditor$viewOperand(model),
-										_1: {ctor: '[]'}
-									}),
-								_1: {
-									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$p,
-										{
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$class('control is-expanded'),
-											_1: {ctor: '[]'}
-										},
-										{
+										_0: A2(
+											_elm_lang$html$Html$input,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$name('assertion[operand]'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$type_('text'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$placeholder('threshold'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('input is-expanded'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$size(20),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Events$onInput(_user$project$AssertEditor$Operand),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$value(model.assert.operand),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$disabled(
+																				_user$project$AssertEditor$disabledOperand(model)),
+																			_1: {ctor: '[]'}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											},
+											{ctor: '[]'}),
+										_1: {
 											ctor: '::',
 											_0: A2(
 												_elm_lang$html$Html$input,
@@ -8697,9 +8696,9 @@ var _user$project$AssertEditor$view = function (model) {
 												},
 												{ctor: '[]'}),
 											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
-								}
+										}
+									}),
+								_1: {ctor: '[]'}
 							}
 						}
 					}
@@ -8711,7 +8710,7 @@ var _user$project$AssertEditor$main = _elm_lang$html$Html$programWithFlags(
 	{
 		init: _user$project$AssertEditor$init,
 		update: _user$project$AssertEditor$update,
-		subscriptions: function (_p6) {
+		subscriptions: function (_p7) {
 			return _elm_lang$core$Platform_Sub$none;
 		},
 		view: _user$project$AssertEditor$view
