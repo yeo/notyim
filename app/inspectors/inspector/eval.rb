@@ -37,6 +37,23 @@ module Inspector
       def in(a, b)
         contain(b, a)
       end
+
+      def beat_started
+        raise "not impl"
+      end
+
+      def not_beat_started
+        raise "not impl"
+      end
+
+      def beat_completed
+        raise "not impl"
+      end
+
+      def not_beat_completed
+        raise "not impl"
+      end
+
     end
   end
 end
