@@ -13,10 +13,15 @@ main =
     , view = view
     }
 
+type alias Subject =
+  List (String, String)
+type alias Condition =
+  List (String, String)
+
 type alias Flags =
   { assert : Assert
-  , subjects : List String
-  , conditions: List String
+  , subjects : Subject
+  , conditions: Condition
   }
 
 init: Flags -> (Model, Cmd Msg)
@@ -26,19 +31,15 @@ init flags =
 -- Model
 type alias Model =
   { assert : Assert
-  , subjects: List String
-  , conditions: List String
+  , subjects: Subject
+  , conditions: Condition
   }
+
 type alias Assert =
   { subject : String
   , condition: String
   , operand: String
   }
-
--- model: Model
--- model =
---  Model "TCP" "slow" "300"
-
 
 -- View
 view : Model -> Html Msg
@@ -48,14 +49,14 @@ view model =
     , p [class "control"]
         [span [ class "select" ]
           [ select []
-            (List.map (\(item) -> option [] [ text item ]) model.subjects)
+            (List.map (\(value, label) -> option [] [ text label ]) model.subjects)
           ]
         ]
     , p [class "control-label" ] [ label [ class "label" ] [ text "is" ] ]
     , p [class "control"]
         [span [ class "select" ]
           [ select []
-            (List.map (\(item) -> option [] [ text item ]) model.conditions)
+            (List.map (\(label, item) -> option [] [ text item ]) model.conditions)
           ]
         ]
     , p [class "control-label" ] [ label [ class "label" ] [ text "threshold" ] ]
