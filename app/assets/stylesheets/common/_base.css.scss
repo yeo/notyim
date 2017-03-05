@@ -1,9 +1,20 @@
 @import "_var.scss";
 @import "bulma";
 
+@font-face {
+  font-family: 'Aller';
+  src: font-url('Aller_Lt.ttf');
+  src: font-url('Aller_Lt.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .logo, .nav-item.logo {
   font-size: 2em;
+  font-weight: light;
   color: $color-orange;
+  font-family: Aller, Helvetica;
+  text-transform: lowercase;
   //background: image-url("noty.png") no-repeat;
 }
 
