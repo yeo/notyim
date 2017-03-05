@@ -60,44 +60,56 @@ view model =
     , p [class "control"]
         [span [ class "select" ]
           [ select [name "assertion[subject]", onInput SelectSubject ]
-            (List.map (\(subject, label) ->
-              option [ value subject, selected (subject == model.assert.subject) ] [ text label ]) model.subjects)
+            ([option [ ] [ text "Select" ]] ++
+              (List.map (\(subject, label) -> option [ value subject, selected (subject == model.assert.subject) ] [ text label ]) model.subjects))
           ]
         ]
-    , p [class "control-label" ] [ label [ class "label" ] [ text "Is" ] ]
+    , p [class "control-label" ] [ label [ class "label" ] [ text "Occur" ] ]
     , p [class "control"]
         [span [ class "select" ]
           [ select [name "assertion[condition]", onInput SelectCondition ]
-            (List.map (viewCondition model) (model.conditions |> List.filter (findCondition model)))
+                (List.map (viewCondition model) (model.conditions |> List.filter (findCondition model)))
           ]
         ]
     , p [class "control-label" ] [ label [ class "label" ] [ text "Value" ] ]
     , p [class "control"]
-        [ input [ name "assertion[operand]", type_ "text", placeholder "threshold", class "input is-expanded", size 20, onInput Operand, value model.assert.operand, disabled (disabledOperand model) ] []
+        [ input [ name "assertion[operand]", type_ "text", placeholder "value", class "input is-expanded", size 20, onInput Operand, value model.assert.operand, disabled (disabledOperand model) ] []
         , input [ type_ "submit", value "Save", class "button is-primary" ] []]
     ]
 
 findCondition : Model -> ConditionItem -> Bool
 findCondition model conditionItem =
-  case String.split "." model.assert.subject of
-    [_, "status"] ->
-      List.member conditionItem.op ["up", "down"]
-    [_, "body"] ->
-      List.member conditionItem.op ["contain"]
-    [_, "code"] ->
-      List.member conditionItem.op ["eq", "ne", "gt", "lt", "in"]
-    [_, "response_time"] ->
-      List.member conditionItem.op ["gt", "lt"]
+  case model.assert.subject of
+    "http.status" -> List.member conditionItem.op ["up", "down"]
+    "http.body" -> List.member conditionItem.op ["contain"]
+    "http.code" -> List.member conditionItem.op ["eq", "ne", "gt", "lt", "in"]
+    "http.response_time" -> List.member conditionItem.op ["gt", "lt"]
+
+    "tcp.status" -> List.member conditionItem.op ["up", "down"]
+    "tcp.body" -> List.member conditionItem.op ["contain"]
+    "tcp.response_time" -> List.member conditionItem.op ["gt", "lt"]
+
+    "heartbeat.run_duration" -> List.member conditionItem.op ["gt", "lt"]
+    "heartbeat.beat" -> List.member conditionItem.op ["beat_started", "beat_completed", "not_beat_started", "not_beat_completed"]
     _ -> False
 
 viewCondition : Model -> ConditionItem -> Html Msg
 viewCondition model condition =
-  option [ selected (condition.op == model.assert.condition) ] [ text condition.text ]
+  option [ value condition.op, selected (condition.op == model.assert.condition) ] [ text condition.text ]
+
+disabledCondition : Model -> Bool
+disabledCondition model =
+  case model.assert.subject of
+    "heartbeat.beat_start" -> True
+    "tcp.status" -> True
+    _ -> False
 
 disabledOperand : Model -> Bool
 disabledOperand model =
   case model.assert.subject of
     "http.status" -> True
+    "tcp.status" -> True
+    "heartbeat.beat" -> List.member model.assert.condition ["beat_started", "beat_completed"]
     _ -> False
 
 -- Update

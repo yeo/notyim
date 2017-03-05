@@ -11,16 +11,16 @@ class Assertion
 
   # Part before dot has to match
   # @reference Check::Types
-  SUBJECT_TYPES = %W(
-    #{Check::TYPE_TCP}.status
-    #{Check::TYPE_TCP}.body
-    #{Check::TYPE_TCP}.response_time
+  SUBJECT_TYPES = {
+    "#{Check::TYPE_TCP}.status" => 'status',
+    "#{Check::TYPE_TCP}.body" =>  'response body',
+    "#{Check::TYPE_TCP}.response_time" => 'response time',
 
-    #{Check::TYPE_HTTP}.status
-    #{Check::TYPE_HTTP}.body
-    #{Check::TYPE_HTTP}.code
-    #{Check::TYPE_HTTP}.response_time
-  ).freeze
+    "#{Check::TYPE_HTTP}.status" => 'status',
+    "#{Check::TYPE_HTTP}.body" => 'response body',
+    "#{Check::TYPE_HTTP}.code" => 'response code',
+    "#{Check::TYPE_HTTP}.response_time" => 'response time',
+  }.freeze
 
   # Condition key has to match with check type:
   # @reference Check::Types
@@ -28,13 +28,11 @@ class Assertion
     Check::TYPE_TCP => {
       :down => 'Down',
       :up   => 'Up',
-      :slow => 'Slow',
     },
 
     Check::TYPE_HTTP => {
       :down => 'Down',
       :up   => 'Up',
-      :slow => 'Slow',
 
       :eq => 'Equal',
       :ne => 'Not equal',
@@ -44,6 +42,9 @@ class Assertion
       :in => 'Includes in'
     }
   }.freeze
+
+  DECISION_TREE = [
+  ]
 
   belongs_to :check
   has_many :incidents, dependent: :destroy # We don't want to destroy incident when removing assertion

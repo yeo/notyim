@@ -8315,10 +8315,37 @@ var _user$project$AssertEditor$update = F2(
 	});
 var _user$project$AssertEditor$disabledOperand = function (model) {
 	var _p2 = model.assert.subject;
-	if (_p2 === 'http.status') {
-		return true;
-	} else {
-		return false;
+	switch (_p2) {
+		case 'http.status':
+			return true;
+		case 'tcp.status':
+			return true;
+		case 'heartbeat.beat':
+			return A2(
+				_elm_lang$core$List$member,
+				model.assert.condition,
+				{
+					ctor: '::',
+					_0: 'beat_started',
+					_1: {
+						ctor: '::',
+						_0: 'beat_completed',
+						_1: {ctor: '[]'}
+					}
+				});
+		default:
+			return false;
+	}
+};
+var _user$project$AssertEditor$disabledCondition = function (model) {
+	var _p3 = model.assert.subject;
+	switch (_p3) {
+		case 'heartbeat.beat_start':
+			return true;
+		case 'tcp.status':
+			return true;
+		default:
+			return false;
 	}
 };
 var _user$project$AssertEditor$viewCondition = F2(
@@ -8327,9 +8354,13 @@ var _user$project$AssertEditor$viewCondition = F2(
 			_elm_lang$html$Html$option,
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$selected(
-					_elm_lang$core$Native_Utils.eq(condition.op, model.assert.condition)),
-				_1: {ctor: '[]'}
+				_0: _elm_lang$html$Html_Attributes$value(condition.op),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$selected(
+						_elm_lang$core$Native_Utils.eq(condition.op, model.assert.condition)),
+					_1: {ctor: '[]'}
+				}
 			},
 			{
 				ctor: '::',
@@ -8339,79 +8370,140 @@ var _user$project$AssertEditor$viewCondition = F2(
 	});
 var _user$project$AssertEditor$findCondition = F2(
 	function (model, conditionItem) {
-		var _p3 = A2(_elm_lang$core$String$split, '.', model.assert.subject);
-		_v2_4:
-		do {
-			if (((_p3.ctor === '::') && (_p3._1.ctor === '::')) && (_p3._1._1.ctor === '[]')) {
-				switch (_p3._1._0) {
-					case 'status':
-						return A2(
-							_elm_lang$core$List$member,
-							conditionItem.op,
-							{
-								ctor: '::',
-								_0: 'up',
-								_1: {
-									ctor: '::',
-									_0: 'down',
-									_1: {ctor: '[]'}
-								}
-							});
-					case 'body':
-						return A2(
-							_elm_lang$core$List$member,
-							conditionItem.op,
-							{
-								ctor: '::',
-								_0: 'contain',
-								_1: {ctor: '[]'}
-							});
-					case 'code':
-						return A2(
-							_elm_lang$core$List$member,
-							conditionItem.op,
-							{
-								ctor: '::',
-								_0: 'eq',
-								_1: {
-									ctor: '::',
-									_0: 'ne',
-									_1: {
-										ctor: '::',
-										_0: 'gt',
-										_1: {
-											ctor: '::',
-											_0: 'lt',
-											_1: {
-												ctor: '::',
-												_0: 'in',
-												_1: {ctor: '[]'}
-											}
-										}
-									}
-								}
-							});
-					case 'response_time':
-						return A2(
-							_elm_lang$core$List$member,
-							conditionItem.op,
-							{
+		var _p4 = model.assert.subject;
+		switch (_p4) {
+			case 'http.status':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'up',
+						_1: {
+							ctor: '::',
+							_0: 'down',
+							_1: {ctor: '[]'}
+						}
+					});
+			case 'http.body':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'contain',
+						_1: {ctor: '[]'}
+					});
+			case 'http.code':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'eq',
+						_1: {
+							ctor: '::',
+							_0: 'ne',
+							_1: {
 								ctor: '::',
 								_0: 'gt',
 								_1: {
 									ctor: '::',
 									_0: 'lt',
+									_1: {
+										ctor: '::',
+										_0: 'in',
+										_1: {ctor: '[]'}
+									}
+								}
+							}
+						}
+					});
+			case 'http.response_time':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'gt',
+						_1: {
+							ctor: '::',
+							_0: 'lt',
+							_1: {ctor: '[]'}
+						}
+					});
+			case 'tcp.status':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'up',
+						_1: {
+							ctor: '::',
+							_0: 'down',
+							_1: {ctor: '[]'}
+						}
+					});
+			case 'tcp.body':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'contain',
+						_1: {ctor: '[]'}
+					});
+			case 'tcp.response_time':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'gt',
+						_1: {
+							ctor: '::',
+							_0: 'lt',
+							_1: {ctor: '[]'}
+						}
+					});
+			case 'heartbeat.run_duration':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'gt',
+						_1: {
+							ctor: '::',
+							_0: 'lt',
+							_1: {ctor: '[]'}
+						}
+					});
+			case 'heartbeat.beat':
+				return A2(
+					_elm_lang$core$List$member,
+					conditionItem.op,
+					{
+						ctor: '::',
+						_0: 'beat_started',
+						_1: {
+							ctor: '::',
+							_0: 'beat_completed',
+							_1: {
+								ctor: '::',
+								_0: 'not_beat_started',
+								_1: {
+									ctor: '::',
+									_0: 'not_beat_completed',
 									_1: {ctor: '[]'}
 								}
-							});
-					default:
-						break _v2_4;
-				}
-			} else {
-				break _v2_4;
-			}
-		} while(false);
-		return false;
+							}
+						}
+					});
+			default:
+				return false;
+		}
 	});
 var _user$project$AssertEditor$ConditionItem = F2(
 	function (a, b) {
@@ -8510,29 +8602,43 @@ var _user$project$AssertEditor$view = function (model) {
 										}
 									},
 									A2(
-										_elm_lang$core$List$map,
-										function (_p4) {
-											var _p5 = _p4;
-											var _p6 = _p5._0;
-											return A2(
+										_elm_lang$core$Basics_ops['++'],
+										{
+											ctor: '::',
+											_0: A2(
 												_elm_lang$html$Html$option,
+												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$value(_p6),
-													_1: {
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$selected(
-															_elm_lang$core$Native_Utils.eq(_p6, model.assert.subject)),
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text(_p5._1),
+													_0: _elm_lang$html$Html$text('Select'),
 													_1: {ctor: '[]'}
-												});
+												}),
+											_1: {ctor: '[]'}
 										},
-										model.subjects)),
+										A2(
+											_elm_lang$core$List$map,
+											function (_p5) {
+												var _p6 = _p5;
+												var _p7 = _p6._0;
+												return A2(
+													_elm_lang$html$Html$option,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$value(_p7),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$selected(
+																_elm_lang$core$Native_Utils.eq(_p7, model.assert.subject)),
+															_1: {ctor: '[]'}
+														}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text(_p6._1),
+														_1: {ctor: '[]'}
+													});
+											},
+											model.subjects))),
 								_1: {ctor: '[]'}
 							}),
 						_1: {ctor: '[]'}
@@ -8557,7 +8663,7 @@ var _user$project$AssertEditor$view = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Is'),
+									_0: _elm_lang$html$Html$text('Occur'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
@@ -8650,7 +8756,7 @@ var _user$project$AssertEditor$view = function (model) {
 													_0: _elm_lang$html$Html_Attributes$type_('text'),
 													_1: {
 														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$placeholder('threshold'),
+														_0: _elm_lang$html$Html_Attributes$placeholder('value'),
 														_1: {
 															ctor: '::',
 															_0: _elm_lang$html$Html_Attributes$class('input is-expanded'),
@@ -8710,7 +8816,7 @@ var _user$project$AssertEditor$main = _elm_lang$html$Html$programWithFlags(
 	{
 		init: _user$project$AssertEditor$init,
 		update: _user$project$AssertEditor$update,
-		subscriptions: function (_p7) {
+		subscriptions: function (_p8) {
 			return _elm_lang$core$Platform_Sub$none;
 		},
 		view: _user$project$AssertEditor$view
