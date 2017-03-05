@@ -20,6 +20,9 @@ class Assertion
     "#{Check::TYPE_HTTP}.body" => 'response body',
     "#{Check::TYPE_HTTP}.code" => 'response code',
     "#{Check::TYPE_HTTP}.response_time" => 'response time',
+
+    "#{Check::TYPE_HEARTBEAT}.run_duration" => 'processing time',
+    "#{Check::TYPE_HEARTBEAT}.beat" => 'beat event',
   }.freeze
 
   # Condition key has to match with check type:
@@ -28,6 +31,11 @@ class Assertion
     Check::TYPE_TCP => {
       :down => 'Down',
       :up   => 'Up',
+
+      :gt => 'Greater than',
+      :lt => 'Less than',
+      :contain => 'Contains',
+      :in => 'Includes in'
     },
 
     Check::TYPE_HTTP => {
@@ -40,11 +48,17 @@ class Assertion
       :lt => 'Less than',
       :contain => 'Contains',
       :in => 'Includes in'
+    },
+
+    Check::TYPE_HEARTBEAT => {
+      :gt => 'Longer than',
+      :lt => 'Less than',
+      :beat_started => 'start',
+      :not_beat_started => 'not start',
+      :beat_completed => 'completed',
+      :not_beat_completed => 'not completed',
     }
   }.freeze
-
-  DECISION_TREE = [
-  ]
 
   belongs_to :check
   has_many :incidents, dependent: :destroy # We don't want to destroy incident when removing assertion

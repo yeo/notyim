@@ -1,55 +1,53 @@
+<% if !assertion.persisted? %>
+<h2 class="subtitle">Add a new alert condition</h2>
+<% end %>
 
-        <% if !assertion.persisted? %>
-        <h2 class="subtitle">Add a new alert condition</h2>
+<%= form_for(assertion) do |f| %>
+  <%= f.hidden_field :check_id  %>
+
+  <% if assertion.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(assertion.errors.count, "error") %> prohibited this assertion from being saved:</h2>
+
+      <ul>
+        <% assertion.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
-        <%= form_for(assertion) do |f| %>
-          <%= f.hidden_field :check_id  %>
+      </ul>
+    </div>
+  <% end %>
 
-          <% if assertion.errors.any? %>
-            <div id="error_explanation">
-              <h2><%= pluralize(assertion.errors.count, "error") %> prohibited this assertion from being saved:</h2>
+  <%= elm_component('AssertEditor', flags: {
+          assert: {subject: assertion.subject || "http.status", condition: assertion.condition || "", operand: assertion.operand || ""},
+          subjects: elm_format_subject_enum_for_select(assertion),
+          conditions: elm_format_condition_enum_for_select(assertion),
+  }) %>
+  <!--
+  <div class="control is-horizontal">
+    <p class="control-label">
+      <%= f.label :subject, 'When', class: :label %>
+    </p>
+    <p class="control">
+      <span class="select">
+        <%# f.select :subject, format_subject_enum_for_select(assertion) %>
+      </span>
+    </p>
 
-              <ul>
-                <% assertion.errors.full_messages.each do |message| %>
-                  <li><%= message %></li>
-                <% end %>
-              </ul>
-            </div>
-          <% end %>
+    <p class='control-label'><%= f.label :condition, 'is', class: :label %></p>
+    <p class="control">
+      <span class="select">
+        <%= f.select :condition, grouped_options_for_select(format_condition_enum_for_select(assertion)) %>
+      </span>
+    </p>
 
-          <%= elm_component('AssertEditor',
-                flags: {
-                  assert: {subject: assertion.subject || "http.status", condition: assertion.condition || "", operand: assertion.operand || ""},
-                  subjects: elm_format_subject_enum_for_select(assertion),
-                  conditions: elm_format_condition_enum_for_select(assertion),
-          }) %>
-          <!--
-          <div class="control is-horizontal">
-            <p class="control-label">
-              <%= f.label :subject, 'When', class: :label %>
-            </p>
-            <p class="control">
-              <span class="select">
-                <%# f.select :subject, format_subject_enum_for_select(assertion) %>
-              </span>
-            </p>
+    <p class='control-label'><%= f.label :operand, 'threshold', class: :label %></p>
+    <p class="control">
+      <%= f.text_field :operand, class: 'input', size: 20 %>
+    </p>
 
-            <p class='control-label'><%= f.label :condition, 'is', class: :label %></p>
-            <p class="control">
-              <span class="select">
-                <%= f.select :condition, grouped_options_for_select(format_condition_enum_for_select(assertion)) %>
-              </span>
-            </p>
-
-            <p class='control-label'><%= f.label :operand, 'threshold', class: :label %></p>
-            <p class="control">
-              <%= f.text_field :operand, class: 'input', size: 20 %>
-            </p>
-
-            <p class="control is-expanded">
-              <%= f.submit "Save", class: 'button is-primary' %>
-            </p>
-          </div>
-          -->
-        <% end %>
-
+    <p class="control is-expanded">
+      <%= f.submit "Save", class: 'button is-primary' %>
+    </p>
+  </div>
+  -->
+<% end %>

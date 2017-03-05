@@ -7,7 +7,7 @@ class Check
 
   TYPE_HTTP = 'http'.freeze
   TYPE_TCP  = 'tcp'.freeze
-  TYPE_HEARTBEAT = 'hearbeat'.freeze
+  TYPE_HEARTBEAT = 'heartbeat'.freeze
   TYPES = [TYPE_HTTP, TYPE_TCP, TYPE_HEARTBEAT].freeze
 
   field :name, type: String
