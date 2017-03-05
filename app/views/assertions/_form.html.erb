@@ -20,6 +20,12 @@
             </div>
           <% end %>
 
+          <%= elm_component('AssertEditor',
+                flags: {
+                  assert: {subject: "foo", condition: "bar", operand: "1"},
+                  subjects: format_subject_enum_for_select(assertion),
+                  conditions: format_condition_enum_for_select_elm(assertion),
+                })%>
           <div class="control is-horizontal">
             <p class="control-label">
               <%= f.label :subject, 'When', class: :label %>

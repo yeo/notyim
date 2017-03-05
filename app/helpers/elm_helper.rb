@@ -10,6 +10,10 @@ module ElmHelper
     id = [name, rand(10000000)].join("-")
     html_options[:id] = id
 
-    content_tag(html_tag, "", html_options, false, &block) + javascript_tag("app.#{name}.embed(document.getElementById('#{id}'))")
+    if flags = props[:flags]
+      content_tag(html_tag, "", html_options, false, &block) + javascript_tag("app.#{name}.embed(document.getElementById('#{id}'), #{flags.to_json})")
+    else
+      content_tag(html_tag, "", html_options, false, &block) + javascript_tag("app.#{name}.embed(document.getElementById('#{id}'))")
+    end
   end
 end
