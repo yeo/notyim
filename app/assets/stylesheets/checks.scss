@@ -43,13 +43,13 @@ $chart_height: 100px;
     height: 16px;
     
     &.is-up {
-      background: #2ECC41;
+      background: rgb(150,230,160);
     }
     &.is-slow {
-      background: #FFC952;
+      background: rgb(255,228,168);
     }
     &.is-down {
-      background: #EF5252;
+      background: rgb(247, 170, 170);
     }
     &.is-nodata {
       background: #ddd;

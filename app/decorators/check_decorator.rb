@@ -73,15 +73,45 @@ class CheckDecorator < SimpleDelegator
     return @__last_year_uptime if @__last_year_uptime
 
     first_sunday = first_dow_one_year_ago
+    histories = self.daily_uptime.histories.to_h
     @__last_year_uptime ||= Array.new(52) do |week|
       Array.new(7) do |day_of_week|
         shift = first_sunday + week.week + day_of_week.day
+        uptime = histories[shift.strftime("%D")] || "unknow"
+
+        summary = case uptime
+                when 0
+                  "100% down"
+                when 100
+                  "100% uptime"
+                when "unknow"
+                  if shift >= Time.now.end_of_day
+                    "Not monitored yet"
+                  else
+                    "No data"
+                  end
+                else
+                  "#{uptime}% uptime"
+                end
+
+        stat = (case uptime
+           when "unknow"
+             "nodata"
+           when 100
+             "up"
+           when 0
+             "down"
+           when 90..100
+             "slow"
+           else
+             "down"
+           end).freeze
         OpenStruct.new(
           time: shift,
-          up: '90%',
-          summary: 'up',
-          desc: "#{shift.year}/#{shift.month}/#{shift.day}: No down time",
-          stat: ['up', 'down', 'slow'].sample
+          up: uptime,
+          summary: summary,
+          desc: "#{shift.strftime "%D"}: #{summary}",
+          stat: stat
         )
       end
     end
