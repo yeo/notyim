@@ -16,16 +16,29 @@
           <nav class="level check-item">
           <div class="level-left">
             <div class="level-item">
-              <span class="tag is-<%= check.up? ? 'success' : 'danger' %> is-medium"><%= check.current_status %></span>
+              <div>
+                <p class="title"><span class="tag is-<%= check.up? ? 'success' : 'danger' %> is-medium"><%= check.current_status %></span></p>
+              </div>
             </div>
+          </div>
+
+      
+          <div class="level-item">
             <div class="level-item check-item__title">
-              <%= link_to check.name, check, class: 'subtitle' %>
+              <div>
+                <p class="heading">
+                  <%= check.type %>
+                </p>
+                <p class="title">
+                  <%= link_to check.name, check, class: 'subtitle' %>
+                </p>
+              </div>
             </div>
           </div>
 
           <div class="level-item has-text-centered">
             <div>
-              <p class="heading">Uptime</p>
+              <p class="heading">Uptime(1M)</p>
               <p class="title"><%= check.uptime_1month.round(2) %>%</p>
             </div>
           </div>
