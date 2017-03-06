@@ -5,6 +5,7 @@ jQuery(document).ready(function ($) {
   $toggle.click(function() {
     $(this).toggleClass('is-active');
     $menu.toggleClass('is-active');
+    console.log()
   });
 
   $('.modal-button').click(function() {
