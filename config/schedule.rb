@@ -19,5 +19,5 @@
 # Learn more: http://github.com/javan/whenever
 #
 every 1.hour do
-  runner "UptimeCalculateWorker.new.perform"
+  runner "UptimeCalculateWorker.perform_async"
 end
