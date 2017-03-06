@@ -20,17 +20,30 @@ class UptimeCalculateWorker
       check.save!
     end
 
-
     UptimeCalculateWorker.perform_async(start_at + limit)
   end
 
   def calculate(check, duration)
-    incidents = Incident.where(check: check, :created_at.gt => duration.ago).pluck(:created_at, :updated_at)
+    open_incident = check.incidents.open.first
+    if open_incident
+      # Because this incident is still on-going, we set the second elemtn to now
+      # to calculate downtime
+      open_incident = [[open_incident.created_at, Time.now.utc]]
+    else
+      open_incident = []
+    end
+
+    #byebug
+    incidents = open_incident + Incident.where(check: check, :created_at.gt => duration.ago).pluck(:created_at, :updated_at)
     if incidents.count == 0
       100
     else
       downtime = incidents.inject(0) { |sum, e| sum += (e.last - e.first) }
-      100 - (downtime.to_f / duration.to_i * 100)
+      if downtime >= duration.to_i
+        100
+      else
+        100 - (downtime.to_f / duration.to_i * 100)
+      end
     end
   end
 end
