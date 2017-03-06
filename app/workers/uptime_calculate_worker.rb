@@ -33,7 +33,6 @@ class UptimeCalculateWorker
       open_incident = []
     end
 
-    #byebug
     incidents = open_incident + Incident.where(check: check, :created_at.gt => duration.ago).pluck(:created_at, :updated_at)
     if incidents.count == 0
       100
