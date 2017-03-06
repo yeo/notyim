@@ -23,6 +23,7 @@ class Check
   belongs_to :team, index: true
   has_many :assertions, dependent: :destroy
   has_many :incidents, dependent: :destroy
+  has_one :daily_uptime, dependent: :destroy
 
   index({type: 1}, {background: true})
   validates_presence_of :name, :uri, :type

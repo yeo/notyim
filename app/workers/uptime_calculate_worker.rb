@@ -18,6 +18,8 @@ class UptimeCalculateWorker
       check.uptime_1month = calculate(check, 1.month)
 
       check.save!
+
+      calculate_daily_uptime(check)
     end
 
     UptimeCalculateWorker.perform_async(start_at + limit)
@@ -39,10 +41,24 @@ class UptimeCalculateWorker
     else
       downtime = incidents.inject(0) { |sum, e| sum += (e.last - e.first) }
       if downtime >= duration.to_i
-        100
+        0
       else
         100 - (downtime.to_f / duration.to_i * 100)
       end
     end
+  end
+
+  # @param Check
+  def calculate_daily_uptime(check)
+    daily_uptime = check.daily_uptime
+    if daily_uptime
+      daily_uptime.histories.pop
+    else
+      daily_uptime = DailyUptime.create!(histories: [], check: check)
+    end
+
+    daily_uptime.histories << [ Time.zone.now.strftime("%D"), calculate(check, 1.day) ]
+    daily_uptime.histories.shift if daily_uptime.histories.length > 365
+    daily_uptime.save
   end
 end
