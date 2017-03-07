@@ -1,5 +1,5 @@
 require "rails_helper"
 
-RSpec.describe GenericMailerMailer, type: :mailer do
+RSpec.describe GenericMailer, type: :mailer do
   pending "add some examples to (or delete) #{__FILE__}"
 end
