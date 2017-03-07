@@ -50,15 +50,17 @@ class UptimeCalculateWorker
 
   # @param Check
   def calculate_daily_uptime(check)
+    today = Time.zone.now.strftime("%D")
     daily_uptime = check.daily_uptime
     if daily_uptime
-      daily_uptime.histories.pop
+      day, _ = daily_uptime.histories.last
+      daily_uptime.histories.pop if day == today
     else
       daily_uptime = DailyUptime.create!(histories: [], check: check)
     end
 
-    daily_uptime.histories << [ Time.zone.now.strftime("%D"), calculate(check, 1.day) ]
-    daily_uptime.histories.shift if daily_uptime.histories.length > 365
+    daily_uptime.histories << [ today, calculate(check, 1.day) ]
+    daily_uptime.histories.shift if daily_uptime.histories.length > 366
     daily_uptime.save
   end
 end
