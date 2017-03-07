@@ -73,7 +73,8 @@ class CheckDecorator < SimpleDelegator
     return @__last_year_uptime if @__last_year_uptime
 
     first_sunday = first_dow_one_year_ago
-    histories = self.daily_uptime.histories.to_h
+    histories = self.daily_uptime ? self.daily_uptime.histories.to_h : {}
+
     @__last_year_uptime ||= Array.new(52) do |week|
       Array.new(7) do |day_of_week|
         shift = first_sunday + week.week + day_of_week.day
