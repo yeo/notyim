@@ -55,6 +55,7 @@ class User
   # subscription is monthly payment
   field :subscription_expire_at, type: Time
   field :active_subscription, type: String
+  field :time_zone, default: "UTC"
 
   has_many :teams,  dependent: :destroy
   has_many :checks,  dependent: :destroy
