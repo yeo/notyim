@@ -16,16 +16,26 @@ class IncidentService
   #         incident which was created
   #         false not create an incident, an ongoing aleady has
   def self.create_for_assertion(assertion, check_response)
-    if assertion.ongoing_incident
+    incident = assertion.ongoing_incident
+    if incident
       # TODO Probably do something for stil down/still happen incident notification
-      return false
+      if !incident.locations.any? { |where| where[:ip] == check_response.from_ip }
+        incident.locations << {ip: check_response.from_ip, message: check_response.error_message}
+        incident.save
+      end
+    else
+      Trinity::Semaphore.run_once [assertion.check.id.to_s, assertion.id.to_s] do
+        incident = open_incident(assertion, check_response)
+      end
     end
 
-    Trinity::Semaphore.run_once [assertion.check.id.to_s, assertion.id.to_s] do
-      incident = open_incident(assertion, check_response)
-      notify incident, Incident::STATUS_OPEN
-      incident
+    if incident.locations.length >= Rails.configuration.incident_confirm_location
+      incident.status = Incident::STATUS_OPEN
+      incident.save
     end
+
+    notify(incident, Incident::STATUS_OPEN) if incident.open?
+    incident
   end
 
   # Close an incident and trigger its flow
@@ -40,7 +50,8 @@ class IncidentService
   # @CheckResponse check response
   # @return Incident created incident
   def self.open_incident(assertion, check_result)
-    incident = Incident.new(status: Incident::STATUS_OPEN, check: assertion.check, user: assertion.check.user, error_message: check_result.error_message)
+    incident = Incident.new(status: Incident::STATUS_PARTIAL, check: assertion.check, user: assertion.check.user, error_message: check_result.error_message, locations: [{ip: check_result.from_ip, message: check_result.error_message}])
+
     incident.assertion = assertion
     incident.save!
 

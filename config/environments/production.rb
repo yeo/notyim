@@ -88,4 +88,10 @@ Rails.application.configure do
   end
 
   config.active_job.queue_adapter = :sidekiq
+
+  # Custom configuration
+  # Those setting isn't on Rails, we store theme here to access them later on
+  # Those need to take care when we update Rails
+  config.incident_confirm_location = 3 # How many location need to match in order to confirm that an incident has occured
+  # End custom configuration
 end

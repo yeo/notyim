@@ -7,12 +7,14 @@ class Incident
 
   STATUS_OPEN = 'open'.freeze
   STATUS_CLOSE = 'close'.freeze
+  STATUS_PARTIAL = 'partial'.freeze
 
   field :status, type: String
   field :acknowledged_at, type: Time
   field :acknowledged_by, type: String
 
   field :error_message, type: String
+  field :locations, type: Array
 
   index({status: 1}, {background: true})
   index({acknowledged_at: 1, acknowledged_by: 1}, {background: true})
@@ -24,6 +26,7 @@ class Incident
   has_many :check_responses, dependent: :destroy
 
   scope :open, -> () { where(status: STATUS_OPEN).desc(:id) }
+  scope :partial, -> () { where(status: STATUS_PARTIAL).desc(:id) }
 
   def open?
     status == STATUS_OPEN

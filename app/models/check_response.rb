@@ -16,6 +16,8 @@ class CheckResponse
   #       - tcp field
   #   - attbs:
   #       - name: value
+  #   - from_ip:
+  #   - from_region:
   field :raw_result, type: Hash
 
   # The reason we use two associated here is to improve

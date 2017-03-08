@@ -57,5 +57,6 @@ Rails.application.configure do
   # Those need to take care when we update Rails
   # TODO: Update
   config.local_proxy_public = ENV.fetch("NGROK")
+  config.incident_confirm_location = 1 # How many location need to match in order to confirm that an incident has occured
   # End custom configuration
 end
