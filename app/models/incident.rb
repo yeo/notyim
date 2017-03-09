@@ -15,6 +15,7 @@ class Incident
 
   field :error_message, type: String
   field :locations, type: Array
+  field :close_locations, type: Array
 
   index({status: 1}, {background: true})
   index({acknowledged_at: 1, acknowledged_by: 1}, {background: true})

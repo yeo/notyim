@@ -21,6 +21,7 @@ class IncidentService
       # TODO Probably do something for stil down/still happen incident notification
       if !incident.locations.any? { |where| where[:ip] == check_response.from_ip }
         incident.locations << {ip: check_response.from_ip, message: check_response.error_message}
+        incident.locations = incident.locations.uniq { |l| l[:ip] }
         incident.save
       end
     else

@@ -63,6 +63,10 @@ class CheckResponse
     raw_result['error_message']
   end
 
+  def from_ip
+    raw_result['from_ip']
+  end
+
   def self.create_from_raw_result(result)
     raw_result = JSON.parse(result)
     new(raw_result: raw_result)
