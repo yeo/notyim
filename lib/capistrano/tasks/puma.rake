@@ -1,7 +1,7 @@
 namespace :puma do
   desc 'Restart puma'
   task :restart do
-    on roles(fetch(:app)) do |role|
+    on roles(:app) do |role|
       within current_path do
         with rack_env: fetch(:stage) do
           execute :sudo, '/bin/systemctl', :restart, 'trinity.service'
