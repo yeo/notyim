@@ -26,6 +26,7 @@ class Incident
   has_many :check_responses, dependent: :destroy
 
   scope :open, -> () { where(status: STATUS_OPEN).desc(:id) }
+  scope :close, -> () { where(status: STATUS_CLOSE).desc(:id) }
   scope :partial, -> () { where(status: STATUS_PARTIAL).desc(:id) }
 
   def open?
