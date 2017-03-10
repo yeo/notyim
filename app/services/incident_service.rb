@@ -38,7 +38,10 @@ class IncidentService
       incident.save
     end
 
-    notify(incident, Incident::STATUS_OPEN) if incident.open?
+    Trinity::Semaphore.run_once ['notify', 'open', assertion.check.id.to_s], 30.minutes.to_i do
+      notify(incident, Incident::STATUS_OPEN) if incident.open?
+    end
+
     incident
   end
 
@@ -66,7 +69,11 @@ class IncidentService
 
     incident.save!
 
-    close incident if incident.close?
+    Trinity::Semaphore.run_once ['notify', 'close', assertion.check.id.to_s], 30.minutes.to_i do
+      close incident if incident.close?
+    end
+
+    incident
   end
 
   # Close an incident and trigger its flow
