@@ -45,6 +45,7 @@ gem 'bugsnag'
 gem 'twilio-ruby', '~> 4.11.1'
 gem 'stripe'
 gem 'slack-notifier'
+gem 'hipchat'
 gem 'kaminari', '~> 1.0'
 gem 'kaminari-mongoid'
 gem 'whenever', :require => false
