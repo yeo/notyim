@@ -6,11 +6,9 @@ class IncidentsController < DashboardController
   def index
     case params[:status]
     when 'close'.freeze
-      @incidents = current.user.incidents.close.desc(:id).page(params[:page])
-    when 'all'.freeze
-      @incidents = current.user.incidents.desc(:id).page(params[:page])
+      @incidents = current.user.incidents.not_archived.close.desc(:id).page(params[:page])
     else
-      @incidents = current.user.incidents.open.desc(:id).page(params[:page])
+      @incidents = current.user.incidents.not_archived.open.desc(:id).page(params[:page])
     end
   end
 

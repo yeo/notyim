@@ -3,7 +3,7 @@ module Mongoid
     def self.included(base)
       base.field :archived, type: Mongoid::Boolean, default: false
       base.field :archived_at, type: Time
-      base.scope :active, ->() { where(archived: false) }
+      base.scope :not_archived, ->() { where(archived: false) }
       base.index({archived: 1, archived_at: 1}, background: true)
     end
 

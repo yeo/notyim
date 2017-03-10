@@ -17,11 +17,12 @@ class IncidentService
   #         false not create an incident, an ongoing aleady has
   def self.create_for_assertion(assertion, check_response)
     incident = assertion.ongoing_incident
+
     if incident
       # TODO Probably do something for stil down/still happen incident notification
-      if !incident.locations.any? { |where| where[:ip] == check_response.from_ip }
-        incident.locations << {ip: check_response.from_ip, message: check_response.error_message}
-        incident.locations = incident.locations.uniq { |l| l[:ip] }
+      if !incident.locations['open'].any? { |where| where[:ip] == check_response.from_ip }
+        incident.locations['open'] << {ip: check_response.from_ip, message: check_response.error_message || check_response.body}
+        incident.locations['open'] = incident.locations['open'].uniq { |l| l[:ip] }
         incident.save
       end
     else
@@ -30,13 +31,42 @@ class IncidentService
       end
     end
 
-    if incident.locations.length >= Rails.configuration.incident_confirm_location
+    return unless incident
+
+    if (incident.locations['open'].try(:length) || 0) >= Rails.configuration.incident_confirm_location
       incident.status = Incident::STATUS_OPEN
       incident.save
     end
 
     notify(incident, Incident::STATUS_OPEN) if incident.open?
     incident
+  end
+
+  # Close an incident for given assertion and check response
+  #
+  # When all location is closed, we will send incident close notification
+  #
+  # @param Assertion assertion
+  # @param CheckResponse check_response
+  def self.close_for_assertion(assertion, check_response)
+    # Check doesn't match, and we have an on-going incident, this mean we can close it
+    if incident = assertion.ongoing_incident
+      if !incident.locations['close'].any? { |where| where[:ip] == check_response.from_ip }
+        incident.locations['close'] << {ip: check_response.from_ip, message: check_response.error_message}
+      end
+    else
+      return
+    end
+
+    open_locations = incident.locations['open'].map { |l| l[:ip] }
+    close_locations = incident.locations['close'].map { |l| l[:ip] }
+    if open_locations == close_locations
+      incident.status = Incident::STATUS_CLOSE
+    end
+
+    incident.save!
+
+    close incident if incident.close?
   end
 
   # Close an incident and trigger its flow
@@ -51,7 +81,7 @@ class IncidentService
   # @CheckResponse check response
   # @return Incident created incident
   def self.open_incident(assertion, check_result)
-    incident = Incident.new(status: Incident::STATUS_PARTIAL, check: assertion.check, user: assertion.check.user, error_message: check_result.error_message, locations: [{ip: check_result.from_ip, message: check_result.error_message}])
+    incident = Incident.new(status: Incident::STATUS_PARTIAL, check: assertion.check, user: assertion.check.user, error_message: check_result.error_message, locations: {open: [{ip: check_result.from_ip, message: check_result.error_message}], close: []})
 
     incident.assertion = assertion
     incident.save!

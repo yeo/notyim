@@ -18,10 +18,7 @@ class CheckToCreateIncidentWorker
       when true
         IncidentService.create_for_assertion(assertion, check_response)
       when false
-        # Check doesn't match, and we have an on-going incident, this mean we can close it
-        if ongoing_incident = assertion.ongoing_incident
-          IncidentService.close ongoing_incident
-        end
+        IncidentService.close_for_assertion(assertion, check_response)
       end
     end
   end

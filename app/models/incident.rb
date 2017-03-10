@@ -14,8 +14,7 @@ class Incident
   field :acknowledged_by, type: String
 
   field :error_message, type: String
-  field :locations, type: Array
-  field :close_locations, type: Array
+  field :locations, type: Hash, default: {open: [], close: []}
 
   index({status: 1}, {background: true})
   index({acknowledged_at: 1, acknowledged_by: 1}, {background: true})
@@ -34,6 +33,6 @@ class Incident
   end
 
   def close?
-    !open?
+    status == STATUS_CLOSE
   end
 end
