@@ -38,5 +38,12 @@ namespace :snipt do
 
       CheckToCreateIncidentWorker.perform_async(c.id.to_s, result.to_json)
     end
+
+    desc "Test notifiy inident"
+    task notityf: :environment do
+      i = Incident.first
+      r = Receiver.find('58c25f328c245582a3495b7b')
+      Yeller::Provider::Hipchat.notify_incident(i, r)
+    end
   end
 end

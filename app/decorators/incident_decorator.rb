@@ -1,5 +1,6 @@
 class IncidentDecorator < SimpleDelegator
   include ActionView::Helpers::TextHelper
+  include Rails.application.routes.url_helpers
 
   def short_status
     case status
@@ -16,6 +17,10 @@ class IncidentDecorator < SimpleDelegator
 
   def subject
     "━ [noty alert][#{status == 'close' ? 'UP' : 'DOWN'}] #{incident.check.uri}"
+  end
+
+  def url
+    incident_url(self)
   end
 
   def duration
