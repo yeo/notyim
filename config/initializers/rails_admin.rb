@@ -46,6 +46,12 @@ RailsAdmin.config do |config|
     Assertion
     Notification
     Receiver
+    DailyUptime
+    Verification
+    AuditLog
+    ChargeTransaction
+    StripeToken
+    Subscription
     Verification
   )
 end
