@@ -63,7 +63,7 @@ class IncidentService
 
     open_locations = incident.locations['open'].map { |l| l[:ip].strip }
     close_locations = incident.locations['close'].map { |l| l[:ip].strip }
-    if close_locations.to_set.intersect?(open_locations.to_set)
+    if (open_locations - close_locations).empty?
       incident.status = Incident::STATUS_CLOSE
     end
 
