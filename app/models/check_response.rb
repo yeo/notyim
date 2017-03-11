@@ -43,6 +43,7 @@ class CheckResponse
     raw_result['http']['code'] if raw_result['http']
   end
 
+  # http status code
   def status_code
     raw_result['status_code']
   end
