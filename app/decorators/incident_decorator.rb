@@ -34,4 +34,9 @@ class IncidentDecorator < SimpleDelegator
       pluralize(minute, 'minute')
     end
   end
+
+  # How many time this happen
+  def frequency
+    Incident.where(assertion: self.assertion).count
+  end
 end
