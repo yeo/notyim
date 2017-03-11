@@ -38,8 +38,10 @@ class IncidentService
       incident.save
     end
 
-    Trinity::Semaphore.run_once ['notify', 'open', assertion.check.id.to_s], 30.minutes.to_i do
-      notify(incident, Incident::STATUS_OPEN) if incident.open?
+    if incident.open?
+      Trinity::Semaphore.run_once ['open', 'alert', assertion.check.id.to_s], 30.minutes.to_i do
+        notify(incident, Incident::STATUS_OPEN)
+      end
     end
 
     incident
@@ -70,23 +72,14 @@ class IncidentService
     open_locations = incident.locations['open'].map { |l| l[:ip].strip }
     close_locations = incident.locations['close'].map { |l| l[:ip].strip }
     if (open_locations - close_locations).empty?
-      incident.status = Incident::STATUS_CLOSE
+      close_incident incident
     end
 
-    incident.save!
-
-    Trinity::Semaphore.run_once ['notify', 'close', assertion.check.id.to_s], 30.minutes.to_i do
-      close incident if incident.close?
+    Trinity::Semaphore.run_once ['close', 'alert', assertion.check.id.to_s], 30.minutes.to_i do
+      notify incident, Incident::STATUS_CLOSE
     end
 
     incident
-  end
-
-  # Close an incident and trigger its flow
-  # @param Incident
-  def self.close(incident)
-    close_incident(incident)
-    notify incident, Incident::STATUS_CLOSE
   end
 
   # Create an open incident.
