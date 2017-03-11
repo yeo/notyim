@@ -4,28 +4,34 @@
   <%= link_to 'Add new alert receiver', new_receiver_path, class: 'button is-primary is-large' %>
 </div>
 
-<div class="box">
-  <% @receivers.each do |receiver| %>
-    <div class="media">
-      <div class="media-content">
-        <div class="content">
-          <h4 class="title">
-            <%= receiver.provider %>
-          </h4>
-          <h4 class-"subtitle"><%= link_to receiver.handler, edit_receiver_path(receiver) %></h4>
-          <% if receiver.require_verify? && !receiver.verified? %>
-            <%= render 'receivers/verification/challenger', receiver: receiver %>
-          <% end %>
-        </div>
-      </div>
-      <div class="media-right">
-        <%= link_to receiver, method: :delete, data: { confirm: 'Are you sure?' } do %>
-          <button class="delete is-medium"></button>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
-</div>
+<table class="table">
+  <tbody>
+    <% @receivers.each do |receiver| %>
+      <tr><td>
+          <nav class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h4 class="title">
+                <%= receiver.provider %>
+              </h4>
+            </div>
+            <div class="level-item">
+              <h4 class="subtitle"><%= link_to receiver.handler, edit_receiver_path(receiver) %></h4>
+              <% if receiver.require_verify? && !receiver.verified? %>
+                <%= render 'receivers/verification/challenger', receiver: receiver %>
+              <% end %>
+            </div>
+          </div>
+          <div class="level-right">
+            <%= link_to receiver, method: :delete, data: { confirm: 'Are you sure?' } do %>
+              <button class="button is-medium is-danger">Remove</button>
+            <% end %>
+          </div>
+          </nav>
+      </td></tr>
+    <% end %>
+  </tbody>
+</table>
 
 <div class="section has-text-centered">
   <%= link_to 'Add new alert receiver', new_receiver_path, class: 'button is-primary is-large' %>
