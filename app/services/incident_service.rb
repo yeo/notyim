@@ -54,7 +54,7 @@ class IncidentService
   # @param Assertion assertion
   # @param CheckResponse check_response
   def self.close_for_assertion(assertion, check_response)
-    if partial_incidents = assertion.partial_incidents
+    if (partial_incidents = assertion.partial_incidents.length) > 0
       # Since this is partial incident, just delete them
       partial_incidents.each(&:destroy)
       return
