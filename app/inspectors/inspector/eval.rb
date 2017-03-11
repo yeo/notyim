@@ -15,7 +15,7 @@ module Inspector
       end
 
       def eq(a, b)
-        a == b
+        (a == b) || (a.to_s == b.to_s)
       end
 
       def ne(a, b)

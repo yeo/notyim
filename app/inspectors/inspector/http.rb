@@ -12,7 +12,7 @@ module Inspector
         value_to_check = case check_property
                          when 'status' then check_response.status
                          when 'body' then check_response.body
-                         when 'code' then check_response.code
+                         when 'code' then check_response.status_code
                          when 'response_time' then check_response.time('response')
                          end
         ::Inspector::Eval.send(assertion.condition, value_to_check, assertion.operand)
