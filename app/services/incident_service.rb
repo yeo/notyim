@@ -74,9 +74,13 @@ class IncidentService
       close_incident incident
     end
 
-    Trinity::Semaphore.run_once ['close', 'alert', assertion.check.id.to_s], 30.minutes.to_i do
-      notify incident, Incident::STATUS_CLOSE
+    if incident.close?
+      Trinity::Semaphore.run_once ['close', 'alert', assertion.check.id.to_s], 30.minutes.to_i do
+        notify incident, Incident::STATUS_CLOSE
+      end
     end
+
+    incident.save!
 
     incident
   end
