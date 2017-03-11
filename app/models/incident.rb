@@ -19,6 +19,7 @@ class Incident
   index({status: 1}, {background: true})
   index({acknowledged_at: 1, acknowledged_by: 1}, {background: true})
   index({created_at: 1}, {background: true})
+  # TODO add custom validation to prevent multiple open for a check and assertion
 
   belongs_to :assertion
   belongs_to :check
