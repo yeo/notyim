@@ -52,6 +52,12 @@ class IncidentService
   # @param Assertion assertion
   # @param CheckResponse check_response
   def self.close_for_assertion(assertion, check_response)
+    if partial_incidents = assertion.partial_incident
+      # Since this is partial incident, just delete them
+      partial_incidents.each(&:destroy)
+      return
+    end
+
     # Check doesn't match, and we have an on-going incident, this mean we can close it
     if incident = assertion.ongoing_incident
       if !incident.locations['close'].any? { |where| where[:ip] == check_response.from_ip }
