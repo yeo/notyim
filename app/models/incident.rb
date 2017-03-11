@@ -19,6 +19,10 @@ class Incident
   index({status: 1}, {background: true})
   index({acknowledged_at: 1, acknowledged_by: 1}, {background: true})
   index({created_at: 1}, {background: true})
+  index({check_id: 1, assertion_id: 1, status: 1}, {background: true, unique: true })
+
+  # Make sure we only have an open incident for a given assertion
+  validates_uniqueness_of :check, :scope => :assertion
 
   belongs_to :assertion
   belongs_to :check

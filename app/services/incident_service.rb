@@ -16,14 +16,13 @@ class IncidentService
   #         incident which was created
   #         false not create an incident, an ongoing aleady has
   def self.create_for_assertion(assertion, check_response)
-    incident = assertion.ongoing_incident
+    incident = (assertion.partial_incidents.first || assertion.ongoing_incident)
 
     if incident
       # TODO Probably do something for stil down/still happen incident notification
       if !incident.locations['open'].any? { |where| where[:ip] == check_response.from_ip }
         incident.locations['open'] << {ip: check_response.from_ip, message: check_response.error_message || check_response.body}
         incident.locations['open'] = incident.locations['open'].uniq { |l| l[:ip] }
-        incident.save
       end
     else
       Trinity::Semaphore.run_once [assertion.check.id.to_s, assertion.id.to_s] do
@@ -35,8 +34,8 @@ class IncidentService
 
     if (incident.locations['open'].try(:length) || 0) >= Rails.configuration.incident_confirm_location
       incident.status = Incident::STATUS_OPEN
-      incident.save
     end
+    incident.save!
 
     if incident.open?
       Trinity::Semaphore.run_once ['open', 'alert', assertion.check.id.to_s], 30.minutes.to_i do
