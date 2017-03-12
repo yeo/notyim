@@ -10,7 +10,8 @@ namespace :sidekiq do
   desc 'Restart sidekiq'
   task :restart do
     on roles(:app) do
-      execute :sudo, '/bin/systemctl', :restart, 'sidekiq.service'
+      execute :sudo, '/bin/systemctl', :restart, 'sidekiq@1.service'
+      execute :sudo, '/bin/systemctl', :restart, 'sidekiq@2.service'
     end
   end
 end
