@@ -14,7 +14,7 @@ module Yeller
     end
 
     def class_of(identify)
-      providers.fetch(identify)
+      identify && providers.fetch(identify)
     end
   end
 end

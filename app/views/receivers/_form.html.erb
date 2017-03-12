@@ -22,7 +22,7 @@
                 </div>
               <% end %>
 
-              <%= f.label :name, 'Nickname', class: 'label' %>
+              <%= f.label :name, Yeller::Provider.class_of(provider).label, class: 'label' %>
               <p class="control">
                 <%= f.text_field :name, class: 'input' %>
               </p>

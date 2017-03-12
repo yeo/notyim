@@ -9,6 +9,15 @@ module Yeller
         name.split('::').last
       end
 
+      # Label is used to display as the label of provider when rendering field
+      #
+      # Example, if it's hipchat, label can be roomname
+      # otherwise it can just be a name
+      def self.label
+        @__attributes ||= {}
+        @__attributes[:label] || "Friendly name".freeze
+      end
+
       # Get notification class of this provider
       #def self.notify_class
       #  "Yeller::Notify::#{identity.camelize}".constantize
@@ -18,6 +27,11 @@ module Yeller
       def self.configure
         @__attributes = {}
         yield if block_given?
+      end
+
+      # Customize label name
+      def self.label!(text)
+        @__attributes[:label] = text
       end
 
       # Require verification will force this provide to confirm a code

@@ -5,6 +5,10 @@ module Yeller
     class Hipchat < Base
       Yeller::Provider.register(self)
 
+      configure do
+        label! "Room".freeze
+      end
+
       # Send out notification for an incident. This is
       # a complex logic including
       #   - generate the message
