@@ -34,8 +34,7 @@
       <div class="level-right">
         <div class="level-item">
           <div class="block">
-            <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
-            <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
+            <%= link_to 'Configure', edit_check_path(check), class: 'button is-primary' %>
           </div>
         </div>
       </div>
@@ -167,4 +166,15 @@
 
   </div>
   </section>
+
+  <hr>
+  <div class="section">
+    <div class="message is-danger">
+      <div class="message-header"> Delete this check </div>
+      <div class="message-body">
+       <p>Destroy check will remove all of its historical data!</p>
+       <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button is-danger' %>
+      </div>
+    </div>
+  </div>
 <% end %>

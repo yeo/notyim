@@ -15,22 +15,11 @@
         <div class="card check">
           <nav class="level check-item">
           <div class="level-left">
-            <div class="level-item">
-              <div>
-                <p class="title"><span class="tag is-<%= check.up? ? 'success' : 'danger' %> is-medium"><%= check.current_status %></span></p>
-              </div>
-            </div>
-          </div>
-
-      
-          <div class="level-item">
             <div class="level-item check-item__title">
               <div>
-                <p class="heading">
-                  <%= check.type %>
-                </p>
+                <p class="heading"><span class="tag is-<%= check.up? ? 'success' : 'danger' %> is-medium">HTTP: <%= check.current_status %></span></p>
                 <p class="title">
-                  <%= link_to check.name, check, class: 'subtitle' %>
+                  <%= link_to check.uri, check, class: 'subtitle' %>
                 </p>
               </div>
             </div>
@@ -86,8 +75,8 @@
           <div class="level-right">
             <div class="level-item">
               <div class="block">
-                <%= link_to 'Edit', edit_check_path(check), class: 'button is-primary' %>
-                <%= link_to 'Destroy', check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button' %>
+                <p class="control"><%= link_to 'Detail', check_path(check), class: 'button is-primary' %></p>
+                <p class="control"><%= link_to 'Config', edit_check_path(check), class: 'button' %></p>
               </div>
             </div>
           </div>
