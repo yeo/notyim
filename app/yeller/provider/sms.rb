@@ -31,7 +31,11 @@ module Yeller
         user = receiver.user
         raise MissingUserForReceiver unless user
         # TODO: maybe queue this in future
-        ::Yeller::Transporter::Sms.send(receiver.handler, "You are all set. We'll message to this number.")
+        if user.internal_tester?
+          ::Yeller::Transporter::SmsTest.send(receiver.handler, "You are all set. We'll message to this number.")
+        else
+          ::Yeller::Transporter::Sms.send(receiver.handler, "You are all set. We'll message to this number.")
+        end
       end
 
       # Send out notification for an incident. This is
@@ -51,7 +55,11 @@ module Yeller
         Match: #{incident.assertion.operand}
         HEREDOC
 
-        ::Yeller::Transporter::Sms.send(receiver.handler, content)
+        if user.internal_tester?
+          ::Yeller::Transporter::SmsTest.send(receiver.handler, content)
+        else
+          ::Yeller::Transporter::Sms.send(receiver.handler, content)
+        end
       end
 
     end
