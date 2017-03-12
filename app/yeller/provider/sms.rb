@@ -58,7 +58,14 @@ module Yeller
         if user.internal_tester?
           ::Yeller::Transporter::SmsTest.send(receiver.handler, content)
         else
-          ::Yeller::Transporter::Sms.send(receiver.handler, content)
+          if UserCreditService.has_credit_sms?(user)
+            UserCreditService.deduct_sms!(user)
+            ::Yeller::Transporter::Sms.send(receiver.handler, content)
+          else
+            e = Exception.new(message: 'no sms balance', user: user.id.to_s)
+            Bugsnag.notify e
+            return nil
+          end
         end
       end
 
