@@ -17,9 +17,9 @@
           <div class="level-left">
             <div class="level-item check-item__title">
               <div>
-                <p class="heading"><span class="tag is-<%= check.up? ? 'success' : 'danger' %> is-medium">HTTP: <%= check.current_status %></span></p>
+                <p class="heading"><span class="tag is-<%= check.up? ? 'success' : 'danger' %> is-medium">HTTP <%= check.current_status %></span></p>
                 <p class="title">
-                  <%= link_to check.uri, check, class: 'subtitle' %>
+                  <%= link_to (check.name || check.uri), check, class: 'subtitle' %>
                 </p>
               </div>
             </div>
