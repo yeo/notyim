@@ -17,50 +17,6 @@ class IncidentsController < DashboardController
   def show
   end
 
-  # GET /incidents/new
-  def new
-    unless params[:check_id]
-      head 400
-      return
-    end
-
-    @incident = Incident.new(check: Check.find(params[:check_id]))
-  end
-
-  # GET /incidents/1/edit
-  def edit
-  end
-
-  # POST /incidents
-  # POST /incidents.json
-  def create
-    @incident = Incident.new(incident_params)
-
-    respond_to do |format|
-      if @incident.save
-        format.html { redirect_to @incident, notice: 'Incident was successfully created.' }
-        format.json { render :show, status: :created, location: @incident }
-      else
-        format.html { render :new }
-        format.json { render json: @incident.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /incidents/1
-  # PATCH/PUT /incidents/1.json
-  def update
-    respond_to do |format|
-      if @incident.update(incident_params)
-        format.html { redirect_to @incident, notice: 'Incident was successfully updated.' }
-        format.json { render :show, status: :ok, location: @incident }
-      else
-        format.html { render :edit }
-        format.json { render json: @incident.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # DELETE /incidents/1
   # DELETE /incidents/1.json
   def destroy

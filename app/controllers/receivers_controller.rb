@@ -14,7 +14,7 @@ class ReceiversController < DashboardController
 
   # GET /receivers/new
   def new
-    @receiver = Receiver.new(user: current.user)
+    @receiver = Receiver.new(user: current.user, team: current.team)
   end
 
   # GET /receivers/1/edit
