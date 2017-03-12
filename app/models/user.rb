@@ -56,6 +56,7 @@ class User
   field :subscription_expire_at, type: Time
   field :active_subscription, type: String
   field :time_zone, default: "UTC"
+  field :flags, type: Hash
 
   has_many :teams,  dependent: :destroy
   has_many :checks,  dependent: :destroy
@@ -66,7 +67,17 @@ class User
   has_many :charge_transactions, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
 
+  has_many :credit, dependent: :destroy
+
+
   after_create :create_team
+
+  # Private internal tester
+  # This is a special flag to make use of some free service, we only do this
+  # for Vinh account of course
+  def internal_tester?
+    flags[:internal_tester] == true
+  end
 
   # Get a list of verifi receiver
   # @return Criteria[Receiver]

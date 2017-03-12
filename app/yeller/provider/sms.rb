@@ -20,14 +20,18 @@ module Yeller
         user = receiver.user
         raise MissingUserForReceiver unless user
         # TODO: maybe queue this in future
-        ::Yeller::Transporter::Sms.send(receiver.handler, "Hi, enter this code to cofirm your account: #{receiver.last_verification.code}.\n")
+        if user.internal_tester?
+          ::Yeller::Transporter::SmsTest.send(receiver.handler, "Your noty.im verification code: #{receiver.last_verification.code}.\n")
+        else
+          ::Yeller::Transporter::Sms.send(receiver.handler, "Your noty.im verification code: #{receiver.last_verification.code}.\n")
+        end
       end
 
       def self.acknowledge_verification(receiver)
         user = receiver.user
         raise MissingUserForReceiver unless user
         # TODO: maybe queue this in future
-        ::Yeller::Transporter::Sms.send(receiver.handler, "Hi, your phone number is confirm. Alert will be alow to send to this number")
+        ::Yeller::Transporter::Sms.send(receiver.handler, "You are all set. We'll message to this number.")
       end
 
       # Send out notification for an incident. This is
