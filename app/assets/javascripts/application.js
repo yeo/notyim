@@ -17,8 +17,8 @@
 // require_tree .
 
 // https://github.com/reactjs/react-rails/issues/413
-var React = window.React = global.React = require('react')
-var ReactDOM= window.ReactDOM = global.ReactDOM = require('react-dom')
+//var React = window.React = global.React = require('react')
+//var ReactDOM= window.ReactDOM = global.ReactDOM = require('react-dom')
 window.$ = window.jQuery = require('jquery')
 require('jquery-ujs')
 require('./common')

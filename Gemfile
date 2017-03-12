@@ -25,7 +25,6 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 gem 'bulma-rails'
-gem 'react-rails'
 gem 'browserify-rails'
 
 # Use Redis adapter to run Action Cable in production
