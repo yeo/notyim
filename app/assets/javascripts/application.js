@@ -10,7 +10,7 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 // require_self
-//= require react_ujs
+////= require react_ujs
 //= require components
 // NPM Modules
 //= require chartist/dist/chartist.min
