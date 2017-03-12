@@ -94,7 +94,7 @@ class IncidentService
       status: Incident::STATUS_PARTIAL,
       check: assertion.check,
       user: assertion.check.user,
-      team: check.team,
+      team: assertion.check.team,
       error_message: check_result.error_message,
       locations: {open: [{ip: check_result.from_ip, message: check_result.error_message}], close: []}
     )
