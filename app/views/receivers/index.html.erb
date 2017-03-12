@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+<!--<p id="notice"><%= notice %></p>-->
 
 <div class="section has-text-centered">
   <%= link_to 'Add new alert receiver', new_receiver_path, class: 'button is-primary is-large' %>
@@ -7,27 +7,22 @@
 <table class="table">
   <tbody>
     <% @receivers.each do |receiver| %>
-      <tr><td>
-          <nav class="level">
-          <div class="level-left">
-            <div class="level-item">
-              <h4 class="title">
-                <%= receiver.provider %>
-              </h4>
-            </div>
-            <div class="level-item">
-              <h4 class="subtitle"><%= link_to receiver.handler, edit_receiver_path(receiver) %></h4>
+      <tr>
+        <td>
+          <h4 class="title"> <%= receiver.provider %> </h4>
+        </td>
+        <td>
+              <h4 class="subtitle" id="<%= receiver.id.to_s%>"><%= receiver.name %>&nbsp;<%= link_to receiver.handler, edit_receiver_path(receiver) %></h4>
               <% if receiver.require_verify? && !receiver.verified? %>
+                <div>
                 <%= render 'receivers/verification/challenger', receiver: receiver %>
+                </div>
               <% end %>
-            </div>
-          </div>
-          <div class="level-right">
+        </td>
+        <td>
             <%= link_to receiver, method: :delete, data: { confirm: 'Are you sure?' } do %>
               <button class="button is-medium is-danger">Remove</button>
             <% end %>
-          </div>
-          </nav>
       </td></tr>
     <% end %>
   </tbody>

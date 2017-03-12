@@ -27,10 +27,11 @@ class ReceiversController < DashboardController
     @receiver = Receiver.new(receiver_params)
     @receiver.provider_attributes(params)
     @receiver.user = current.user
+    @receiver.team = current.team
 
     respond_to do |format|
       if ReceiverService.save(@receiver)
-        format.html { redirect_to @receiver, notice: 'Receiver was successfully created.' }
+        format.html { redirect_to receivers_path(anchor: @receiver.id.to_s), notice: 'Receiver was successfully created.' }
         format.json { render :show, status: :created, location: @receiver }
       else
         format.html { render :new }
@@ -44,7 +45,7 @@ class ReceiversController < DashboardController
   def update
     respond_to do |format|
       if @receiver.update(receiver_params)
-        format.html { redirect_to @receiver, notice: 'Receiver was successfully updated.' }
+        format.html { redirect_to receivers_path(anchor: @receiver.id.to_s), notice: 'Receiver was successfully updated.' }
         format.json { render :show, status: :ok, location: @receiver }
       else
         format.html { render :edit }
