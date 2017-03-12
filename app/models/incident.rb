@@ -13,6 +13,7 @@ class Incident
   field :status, type: String
   field :acknowledged_at, type: Time
   field :acknowledged_by, type: String
+  field :closed_at, type: Time
 
   field :error_message, type: String
   field :locations, type: Hash, default: {open: [], close: []}

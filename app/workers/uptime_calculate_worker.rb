@@ -35,7 +35,7 @@ class UptimeCalculateWorker
       open_incident = []
     end
 
-    incidents = open_incident + Incident.where(check: check, :created_at.gt => duration.ago).pluck(:created_at, :updated_at)
+    incidents = open_incident + Incident.where(check: check, :created_at.gt => duration.ago).pluck(:created_at, :closed_at)
     if incidents.count == 0
       100
     else

@@ -111,6 +111,7 @@ class IncidentService
   # @param Incident incident
   def self.close_incident(incident)
     incident.status = Incident::STATUS_CLOSE
+    incident.closed_at = Time.now.utc
     incident.save!
 
     incident
