@@ -76,7 +76,7 @@ class User
   # This is a special flag to make use of some free service, we only do this
   # for Vinh account of course
   def internal_tester?
-    flags[:internal_tester] == true
+    flags.is_a?(Hash) && flags[:internal_tester] == true
   end
 
   # Get a list of verifi receiver
