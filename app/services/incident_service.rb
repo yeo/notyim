@@ -38,7 +38,7 @@ class IncidentService
     incident.save!
 
     if incident.open?
-      Trinity::Semaphore.run_once ['open', 'alert', assertion.check.id.to_s], 30.minutes.to_i do
+      Trinity::Semaphore.run_once ['open', 'alert', assertion.check.id.to_s], Rails.configuration.incident_notification_interval.to_i do
         notify(incident, Incident::STATUS_OPEN)
       end
     end
@@ -75,7 +75,7 @@ class IncidentService
     end
 
     if incident.close?
-      Trinity::Semaphore.run_once ['close', 'alert', assertion.check.id.to_s], 30.minutes.to_i do
+      Trinity::Semaphore.run_once ['close', 'alert', assertion.check.id.to_s], Rails.configuration.incident_notification_interval.to_i do
         notify incident, Incident::STATUS_CLOSE
       end
     end
