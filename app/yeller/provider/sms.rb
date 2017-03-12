@@ -54,6 +54,7 @@ module Yeller
         Condition: #{incident.assertion.condition}
         Match: #{incident.assertion.operand}
         HEREDOC
+        user = incident.user
 
         if user.internal_tester?
           ::Yeller::Transporter::SmsTest.send(receiver.handler, content)
