@@ -4,6 +4,7 @@ class Incident
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Archivable
+  include Teamify
 
   STATUS_OPEN = 'open'.freeze
   STATUS_CLOSE = 'close'.freeze

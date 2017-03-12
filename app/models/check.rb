@@ -4,6 +4,7 @@ class Check
   include Mongoid::Document
   include Mongoid::Timestamps
   include Mongoid::Archivable
+  include Teamify
 
   TYPE_HTTP = 'http'.freeze
   TYPE_TCP  = 'tcp'.freeze
@@ -19,13 +20,14 @@ class Check
   field :uptime_1day, default: 100
   field :uptime_1month, default: 100
 
-  belongs_to :user, index: true
-  belongs_to :team, index: true
+  belongs_to :user
   has_many :assertions, dependent: :destroy
   has_many :incidents, dependent: :destroy
   has_one :daily_uptime, dependent: :destroy
 
   index({type: 1}, {background: true})
+  index({user: 1, team: 1}, {background: true})
+
   validates_presence_of :name, :uri, :type
   validates :type, :inclusion => { :in => TYPES }
   validates :uri, :format => URI::regexp(%w(http https))

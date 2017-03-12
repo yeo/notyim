@@ -7,6 +7,7 @@ class Receiver
   include Mongoid::Timestamps
   include Mongoid::Verifiable
   include Yeller::Processor
+  include Teamify
 
   field :provider, type: String
   field :name, type: String
