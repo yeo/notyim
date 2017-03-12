@@ -6,7 +6,7 @@ module Yeller
       end
 
       def self.send(to, body, from=nil)
-        super.send(to, body, ENV['PHONE_FROM_TEST'])
+        super(to, body, ENV['PHONE_FROM_TEST'])
       end
     end
   end
