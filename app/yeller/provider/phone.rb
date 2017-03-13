@@ -29,19 +29,47 @@ module Yeller
         # No need to to acknowledge since user interactive with the phone
       end
 
+      # Create call request to notify incident
       def self.notify_incident(incident, receiver)
         #TODO we should make sure phone # is valid to avoid waste money
         incident = decorate(incident)
         content = <<~HEREDOC
         #{incident.short_summary}
         Service: #{incident.check.uri}
-          Type: #{incident.assertion.subject}
-          Condition: #{incident.assertion.condition}
-          Match: #{incident.assertion.operand}
-          HEREDOC
+          #{incident.assertion.condition}
+          is #{incident.assertion.operand}
+        HEREDOC
 
-        ::Yeller::Transporter::Sms.send(receiver.handler, content)
+        n = log_notification(incident, content)
+        url = Trinity::Utils::Url.to(:incident_voice, incident)
+
+        user = incident.user
+        if user.internal_tester?
+          ::Yeller::Transporter::PhoneTest.call(receiver.handler, url)
+        else
+          if UserCreditService.has_credit_voice?(user)
+            UserCreditService.deduct_voice_minute!(user)
+
+            PhoneTransporterWorker.perform_async receiver.id.to_s, url
+          else
+            e = Exception.new(message: 'no voice balance', user: user.id.to_s)
+            Bugsnag.notify e
+            return nil
+          end
+        end
       end
+
+      # Render twilio for incident call
+      def self.incident_twilio_notification(incident)
+        notification = incident.notifications.where(kind: identity).desc(:id).first
+
+        response = Twilio::TwiML::Response.new do |r|
+          r.Say notification.message, voice: 'alice'
+        end
+
+        response.text
+      end
+
     end
   end
 end

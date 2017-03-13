@@ -9,6 +9,14 @@ module Yeller
         name.split('::').last
       end
 
+      def self.log_notification(incident, message)
+        n = Notification.new(message: message, kind: identity)
+        incident.notifications << n
+        incident.save!
+
+        n
+      end
+
       # Label is used to display as the label of provider when rendering field
       #
       # Example, if it's hipchat, label can be roomname

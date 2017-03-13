@@ -1,8 +1,11 @@
 class Notification
   include Mongoid::Document
 
-  field :subject, type: String
-  field :content, type: String
+  field :message
+  field :kind, type: String
+  field :read_at, type: Time
 
-  belongs_to :assertion
+  belongs_to :notifiable, polymorphic: true
+
+  index({notifiable_id: 1, kind: 1}, {background: true})
 end

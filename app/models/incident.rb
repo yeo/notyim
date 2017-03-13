@@ -27,6 +27,7 @@ class Incident
   belongs_to :check
   belongs_to :user
   has_many :check_responses, dependent: :destroy
+  has_many :notifications, as: :notifiable
 
   scope :open, -> () { where(status: STATUS_OPEN).desc(:id) }
   scope :close, -> () { where(status: STATUS_CLOSE).desc(:id) }

@@ -6,7 +6,8 @@
     <% @current.user.verified_receivers.each do |receiver| %>
       <%= label_tag receiver.id.to_s, class: 'radio' do %>
         <%= check_box_tag 'contact_receivers[]', receiver.id.to_s, check.register_receiver?(receiver), id: receiver.id.to_s  %>
-        <%= receiver.handler %>
+        <strong><%= receiver.provider %></strong>
+        <%= receiver.name || receiver.handler %>
       <% end %>
     <% end %>
     </p>

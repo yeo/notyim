@@ -56,6 +56,8 @@ module Yeller
         HEREDOC
         user = incident.user
 
+        log_notification(incident, content)
+
         if user.internal_tester?
           ::Yeller::Transporter::SmsTest.send(receiver.handler, content)
         else
