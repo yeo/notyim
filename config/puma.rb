@@ -10,7 +10,7 @@ threads threads_count, threads_count
 # Specifies the `port` that Puma will listen on to receive requests, default is 3000.
 #
 #port        ENV.fetch("PORT") { 3000 }
-if Rails.env.production?
+if ENV['RAILS_ENV'] == 'production'
   bind         "unix:///run/trinity/trinity.sock"
 else
   port        ENV.fetch("PORT") { 3000 }
