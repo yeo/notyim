@@ -1,13 +1,15 @@
 <section class="hero is-medium has-text-centered">
 <div class="hero-body intro">
   <div class="container">
-    <h1 class="title is-1">Application, Uptime, Log, System Event Monitoring </h1>
-    <h2 class="subtitle is-2">
-      Be <strong>the first</strong> to know about <strong>the outage</strong>
+    <h1 class="title is-2">Fast &amp; Simple Uptime Monitoring</h1>
+    <h2 class="subtitle is-4">
+      And Cron Job, Background Worker, Log
+      <!--Be <strong>the first</strong> to know about <strong>the outage</strong>-->
     </h2>
   </div>
-  <div class="container">
-    <h3 class="subtitle is-3">It's free to try. Signup instantly now with</h3>
+
+  <div class="section">
+    <h3 class="subtitle is-5">Try the beta for free</h3>
     <p class="hero-buttons">
     <%= link_to user_github_omniauth_authorize_path, class: 'button is-primary is-large' do %>
       <span>Github</span>
@@ -20,6 +22,16 @@
     <% end %>
     </p>
   </div>
+
+  <div class="section" style="margin-top: 1em">
+    <div class="box">
+      <h1 class="title">Quick peak into what it looks like</h1>
+      <div class="media-content" >
+        <img src="<%= image_url('bg/shot-home.jpg') %>">
+      </div>
+    </div>
+  </div>
+
 </div>
 </section>
 
@@ -105,9 +117,9 @@
     </div>
     <div class="column">
       <div class="">
-        <h1 class="title is-3">Multi Team</h1>
+        <h1 class="title is-3">Team</h1>
         <div class="content">
-          <p>Easily manage multiple team(work, persoanl) using a single account with multiple associated email</p>
+          <p>Easily manage multiple team(work, personal) using a single account with multiple associated emails</p>
         </div>
       </div>
     </div>
@@ -123,6 +135,7 @@
         </div>
       </div>
     </div>
+
     <div class="column">
       <div class="">
         <h1 class="title is-3"><i class="ion-earth is-hidden-mobile"></i> Granular alert routing</h1>
@@ -162,10 +175,11 @@
         <h1 class="subtitle is-3">$0</h1>
         <section class="section">
         <ul>
-          <li>Uli to 50 checks</li>
+          <li>1 check</li>
           <li>Single region</li>
           <li>Unlimited alert</li>
-          <li>No SMS or lihone call</li>
+          <li>No SMS/Voice</li>
+          <li>No Team support</li>
         </ul>
         </section>
         <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
@@ -180,10 +194,11 @@
         <h1 class="subtitle is-3">$10</h1>
         <section class="section">
         <ul>
-          <li>Uli to 500 checks.</li>
+          <li>Up to 10 checks.</li>
           <li>Multilile regions.</li>
           <li>Unlimited alert</li>
-          <li>100 SMS or 100 lihone call.</li>
+          <li>100 SMS/10 phone call</li>
+          <li>Team Support</li>
         </ul>
         </section>
         <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
@@ -195,13 +210,14 @@
     <div class="column">
       <div class="pricing">
         <h1 class="title is-2">Awesome</h1>
-        <h1 class="subtitle is-3">$20</h1>
+        <h1 class="subtitle is-3">$100</h1>
         <section class="section">
         <ul>
           <li>Unlimited checks.</li>
           <li>Multilile regions.</li>
           <li>Unlimited alert</li>
           <li>No <a href="/faq#sms_limit">hard limit</a> on SMS or lihone call.</li>
+          <li>Team Support</li>
         </ul>
         </section>
         <a class="button is-primary is-large" href="<%= new_user_registration_path %>">
