@@ -18,9 +18,10 @@ class UserCreditService
   def self.deduct_sms!(user, amount=1)
     initialize_credit(user)
     user.reload
+    credit = user.credit
 
-    user.credit.sms -= 1
-    user.credit.save!
+    credit.sms -= 1
+    credit.save!
   end
 
   def self.deduct_voice_minute!(user, amount=1)
