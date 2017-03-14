@@ -8,7 +8,7 @@
         <%= hidden_field_tag 'item', '', class: 'item-id' %>
 
         <% if current_user.active_subscription %>
-          <h2 class="title">Current Plan: <span class="tag"><%= current_user.active_subscription.plan %></span></h2>
+          <h2 class="title is-2">Current Plan: <span class="tag is-large"><strong><%= current_user.active_subscription.plan %></strong></span></h2>
         <% end %>
 
         <!--
@@ -63,7 +63,7 @@
           <div class="level-item has-text-centered">
             <div>
               <p class="heading">Price</p>
-              <p class="title"><%= plan.price %> USD/m</p>
+              <p class="title">$<%= plan.price / 100.0 %> USD/m</p>
             </div>
           </div>
           <div class="level-item has-text-centered">

@@ -11,7 +11,7 @@ class ChargeService
 
     charge = charge!(customer, purchase)
 
-    PurchaseSuccessWorker.perform_async(user.id.to_s, item, charge.to_hash)
+    Cashier::PurchaseSuccessWorker.perform_async(user.id.to_s, {type: item.type, id: item.id}, charge.to_hash)
 
     charge
   end
