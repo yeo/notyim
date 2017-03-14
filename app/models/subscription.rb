@@ -1,10 +1,16 @@
 class Subscription
   include Mongoid::Document
   include Mongoid::Timestamps
+  STATUS_GENERATED = "generated"
+  STATUS_ACTIVED = "actived"
 
   field :start_at, type: Time
   field :expire_at, type: Time
   field :plan, type: String
 
-  belongs_to :user, index: true
+  # Status is ENUM
+  field :status, type: String
+
+  belongs_to :user
+  index({user: 1, status: 1}, {background: true})
 end

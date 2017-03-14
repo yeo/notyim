@@ -8,7 +8,7 @@
         <%= hidden_field_tag 'item', '', class: 'item-id' %>
 
         <% if current_user.active_subscription %>
-          <h2 class="title">Current Plan: <span class="tag"><%= current_user.active_subscription %></span></h2>
+          <h2 class="title">Current Plan: <span class="tag"><%= current_user.active_subscription.plan %></span></h2>
         <% end %>
 
         <!--

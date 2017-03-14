@@ -50,11 +50,8 @@ class User
   field :locked_at,       type: Time
 
   # Billing system
-  # credit is pay as you go
-  field :credit, type: Integer, default: 0 # user balance in our credit
   # subscription is monthly payment
-  field :subscription_expire_at, type: Time
-  field :active_subscription, type: String
+  field :balance, type: Float
   field :time_zone, default: "UTC"
   field :flags, type: Hash
 
@@ -66,11 +63,17 @@ class User
   has_many :stripe_tokens, dependent: :destroy
   has_many :charge_transactions, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
-
   has_one :credit, dependent: :destroy
 
-
   after_create :create_team
+
+  def active_subscription
+    subscriptions.where(:expire_at.gt => Time.now.utc).desc(:id).first
+  end
+
+  def subscription_expire_at
+    active_subscription && active_subscription.expire_at
+  end
 
   # Private internal tester
   # This is a special flag to make use of some free service, we only do this
