@@ -58,6 +58,6 @@ class Check
       return []
     end
 
-    receivers.map { |id| Receiver.find(id) }
+    receivers.map { |id| Receiver.find(id) rescue nil }.select { |d| !d.nil? }
   end
 end
