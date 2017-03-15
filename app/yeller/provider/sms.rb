@@ -28,6 +28,9 @@ module Yeller
       end
 
       def self.acknowledge_verification(receiver)
+        # TODO Use email to save SMS cost
+        return
+
         user = receiver.user
         raise MissingUserForReceiver unless user
         # TODO: maybe queue this in future
