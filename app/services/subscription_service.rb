@@ -1,0 +1,3 @@
+class SubscriptionService
+
+end
