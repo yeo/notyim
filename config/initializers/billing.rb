@@ -7,10 +7,16 @@ Cashier.configure do |config|
   config.sms_price  0.07 * 100 / 1000
   config.minute_price 0.3
 
-  config.subscription :free, 0, {
-    check: 50,
+  config.subscription :trial, 0, {
+    check: 1,
     sms: 0,
     minute: 0,
+  }
+
+  config.subscription :starter, 3, {
+    check: 3,
+    sms: 10,
+    minute: 5,
   }
 
   config.subscription :premium, 10, {
