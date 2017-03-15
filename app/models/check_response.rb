@@ -32,7 +32,7 @@ class CheckResponse
 
   # Timing
   def total_response_time
-    time('total')
+    time('Total')
   end
 
   def time(action)

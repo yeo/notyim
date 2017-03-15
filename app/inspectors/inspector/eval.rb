@@ -11,7 +11,8 @@ module Inspector
       end
 
       def slow(a, threshold)
-        a.total_response_time > threshold
+        t = a.total_response_time || 0
+        t > threshold
       end
 
       def eq(a, b)
