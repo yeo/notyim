@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
   root to: 'home#index'
   get '/terms', to: 'page#term', as: 'show_term'
+  get '/faq', to: 'page#faq', as: 'show_faq'
   get '/feedbacks', to: 'page#feedback', as: 'show_feedback'
   get '/about', to: 'page#about', as: 'show_about'
   get '/docs', to: 'page#doc', as: 'show_doc'

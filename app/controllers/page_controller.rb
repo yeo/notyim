@@ -8,6 +8,10 @@ class PageController < ApplicationController
   def feedback
   end
 
+  def faq
+
+  end
+
   def about
   end
 end
