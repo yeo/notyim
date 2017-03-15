@@ -22,6 +22,8 @@ module Yeller
         Type: #{incident.assertion.subject}
         Condition: #{incident.assertion.condition}
         Match: #{incident.assertion.operand}
+
+        #{incident.url}
         HEREDOC
       end
     end
