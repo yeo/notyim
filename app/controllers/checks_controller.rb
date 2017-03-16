@@ -25,7 +25,7 @@ class ChecksController < DashboardController
   # POST /checks.json
   def create
     @check = Check.new(check_params)
-    @check.uri = "http://#{@check.uri}" if check.uri && check.uri.start_with?('http')
+    @check.uri = "http://#{@check.uri}" if @check.uri && @check.uri.start_with?('http')
     @check.user = current.user
     @check.team = current.team
 
