@@ -64,6 +64,7 @@ class User
   has_many :charge_transactions, dependent: :destroy
   has_many :subscriptions, dependent: :destroy
   has_one :credit, dependent: :destroy
+  has_many :bot_accounts, dependent: :destroy
 
   after_create :create_team
 

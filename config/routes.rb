@@ -40,4 +40,11 @@ Rails.application.routes.draw do
     get '/billing', to: 'billing#show', as: 'show_billings'
     get '/api_tokens', to: 'api#index', as: 'api_tokens'
   end
+
+  namespace :api do
+    namespace :bot do
+      resources :registrations, only: [:create]
+      resources :checks, only: [:index, :show, :create, :destroy]
+    end
+  end
 end
