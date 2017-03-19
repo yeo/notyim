@@ -7,7 +7,12 @@ module Api
         user = User.find_by(email: params[:email]) rescue nil
 
         if user
-          render json: {error: "Exist user"}, status: 422
+          begin
+            bot = ::Bot::RegistrationService.add_bot_to_user(user, params[:address])
+            render json: bot
+          rescue => e
+            render json: {error: "Exist user"}, status: 422
+          end
         else
           # Create a bot user
           bot = ::Bot::RegistrationService.register(params[:email], params[:address])

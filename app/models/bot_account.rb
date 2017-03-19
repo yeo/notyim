@@ -5,6 +5,7 @@ class BotAccount
   field :bot_uuid
   field :address
   field :token
+  field :link_verification_code
 
   index({bot_uuid: 1}, {background: true})
   index({token: 1}, {background: true})
@@ -12,7 +13,7 @@ class BotAccount
   validates_uniqueness_of :bot_uuid
   validates_uniqueness_of :token
 
-  belongs_to :user
+  belongs_to :user, optional: true
 
   before_create :set_uuid
   before_create :set_token

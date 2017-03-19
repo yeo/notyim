@@ -24,7 +24,9 @@ module Bot
         user = User.find_by(email: user)
       end
 
-      bot = BotAccount.create!(address: address, user: user)
+      bot = BotAccount.create!(address: address, link_verification_code: SecureRandom.hex)
+      # Send an email to confirm
+      BotAccountMailer.verify_link_account(user.id.to_s, bot.id.to_s).deliver_later
 
       bot
     end

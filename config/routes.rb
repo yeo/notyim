@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     namespace :bot do
       resources :registrations, only: [:create]
       resources :checks, only: [:index, :show, :create, :destroy]
+      get '/link_verification/:user_id/:bot_id', to: 'verification#link', as: 'link_verification'
     end
   end
 end

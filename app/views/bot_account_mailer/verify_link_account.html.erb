@@ -1,0 +1,15 @@
+Hi, <%= @user.name %><br>
+
+<p>
+You have requested us to link your account <%= @bot.address["user"]["name"] %> on <%= @bot.address["channelId"] %> to your existing noty.im account on this email.<br>
+</p>
+
+<p>
+If this is you, please click this link to verify linking<br><br>
+
+<%= @url %>
+</p>
+
+<p>
+If you didn't made this request, please ignore this email or contact us at support@noty.im
+</p>

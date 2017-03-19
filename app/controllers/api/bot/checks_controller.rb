@@ -6,7 +6,7 @@ module Api
         uri = params[:uri]
         uri = "http://#{uri}" unless uri.start_with?('http')
 
-        Check.create!(
+        check = Check.create!(
           type: Check::TYPE_HTTP,
           name: params[:uri],
           uri: params[:uri],
@@ -14,7 +14,7 @@ module Api
           team: current.user.teams.first,
         )
 
-        render json: {id: current.user.id.to_s}
+        render json: check
       end
 
       def index
