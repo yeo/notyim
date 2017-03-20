@@ -1,4 +1,8 @@
 module Bot
+  def self.uuid(address)
+    [address['channelId'], address['user']['id']].join("_")
+  end
+
   class RegistrationService
     # Register a new user and bot at a same time
     def self.register(email, address)
@@ -10,7 +14,11 @@ module Bot
       user.skip_confirmation!
       user.save!
       begin
-        bot = BotAccount.create!(address: address, user: user)
+        bot = BotAccount.create!(
+          bot_uuid: ::Bot.uuid(address),
+          address: address,
+          user: user
+        )
         bot
       rescue
         user.destroy
@@ -24,7 +32,11 @@ module Bot
         user = User.find_by(email: user)
       end
 
-      bot = BotAccount.create!(address: address, link_verification_code: SecureRandom.hex)
+      bot = BotAccount.create!(
+        bot_uuid: ::Bot.uuid(address),
+        address: address,
+        link_verification_code: SecureRandom.hex
+      )
       # Send an email to confirm
       BotAccountMailer.verify_link_account(user.id.to_s, bot.id.to_s).deliver_later
 

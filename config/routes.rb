@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :bot do
       resources :registrations, only: [:create]
+      get '/me', to: 'me#show', as: 'show_me'
       resources :checks, only: [:index, :show, :create, :destroy]
       get '/link_verification/:user_id/:bot_id', to: 'verification#link', as: 'link_verification'
     end

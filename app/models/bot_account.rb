@@ -15,18 +15,11 @@ class BotAccount
 
   belongs_to :user, optional: true
 
-  before_create :set_uuid
   before_create :set_token
 
   def set_token
     unless self.token
       self.token = SecureRandom.hex
-    end
-  end
-
-  def set_uuid
-    unless self.bot_uuid
-      self.bot_uuid = [address['channelId'], address['user']['id']].join("_")
     end
   end
 end
