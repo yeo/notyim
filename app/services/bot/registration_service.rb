@@ -14,11 +14,17 @@ module Bot
       user.skip_confirmation!
       user.save!
       begin
-        bot = BotAccount.create!(
-          bot_uuid: ::Bot.uuid(address),
-          address: address,
-          user: user
-        )
+        if bot = BotAccount.where(bot_uuid: ::Bot.uuid(address)).first
+          bot.address = address
+          bot.user = user
+          bot.save!
+        else
+          bot = BotAccount.create!(
+            bot_uuid: ::Bot.uuid(address),
+            address: address,
+            user: user
+          )
+        end
         bot
       rescue
         user.destroy
@@ -32,11 +38,17 @@ module Bot
         user = User.find_by(email: user)
       end
 
-      bot = BotAccount.create!(
-        bot_uuid: ::Bot.uuid(address),
-        address: address,
-        link_verification_code: SecureRandom.hex
-      )
+      if bot = BotAccount.where(bot_uuid: ::Bot.uuid(address))
+        bot.link_verification_code = SecureRandom.hex
+        bot.address = address
+        bot.save!
+      else
+        bot = BotAccount.create!(
+          bot_uuid: ::Bot.uuid(address),
+          address: address,
+          link_verification_code: SecureRandom.hex
+        )
+      end
       # Send an email to confirm
       BotAccountMailer.verify_link_account(user.id.to_s, bot.id.to_s).deliver_later
 
