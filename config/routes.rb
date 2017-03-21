@@ -34,6 +34,7 @@ Rails.application.routes.draw do
   get '/faq', to: 'page#faq', as: 'show_faq'
   get '/feedbacks', to: 'page#feedback', as: 'show_feedback'
   get '/about', to: 'page#about', as: 'show_about'
+  get '/changelog', to: 'page#changelog', as: 'show_changelog'
 
   get '/docs', to: 'page#doc', as: 'show_doc'
   get '/dashboard', to: 'checks#index', as: 'user_root'
