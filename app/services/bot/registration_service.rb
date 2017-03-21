@@ -38,7 +38,7 @@ module Bot
         user = User.find_by(email: user)
       end
 
-      if bot = BotAccount.where(bot_uuid: ::Bot.uuid(address))
+      if bot = BotAccount.where(bot_uuid: ::Bot.uuid(address)).first
         bot.link_verification_code = SecureRandom.hex
         bot.address = address
         bot.save!

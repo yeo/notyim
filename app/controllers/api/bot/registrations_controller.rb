@@ -11,6 +11,7 @@ module Api
             bot = ::Bot::RegistrationService.add_bot_to_user(user, params[:address])
             render json: bot
           rescue => e
+            Bugsnag.notify e
             render json: {error: "Exist user"}, status: 422
           end
         else

@@ -5,11 +5,17 @@ module Api
   module Bot
     class BotController < ApplicationController
       protect_from_forgery with: :null_session
-      before_action :require_bot_account
+      before_action :require_api_token, :require_bot_account
 
       private
       def current
         @current
+      end
+
+      def require_api_token
+        #if request.headers['HTTP_X_API_TOKEN'] != "fake-toke-for-now"
+        #  head :forbidden
+        #end
       end
 
       # Find associated user with this bot account

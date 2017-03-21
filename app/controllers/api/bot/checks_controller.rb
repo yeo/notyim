@@ -21,7 +21,7 @@ module Api
       end
 
       def index
-        checks = Check.where(user: current.user).map do |c|
+        checks = Check.where(user: current.user).limit(6).map do |c|
           {id: c.id.to_s, uri: c.uri}
         end
         render json: checks
