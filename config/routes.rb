@@ -53,4 +53,8 @@ Rails.application.routes.draw do
       get '/link_verification/:user_id/:bot_id', to: 'verification#link', as: 'link_verification'
     end
   end
+
+  scope :status_page, module: 'status_page' do
+    get '/status_page/:id', to: 'checks#show', as: 'show_status_page'
+  end
 end

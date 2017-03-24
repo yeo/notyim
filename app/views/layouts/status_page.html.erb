@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>NotyIM - Uptime monitoring</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application'  %>
+    <%= render 'partials/meta' %>
+  </head>
+
+  <body class="layout-default">
+    <%= render 'partials/dashboard/header' %>
+    <section class="section">
+      <div class="container">
+        <%= yield %>
+      </div>
+    </section>
+  </body>
+</html>
