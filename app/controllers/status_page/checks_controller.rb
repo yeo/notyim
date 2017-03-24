@@ -3,6 +3,7 @@ module StatusPage
     before_action :set_check, :ensure_public
 
     def show
+      @public_view = true
       render template: "checks/show", layout: 'status_page'
     end
 

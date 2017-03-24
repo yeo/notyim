@@ -55,6 +55,6 @@ Rails.application.routes.draw do
   end
 
   scope :status_page, module: 'status_page' do
-    get '/status_page/:id', to: 'checks#show', as: 'show_status_page'
+    get '/check/:id', to: 'checks#show', as: 'show_status_page'
   end
 end

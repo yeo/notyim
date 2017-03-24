@@ -30,14 +30,18 @@
           <p class="heading">Last check</p>
           <p class="title">30 seconds ago</p>
         </div>
-      </div>
-      <div class="level-right">
-        <div class="level-item">
-          <div class="block">
-            <%= link_to 'Configure', edit_check_path(check), class: 'button is-primary' %>
+        </div>
+
+        <% unless @public_view %>
+        <div class="level-right">
+          <div class="level-item">
+            <div class="block">
+              <%= link_to 'Configure', edit_check_path(check), class: 'button is-primary' %>
+            </div>
           </div>
         </div>
-      </div>
+        <% end %>
+
       </nav>
     </div>
   </div>

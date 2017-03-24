@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>NotyIM - Uptime monitoring</title>
+    <title><%= @check.name || @check.uri %></title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
@@ -10,7 +10,6 @@
   </head>
 
   <body class="layout-default">
-    <%= render 'partials/dashboard/header' %>
     <section class="section">
       <div class="container">
         <%= yield %>
