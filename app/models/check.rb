@@ -19,6 +19,7 @@ class Check
   field :uptime_1hour, default: 100
   field :uptime_1day, default: 100
   field :uptime_1month, default: 100
+  field :enable_status_page
 
   belongs_to :user
   has_many :assertions, dependent: :destroy
@@ -46,8 +47,8 @@ class Check
     return false if !receivers
 
     r = if r.respond_to? :id
-      r.id.to_s
-    end
+          r.id.to_s
+        end
 
     receivers.include? r
   end
@@ -58,6 +59,10 @@ class Check
       return []
     end
 
-    receivers.map { |id| Receiver.find(id) rescue nil }.select { |d| !d.nil? }
+    if receivers = receivers.map { |id| Receiver.find(id) rescue nil }.select { |d| !d.nil? }
+      receiver
+    else
+      # Default to email
+    end
   end
 end
