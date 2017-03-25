@@ -1,0 +1,16 @@
+<div class="section">
+  <h1 class="title">Enable public status page</h2>
+  <p>A read-only of your servic metric for public viewing</p>
+  <hr>
+
+  <%= form_tag(register_incident_receivers_path(check_id: check.id.to_s)) do |f| %>
+    <p class="control">
+      <%= label_tag :name, 'Custom domai', class: 'label' %>
+      <%= text_field :name, class: 'input', placeholder: 'your domain' %>
+    </p>
+
+    <p class="control">
+      <%= submit_tag 'Save', class: 'button is-primary' %>
+    </p>
+  <% end %>
+</div>
