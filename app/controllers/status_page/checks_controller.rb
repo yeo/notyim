@@ -14,7 +14,7 @@ module StatusPage
     end
 
     def ensure_public
-      unless @check.enable_status_page == true
+      unless @check.status_page_enable == true
         head :forbidden
       end
     end

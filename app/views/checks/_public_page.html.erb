@@ -1,16 +1,22 @@
 <div class="section">
   <h1 class="title">Enable public status page</h2>
-  <p>A read-only of your servic metric for public viewing</p>
+  <p>A read-only of your service metric for public viewing</p>
   <hr>
 
-  <%= form_tag(register_incident_receivers_path(check_id: check.id.to_s)) do |f| %>
-    <p class="control">
-      <%= label_tag :name, 'Custom domai', class: 'label' %>
-      <%= text_field :name, class: 'input', placeholder: 'your domain' %>
+  <%= form_tag(register_incident_receivers_path(check_id: check.id.to_s, class: 'form')) do |f| %>
+    <p>
+    Once enable public viewing, beside using our standard url, you can configure your own domain as
+    well by creating a CNAME record to <strong>st.noty.im</strong>
     </p>
 
-    <p class="control">
-      <%= submit_tag 'Save', class: 'button is-primary' %>
-    </p>
+    <div class="field has-addons">
+      <p class="control">
+        <%= label_tag :name, 'Custom domain', class: 'label' %>
+        <%= text_field_tag :name, '', class: 'input', placeholder: 'status.yourdomain.com' %>
+      </p>
+      <p class="control">
+        <%= submit_tag 'Enable', class: 'button is-primary' %>
+      </p>
+    </div>
   <% end %>
 </div>
