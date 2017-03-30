@@ -29,6 +29,7 @@ class Check
   has_one :daily_uptime, dependent: :destroy
 
   index({type: 1}, {background: true})
+  index({status_page_domain: 1}, {background: true})
   index({user: 1, team: 1}, {background: true})
 
   validates_presence_of :name, :uri, :type
