@@ -37,10 +37,9 @@
 
     </div>
   </div>
-
-  <%= render 'public_page', check: @check %>
-
 <% end %>
+
+<%= render 'public_page', check: @check %>
 
 <% if check.persisted? %>
   <%= render 'assertions/index', assertions: check.assertions %>

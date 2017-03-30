@@ -20,7 +20,7 @@ class Check
   field :uptime_1day, default: 100
   field :uptime_1month, default: 100
 
-  field :status_page_enable
+  field :status_page_enable, type: Boolean
   field :status_page_domain
 
   belongs_to :user
