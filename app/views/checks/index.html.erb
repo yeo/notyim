@@ -74,10 +74,8 @@
 
           <div class="level-right">
             <div class="level-item">
-              <div class="block">
-                <p class="control"><%= link_to 'Detail', check_path(check), class: 'button is-primary' %></p>
-                <p class="control"><%= link_to 'Config', edit_check_path(check), class: 'button' %></p>
-              </div>
+              <%= link_to 'Detail', check_path(check), class: 'button is-primary' %>
+              <%= link_to 'Config', edit_check_path(check), class: 'button' %>
             </div>
           </div>
           </nav>

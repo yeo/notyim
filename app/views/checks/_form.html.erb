@@ -13,38 +13,56 @@
 
   <div class="card">
     <div class="card-content">
-
-      <div class="control has-addons">
-        <div class='control-label'>
-          <%= f.label :type, class: 'label' %>
-        </div>
-        <span class='select'>
-          <%= f.select :type, format_type_enum_for_select(check) %>
-        </span>
-
-        <div class='control-label'>
-          <%= f.label :name, class: 'label' %>
-        </div>
-        <%= f.text_field :name, class: 'input', placeholder: 'Name' %>
-
-        <div class='control-label'>
-          <%= f.label :uri, class: 'label' %>
+      <div class="columns">
+        <div class="column">
+        <div class="field is-grouped">
+          <p class="control">
+            <%= f.label :type, class: 'label' %>
+          </p>
+          <p class="control">
+            <span class='select'>
+              <%= f.select :type, format_type_enum_for_select(check) %>
+            </span>
+            </p>
+          </div>
         </div>
 
-        <%= f.text_field :uri, class: 'input is-expanded', placeholder: 'URL to check' %>
-        <%= f.submit 'Save', class: 'button is-primary' %>
+        <div class="column">
+        <div class="field is-grouped">
+          <p class="control">
+            <%= f.label :name, class: 'label' %>
+          </p>
+          <p class="control">
+            <%= f.text_field :name, class: 'input', placeholder: 'Name', size: '20' %>
+          </p>
+        </div>
       </div>
+        <div class="column">
+        <div class="field is-grouped">
+          <p class="control">
+            <%= f.label :uri, class: 'label' %>
+          </p>
+          <p class="control is-expanded">
+            <%= f.text_field :uri, class: 'input', placeholder: 'URL to check' %>
+          </p>
+          <p class="control">
+            <%= f.submit 'Save', class: 'button is-primary' %>
+            </p>
+          </div>
+        </div>
 
+        </div>
+      </div>
     </div>
   </div>
 <% end %>
 
-<%= render 'public_page', check: @check %>
-
 <% if check.persisted? %>
+  <%= render 'public_page', check: @check %>
+
   <%= render 'assertions/index', assertions: check.assertions %>
 
-  <section class="section">
+  <section class="section" id="add-asertion">
   <div class="container">
     <div class="columns">
       <div class="column">

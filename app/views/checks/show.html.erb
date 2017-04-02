@@ -1,5 +1,24 @@
 <p id="notice"><%= notice %></p>
 
+<% unless @public_view %>
+<% if @check.assertions.empty? %>
+  <article class="message is-warning">
+  <div class="message-body">
+  You haven't configure your alert condition yet. Please <%= link_to("configure your alert condition", edit_check_path(@check), anchor: 'add-asertion') %> so we will know
+    when to alert you.
+  </div>
+  </article>
+<% end %>
+<% end %>
+
+<% unless @check.receivers.try(:present?) %>
+  <article class="message is-warning">
+  <div class="message-body">
+  You haven't configure any alert receiver yet. Please <%= link_to("configure your alert contact", edit_check_path(@check), anchor: 'add-asertion') %> so we will know who to notify when your site is down.
+  </div>
+  </article>
+<% end %>
+
 <% decorate(@check) do |check| %>
   <div class="card is-fullwidth">
     <div class="column check-item">
