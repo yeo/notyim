@@ -15,6 +15,17 @@ class IncidentDecorator < SimpleDelegator
     "#{short_status} [noty alert]"
   end
 
+  # Generate a friendly reason text for the incident
+  #
+  # We then can use this to send a short text to end user
+  def reason
+    #TODO Refactor this into its own class
+    case check.type
+      when Check::TYPE_HTTP
+TYPE_HTTPh
+    end
+  end
+
   def subject
     "━ [noty alert][#{status == 'close' ? 'UP' : 'DOWN'}] #{incident.check.uri}"
   end

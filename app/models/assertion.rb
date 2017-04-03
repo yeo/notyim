@@ -61,10 +61,12 @@ class Assertion
   }.freeze
 
   belongs_to :check
-  has_many :incidents, dependent: :destroy # We don't want to destroy incident when removing assertion
+  has_many :incidents, dependent: :destroy
 
   validates_presence_of :subject, :condition
   validates :subject, :inclusion => { :in => SUBJECT_TYPES }
+
+  index({check_id: 1}, {background: true})
 
   def subject_enum
     SUBJECT_TYPES
