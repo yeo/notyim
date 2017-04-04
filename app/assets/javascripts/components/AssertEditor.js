@@ -8542,114 +8542,25 @@ var _user$project$AssertEditor$view = function (model) {
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('control is-horizontal'),
+			_0: _elm_lang$html$Html_Attributes$class('columns'),
 			_1: {ctor: '[]'}
 		},
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$p,
+				_elm_lang$html$Html$div,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('control-label'),
+					_0: _elm_lang$html$Html_Attributes$class('column field is-horizontal'),
 					_1: {ctor: '[]'}
 				},
 				{
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$label,
+						_elm_lang$html$Html$div,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('label'),
-							_1: {ctor: '[]'}
-						},
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html$text('When'),
-							_1: {ctor: '[]'}
-						}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$p,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$class('control'),
-						_1: {ctor: '[]'}
-					},
-					{
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$span,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('select'),
-								_1: {ctor: '[]'}
-							},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$select,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$name('assertion[subject]'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Events$onInput(_user$project$AssertEditor$SelectSubject),
-											_1: {ctor: '[]'}
-										}
-									},
-									A2(
-										_elm_lang$core$Basics_ops['++'],
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$option,
-												{ctor: '[]'},
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html$text('Select'),
-													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										},
-										A2(
-											_elm_lang$core$List$map,
-											function (_p5) {
-												var _p6 = _p5;
-												var _p7 = _p6._0;
-												return A2(
-													_elm_lang$html$Html$option,
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$value(_p7),
-														_1: {
-															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$selected(
-																_elm_lang$core$Native_Utils.eq(_p7, model.assert.subject)),
-															_1: {ctor: '[]'}
-														}
-													},
-													{
-														ctor: '::',
-														_0: _elm_lang$html$Html$text(_p6._1),
-														_1: {ctor: '[]'}
-													});
-											},
-											model.subjects))),
-								_1: {ctor: '[]'}
-							}),
-						_1: {ctor: '[]'}
-					}),
-				_1: {
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$p,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$class('control-label'),
+							_0: _elm_lang$html$Html_Attributes$class('field-label'),
 							_1: {ctor: '[]'}
 						},
 						{
@@ -8663,7 +8574,7 @@ var _user$project$AssertEditor$view = function (model) {
 								},
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html$text('Occur'),
+									_0: _elm_lang$html$Html$text('When'),
 									_1: {ctor: '[]'}
 								}),
 							_1: {ctor: '[]'}
@@ -8671,10 +8582,10 @@ var _user$project$AssertEditor$view = function (model) {
 					_1: {
 						ctor: '::',
 						_0: A2(
-							_elm_lang$html$Html$p,
+							_elm_lang$html$Html$div,
 							{
 								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$class('control'),
+								_0: _elm_lang$html$Html_Attributes$class('field-body'),
 								_1: {ctor: '[]'}
 							},
 							{
@@ -8692,20 +8603,88 @@ var _user$project$AssertEditor$view = function (model) {
 											_elm_lang$html$Html$select,
 											{
 												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$name('assertion[condition]'),
+												_0: _elm_lang$html$Html_Attributes$name('assertion[subject]'),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onInput(_user$project$AssertEditor$SelectCondition),
+													_0: _elm_lang$html$Html_Events$onInput(_user$project$AssertEditor$SelectSubject),
 													_1: {ctor: '[]'}
 												}
 											},
 											A2(
-												_elm_lang$core$List$map,
-												_user$project$AssertEditor$viewCondition(model),
+												_elm_lang$core$Basics_ops['++'],
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$option,
+														{ctor: '[]'},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text('Select'),
+															_1: {ctor: '[]'}
+														}),
+													_1: {ctor: '[]'}
+												},
 												A2(
-													_elm_lang$core$List$filter,
-													_user$project$AssertEditor$findCondition(model),
-													model.conditions))),
+													_elm_lang$core$List$map,
+													function (_p5) {
+														var _p6 = _p5;
+														var _p7 = _p6._0;
+														return A2(
+															_elm_lang$html$Html$option,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$value(_p7),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$selected(
+																		_elm_lang$core$Native_Utils.eq(_p7, model.assert.subject)),
+																	_1: {ctor: '[]'}
+																}
+															},
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html$text(_p6._1),
+																_1: {ctor: '[]'}
+															});
+													},
+													model.subjects))),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('column field is-horizontal'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('field-label'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$label,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('label'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Occur'),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
@@ -8713,10 +8692,64 @@ var _user$project$AssertEditor$view = function (model) {
 						_1: {
 							ctor: '::',
 							_0: A2(
-								_elm_lang$html$Html$p,
+								_elm_lang$html$Html$div,
 								{
 									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$class('control-label'),
+									_0: _elm_lang$html$Html_Attributes$class('field-body'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$span,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('select'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$select,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$name('assertion[condition]'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onInput(_user$project$AssertEditor$SelectCondition),
+														_1: {ctor: '[]'}
+													}
+												},
+												A2(
+													_elm_lang$core$List$map,
+													_user$project$AssertEditor$viewCondition(model),
+													A2(
+														_elm_lang$core$List$filter,
+														_user$project$AssertEditor$findCondition(model),
+														model.conditions))),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('column field is-horizontal has-addons'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('field-label'),
 									_1: {ctor: '[]'}
 								},
 								{
@@ -8738,10 +8771,10 @@ var _user$project$AssertEditor$view = function (model) {
 							_1: {
 								ctor: '::',
 								_0: A2(
-									_elm_lang$html$Html$p,
+									_elm_lang$html$Html$div,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$class('control'),
+										_0: _elm_lang$html$Html_Attributes$class('field-body'),
 										_1: {ctor: '[]'}
 									},
 									{
@@ -8806,8 +8839,8 @@ var _user$project$AssertEditor$view = function (model) {
 									}),
 								_1: {ctor: '[]'}
 							}
-						}
-					}
+						}),
+					_1: {ctor: '[]'}
 				}
 			}
 		});

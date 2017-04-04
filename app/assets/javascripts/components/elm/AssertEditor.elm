@@ -55,26 +55,30 @@ type alias Assert =
 -- View
 view : Model -> Html Msg
 view model =
-  div [ class "control is-horizontal" ]
-    [ p [class "control-label"] [ label [ class "label"] [ text "When"] ]
-    , p [class "control"]
-        [span [ class "select" ]
-          [ select [name "assertion[subject]", onInput SelectSubject ]
-            ([option [ ] [ text "Select" ]] ++
-              (List.map (\(subject, label) -> option [ value subject, selected (subject == model.assert.subject) ] [ text label ]) model.subjects))
-          ]
-        ]
-    , p [class "control-label" ] [ label [ class "label" ] [ text "Occur" ] ]
-    , p [class "control"]
-        [span [ class "select" ]
-          [ select [name "assertion[condition]", onInput SelectCondition ]
-                (List.map (viewCondition model) (model.conditions |> List.filter (findCondition model)))
-          ]
-        ]
-    , p [class "control-label" ] [ label [ class "label" ] [ text "Value" ] ]
-    , p [class "control"]
-        [ input [ name "assertion[operand]", type_ "text", placeholder "value", class "input is-expanded", size 20, onInput Operand, value model.assert.operand, disabled (disabledOperand model) ] []
-        , input [ type_ "submit", value "Save", class "button is-primary" ] []]
+  div [ class "columns" ]
+    [div [ class "column field is-horizontal" ]
+      [ div [class "field-label"] [ label [ class "label"] [ text "When"] ]
+      , div [class "field-body"]
+          [span [ class "select" ]
+            [ select [name "assertion[subject]", onInput SelectSubject ]
+              ([option [ ] [ text "Select" ]] ++
+                (List.map (\(subject, label) -> option [ value subject, selected (subject == model.assert.subject) ] [ text label ]) model.subjects))
+            ]
+          ] ]
+    , div [ class "column field is-horizontal" ]
+      [ div [class "field-label" ] [ label [ class "label" ] [ text "Occur" ] ]
+      , div [class "field-body"]
+          [span [ class "select" ]
+            [ select [name "assertion[condition]", onInput SelectCondition ]
+                  (List.map (viewCondition model) (model.conditions |> List.filter (findCondition model)))
+            ]
+          ] ]
+    , div [ class "column field is-horizontal has-addons" ]
+      [ div [class "field-label" ] [ label [ class "label" ] [ text "Value" ] ]
+      , div [class "field-body"]
+          [ input [ name "assertion[operand]", type_ "text", placeholder "value", class "input is-expanded", size 20, onInput Operand, value model.assert.operand, disabled (disabledOperand model) ] []
+          , input [ type_ "submit", value "Save", class "button is-primary" ] []]
+      ]
     ]
 
 findCondition : Model -> ConditionItem -> Bool

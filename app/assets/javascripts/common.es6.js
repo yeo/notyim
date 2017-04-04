@@ -1,4 +1,4 @@
-jQuery(document).ready(function ($) {
+window.$(document).ready(function ($) {
   var $toggle = $('#nav-toggle');
   var $menu = $('#nav-menu');
 
@@ -60,4 +60,4 @@ jQuery(document).ready(function ($) {
     // select active radio based on hash
     $(document.location.hash).prop('checked', true);
   })
-})(window.jQuery);
+})(window.$);
