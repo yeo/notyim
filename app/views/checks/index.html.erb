@@ -73,15 +73,19 @@
           </div>
 
           <div class="level-right">
-            <div class="level-item">
-
-              <div class="field">
-                <p class="control"><%= link_to 'Detail', check_path(check), class: 'button is-primary' %></p>
-              </div>
-              <div class="field">
-                <p class="control"><%= link_to 'Config', edit_check_path(check), class: 'button' %></p>
-              </div>
-
+            <div class="level-item  has-text-centered">
+              <ul class="menu-list">
+                <li>
+                  <div class="field">
+                    <div class="control"><%= link_to 'Detail', check_path(check), class: 'button is-primary' %></div>
+                  </div>
+                </li>
+                <li>
+                  <div class="field">
+                  <div class="control"><%= link_to 'Config', edit_check_path(check), class: 'button' %></div>
+                  </div>
+                  </li>
+              </ul>
             </div>
           </div>
           </nav>
