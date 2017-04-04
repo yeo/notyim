@@ -1,6 +1,8 @@
-<p class="control">
+<div class="field">
   <%= f.label :handler, 'Phone number(international format)', class: 'label' %>
-  <%= f.text_field :handler, class: 'input', placeholder: '+14081234567' %>
-</p>
+  <p class="control">
+    <%= f.text_field :handler, class: 'input', placeholder: '+14081234567' %>
+  </p>
+</div>
 
 <p class="notification is-warning">We will call you and you need to enter a number in next step for verification</p>

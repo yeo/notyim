@@ -22,16 +22,20 @@
                 </div>
               <% end %>
 
-              <%= f.label :name, Yeller::Provider.class_of(provider).label, class: 'label' %>
-              <p class="control">
-                <%= f.text_field :name, class: 'input' %>
-              </p>
+              <div class="field">
+                <%= f.label :name, Yeller::Provider.class_of(provider).label, class: 'label' %>
+                <p class="control">
+                  <%= f.text_field :name, class: 'input' %>
+                </p>
+              </div>
 
               <%= render "receivers/providers/#{provider.downcase}", f: f, receiver: receiver, provider: provider %>
 
-              <p class="control">
-                <%= f.submit "Save", class: 'button is-primary' %>
-              </p>
+              <div class="field">
+                <p class="control">
+                  <%= f.submit "Save", class: 'button is-primary' %>
+                </p>
+              </div>
             <% end %>
           </div>
         </div>
