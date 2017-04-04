@@ -1,46 +1,55 @@
 <div class="section">
-  <h1 class="title">Public status page</h2>
-  <p>Enable a read-only of your service metric for public viewing.
-  <!--Once enable public viewing, beside using the standard url, you can also configure your own domain as
-  well by creating a CNAME record to <strong><code class="is-large">statuspage.noty.im</code></strong>-->
-  </p>
+  <div class="columns">
+    <div class="column">
 
-  <hr>
+      <h1 class="title">Public status page</h2>
+      <p>Enable a read-only of your service metric for public viewing.
+      <!--Once enable public viewing, beside using the standard url, you can also configure your own domain as
+      well by creating a CNAME record to <strong><code class="is-large">statuspage.noty.im</code></strong>-->
+      </p>
 
-  <%= form_tag(status_pages_path, class: 'form') do |f| %>
-    <%= hidden_field(:check, :id) %>
-    <div class="field is-horizontal">
-      <div class="field-label">
-        <%= label_tag :standard_url, 'Standard Url', class: 'label' %>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <%= link_to("https://status-#{check.id}.noty.im", "https://status-#{check.id}.noty.im") %>
-        </div>
-      </div>
+      <hr>
+
     </div>
+    <div class="column">
 
-    <div class="field is-horizontal">
-      <div class="field-label">
-        <%= label_tag :name, 'Custom domain', class: 'label' %>
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <p class="control">
-          <%= text_field_tag 'check[status_page_domain]', check.status_page_domain || "", class: 'input', placeholder: 'status.yourdomain.com' %>
-          </p>
-          <div class="help">
-            Use your own domain beside standard url, please point CNAME record to <strong><code class="is-large">statuspage.noty.im</code></strong>
+      <%= form_tag(status_pages_path, class: 'form') do |f| %>
+        <%= hidden_field(:check, :id) %>
+        <div class="field is-horizontal">
+          <div class="field-label">
+            <%= label_tag :standard_url, 'Standard Url', class: 'label' %>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <%= link_to("https://status-#{check.id}.noty.im", "https://status-#{check.id}.noty.im") %>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
 
-    <div class="field is-horizontal">
-      <div class="field-label"></div>
-      <div class="field-body">
-        <%= submit_tag 'Enable public viewing', class: 'button is-primary' %>
-      </div>
+        <div class="field is-horizontal">
+          <div class="field-label">
+            <%= label_tag :name, 'Custom domain', class: 'label' %>
+          </div>
+          <div class="field-body">
+            <div class="field">
+              <p class="control">
+              <%= text_field_tag 'check[status_page_domain]', check.status_page_domain || "", class: 'input', placeholder: 'status.yourdomain.com' %>
+              </p>
+              <div class="help">
+                Use your own domain beside standard url, please point CNAME record to <strong><code class="is-large">statuspage.noty.im</code></strong>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="field is-horizontal">
+          <div class="field-label"></div>
+          <div class="field-body">
+            <%= submit_tag 'Enable public viewing', class: 'button is-primary' %>
+          </div>
+        </div>
+      <% end %>
+
     </div>
-  <% end %>
+  </div>
 </div>

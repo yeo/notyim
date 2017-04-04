@@ -1,20 +1,27 @@
 <div class="section">
-  <h1 class="title">Select Alert channels for this check</h2>
-  <p>We will send alert to below channel when above condition are meet</p>
-  <hr>
+  <div class="columns">
+    <div class="column">
+      <h1 class="title">Select Alert channels for this check</h2>
+      <p>We will send alert to below channel when above condition are meet</p>
+      <hr>
+    </div>
+    <div class="column">
+      <%= form_tag(register_incident_receivers_path(check_id: check.id.to_s)) do |f| %>
+        <div class="field">
+          <% @current.user.verified_receivers.each do |receiver| %>
+            <p class="control">
+              <%= label_tag receiver.id.to_s, class: 'radio' do %>
+                <%= check_box_tag 'contact_receivers[]', receiver.id.to_s, check.register_receiver?(receiver), id: receiver.id.to_s  %>
+                <span><strong><%= receiver.provider %></strong>&nbsp;<%= receiver.name || receiver.handler %></span>
+              <% end %>
+            </p>
+          <% end %>
 
-  <%= form_tag(register_incident_receivers_path(check_id: check.id.to_s)) do |f| %>
-    <p class="control">
-    <% @current.user.verified_receivers.each do |receiver| %>
-      <%= label_tag receiver.id.to_s, class: 'radio' do %>
-        <%= check_box_tag 'contact_receivers[]', receiver.id.to_s, check.register_receiver?(receiver), id: receiver.id.to_s  %>
-        <span><strong><%= receiver.provider %></strong>&nbsp;<%= receiver.name || receiver.handler %></span>
+          <p class="control">
+            <%= submit_tag 'Save', class: 'button is-primary' %>
+          </p>
+        </div>
       <% end %>
-    <% end %>
-    </p>
-
-    <p class="control">
-      <%= submit_tag 'Save', class: 'button is-primary' %>
-    </p>
-  <% end %>
+    </div>
+  </div>
 </div>
