@@ -73,7 +73,7 @@ view model =
                   (List.map (viewCondition model) (model.conditions |> List.filter (findCondition model)))
             ]
           ] ]
-    , div [ class "column field is-horizontal has-addons" ]
+    , div [ class "column field is-horizontal" ]
       [ div [class "field-label" ] [ label [ class "label" ] [ text "Value" ] ]
       , div [class "field-body"]
           [ input [ name "assertion[operand]", type_ "text", placeholder "value", class "input is-expanded", size 20, onInput Operand, value model.assert.operand, disabled (disabledOperand model) ] []

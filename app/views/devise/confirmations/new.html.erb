@@ -2,23 +2,27 @@
 <div class="hero-body">
   <div class="container">
     <div class="columns is-vcentered">
-      <div class="column is-4 is-offset-4">
+      <div class="column is-half is-offset-one-quarter">
         <h1 class="title">Resend confirmation instructions</h1>
 
         <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
           <%= devise_error_messages! %>
 
-          <%= f.label :email, class: 'label' %>
-          <p class="control">
-            <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'input' %>
-          </p>
+          <div class="field">
+            <%= f.label :email, class: 'label' %>
+            <p class="control">
+              <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'input', placeholder: 'email' %>
+            </p>
+          </div>
 
-          <p class="actions control">
-            <%= f.submit "Resend confirmation instructions", class: 'button is-primary' %>
-          </p>
+          <div class="field">
+            <p class="actions control">
+              <%= f.submit "Resend confirmation instructions", class: 'button is-primary' %>
+            </p>
+          </div>
         <% end %>
-        <!--<%= render "devise/shared/links" %>-->
-
+        <hr>
+        <%= render "devise/shared/links" %>
       </div>
     </div>
   </div>

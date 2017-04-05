@@ -9,14 +9,19 @@
         <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
           <%= devise_error_messages! %>
 
-          <%= f.label :email, class: 'label' %>
-          <p class="control">
-            <%= f.email_field :email, autofocus: true, class: 'input' %>
-          </p>
+          <div class="field">
+            <%= f.label :email, class: 'label' %>
+            <p class="control">
+              <%= f.email_field :email, autofocus: true, class: 'input' %>
+            </p>
+          </div>
 
-          <p class="control">
-            <%= f.submit "Send me reset password instructions", class: 'button is-primary' %>
-          </p>
+
+          <div class="field">
+            <p class="control">
+              <%= f.submit "Send me reset password instructions", class: 'button is-primary' %>
+            </p>
+          </div>
         <% end %>
         <hr>
         <%= render "devise/shared/links" %>
