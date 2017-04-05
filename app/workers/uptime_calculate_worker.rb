@@ -39,7 +39,8 @@ class UptimeCalculateWorker
     if incidents.count == 0
       100
     else
-      downtime = incidents.inject(0) { |sum, e| sum += (e.last - e.first) }
+      # If an incident has not close, it has no second element, so we default to Time.now.utc
+      downtime = incidents.inject(0) { |sum, e| sum += ((e.last || Time.now.utc) - e.first) }
       if downtime >= duration.to_i
         0
       else
