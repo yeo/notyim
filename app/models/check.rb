@@ -62,10 +62,10 @@ class Check
       return []
     end
 
-    if receivers = receivers.map { |id| Receiver.find(id) rescue nil }.select { |d| !d.nil? }
-      receiver
+    if _receivers = receivers.map { |id| Receiver.find(id) rescue nil }.select { |d| d.present? }
+      _receivers
     else
-      # Default to email
+      # Default to email or bot account TODO: Implement
     end
   end
 end
