@@ -21,3 +21,7 @@
 every 1.hour do
   runner "UptimeCalculateWorker.perform_async"
 end
+
+every 3.minutes do
+  runner "AutoCreateAssertionWorker.perform_async"
+end

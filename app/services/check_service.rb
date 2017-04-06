@@ -30,4 +30,13 @@ class CheckService
       ]
     end
   end
+
+  def self.auto_create_assertions(id)
+    check = Check.find(id.to_s)
+
+    if check.assertions.length == 0
+      check.assertions = CheckService.default_assertions_for_type(check.type)
+      check.save!
+    end
+  end
 end
