@@ -5,10 +5,8 @@ class CheckService
   # @param Array[Receiver|ObjectID]
   def self.register_receivers(check, receivers)
     check.receivers = []
-    Receiver.find(receivers).each do |r|
-      if r.user == check.user
-        check.receivers << r.id.to_s
-      end
+    if receivers.present?
+      Receiver.find(receivers).each { |r| check.receivers << r.id.to_s if r.user == check.user }
     end
     check.save!
   end

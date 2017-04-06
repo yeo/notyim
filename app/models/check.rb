@@ -64,8 +64,6 @@ class Check
 
     if _receivers = receivers.map { |id| Receiver.find(id) rescue nil }.select { |d| d.present? }
       _receivers
-    else
-      # Default to email or bot account TODO: Implement
     end
   end
 end

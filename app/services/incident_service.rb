@@ -120,8 +120,16 @@ class IncidentService
   # Send notification to receivers that register on the checks
   def self.notify(incident, new_status)
     # TODO If user has not setup receivers, then default to their email
-    incident.check.fetch_receivers.
-      map { |receiver| NotifyReceiverService.new incident, receiver }.
-      each(&:execute)
+    if (receivers = incident.check.fetch_receivers).present?
+      receivers.map { |receiver| NotifyReceiverService.new incident, receiver }.each(&:execute)
+    else
+      receiver = Receiver.new(
+        provider: 'Email',
+        name: incident.check.user.email,
+        handler: incident.check.user.email,
+        require_verify: false, verified: true
+      )
+      NotifyReceiverService.new(incident, receiver).execute
+    end
   end
 end
