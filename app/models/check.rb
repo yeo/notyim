@@ -58,7 +58,7 @@ class Check
 
   # @return Array<Receiver>
   def fetch_receivers
-    if receivers.empty?
+    if receivers.blank?
       return []
     end
 
