@@ -39,4 +39,15 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+
+  # Custom configuration
+  # Those setting isn't on Rails, we store theme here to access them later on
+  # Those need to take care when we update Rails
+  # TODO: Update
+  config.local_proxy_public = ENV.fetch("NGROK")
+  config.incident_confirm_location = 1 # How many location need to match in order to confirm that an incident has occured
+  config.incident_notification_interval = 10.minutes
+  config.telegram_bot = "notydevbot"
+  # End custom configuration
 end
