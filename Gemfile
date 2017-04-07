@@ -72,6 +72,7 @@ group :development, :test do
   gem 'capistrano-rvm'
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
+  gem 'factory_girl_rails'
 end
 
 group :development do
