@@ -12,4 +12,14 @@ RSpec.describe IncidentService, type: :service do
       expect(Incident.desc(:id).first.assertion).to eq(assertion)
     end
   end
+
+  describe '.notify' do
+    xit 'sends notification to user when has no receiver' do
+
+    end
+
+    xit 'sends notification to receivers list' do
+
+    end
+  end
 end

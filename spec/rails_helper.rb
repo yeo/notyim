@@ -49,4 +49,9 @@ RSpec.configure do |config|
       example.run
     end
   end
+
+  # Without calling this we have to manually put `render_views`
+  # every where in controller spec.
+  # http://codecrate.com/2014/11/rspec-controllers-best-practices.html
+  config.render_views
 end
