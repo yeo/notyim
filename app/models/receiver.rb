@@ -23,7 +23,6 @@ class Receiver
   validates :provider, :inclusion => { :in => Yeller::Provider.providers.keys }
 
   index({provider: 1}, {background: true})
-  index({handler: 1}, {background: true})
   index({handler: 1, user_id: 1}, {background: true})
   validates :handler, uniqueness: { scope: [:user, :provider] }
 

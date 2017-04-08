@@ -6,6 +6,7 @@ class Verification
 
   field :code, type: String
   field :verified_at, type: Time
+  index({code: 1}, {background: true})
 
   belongs_to :verifiable, polymorphic: true
   before_save :set_code

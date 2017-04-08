@@ -32,9 +32,6 @@ class User
   field :admin,              type: Boolean, default: false
   field :providers,           type: Hash
 
-  index({email: 1}, {background: true})
-  index({admin: 1}, {background: true})
-
   validates_presence_of :email
   validates_uniqueness_of :email
   ## Confirmable
@@ -54,6 +51,10 @@ class User
   field :balance, type: Float
   field :time_zone, default: "UTC"
   field :flags, type: Hash
+
+  index({email: 1}, {background: true})
+  index({admin: 1}, {background: true})
+  index({created_at: 1}, {background: true})
 
   has_many :teams,  dependent: :destroy
   has_many :checks,  dependent: :destroy

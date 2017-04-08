@@ -28,7 +28,8 @@ class Check
   has_many :incidents, dependent: :destroy
   has_one :daily_uptime, dependent: :destroy
 
-  index({type: 1}, {background: true})
+  index({created_at: 1, updated_at: 1}, {background: true})
+  #index({type: 1}, {background: true})
   index({status_page_domain: 1}, {background: true})
   index({user: 1, team: 1}, {background: true})
 
