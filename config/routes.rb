@@ -36,7 +36,7 @@ Rails.application.routes.draw do
   get '/about', to: 'page#about', as: 'show_about'
   get '/changelog', to: 'page#changelog', as: 'show_changelog'
 
-  get '/docs', to: 'page#doc', as: 'show_doc'
+  get '/docs', to: 'docs#index', as: 'show_doc'
   get '/dashboard', to: 'checks#index', as: 'user_root'
 
   namespace :users do
@@ -58,4 +58,9 @@ Rails.application.routes.draw do
   scope :status_page, module: 'status_page' do
     get '/check/:id', to: 'checks#show', as: 'show_status_page'
   end
+
+  scope module: 'status_page' do
+    get '/', to: 'checks#show', constraints: lambda { |request| byebug;request.host.start_with? 'status' }
+  end
+
 end
