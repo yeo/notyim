@@ -1,0 +1,34 @@
+<h3 class="title">What is a check</h3>
+<p>
+Check is a basic monitoring unit that noty.im will periodcally visit your check URL, record the result
+then validate the result agains a set of rule. Whenever the result matches any rule, an incident will
+be created. At the same time, we send you a notification with incident detail.<br>
+
+<a href="https://noty.im">noty.im</a> use user-agen 'notybot/1.0' so if you see that in your log, that's
+us.
+</p>
+<hr>
+
+<h3 class="title">How to add check</h3>
+<p>
+You add checks by going to <a href="https://noty.im/checks">https://noty.im/checks</a> after logging in,
+then click on "Create New Check" button and follow instruction on screen. These are core concept of a check.
+</p>
+
+<ul>
+  <li>
+    <strong>Type:</strong> We support HTTP/TCP/Hearbeat check. Depend on your type, you can define different
+    rule for alert. Such as in a HTTP check, we can define rule based on up/down status, or based on response
+    code, response time.
+  </li><li>
+    <strong>Name:</strong> A friendly name to help you idenfity the check
+  </li><li>
+    <strong>URI:</strong> This is your website URL in case of HTTP/TCP check. Or some internal URL in case of
+    heartbeat.
+  </li>
+<ul>
+
+<p>
+After creating check, it's time to <a href="#alert_condition">configure alert</a>.
+</p>
+

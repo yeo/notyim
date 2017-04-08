@@ -1,0 +1,31 @@
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <div class="columns is-vcentered">
+        <div class="column">
+          <p class="title">
+            Documentation
+          </p>
+          <p class="subtitle">
+            Everything you need to <strong>start monitoring and get real time alert</strong> with Noty
+          </p>
+        </div>
+        <div class="column is-narrow">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <div class="container">
+      <nav class="tabs is-boxed">
+        <ul>
+          <% doc_sections.each do |name, section| %>
+          <li class="<%= name == :getting_started ? 'is-active' : '' %>">
+            <a href="#section-<%= name %>"><%= section[:label] %></a>
+          </li>
+          <% end %>
+        </ul>
+      </nav></div>
+    </div>
+</section>
