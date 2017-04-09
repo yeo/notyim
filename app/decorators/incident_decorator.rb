@@ -1,6 +1,7 @@
 class IncidentDecorator < SimpleDelegator
   include ActionView::Helpers::TextHelper
   include Rails.application.routes.url_helpers
+  include Trinity::Decorator
 
   def short_status
     case status
@@ -11,8 +12,18 @@ class IncidentDecorator < SimpleDelegator
     end
   end
 
+  # Short summary in body for chat etc
   def short_summary
-    "#{short_status} [noty alert]"
+    "*<strong>#{short_status.upcase} alert</strong>* for #{check.uri}"
+  end
+
+  def icon
+    case status
+    when Incident::STATUS_OPEN
+      '▼'
+    when Incident::STATUS_CLOSE
+      '▲'
+    end
   end
 
   # Generate a friendly reason text for the incident
@@ -22,12 +33,41 @@ class IncidentDecorator < SimpleDelegator
     #TODO Refactor this into its own class
     case check.type
       when Check::TYPE_HTTP
-TYPE_HTTPh
+        http_reason
+      when Check::TYPE_TCP
+        tcp_reason
+      when Check::TYPE_HEARTBEAT
+        hearbeat_reason
     end
   end
 
+  def http_reason
+    _subject = assertion.subject.gsub(/[\._]/, ' ')
+    _assertion = decorate(assertion)
+    case assertion
+    when :down
+    when :up
+      _verb = 'is'
+      _object = condition.to_s
+    else
+      _verb = _assertion.human_condition
+      _object = _assertion.operand
+    end
+
+    [_subject, _verb, _object].join ' '
+  end
+  def tcp_reason
+  end
+  def hearbeat_reason
+  end
+
+  #def subject
+  #  "━ [noty alert][#{status == 'close' ? 'UP' : 'DOWN'}] #{incident.check.uri}"
+  #end
+
+  # Short, online subject, use in email
   def subject
-    "━ [noty alert][#{status == 'close' ? 'UP' : 'DOWN'}] #{incident.check.uri}"
+    "#{icon} #{short_status.upcase} noty alert for #{check.uri}"
   end
 
   def url

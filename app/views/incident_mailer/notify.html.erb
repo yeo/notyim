@@ -1,18 +1,12 @@
-<%= @incident.short_summary %><br><br>
+<%= @incident.short_summary.html_safe %><br><br>
 
-Incident: <%= @incident.url %><br>
+Service: <%= @incident.check.uri %><br>
+Incident Detail: <%= @incident.url %><br>
 
-Service: <%= @incident.check.name %>(<%= @incident.check.uri %><)br>
-
-<%= @incident.reason %>
+<p>Reason: <%= @incident.reason %></p>
 
 <% if @incident.open? %>
-Noty will alert you when it is back up, or if we will alert again
-in 30 minutes if the incident isn't resolved.
+  <p> Noty will alert you when it is back up, or if we will alert again in 30 minutes if the incident is still ongoing.</p>
+<% else %>
+  <p>Good job, we are back now.</p>
 <% end %>
-
-<!--
-Type: <%= @incident.assertion.subject %><br>
-Condition: <%= @incident.assertion.condition %><br>
-Match: <%= @incident.assertion.operand %><br>
--->

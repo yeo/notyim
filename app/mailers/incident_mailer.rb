@@ -5,6 +5,6 @@ class IncidentMailer < ApplicationMailer
     @receiver = receiver
     @incident = incident
     #@url =  [verify_verification_url(@verification), "?code=", @verification.code].join('')
-    mail(to: @receiver.handler, subject: incident.short_summary)
+    mail(to: @receiver.handler, subject: incident.subject)
   end
 end
