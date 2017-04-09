@@ -2,9 +2,17 @@
 
 Incident: <%= @incident.url %><br>
 
-Service: <%= @incident.check.name %><br>
-URL: <%= @incident.check.uri %><br>
+Service: <%= @incident.check.name %>(<%= @incident.check.uri %><)br>
 
+<%= @incident.reason %>
+
+<% if @incident.open? %>
+Noty will alert you when it is back up, or if we will alert again
+in 30 minutes if the incident isn't resolved.
+<% end %>
+
+<!--
 Type: <%= @incident.assertion.subject %><br>
 Condition: <%= @incident.assertion.condition %><br>
 Match: <%= @incident.assertion.operand %><br>
+-->
