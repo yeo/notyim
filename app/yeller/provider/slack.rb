@@ -15,15 +15,14 @@ module Yeller
         incident = decorate(incident)
         notifier = ::Slack::Notifier.new receiver.handler
         notifier.ping <<~HEREDOC
-        #{incident.short_summary}
+        #{incident.subject}
+
+        #{incident.short_summary_plain}
 
         Service: #{incident.check.uri}
+        Incident Detail: #{incident.url}
 
-        Type: #{incident.assertion.subject}
-        Condition: #{incident.assertion.condition}
-        Match: #{incident.assertion.operand}
-
-        #{incident.url}
+        Reason: #{incident.reason}
         HEREDOC
       end
     end

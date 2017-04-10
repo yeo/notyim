@@ -19,12 +19,14 @@ module Yeller
         client = HipChat::Client.new(receiver.handler, :api_version => 'v2')
         incident = decorate(incident)
         body = <<~HEREDOC
-          incident.check.uri
-          #{incident.short_summary}
-          Condition: #{incident.assertion.condition}
-          Match: #{incident.assertion.operand}
+        #{incident.subject}
 
-          #{incident.url}
+        #incident.short_summary_plain}
+
+        Service: #{incident.check.uri}
+        Incident Detail: #{incident.url}
+
+        Reason: #{incident.reason}
         HEREDOC
 
         client[receiver.name].send("noty - [#{incident.status} alert]", body, message_format: 'text', color: incident.open? ? 'red' : 'green')

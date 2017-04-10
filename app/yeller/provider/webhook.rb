@@ -19,13 +19,13 @@ module Yeller
           id: incident.check.id,
           uri: incident.check.uri,
           message: <<~HEREDOC
+          #{incident.subject}
           #{incident.short_summary}
 
           Service: #{incident.check.uri}
+          Incident detail: #{incident.url}
 
-          Type: #{incident.assertion.subject}
-          Condition: #{incident.assertion.condition}
-          Match: #{incident.assertion.operand}
+          #{incident.reason}
           HEREDOC
         }
         Net::HTTP.post_form URI(receiver.handler), payload

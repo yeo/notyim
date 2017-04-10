@@ -14,8 +14,12 @@ class IncidentDecorator < SimpleDelegator
 
   # Short summary in body for chat etc
   def short_summary
-    "*<strong>#{short_status.upcase} alert</strong>* for #{check.uri}"
+    "<strong>#{short_status.upcase} alert</strong> for #{check.uri}"
   end
+  def short_summary_plain
+    "*#{short_status.upcase} alert* for #{check.uri}"
+  end
+
 
   def icon
     case status
