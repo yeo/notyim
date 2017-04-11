@@ -1,5 +1,4 @@
-require 'yeller'
-
+#require 'yeller'
 namespace :snipt do
   namespace :incident do
 
