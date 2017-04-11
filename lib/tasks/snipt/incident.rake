@@ -1,3 +1,5 @@
+require 'yeller'
+
 namespace :snipt do
   namespace :incident do
 
@@ -44,6 +46,12 @@ namespace :snipt do
       i = Incident.first
       r = Receiver.find('58c25f328c245582a3495b7b')
       Yeller::Provider::Hipchat.notify_incident(i, r)
+    end
+
+    desc "Test notifiy email" 
+    task email_notify: :environment do
+       i = Incident.find '58c61f198c2455218f8754b7'
+      
     end
   end
 end
