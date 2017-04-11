@@ -19,13 +19,9 @@ $space: 10px;
 .pricing {
   margin-top: $space *4;
   background: #fff;
-
-  .title {
-    margin-bottom: $space;
-  }
+  border-left: 1px solid #ddd;
 
   &__price {
-    border-bottom: 1px solid #ddd;
     padding-bottom: 20px;
     margin-bottom: 20px;
   }

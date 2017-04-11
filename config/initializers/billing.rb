@@ -11,24 +11,40 @@ Cashier.configure do |config|
     check: 1,
     sms: 0,
     minute: 0,
+    region: 2,
+    team: false,
+    status_page: true,
+    custom_domain_ssl: false,
   }
 
   config.subscription :starter, 3, {
     check: 3,
     sms: 10,
     minute: 5,
+    region: 5,
+    team: true,
+    status_page: true,
+    custom_domain_ssl: true,
   }
 
   config.subscription :premium, 10, {
     check: 100,
     sms: 200,
     minute: 10,
+    region: 5,
+    team: true,
+    status_page: true,
+    custom_domain_ssl: true,
   }
 
   config.subscription :awesome, 20, {
     check: 200,
     sms: 500,
     minute: 30,
+    region: 5,
+    team: true,
+    status_page: true,
+    custom_domain_ssl: true,
   }
 
   config.package "150_000", 3

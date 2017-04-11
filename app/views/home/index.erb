@@ -180,6 +180,31 @@
   </section>
 
   <div class="columns has-text-centered">
+    <%- active_subscriptions.each do |_name, plan| %>
+      <div class="column">
+        <div class="pricing">
+          <section class="section">
+          <h1 class="title is-2"><%= plan.name.capitalize %></h1>
+          <h2 class="subtitle is-3">$<%= plan.price / 100 %></h2>
+          <ul>
+            <li><%= plan.opts[:check] %> checks</li>
+            <li><%= plan.opts[:region] %> regions</li>
+            <li><%= plan.opts[:sms]%> sms alert</li>
+            <li><%= plan.opts[:minute]%> minutes phone alert</li>
+            <!--<li>No <a href="/faq#sms_limit">hard limit</a> on SMS or lihone call.</li>-->
+            <li>Team Support</li>
+            <li><%= plan.opts[:status_page] ? '': 'No'%> Public Status Page</li>
+            <li><%= plan.opts[:custom_domain_ssl] ? '': 'No'%> Custom Domain SSL</li>
+          </ul>
+          </section>
+          <a class="button is-primary is-large" href="<%= new_user_registration_path %>?plan=<%= _name %>">SIGN UP</a>
+        </div>
+      </div>
+    <% end -%>
+  </div>
+
+  <!--
+  <div class="columns has-text-centered">
     <div class="column">
       <div class="pricing">
         <h1 class="title is-2">Free</h1>
@@ -237,6 +262,7 @@
       </div>
     </div>
   </div>
+  -->
 
 </div>
 </section>
