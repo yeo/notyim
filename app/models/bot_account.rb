@@ -7,6 +7,9 @@ class BotAccount
   field :token
   field :link_verification_code
 
+  # Meta data about this bot
+  field :meta
+
   index({bot_uuid: 1}, {background: true})
   index({token: 1}, {background: true})
 

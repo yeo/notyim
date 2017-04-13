@@ -63,7 +63,8 @@ Rails.application.configure do
   config.slack_bot = {
     scope: 'bot',
     client_id: '51439348069.157091434678',
-    redirect_uri: 'https://slack.botframework.com/Home/auth&state=noty'
+    redirect_uri: 'http://127.0.0.1:3000/bot/slack',
+    client_secret: ENV.fetch("SLACK_CLIENT_SECRET")
   }
   # End custom configuration
 end

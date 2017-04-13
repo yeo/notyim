@@ -52,6 +52,7 @@ gem 'influxdb'
 gem 'redis-rails'
 gem 'redis', '~>3.2'
 gem 'connection_pool'
+gem 'request_store'
 
 # We have to temp disabel newrelic cuz it doesn't support our Rails version yet
 # We are too bleeding edge

@@ -7,9 +7,7 @@ class DashboardController < ApplicationController
 
   private
   def current
-    # TODO Write about thread safe here
-    #@__current ||= Trinity::Current.instance current_user
-    @current ||= Trinity::Current.new current_user
+    @current ||= Trinity::Current.instance current_user
   end
 
   def team_pick!

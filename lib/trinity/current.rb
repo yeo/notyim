@@ -9,11 +9,11 @@ module Trinity
 
     class << self
       def instance(user)
-        @instance = new(user)
+        RequestStore.store[:current_request] ||= new(user)
       end
 
       def current
-        @instance
+        RequestStore.store[:current_request]
       end
     end
   end

@@ -1,6 +1,21 @@
 <div class="content">
-  <h1 class="title">Add channel intergration to receiver notification</h1>
-  <p>Each alert contact include a name to identify the contact, and the real handler such as email, phone number, slack web hook url.</p>
+  <h1 class="title">Add bot intergration to receiver notification</h1>
+  <p>Using bot intergration give you one click configuration and alert will send directly to the bot channel</p>
+</div>
+
+<div class="columns">
+  <div class="column has-text-centered">
+    <a class="button is-large is-primary" href="<%= new_slack_url%>">Connect Slack Bot</a>
+  </div>
+  <div class="column has-text-centered">
+    <a class="button is-large is-primary" href="<%= new_slack_url%>">Connect Telegram Bot</a>
+  </div>
+</div>
+
+<hr>
+<div class="content">
+  <h1 class="title">Or add channel intergration to receiver notification</h1>
+  <p class="">Each alert contact include a name to identify the contact, and the real handler such as email, phone number, slack web hook url.</p>
 </div>
 
 <%= render 'form', receiver: @receiver %>

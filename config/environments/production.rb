@@ -95,5 +95,11 @@ Rails.application.configure do
   config.incident_confirm_location = 3 # How many location need to match in order to confirm that an incident has occured
   config.incident_notification_interval = 30.minutes
   config.telegram_bot = "notyimbot"
+  config.slack_bot = {
+    scope: 'bot',
+    client_id: '51439348069.132808101893',
+    redirect_uri: "https://#{config.action_mailer.default_url_options[:host]}/bot/slack",
+    client_secret: ENV.fetch("SLACK_CLIENT_SECRET")
+  }
   # End custom configuration
 end
