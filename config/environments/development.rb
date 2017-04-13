@@ -60,5 +60,10 @@ Rails.application.configure do
   config.incident_confirm_location = 1 # How many location need to match in order to confirm that an incident has occured
   config.incident_notification_interval = 10.minutes
   config.telegram_bot = "notydevbot"
+  config.slack_bot = {
+    scope: 'bot',
+    client_id: '51439348069.157091434678',
+    redirect_uri: 'https://slack.botframework.com/Home/auth&state=noty'
+  }
   # End custom configuration
 end
