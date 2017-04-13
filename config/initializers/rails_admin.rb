@@ -9,6 +9,12 @@ RailsAdmin.config do |config|
 
   ## == Cancan ==
   # config.authorize_with :cancan
+  config.authorize_with do |controller|
+    unless current_user.try(:admin?)
+      flash[:error] = "You are not an admin"
+      redirect_to root_path
+    end
+  end
 
   ## == Pundit ==
   # config.authorize_with :pundit
@@ -53,5 +59,6 @@ RailsAdmin.config do |config|
     StripeToken
     Subscription
     Verification
+    BotAccount
   )
 end
