@@ -54,6 +54,11 @@ Rails.application.routes.draw do
     end
   end
 
+  namespace :bot do
+    post '/slack', to: 'slack#create'
+    get '/slack', to: 'slack#create'
+  end
+
   resources :status_pages, only: [:create]
   scope :status_page, module: 'status_page' do
     get '/check/:id', to: 'checks#show', as: 'show_status_page'
