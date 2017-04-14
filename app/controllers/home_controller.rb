@@ -18,6 +18,7 @@ class HomeController < ApplicationController
       end
     end
 
+    current
     @beta = true
     @botname = Rails.configuration.telegram_bot
   end
