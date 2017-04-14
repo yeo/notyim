@@ -39,7 +39,7 @@ module Yeller
         attachments = {
           fallback: "Service: #{incident.check.uri}",
           text: "Service: #{incident.check.uri}",
-          color: inciden.close? ? 'green' : 'red'
+          color: incident.close? ? 'green' : 'red'
         }
         icon = incident.close? ? ':white_check_mark:' : ':fire:'
         notifier.post(text: text, attachments: attachments, icon_emoji: icon)
