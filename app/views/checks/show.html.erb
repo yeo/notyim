@@ -11,7 +11,7 @@
 <% end %>
 <% end %>
 
-<% unless @public_view && @check.receivers.try(:present?) %>
+<% if !@public_view && @check.receivers.try(:blank?) %>
   <article class="message is-warning">
   <div class="message-body">
   You haven't configure any alert receiver yet. Please <%= link_to("configure your alert contact", edit_check_path(@check), anchor: 'add-asertion') %> so we will know who to notify when your site is down.
