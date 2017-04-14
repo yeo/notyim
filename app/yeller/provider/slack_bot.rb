@@ -14,7 +14,7 @@ module Yeller
       end
 
       def self.auto_assign_after_create?
-        true
+        false
       end
 
       # Send out notification for an incident. This is
