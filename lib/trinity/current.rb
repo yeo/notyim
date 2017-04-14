@@ -5,6 +5,12 @@ module Trinity
 
     def initialize(user)
       @user = user
+      # TODO Revisit this when we rolledout team support
+      @team = @user.teams.first if @user.present?
+    end
+
+    def signed_in?
+      user.present?
     end
 
     class << self
