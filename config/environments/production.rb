@@ -94,7 +94,9 @@ Rails.application.configure do
   # Those need to take care when we update Rails
   config.incident_confirm_location = 3 # How many location need to match in order to confirm that an incident has occured
   config.incident_notification_interval = 30.minutes
-  config.telegram_bot = "notyimbot"
+  config.telegram_bot = {
+    name: "notyimbot"
+  }
   config.slack_bot = {
     scope: 'bot',
     client_id: '51439348069.132808101893',

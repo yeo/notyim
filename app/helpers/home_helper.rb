@@ -8,4 +8,12 @@ module HomeHelper
       "https://slack.com/oauth/authorize?client_id=#{Rails.configuration.slack_bot[:client_id]}&scope=bot,incoming-webhook,chat:write:bot&state=notydev&redirect_uri=#{Rails.configuration.slack_bot[:redirect_uri]}"
     end
   end
+
+  def new_telegram_url
+    if (current = Trinity::Current.current) && current.signed_in?
+      "https://telegram.me/#{Rails.configuration.telegram_bot[:name]}?start=#{SecureRandom.hex}"
+    else
+      "https://telegram.me/#{Rails.configuration.telegram_bot[:name]}"
+    end
+  end
 end
