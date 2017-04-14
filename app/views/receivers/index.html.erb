@@ -12,7 +12,13 @@
           <h4 class="title"> <%= receiver.provider %> </h4>
         </td>
         <td>
-              <h4 class="subtitle" id="<%= receiver.id.to_s%>"><%= receiver.name %>&nbsp;<%= link_to receiver.handler, edit_receiver_path(receiver) %></h4>
+          <h4 class="subtitle" id="<%= receiver.id.to_s%>"><%= receiver.name %>&nbsp;
+            <% if receiver.provider_class.allow_edit? %>
+              <%= link_to receiver.handler, edit_receiver_path(receiver) %>
+            <% else %>
+              <strong><%= receiver.handler %></strong>
+            <% end %>
+          </h4>
               <% if receiver.require_verify? && !receiver.verified? %>
                 <div>
                 <%= render 'receivers/verification/challenger', receiver: receiver %>

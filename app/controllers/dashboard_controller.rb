@@ -6,10 +6,6 @@ class DashboardController < ApplicationController
   before_action :authenticate_user!, :team_pick!
 
   private
-  def current
-    @current ||= Trinity::Current.instance current_user
-  end
-
   def team_pick!
     begin
       if session[:team] && (team = Team.find(session[:team]))

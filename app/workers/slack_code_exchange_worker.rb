@@ -13,21 +13,28 @@ class SlackCodeExchangeWorker
   #         - response_code
   def perform(code, state)
     puts "code #{code} state #{state}"
-    user_id, token = state.split('.')
+    user_id, team_id, token = state.split('.')
     # TODO: should we really want to validate token? It's a random unused value for now
     user = User.find user_id
+    team = Team.find team_id
+    # TODO check if team belongs to this user
 
     uri = URI('https://slack.com/api/oauth.access')
     slack = Rails.configuration.slack_bot
     res = Net::HTTP.post_form(uri, client_id: slack[:client_id], client_secret: slack[:client_secret], code: code, redirect_uri: slack[:redirect_uri])
     payload = JSON.parse res.body
-    puts payload
 
-    user.bot_accounts << BotAccount.create!(
-      bot_uuid: "slack_#{payload["bot"]["bot_user_id"]}",
-      token: payload["access_token"],
-      address: {channelId: "slack", team_id: payload["team_id"], user_id: payload["user_id"]},
-      meta: payload,
+    receiver = Receiver.new(
+      provider: 'SlackBot',
+      name: payload['team_name'],
+      handler: payload['team_id'],
+      provider_params: payload,
+      user: user,
+      team: team,
     )
+    receiver.provider_attributes(payload)
+    ReceiverService.save(receiver)
+
+    Yeller::Provider::SlackBot.notify_welcome(receiver)
   end
 end

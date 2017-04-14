@@ -26,6 +26,23 @@ module Yeller
         @__attributes[:label] || "Friendly name".freeze
       end
 
+      # Support adding form or not
+      #
+      # If true, we will show a form to add it
+      # It's true by defaut, other provider has its own flow can set this to false
+      def self.support_add_form?
+        true
+      end
+
+      # Auto assign to check receiver list after creating
+      def self.auto_assign_after_create?
+        false
+      end
+
+      def self.allow_edit?
+        true
+      end
+
       # Get notification class of this provider
       #def self.notify_class
       #  "Yeller::Notify::#{identity.camelize}".constantize
@@ -83,6 +100,11 @@ module Yeller
       #   - generate the message
       #   - fanout the message to receiver
       def self.notify_incident(receiver, incident)
+        raise "Please implement"
+      end
+
+      # Send welcome message
+      def self.notify_welcome(receiver)
         raise "Please implement"
       end
     end

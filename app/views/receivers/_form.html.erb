@@ -2,7 +2,7 @@
   <% Yeller::Provider.providers.keys.each_slice(2) do |providers| %>
     <div class="columns">
       <% providers.each do |provider| %>
-        <% next if receiver.persisted? && receiver.provider != provider %>
+        <% next if !Yeller::Provider.class_of(provider).support_add_form? || (receiver.persisted? && receiver.provider != provider) %>
 
         <div class="column is-half">
           <div class='box alertcontact-provider'>
