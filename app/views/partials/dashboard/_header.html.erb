@@ -13,6 +13,7 @@
           <% end %>
         <% end %>
         <%= link_to("Alert Contact", receivers_path, class: "nav-item is-tab #{cp(receivers_path)}") %>
+        <%= link_to("Users", team_memberships_path, class: "nav-item is-tab #{cp(team_memberships_path)}") %>
         <!--<%= link_to notifications_path, class: "nav-item is-tab #{cp(notifications_path)}" do %>
           Notifications <span class="tag is-warning is-small">10</span>
         <% end %>-->
@@ -40,8 +41,8 @@
           <% end %>
         </span>
         <%= elm_component('TeamPicker', flags: {
-          teams: current.user.teams.map { |team| {id: team.id.to_s, name: team.name} },
-          current_team: {id: current.user.teams.first.id.to_s, name: current.user.teams.first.name}
+          teams: current.user.teams.map { |team| {id: team.id.to_s, name: team.name || ""} },
+          current_team: {id: current.user.teams.first.id.to_s, name: current.user.teams.first.name || ""}
         }) %>
       <% end %>
     </div>
