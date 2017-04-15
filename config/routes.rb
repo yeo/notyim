@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   post '/incident_receivers/:check_id', to: 'incident_receivers#create', as: :register_incident_receivers
 
   resources :teams
+  resources :team_memberships
+
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   #devise_for :users
   devise_for :users, :controllers => { omniauth_callbacks: "users/omniauth_callbacks", registrations: "users/registrations" }
