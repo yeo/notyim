@@ -39,7 +39,10 @@
             <% end %>
           <% end %>
         </span>
-        <%# render 'partials/menu/team_picker' %>
+        <%= elm_component('TeamPicker', flags: {
+          teams: current.user.teams.map { |team| {id: team.id.to_s, name: team.name} },
+          current_team: {id: current.user.teams.first.id.to_s, name: current.user.teams.first.name}
+        }) %>
       <% end %>
     </div>
     </nav>
