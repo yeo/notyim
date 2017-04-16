@@ -1,29 +1,32 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Teams</h1>
-
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>User</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
-
-  <tbody>
+<div class="columns">
+  <div class="column is-3">
+    <nav class="panel">
+    <p class="panel-heading">Teams</p>
     <% @teams.each do |team| %>
+
+      <a href="<%= team_path(team) %>" class="panel-block <%= team.id == @team.id ? 'is-active' : '' %>">
+        <!--<span class="panel-icon"><i class="fa fa-book"></i></span>-->
+        <%= team.name %>
+      </a>
+
+      <!--
       <tr>
         <td><%= team.name %></td>
         <td><%= team.user_id %></td>
         <td><%= link_to 'Show', team %></td>
         <td><%= link_to 'Edit', edit_team_path(team) %></td>
         <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      </tr>-->
     <% end %>
-  </tbody>
-</table>
+    <div class="panel-block">
+      <%= render 'form', team: @draft_team %>
+    </div>
+    </nav>
+  </div>
 
-<br>
-
-<%= link_to 'New Team', new_team_path %>
+  <div class="column">
+    <h1 class="title">Team Members</h1>
+  </div>
+</div>

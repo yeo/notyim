@@ -12,11 +12,10 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :name %>
-    <%= f.text_field :name %>
+    <%= f.text_field :name, class: 'input', placeholder: 'your new team' %>
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'button is-primary is-small' %>
   </div>
 <% end %>

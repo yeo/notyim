@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   resources :receivers
   post '/incident_receivers/:check_id', to: 'incident_receivers#create', as: :register_incident_receivers
 
-  resources :teams
+  resources :teams, only: [:create, :edit, :update, :destroy, :index, :show]
   resources :team_memberships
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'

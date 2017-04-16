@@ -1,15 +1,18 @@
 class TeamsController < DashboardController
+  before_action :my_teams
   before_action :set_team, only: [:show, :edit, :update, :destroy]
 
   # GET /teams
   # GET /teams.json
   def index
-    @teams = Team.mine(current_user)
+    @draft_team = Team.new(user: current.user)
   end
 
   # GET /teams/1
   # GET /teams/1.json
   def show
+    @draft_team = Team.new(user: current.user)
+    render 'teams/index'
   end
 
   # GET /teams/new
@@ -27,16 +30,21 @@ class TeamsController < DashboardController
   def create
     @team = Team.new(team_params)
     @team.user = current_user
-
-    respond_to do |format|
-      if @team.save
-        format.html { redirect_to @team, notice: 'Team was successfully created.' }
-        format.json { render :show, status: :created, location: @team }
-      else
-        format.html { render :new }
-        format.json { render json: @team.errors, status: :unprocessable_entity }
-      end
+    if @team.save
+      redirect_to teams_path, notice: 'Team was succesfully created.'
+    else
+      redirect_to teams_path, alert: 'Team fail to create'
     end
+
+    #respond_to do |format|
+    #  if @team.save
+    #    format.html { redirect_to @team, notice: 'Team was successfully created.' }
+    #    format.json { render :show, status: :created, location: @team }
+    #  else
+    #    format.html { render :new }
+    #    format.json { render json: @team.errors, status: :unprocessable_entity }
+    #  end
+    #end
   end
 
   # PATCH/PUT /teams/1
@@ -64,9 +72,14 @@ class TeamsController < DashboardController
   end
 
   private
+    def my_teams
+      @teams = Team.mine(current.user)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_team
-      @team = Team.find(params[:id])
+      @team = Team.find(params[:id]) if params[:id]
+
       if @team.persisted?
         head :forbidden unless TeamPolicy::can_manage?(@team, current.user)
       end
