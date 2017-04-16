@@ -28,5 +28,23 @@
 
   <div class="column">
     <h1 class="title">Team Members</h1>
+
+
+    <hr>
+    <h2 class="subtitle">Invite team member</h1>
+    <%= render 'invitation', team: @team, invitation: Invitation.new %>
+
+    <hr>
+    <h2 class='subtitle'>Update team</h2>
+    <%= render 'form', team: @team %>
+
+    <hr>
+    <div class="message is-danger">
+      <div class="message-header">Danger zone</div>
+      <div class="message-body">
+        <p class="is-message">Destroy team removes everything related to the team(unlink membership, delte check)</p>
+        <%= link_to 'Delete team', @team, class: 'button is-danger', method: :delete, data: { confirm: 'Are you sure? This will destroy everything in the team' } %>
+      </div>
+    </div>
   </div>
 </div>

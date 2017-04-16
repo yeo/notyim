@@ -1,0 +1,21 @@
+<%= form_for(invitation) do |f| %>
+  <% if team.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(team.errors.count, "error") %> prohibited the invation created.</h2>
+
+      <ul>
+      <% team.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.text_field :email, class: 'input', placeholder: 'coworker@yourcompany.com' %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit class: 'button is-primary is-small' %>
+  </div>
+<% end %>
