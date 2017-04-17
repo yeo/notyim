@@ -5,10 +5,18 @@ class Invitation
   include Mongoid::Timestamps
 
   field :email, type: String
-  field :verified_at, type: Time
+  field :accepted_at, type: Time
+  field :code, type: String
+
   index({code: 1}, {background: true})
 
-  has_one :team
   belongs_to :invitable, polymorphic: true
 
+  before_save :set_code
+
+  def set_code
+    if !self.code
+      self.code = SecureRandom.hex
+    end
+  end
 end

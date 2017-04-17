@@ -1,4 +1,5 @@
-<%= form_for(invitation) do |f| %>
+<%= form_tag(team_invitations_path, method: 'post') do |f| %>
+  <%= hidden_field_tag :team, team.id.to_s  %>
   <% if team.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(team.errors.count, "error") %> prohibited the invation created.</h2>
@@ -12,10 +13,10 @@
   <% end %>
 
   <div class="field">
-    <%= f.text_field :email, class: 'input', placeholder: 'coworker@yourcompany.com' %>
+    <%= text_field_tag :email, nil, class: 'input', placeholder: 'coworker@yourcompany.com' %>
   </div>
 
   <div class="actions">
-    <%= f.submit class: 'button is-primary is-small' %>
+    <%= submit_tag "Invite", class: 'button is-primary is-small' %>
   </div>
 <% end %>

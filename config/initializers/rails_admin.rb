@@ -46,7 +46,7 @@ RailsAdmin.config do |config|
 
   config.included_models = %w(
     User
-    Team
+    Team, Invitation
     Check
     Incident
     Assertion

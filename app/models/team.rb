@@ -7,6 +7,7 @@ class Team
 
   field :name, type: String
   belongs_to :user
+  has_many :invites, as: :invitable
 
   scope :mine, ->(u) { where(user: u) }
 

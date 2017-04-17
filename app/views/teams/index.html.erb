@@ -6,10 +6,21 @@
     <p class="panel-heading">Teams</p>
     <% @teams.each do |team| %>
 
-      <a href="<%= team_path(team) %>" class="panel-block <%= team.id == @team.id ? 'is-active' : '' %>">
+      <a href="<%= team_path(team) %>" class="panel-block <%= team.id.to_s %> <%=  @team.id.to_s %> <%= team.id.to_s == @team.id.to_s ? 'is-active' : '' %>">
         <!--<span class="panel-icon"><i class="fa fa-book"></i></span>-->
         <%= team.name %>
       </a>
+
+    <% if team.id == @team.id %>
+    <div class="panel-block">
+      <ul class="menu-list">
+        <li><a href="#member">Members</a></li>
+        <li><a href="#invite">Invite</a></li>
+        <li><a href="#setting">Setting</a></li>
+      </ul>
+    </div>
+    <% end %>
+
 
       <!--
       <tr>
@@ -20,22 +31,24 @@
         <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>-->
     <% end %>
+
     <div class="panel-block">
-      <%= render 'form', team: @draft_team %>
+      <%= render 'form', team: @team %>
     </div>
     </nav>
   </div>
 
   <div class="column">
-    <h1 class="title">Team Members</h1>
+    <h1 class="title" id="member">Team Members</h1>
 
-
-    <hr>
-    <h2 class="subtitle">Invite team member</h1>
-    <%= render 'invitation', team: @team, invitation: Invitation.new %>
+    <%# render 'members', @team.memberships  %>
 
     <hr>
-    <h2 class='subtitle'>Update team</h2>
+    <h2 class="subtitle" id="invite">Invite team member</h1>
+    <%= render 'invitation', team: @team %>
+
+    <hr>
+    <h2 class='subtitle' id='setting'>Update team</h2>
     <%= render 'form', team: @team %>
 
     <hr>

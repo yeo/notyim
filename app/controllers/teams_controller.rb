@@ -5,20 +5,21 @@ class TeamsController < DashboardController
   # GET /teams
   # GET /teams.json
   def index
-    @draft_team = Team.new(user: current.user)
+    @team = @teams.first
+    @team_membership = TeamMembership.new(team: @team)
   end
 
   # GET /teams/1
   # GET /teams/1.json
   def show
-    @draft_team = Team.new(user: current.user)
+    @team_membership = TeamMembership.new(team: @team)
+
     render 'teams/index'
   end
 
   # GET /teams/new
   def new
-    @team = Team.new
-    @team.user = current_user
+    @team = Team.new(user: current.user)
   end
 
   # GET /teams/1/edit
