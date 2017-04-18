@@ -1,6 +1,7 @@
 class BotAccount
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Teamify
 
   field :bot_uuid
   field :address

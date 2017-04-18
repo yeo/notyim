@@ -1,6 +1,7 @@
 class ChargeTransaction
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Teamify
 
   CHARGE_TYPE_ONE_TIME_PAYMENT = "one_time_payment".freeze
   CHARGE_TYPE_SUBSCRIPTION = "subscription".freeze
