@@ -11,6 +11,7 @@ class Invitation
   index({code: 1}, {background: true})
 
   belongs_to :invitable, polymorphic: true
+  belongs_to :user
 
   before_save :set_code
 

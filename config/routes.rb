@@ -18,9 +18,10 @@ Rails.application.routes.draw do
   post '/incident_receivers/:check_id', to: 'incident_receivers#create', as: :register_incident_receivers
 
   resources :teams, only: [:create, :edit, :update, :destroy, :index, :show]
-  #resources :invitations, only: [:create, :destroy]
-  resources :team_memberships
-  resources :team_invitations, only: [:create, :show]
+  # TODO: delete
+  resources :team_memberships, only: [:create]
+  # TODO: delete
+  resources :team_invitations, only: [:create, :show, :update]
 
   mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   #devise_for :users

@@ -1,4 +1,5 @@
 class TeamMembership
+  ROLE_EDITOR = 'editor'.freeze
   ROLES = %w(editor admin).freeze
 
   include Mongoid::Document

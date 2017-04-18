@@ -1,0 +1,24 @@
+<div class="columns">
+  <div class="column">
+
+    <%= form_for(@invite, url: team_invitation_path(@invite)) do |f| %>
+      <%= hidden_field_tag :code, @code %>
+      <% if @invite.errors.any? %>
+        <div id="error_explanation">
+          <ul>
+            <% @invite.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <p><%= @invite.invitable.name %>'s admin (<%= @invite.user.email %>) has invited you to join their team.</p>
+
+      <div class="field">
+        <%= f.submit 'Accept', class: 'button is-primary is-small' %>
+      </div>
+
+    <% end %>
+  </div>
+</div>

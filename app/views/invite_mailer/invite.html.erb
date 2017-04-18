@@ -1,7 +1,8 @@
 Hi,
 
-<p>
-You are invited to team <%= @team.name %> on noty.im.
-</p>
+<p>You are invited to the team <%= @team.name %> on noty.im.</p>
 
-<p>Please click <%= link_to @join_url %> to join the team</p>
+<p>Please go here <%= link_to @url, @url %> to accept the invitation.</p>
+
+<p>You will need an account before accept the invitation.
+If you don't have an account with us yet, please sign up for an account then open the above link</p>
