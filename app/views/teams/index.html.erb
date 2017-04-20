@@ -39,9 +39,19 @@
   </div>
 
   <div class="column">
-    <h1 class="title" id="member">Team Members</h1>
+    <h1 class="title" id="member">Team <strong><%= @team.name %></strong></h1>
 
-    <%# render 'members', @team.memberships  %>
+    <h2 class="subtitle" id="invite">Membership</h1>
+    <table class="table">
+      <tbody>
+      <% TeamService.members(@team).each do |member| %>
+        <tr>
+          <td><%= member.user.email if member.persisted? %></td>
+          <td><%= member.role if member.persisted? %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
 
     <hr>
     <h2 class="subtitle" id="invite">Invite team member</h1>

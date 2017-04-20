@@ -8260,8 +8260,34 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _user$project$TeamPicker$viewTeamFooter = A2(
+	_elm_lang$html$Html$div,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$hr,
+			{ctor: '[]'},
+			{ctor: '[]'}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$href('/teams'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Manage teams'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		}
+	});
 var _user$project$TeamPicker$viewTeamList = function (model) {
-	return model.showTeamList ? A2(
+	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
@@ -8286,7 +8312,25 @@ var _user$project$TeamPicker$viewTeamList = function (model) {
 									{ctor: '[]'},
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html$text(team.name),
+										_0: A2(
+											_elm_lang$html$Html$a,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$href(
+													A2(
+														_elm_lang$core$Basics_ops['++'],
+														'//team-',
+														A2(
+															_elm_lang$core$Basics_ops['++'],
+															team.id,
+															A2(_elm_lang$core$Basics_ops['++'], '.', model.domain)))),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text(team.name),
+												_1: {ctor: '[]'}
+											}),
 										_1: {ctor: '[]'}
 									}),
 								_1: {ctor: '[]'}
@@ -8294,7 +8338,7 @@ var _user$project$TeamPicker$viewTeamList = function (model) {
 					},
 					model.teams)),
 			_1: {ctor: '[]'}
-		}) : _elm_lang$html$Html$text('');
+		});
 };
 var _user$project$TeamPicker$update = F2(
 	function (msg, model) {
@@ -8332,20 +8376,20 @@ var _user$project$TeamPicker$Team = F2(
 	function (a, b) {
 		return {id: a, name: b};
 	});
-var _user$project$TeamPicker$Model = F4(
-	function (a, b, c, d) {
-		return {teams: a, current_team: b, newTeam: c, showTeamList: d};
+var _user$project$TeamPicker$Model = F5(
+	function (a, b, c, d, e) {
+		return {teams: a, current_team: b, newTeam: c, showTeamList: d, domain: e};
 	});
 var _user$project$TeamPicker$init = function (flags) {
 	return {
 		ctor: '_Tuple2',
-		_0: A4(_user$project$TeamPicker$Model, flags.teams, flags.current_team, false, false),
+		_0: A5(_user$project$TeamPicker$Model, flags.teams, flags.current_team, false, false, flags.domain),
 		_1: _elm_lang$core$Platform_Cmd$none
 	};
 };
-var _user$project$TeamPicker$Flag = F2(
-	function (a, b) {
-		return {teams: a, current_team: b};
+var _user$project$TeamPicker$Flag = F3(
+	function (a, b, c) {
+		return {domain: a, teams: b, current_team: c};
 	});
 var _user$project$TeamPicker$NoOp = {ctor: 'NoOp'};
 var _user$project$TeamPicker$viewNewTeam = function (model) {
@@ -8356,7 +8400,7 @@ var _user$project$TeamPicker$viewNewTeam = function (model) {
 			_0: _elm_lang$html$Html_Attributes$class('field'),
 			_1: {ctor: '[]'}
 		},
-		_elm_lang$core$Native_Utils.eq(model.newTeam, true) ? {
+		{
 			ctor: '::',
 			_0: A2(
 				_elm_lang$html$Html$div,
@@ -8382,7 +8426,7 @@ var _user$project$TeamPicker$viewNewTeam = function (model) {
 					_1: {ctor: '[]'}
 				}),
 			_1: {ctor: '[]'}
-		} : {ctor: '[]'});
+		});
 };
 var _user$project$TeamPicker$NewTeam = {ctor: 'NewTeam'};
 var _user$project$TeamPicker$SwitchTeam = function (a) {
@@ -8394,7 +8438,11 @@ var _user$project$TeamPicker$ToggleTeams = function (a) {
 var _user$project$TeamPicker$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
-		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$class('nav-item teampicker'),
+			_1: {ctor: '[]'}
+		},
 		{
 			ctor: '::',
 			_0: A2(
@@ -8412,19 +8460,38 @@ var _user$project$TeamPicker$view = function (model) {
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(model.current_team.name),
+							_0: _elm_lang$html$Html$text(
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									model.current_team.name,
+									model.showTeamList ? ' ˅' : ' ˄')),
 							_1: {ctor: '[]'}
 						}),
 					_1: {ctor: '[]'}
 				}),
 			_1: {
 				ctor: '::',
-				_0: _user$project$TeamPicker$viewTeamList(model),
-				_1: {
-					ctor: '::',
-					_0: _user$project$TeamPicker$viewNewTeam(model),
-					_1: {ctor: '[]'}
-				}
+				_0: model.showTeamList ? A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('teampicker__list box'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: _user$project$TeamPicker$viewTeamList(model),
+						_1: {
+							ctor: '::',
+							_0: _user$project$TeamPicker$viewTeamFooter,
+							_1: {
+								ctor: '::',
+								_0: _user$project$TeamPicker$viewNewTeam(model),
+								_1: {ctor: '[]'}
+							}
+						}
+					}) : _elm_lang$html$Html$text(''),
+				_1: {ctor: '[]'}
 			}
 		});
 };
@@ -8442,26 +8509,31 @@ var _user$project$TeamPicker$main = _elm_lang$html$Html$programWithFlags(
 		function (current_team) {
 			return A2(
 				_elm_lang$core$Json_Decode$andThen,
-				function (teams) {
-					return _elm_lang$core$Json_Decode$succeed(
-						{current_team: current_team, teams: teams});
-				},
-				A2(
-					_elm_lang$core$Json_Decode$field,
-					'teams',
-					_elm_lang$core$Json_Decode$list(
+				function (domain) {
+					return A2(
+						_elm_lang$core$Json_Decode$andThen,
+						function (teams) {
+							return _elm_lang$core$Json_Decode$succeed(
+								{current_team: current_team, domain: domain, teams: teams});
+						},
 						A2(
-							_elm_lang$core$Json_Decode$andThen,
-							function (id) {
-								return A2(
+							_elm_lang$core$Json_Decode$field,
+							'teams',
+							_elm_lang$core$Json_Decode$list(
+								A2(
 									_elm_lang$core$Json_Decode$andThen,
-									function (name) {
-										return _elm_lang$core$Json_Decode$succeed(
-											{id: id, name: name});
+									function (id) {
+										return A2(
+											_elm_lang$core$Json_Decode$andThen,
+											function (name) {
+												return _elm_lang$core$Json_Decode$succeed(
+													{id: id, name: name});
+											},
+											A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string));
 									},
-									A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string));
-							},
-							A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$string)))));
+									A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$string)))));
+				},
+				A2(_elm_lang$core$Json_Decode$field, 'domain', _elm_lang$core$Json_Decode$string));
 		},
 		A2(
 			_elm_lang$core$Json_Decode$field,
