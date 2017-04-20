@@ -4,7 +4,7 @@ class ChecksController < DashboardController
   # GET /checks
   # GET /checks.json
   def index
-    @checks = current.user.checks
+    @checks = current.user.checks.where(team: current.team)
   end
 
   # GET /checks/1

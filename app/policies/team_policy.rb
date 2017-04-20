@@ -8,4 +8,8 @@ class TeamPolicy
       team.user.id == user.id
     end
   end
+
+  def self.can_view?(team, user)
+    team.team_memberships.where(user: user).count >= 1
+  end
 end

@@ -1,8 +1,13 @@
 class TeamInvitationsController < DashboardController
-  before_action :check_invite
+  before_action :check_invite, only: [:show, :update]
 
   def create
     team = Team.find params[:team]
+
+    if !TeamPolicy.can_manage?(team, current.user)
+      return head :forbidden
+    end
+
     if InviteService.invite(current.user, team, params[:email])
       redirect_to team, notice: "We send out invitation"
     else

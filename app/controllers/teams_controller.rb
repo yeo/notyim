@@ -2,10 +2,14 @@ class TeamsController < DashboardController
   before_action :my_teams
   before_action :set_team, only: [:show, :edit, :update, :destroy]
 
+  # Utility method to redirect to other team
+  def switch
+  end
+
   # GET /teams
   # GET /teams.json
   def index
-    @team = @teams.first
+    @team = current.team
     @team_membership = TeamMembership.new(team: @team)
   end
 

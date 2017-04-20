@@ -13,4 +13,15 @@ class TeamService
       role: TeamMembership::ROLE_EDITOR
     )
   end
+
+  def self.members(team)
+    team.team_memberships
+  end
+
+  def self.find_team_from_host(domain)
+    match = /team-([^\.]+)\.noty.*/.match domain
+    if match && (team_id = match[1])
+      Team.find team_id
+    end
+  end
 end
