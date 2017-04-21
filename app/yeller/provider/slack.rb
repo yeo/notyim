@@ -14,10 +14,9 @@ module Yeller
       def self.notify_incident(incident, receiver)
         incident = decorate(incident)
         notifier = ::Slack::Notifier.new receiver.handler
+        ##{incident.short_summary_plain}
         notifier.ping <<~HEREDOC
         #{incident.subject}
-
-        #{incident.short_summary_plain}
 
         Service: #{incident.check.uri}
         Incident Detail: #{incident.url}

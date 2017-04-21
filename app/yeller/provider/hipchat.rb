@@ -18,10 +18,9 @@ module Yeller
       def self.notify_incident(incident, receiver)
         client = HipChat::Client.new(receiver.handler, :api_version => 'v2')
         incident = decorate(incident)
+        ##{incident.short_summary_plain}
         body = <<~HEREDOC
         #{incident.subject}
-
-        #{incident.short_summary_plain}
 
         Service: #{incident.check.uri}
         Incident Detail: #{incident.url}
