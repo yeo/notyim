@@ -101,18 +101,20 @@ class User
 
     user = User.where(email: email).first
     if !user
-      user = User.create!(
+      user = User.new(
         name: payload.info.name,
         email: payload.info.email,
         password: Devise.friendly_token[0,20],
-        providers: {payload.provider => payload.uid}
+        providers: {payload.provider => payload.uid},
+        confirmed_at: Time.now.utc
       )
       # Auto confirm omni auth since it rely on upstream provider
       user.confirm
+      user.save!
     else
       if !user.providers
         user.providers = {payload.provider => payload.uid}
-        user.save
+        user.save!
       end
     end
 
