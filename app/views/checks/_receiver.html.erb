@@ -13,7 +13,7 @@
             connect with your chat channel from there
           <% end  -%>
 
-          <%- if @current.user.verified_receivers.blank? %>
+          <%- if @current.user.verified_receivers.present? %>
             <% @current.user.verified_receivers.each do |receiver| %>
               <p class="control">
                 <%= label_tag receiver.id.to_s, class: 'radio' do %>
