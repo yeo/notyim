@@ -5,6 +5,6 @@ class ApplicationController < ActionController::Base
 
   private
   def current
-    @current ||= Trinity::Current.instance current_user
+    @current ||= Trinity::Current.instance current_user, request
   end
 end

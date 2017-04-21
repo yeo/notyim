@@ -1,4 +1,5 @@
 require 'trinity/current'
+require 'trinity/config'
 require 'trinity/policy'
 require 'trinity/decorator'
 require 'trinity/semaphore'
