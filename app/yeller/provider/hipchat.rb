@@ -21,7 +21,7 @@ module Yeller
         body = <<~HEREDOC
         #{incident.subject}
 
-        #incident.short_summary_plain}
+        #{incident.short_summary_plain}
 
         Service: #{incident.check.uri}
         Incident Detail: #{incident.url}
