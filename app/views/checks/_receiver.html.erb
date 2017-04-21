@@ -9,7 +9,7 @@
       <%= form_tag(register_incident_receivers_path(check_id: check.id.to_s)) do |f| %>
         <div class="field">
           <%- if @current.user.verified_receivers.blank? %>
-            You haven't add any alert contact. Go to <%= link_to 'alert contact', receivers_path %> to add a new one. You can also
+            You haven't add any alert contact. Go to <%= link_to 'alert contact', new_receiver_path %> to add a new one. You can also
             connect with your chat channel from there
           <% end  -%>
 
