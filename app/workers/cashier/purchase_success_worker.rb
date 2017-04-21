@@ -10,8 +10,11 @@ module Cashier
     #
     # Find user who run out of credit and email them to buy
     # or select a new plan
-    def perform(uid, item, charge)
+    def perform(uid, team, item, charge)
       user = User.find(uid)
+      # TODO make sure user own this team 
+      team = Team.find team
+
 
       purchase = case item["type"]
                when 'package' then Cashier::Package.find(item["id"])
@@ -23,7 +26,8 @@ module Cashier
         charge_type: item["type"],
         item: item["id"],
         event_source: charge,
-        user: user
+        user: user,
+        team: team,
       )
 
       case purchase.type.downcase
@@ -37,6 +41,7 @@ module Cashier
           expire_at: 30.days.from_now,
           plan: item["id"],
           status: ::Subscription::STATUS_ACTIVED,
+          team: team,
         )
       end
 

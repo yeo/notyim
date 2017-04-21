@@ -15,8 +15,8 @@ class UserCreditService
     user.credit.voice_second >= 60
   end
 
-  def self.deduct_sms!(user, amount=1)
-    initialize_credit(user)
+  def self.deduct_sms!(user, team, amount=1)
+    initialize_credit(user, team)
     user.reload
     credit = user.credit
 
@@ -24,8 +24,8 @@ class UserCreditService
     credit.save!
   end
 
-  def self.deduct_voice_minute!(user, amount=1)
-    initialize_credit(user)
+  def self.deduct_voice_minute!(user, team, amount=1)
+    initialize_credit(user, team)
     user.reload
 
     user.credit.voice_second -= amount.minutes.to_i

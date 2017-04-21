@@ -1,5 +1,7 @@
+require 'trinity'
+
 class ChargeService
-  def self.purchase(user, item, stripe_token=nil)
+  def self.purchase(user, team, item, stripe_token=nil)
     customer = get_or_create_token(user, stripe_token)
     raise "Missing stripe token" unless customer
 
@@ -11,7 +13,7 @@ class ChargeService
 
     charge = charge!(customer, purchase)
 
-    Cashier::PurchaseSuccessWorker.perform_async(user.id.to_s, {type: item.type, id: item.id}, charge.to_hash)
+    Cashier::PurchaseSuccessWorker.perform_async(user.id.to_s, team.id.to_s, {type: item.type, id: item.id}, charge.to_hash)
 
     charge
   end

@@ -4,7 +4,7 @@ class ChargesController < DashboardController
 
   def create
     begin
-      @charge = ChargeService.purchase(current.user, OpenStruct.new(type: params[:tx_type], id: params[:item]), params[:stripeToken])
+      @charge = ChargeService.purchase(current.user, current.team, OpenStruct.new(type: params[:tx_type], id: params[:item]), params[:stripeToken])
       redirect_to users_show_billings_path, notice: "Thanks you. We have charge an amount of #{@charge.amount / 100} on your card succesfully."
     rescue Stripe::CardError => e
       flash[:error] = e.message

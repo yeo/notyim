@@ -1,6 +1,5 @@
 class Notification
   include Mongoid::Document
-  include Teamify
 
   field :message
   field :kind, type: String

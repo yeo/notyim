@@ -1,6 +1,7 @@
 class StripeToken
   include Mongoid::Document
   include Mongoid::Timestamps
+  include Teamify
 
   field :token, type: String
   field :customer, type: String
