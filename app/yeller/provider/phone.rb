@@ -47,8 +47,8 @@ module Yeller
         if user.internal_tester?
           ::Yeller::Transporter::PhoneTest.call(receiver.handler, url)
         else
-          if UserCreditService.has_credit_voice?(user)
-            UserCreditService.deduct_voice_minute!(user)
+          if TeamCreditService.has_credit_voice?(incident.team)
+            TeamCreditService.deduct_voice_minute!(incident.team)
 
             PhoneTransporterWorker.perform_async receiver.id.to_s, url
           else

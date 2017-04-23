@@ -8,7 +8,8 @@ class Team
   field :name, type: String
   belongs_to :user
   has_many :invites, as: :invitable, class_name: "Invitation"
-  has_many :team_memberships
+  has_many :team_memberships, dependent: :destroy
+  has_one :credit, dependent: :destroy
 
   scope :mine, ->(u) { where(user: u) }
 
