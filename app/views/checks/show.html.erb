@@ -146,18 +146,9 @@
         </div>
         <div class="column is-11">
           <div class="columns is-gapless is-marginless is-paddingless">
-            <div class="column">Jan</div>
-            <div class="column">Feb</div>
-            <div class="column">Mar</div>
-            <div class="column">Apr</div>
-            <div class="column">May</div>
-            <div class="column">Jun</div>
-            <div class="column">Jul</div>
-            <div class="column">Aug</div>
-            <div class="column">Sep</div>
-            <div class="column">Oct</div>
-            <div class="column">Nov</div>
-            <div class="column">Dec</div>
+            <% 12.times do |m| %>
+              <div class="column"><%= (12-m-1).month.ago.strftime("%b")%></div>
+            <% end %>
           </div>
         </div>
       </div>
