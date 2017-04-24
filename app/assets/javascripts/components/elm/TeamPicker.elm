@@ -1,7 +1,7 @@
 port module TeamPicker exposing (..)
 
-import Html exposing (Html, Attribute, beginnerProgram, programWithFlags, div, button, a, hr, text, h2, p, label, select, option, span, input,ul, li, nav)
-import Html.Attributes exposing (class, placeholder, type_, size, value, selected, name, disabled, href)
+import Html exposing (Html, Attribute, beginnerProgram, programWithFlags, div, button, a, hr, text, h2, p, label, select, option, span, input,ul, li, nav, form)
+import Html.Attributes exposing (class, placeholder, type_, size, value, selected, name, disabled, href, method, action)
 import Html.Events exposing (onClick, onInput)
 import String
 import Debug
@@ -24,14 +24,16 @@ type alias Model =
   {
     teams: List Team
     ,current_team: Team
-    
-    ,newTeam: Bool
-    ,showTeamList: Bool
-    ,domain: String
+
+    , newTeam: Bool
+    , showTeamList: Bool
+    , domain: String
+    , formAuthenticityToken: String
   }
 
 type alias Flag =
-  { domain: String
+  { formAuthenticityToken: String
+  , domain: String
   , teams: List Team
   , current_team: Team
   }
@@ -46,7 +48,7 @@ type Msg
 
 init : Flag -> (Model, Cmd Msg)
 init flags =
-  (Model flags.teams flags.current_team False False flags.domain, Cmd.none)
+  (Model flags.teams flags.current_team False False flags.domain flags.formAuthenticityToken, Cmd.none)
 
 
 update: Msg -> Model -> (Model, Cmd Msg)
@@ -67,23 +69,31 @@ view : Model -> Html Msg
 view model =
   div [ class "nav-item teampicker" ]
     [ div []
-        [ span [ onClick (ToggleTeams model.showTeamList) ] [ model.current_team.name ++ (if model.showTeamList then " ˅" else " ˄" )  |> text ] ]
+        [
+          a  [ class "button", onClick (ToggleTeams model.showTeamList) ] [ 
+                text model.current_team.name
+                , span  [] [(if model.showTeamList then " ▲" else " ▼" ) |> text]
+             ]
+        ]
     , (if model.showTeamList then
        div [ class "teampicker__list box" ]
-          [viewTeamList model
-            , viewTeamFooter
-            , viewNewTeam model]
+          [
+            viewTeamList model
+            , viewTeamFooter model
+            --, viewNewTeam model
+          ]
        else
          text "")
     ]
 
 viewTeamList : Model -> Html Msg
 viewTeamList model =
-  div [ class "" ]
-    [ ul [] (List.map (\(team) -> li [] [
-                                      span [] [ a [ href ("//team-" ++ team.id ++ "." ++ model.domain ) ] [text team.name] ]
-                                     ]) model.teams) ]
-
+  div [ class "menu" ] [
+    p [ class "menu-label" ] [ text "Switch team" ]
+    , ul [ class "menu-list" ] (List.map (\(team) -> li [] [
+                                    span [] [ a [ href ("//team-" ++ team.id ++ "." ++ model.domain ++ "/dashboard") ] [text team.name] ]
+                                   ]) model.teams)
+  ]
 
 viewNewTeam:  Model -> Html Msg
 viewNewTeam model =
@@ -91,13 +101,20 @@ viewNewTeam model =
     [ div [ class "input", onClick NoOp ]
       [ input [ type_ "text" ] [] ] ]
 
-viewTeamFooter:  Html Msg
-viewTeamFooter =
+viewTeamFooter: Model -> Html Msg
+viewTeamFooter model =
   div []
     [
       hr [] []
-      , a [ href "/teams" ]
-        [
-          text "Manage teams"
+      , ul [ class "menu-list" ] [
+        li []  [ a [ href "/teams" ] [ text "Account Setting" ] ]
+        , li []  [ a [ href "/teams" ] [ text "Manage teams" ] ]
+        , li []  [
+          form [ method "POST", action "/users/sign_out" ] [
+            input [ type_ "hidden", name "_method", value "delete" ] []
+            , input [ type_ "hidden", name "authenticity_token", value model.formAuthenticityToken] []
+            , button [ name "button", type_ "submit", class "button" ] [ text "Logout" ]
+          ]
         ]
+      ]
     ]
