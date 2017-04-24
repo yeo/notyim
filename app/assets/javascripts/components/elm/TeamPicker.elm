@@ -80,7 +80,7 @@ view model =
           [
             viewTeamList model
             , viewTeamFooter model
-            --, viewNewTeam model
+            , viewNewTeam model
           ]
        else
          text "")
@@ -97,9 +97,19 @@ viewTeamList model =
 
 viewNewTeam:  Model -> Html Msg
 viewNewTeam model =
-  div [ class "field" ]
-    [ div [ class "input", onClick NoOp ]
-      [ input [ type_ "text" ] [] ] ]
+  if not model.newTeam then
+   text ""
+  else
+   div [] [
+     form [ method "POST", action "/users/sign_out" ] [
+        input [ type_ "hidden", name "_method", value "delete" ] []
+        , input [ type_ "hidden", name "authenticity_token", value model.formAuthenticityToken] []
+        , input [ type_ "text", name "name", value ""] []
+        , button [ name "button", type_ "submit", class "button" ] [ text "Save" ]
+     ]
+
+   ]
+
 
 viewTeamFooter: Model -> Html Msg
 viewTeamFooter model =
@@ -109,6 +119,7 @@ viewTeamFooter model =
       , ul [ class "menu-list" ] [
         li []  [ a [ href "/teams" ] [ text "Account Setting" ] ]
         , li []  [ a [ href "/teams" ] [ text "Manage teams" ] ]
+        , li []  [ a [ href "#", onClick NewTeam ] [ text "Add a new team" ] ]
         , li []  [
           form [ method "POST", action "/users/sign_out" ] [
             input [ type_ "hidden", name "_method", value "delete" ] []

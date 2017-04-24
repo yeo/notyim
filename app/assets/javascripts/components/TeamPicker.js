@@ -8260,84 +8260,181 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
-var _user$project$TeamPicker$viewTeamFooter = A2(
-	_elm_lang$html$Html$div,
-	{ctor: '[]'},
-	{
-		ctor: '::',
-		_0: A2(
-			_elm_lang$html$Html$hr,
-			{ctor: '[]'},
-			{ctor: '[]'}),
-		_1: {
+var _user$project$TeamPicker$viewNewTeam = function (model) {
+	return (!model.newTeam) ? _elm_lang$html$Html$text('') : A2(
+		_elm_lang$html$Html$div,
+		{ctor: '[]'},
+		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$a,
+				_elm_lang$html$Html$form,
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$href('/teams'),
-					_1: {ctor: '[]'}
+					_0: _elm_lang$html$Html_Attributes$method('POST'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$action('/users/sign_out'),
+						_1: {ctor: '[]'}
+					}
 				},
 				{
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Manage teams'),
-					_1: {ctor: '[]'}
+					_0: A2(
+						_elm_lang$html$Html$input,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$type_('hidden'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$name('_method'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$value('delete'),
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$input,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$type_('hidden'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$name('authenticity_token'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$value(model.formAuthenticityToken),
+										_1: {ctor: '[]'}
+									}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$input,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$type_('text'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$name('name'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$value(''),
+											_1: {ctor: '[]'}
+										}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$button,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$name('button'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$type_('submit'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('button'),
+												_1: {ctor: '[]'}
+											}
+										}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Save'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
 				}),
 			_1: {ctor: '[]'}
-		}
-	});
+		});
+};
 var _user$project$TeamPicker$viewTeamList = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
 		{
 			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class(''),
+			_0: _elm_lang$html$Html_Attributes$class('menu'),
 			_1: {ctor: '[]'}
 		},
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$ul,
-				{ctor: '[]'},
-				A2(
-					_elm_lang$core$List$map,
-					function (team) {
-						return A2(
-							_elm_lang$html$Html$li,
-							{ctor: '[]'},
-							{
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$span,
-									{ctor: '[]'},
-									{
-										ctor: '::',
-										_0: A2(
-											_elm_lang$html$Html$a,
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$href(
-													A2(
-														_elm_lang$core$Basics_ops['++'],
-														'//team-',
+				_elm_lang$html$Html$p,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('menu-label'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Switch team'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$ul,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('menu-list'),
+						_1: {ctor: '[]'}
+					},
+					A2(
+						_elm_lang$core$List$map,
+						function (team) {
+							return A2(
+								_elm_lang$html$Html$li,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$span,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$a,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$href(
 														A2(
 															_elm_lang$core$Basics_ops['++'],
-															team.id,
-															A2(_elm_lang$core$Basics_ops['++'], '.', model.domain)))),
-												_1: {ctor: '[]'}
-											},
-											{
-												ctor: '::',
-												_0: _elm_lang$html$Html$text(team.name),
-												_1: {ctor: '[]'}
-											}),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							});
-					},
-					model.teams)),
-			_1: {ctor: '[]'}
+															'//team-',
+															A2(
+																_elm_lang$core$Basics_ops['++'],
+																team.id,
+																A2(
+																	_elm_lang$core$Basics_ops['++'],
+																	'.',
+																	A2(_elm_lang$core$Basics_ops['++'], model.domain, '/dashboard'))))),
+													_1: {ctor: '[]'}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(team.name),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								});
+						},
+						model.teams)),
+				_1: {ctor: '[]'}
+			}
 		});
 };
 var _user$project$TeamPicker$update = F2(
@@ -8376,59 +8473,200 @@ var _user$project$TeamPicker$Team = F2(
 	function (a, b) {
 		return {id: a, name: b};
 	});
-var _user$project$TeamPicker$Model = F5(
-	function (a, b, c, d, e) {
-		return {teams: a, current_team: b, newTeam: c, showTeamList: d, domain: e};
+var _user$project$TeamPicker$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {teams: a, current_team: b, newTeam: c, showTeamList: d, domain: e, formAuthenticityToken: f};
 	});
 var _user$project$TeamPicker$init = function (flags) {
 	return {
 		ctor: '_Tuple2',
-		_0: A5(_user$project$TeamPicker$Model, flags.teams, flags.current_team, false, false, flags.domain),
+		_0: A6(_user$project$TeamPicker$Model, flags.teams, flags.current_team, false, false, flags.domain, flags.formAuthenticityToken),
 		_1: _elm_lang$core$Platform_Cmd$none
 	};
 };
-var _user$project$TeamPicker$Flag = F3(
-	function (a, b, c) {
-		return {domain: a, teams: b, current_team: c};
+var _user$project$TeamPicker$Flag = F4(
+	function (a, b, c, d) {
+		return {formAuthenticityToken: a, domain: b, teams: c, current_team: d};
 	});
 var _user$project$TeamPicker$NoOp = {ctor: 'NoOp'};
-var _user$project$TeamPicker$viewNewTeam = function (model) {
+var _user$project$TeamPicker$NewTeam = {ctor: 'NewTeam'};
+var _user$project$TeamPicker$viewTeamFooter = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
-		{
-			ctor: '::',
-			_0: _elm_lang$html$Html_Attributes$class('field'),
-			_1: {ctor: '[]'}
-		},
+		{ctor: '[]'},
 		{
 			ctor: '::',
 			_0: A2(
-				_elm_lang$html$Html$div,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('input'),
-					_1: {
+				_elm_lang$html$Html$hr,
+				{ctor: '[]'},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$ul,
+					{
 						ctor: '::',
-						_0: _elm_lang$html$Html_Events$onClick(_user$project$TeamPicker$NoOp),
+						_0: _elm_lang$html$Html_Attributes$class('menu-list'),
 						_1: {ctor: '[]'}
-					}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$input,
-						{
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$li,
+							{ctor: '[]'},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$a,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$href('/teams'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text('Account Setting'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$type_('text'),
-							_1: {ctor: '[]'}
-						},
-						{ctor: '[]'}),
-					_1: {ctor: '[]'}
-				}),
-			_1: {ctor: '[]'}
+							_0: A2(
+								_elm_lang$html$Html$li,
+								{ctor: '[]'},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$a,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$href('/teams'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Manage teams'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$li,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$a,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$href('#'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Events$onClick(_user$project$TeamPicker$NewTeam),
+													_1: {ctor: '[]'}
+												}
+											},
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html$text('Add a new team'),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$li,
+										{ctor: '[]'},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$form,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$method('POST'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$action('/users/sign_out'),
+														_1: {ctor: '[]'}
+													}
+												},
+												{
+													ctor: '::',
+													_0: A2(
+														_elm_lang$html$Html$input,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$type_('hidden'),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$name('_method'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$value('delete'),
+																	_1: {ctor: '[]'}
+																}
+															}
+														},
+														{ctor: '[]'}),
+													_1: {
+														ctor: '::',
+														_0: A2(
+															_elm_lang$html$Html$input,
+															{
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$type_('hidden'),
+																_1: {
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$name('authenticity_token'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$value(model.formAuthenticityToken),
+																		_1: {ctor: '[]'}
+																	}
+																}
+															},
+															{ctor: '[]'}),
+														_1: {
+															ctor: '::',
+															_0: A2(
+																_elm_lang$html$Html$button,
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html_Attributes$name('button'),
+																	_1: {
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$class('button'),
+																			_1: {ctor: '[]'}
+																		}
+																	}
+																},
+																{
+																	ctor: '::',
+																	_0: _elm_lang$html$Html$text('Logout'),
+																	_1: {ctor: '[]'}
+																}),
+															_1: {ctor: '[]'}
+														}
+													}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}),
+				_1: {ctor: '[]'}
+			}
 		});
 };
-var _user$project$TeamPicker$NewTeam = {ctor: 'NewTeam'};
 var _user$project$TeamPicker$SwitchTeam = function (a) {
 	return {ctor: 'SwitchTeam', _0: a};
 };
@@ -8451,21 +8689,33 @@ var _user$project$TeamPicker$view = function (model) {
 				{
 					ctor: '::',
 					_0: A2(
-						_elm_lang$html$Html$span,
+						_elm_lang$html$Html$a,
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onClick(
-								_user$project$TeamPicker$ToggleTeams(model.showTeamList)),
-							_1: {ctor: '[]'}
+							_0: _elm_lang$html$Html_Attributes$class('button'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(
+									_user$project$TeamPicker$ToggleTeams(model.showTeamList)),
+								_1: {ctor: '[]'}
+							}
 						},
 						{
 							ctor: '::',
-							_0: _elm_lang$html$Html$text(
-								A2(
-									_elm_lang$core$Basics_ops['++'],
-									model.current_team.name,
-									model.showTeamList ? ' ˅' : ' ˄')),
-							_1: {ctor: '[]'}
+							_0: _elm_lang$html$Html$text(model.current_team.name),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$span,
+									{ctor: '[]'},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(
+											model.showTeamList ? ' ▲' : ' ▼'),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
 						}),
 					_1: {ctor: '[]'}
 				}),
@@ -8483,7 +8733,7 @@ var _user$project$TeamPicker$view = function (model) {
 						_0: _user$project$TeamPicker$viewTeamList(model),
 						_1: {
 							ctor: '::',
-							_0: _user$project$TeamPicker$viewTeamFooter,
+							_0: _user$project$TeamPicker$viewTeamFooter(model),
 							_1: {
 								ctor: '::',
 								_0: _user$project$TeamPicker$viewNewTeam(model),
@@ -8512,26 +8762,31 @@ var _user$project$TeamPicker$main = _elm_lang$html$Html$programWithFlags(
 				function (domain) {
 					return A2(
 						_elm_lang$core$Json_Decode$andThen,
-						function (teams) {
-							return _elm_lang$core$Json_Decode$succeed(
-								{current_team: current_team, domain: domain, teams: teams});
-						},
-						A2(
-							_elm_lang$core$Json_Decode$field,
-							'teams',
-							_elm_lang$core$Json_Decode$list(
+						function (formAuthenticityToken) {
+							return A2(
+								_elm_lang$core$Json_Decode$andThen,
+								function (teams) {
+									return _elm_lang$core$Json_Decode$succeed(
+										{current_team: current_team, domain: domain, formAuthenticityToken: formAuthenticityToken, teams: teams});
+								},
 								A2(
-									_elm_lang$core$Json_Decode$andThen,
-									function (id) {
-										return A2(
+									_elm_lang$core$Json_Decode$field,
+									'teams',
+									_elm_lang$core$Json_Decode$list(
+										A2(
 											_elm_lang$core$Json_Decode$andThen,
-											function (name) {
-												return _elm_lang$core$Json_Decode$succeed(
-													{id: id, name: name});
+											function (id) {
+												return A2(
+													_elm_lang$core$Json_Decode$andThen,
+													function (name) {
+														return _elm_lang$core$Json_Decode$succeed(
+															{id: id, name: name});
+													},
+													A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string));
 											},
-											A2(_elm_lang$core$Json_Decode$field, 'name', _elm_lang$core$Json_Decode$string));
-									},
-									A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$string)))));
+											A2(_elm_lang$core$Json_Decode$field, 'id', _elm_lang$core$Json_Decode$string)))));
+						},
+						A2(_elm_lang$core$Json_Decode$field, 'formAuthenticityToken', _elm_lang$core$Json_Decode$string));
 				},
 				A2(_elm_lang$core$Json_Decode$field, 'domain', _elm_lang$core$Json_Decode$string));
 		},
