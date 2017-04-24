@@ -11,11 +11,13 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.text_field :name, class: 'input', placeholder: 'your new team' %>
-  </div>
+  <div class="field is-grouped">
+    <p class="control is-expanded">
+      <%= f.text_field :name, class: 'input', placeholder: 'your new team' %>
+    </p>
 
-  <div class="actions">
-    <%= f.submit class: 'button is-primary is-small' %>
+    <p class="control">
+      <%= f.submit class: 'button is-primary' %>
+    </p>
   </div>
 <% end %>

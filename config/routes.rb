@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   resources :receivers
   post '/incident_receivers/:check_id', to: 'incident_receivers#create', as: :register_incident_receivers
 
-  resources :teams, only: [:create, :edit, :update, :destroy, :index, :show]
+  resources :teams, only: [:create, :edit, :update, :destroy, :index, :show, :new]
   # TODO: delete
   resources :team_memberships, only: [:create]
   # TODO: delete

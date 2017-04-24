@@ -32,7 +32,7 @@ class TeamsController < DashboardController
     @team = Team.new(team_params)
     @team.user = current_user
     if @team.save
-      redirect_to teams_path, notice: 'Team was succesfully created.'
+      redirect_to team_path(@team), notice: 'Team was succesfully created.'
     else
       redirect_to teams_path, alert: 'Team fail to create'
     end

@@ -32,25 +32,27 @@
       </tr>-->
     <% end %>
 
+    <!--
     <div class="panel-block">
       <h2 class="subtitle is-6">Create a new team</h2>
       <div class="columns">
         <div class="column">
-          <%= render 'form', team: Team.new(user: @team.user) %>
+          <% render 'form', team: Team.new(user: @team.user) %>
         </div>
       </div>
     </div>
+    -->
     </nav>
   </div>
 
   <div class="column">
-    <h1 class="title" id="member">Selected Team <strong><%= @team.name %></strong></h1>
+    <h1 class="title" id="member">Currently View Team <strong><%= @team.name %></strong></h1>
 
     <div class="section">
-
       <h2 class="subtitle" id="invite">Membership</h1>
       <table class="table">
         <tbody>
+          <tr><td><%= @team.user.email %><td><td><td>Owner</tr>
         <% TeamService.members(@team).each do |member| %>
           <tr>
             <td><%= member.user.email if member.persisted? %></td>
@@ -60,7 +62,6 @@
         </tbody>
       </table>
 
-      <hr>
       <h2 class="subtitle" id="invite">Invite team member</h1>
       <%= render 'invitation', team: @team %>
 

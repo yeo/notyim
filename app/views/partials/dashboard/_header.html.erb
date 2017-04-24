@@ -33,7 +33,7 @@
           <span>Account</span>
         </a>
 
-        
+        <!--
         <span class="nav-item">
           <% form_tag(destroy_user_session_path, :method => :delete) do |f| %>
             <%= button_tag(class: 'button ') do %>
@@ -41,8 +41,9 @@
             <% end %>
           <% end %>
         </span>
+        -->
 
-        <%# elm_component('TeamPicker', {flags: {
+        <%= elm_component('TeamPicker', {flags: {
               formAuthenticityToken: form_authenticity_token,
               domain: current.domain,
               teams: current.user.teams.map { |team| {id: team.id.to_s, name: team.name || ""} },

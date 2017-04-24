@@ -5,18 +5,20 @@
       <h2><%= pluralize(team.errors.count, "error") %> prohibited the invation created.</h2>
 
       <ul>
-      <% team.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
+        <% team.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
+  <div class="field is-grouped">
+    <p class="control is-expanded">
     <%= text_field_tag :email, nil, class: 'input', placeholder: 'coworker@yourcompany.com' %>
+    </p>
+    <p class="control">
+      <%= submit_tag "Invite", class: 'button is-primary' %>
+    </p>
   </div>
 
-  <div class="actions">
-    <%= submit_tag "Invite", class: 'button is-primary is-small' %>
-  </div>
 <% end %>
