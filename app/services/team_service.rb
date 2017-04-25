@@ -24,4 +24,11 @@ class TeamService
       Team.find team_id
     end
   end
+
+  # Find a list of team that user belongs to
+  # This include:
+  # Team that user own and team that user is a member
+  def self.fetch_user_teams(user)
+    user.teams.to_a + user.team_memberships.map { |m| m.team }.to_a
+  end
 end

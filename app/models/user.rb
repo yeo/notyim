@@ -57,6 +57,8 @@ class User
   index({created_at: 1}, {background: true})
 
   has_many :teams,  dependent: :destroy
+  has_many :team_memberships, dependent: :destroy
+
   has_many :checks,  dependent: :destroy
   has_many :incidents, dependent: :destroy
   has_many :receivers, dependent: :destroy
@@ -125,5 +127,9 @@ class User
     unless self.teams.present?
       self.teams << Team.create!(name: 'My team', user: self)
     end
+  end
+
+  def default_team
+    teams.asc(:id).first
   end
 end
