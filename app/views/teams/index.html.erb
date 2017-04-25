@@ -52,13 +52,23 @@
       <h2 class="subtitle" id="invite">Membership</h1>
       <table class="table">
         <tbody>
-          <tr><td><%= @team.user.email %><td><td><td>Owner</tr>
+          <tr><td><%= @team.user.email %></td><td>Owner</td></tr>
         <% TeamService.members(@team).each do |member| %>
           <tr>
             <td><%= member.user.email if member.persisted? %></td>
-            <td><%= member.role if member.persisted? %></td>
+            <td><%= member.role.capitalize if member.persisted? %></td>
           </tr>
         <% end %>
+        </tbody>
+      </table>
+
+      <h2 class="subtitle" id="invite">Pending invitation</h1>
+      <table class="table">
+        <thead><td>Email</td><td>Invite at</td></thead>
+        <tbody>
+          <% @team.invites.pending.each do |invite| %>
+            <tr><td><%= invite.email %></td><td><%= invite.created_at %></td></tr>
+          <% end %>
         </tbody>
       </table>
 

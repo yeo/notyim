@@ -9,11 +9,13 @@ class Invitation
   field :code, type: String
 
   index({code: 1}, {background: true})
+  index({accepted_at: 1}, {background: true})
 
   belongs_to :invitable, polymorphic: true
   belongs_to :user
 
   before_save :set_code
+  scope :pending, ->() { where(accepted_at: {:$eq => nil}) }
 
   def set_code
     if !self.code
