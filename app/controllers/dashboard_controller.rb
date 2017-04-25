@@ -25,7 +25,8 @@ class DashboardController < ApplicationController
           current.team = session[:team] = nil
         end
       else
-        current.team = session[:team] = current.user.teams.first.id.to_s
+        current.team = current.user.default_team
+        session[:team] = current.user.default_team.id.to_s
       end
 
     rescue => e
