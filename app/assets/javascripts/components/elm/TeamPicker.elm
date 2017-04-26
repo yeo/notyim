@@ -90,7 +90,22 @@ viewTeamList model =
   div [ class "menu" ] [
     p [ class "menu-label" ] [ text "Switch team" ]
     , ul [ class "menu-list" ] (List.map (\(team) -> li [] [
-                                    span [] [ a [ href ("//team-" ++ team.id ++ "." ++ model.domain ++ "/dashboard") ] [text team.name] ]
+                                   case List.head model.teams of
+                                     Nothing -> text ""
+                                     Just defaultTeam ->
+                                       if team.id == defaultTeam.id then
+                                         span [] [ a [ href ("//" ++ model.domain ++ "/dashboard") ] [ text team.name ] ]
+                                       else
+                                         span [] [ a [ href ("//team-" ++ team.id ++ "." ++ model.domain ++ "/dashboard") ] [text team.name] ]
+
+--                                   let
+--                                       defaultTeam = List.head model.teams
+--                                   in
+--                                     if team.id == defaultTeam.id then
+--                                       span [] [ a [ href (model.domain ++ "/dashboard") ] [ text team.name ] ]
+--                                     else
+--                                       span [] [ a [ href ("//team-" ++ team.id ++ "." ++ model.domain ++ "/dashboard") ] [text team.name] ]
+--
                                    ]) model.teams)
   ]
 
