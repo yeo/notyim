@@ -3,6 +3,11 @@ class ReceiverService
   # @param Receiver object
   # @param boolean true false
   def self.save(receiver)
+    if !TeamPolicy.can_manage?(receiver.team, receiver.user) ||
+        !TeamPolicy.can_view?(receiver.team, receiver.user)
+      raise "UserCannotManageTeam"
+    end
+
     if receiver.save! && receiver.require_verify?
       VerificationService.generate(receiver)
     end

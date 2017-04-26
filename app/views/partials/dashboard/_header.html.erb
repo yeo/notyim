@@ -9,7 +9,7 @@
         <%= link_to incidents_path, class: "nav-item is-tab #{cp(incidents_path)}" do %>
           Incidents
           <% decorate current_user do |user| %>
-            <span class="tag is-warning is-small"><%= user.open_incident %></span>
+            <span class="tag is-warning is-small"><%= user.open_incident(current.team) %></span>
           <% end %>
         <% end %>
         <%= link_to("Alert Contact", receivers_path, class: "nav-item is-tab #{cp(receivers_path)}") %>

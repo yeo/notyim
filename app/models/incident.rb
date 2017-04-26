@@ -18,7 +18,7 @@ class Incident
   field :error_message, type: String
   field :locations, type: Hash, default: {open: [], close: []}
 
-  index({status: 1}, {background: true})
+  index({team: 1, status: 1}, {background: true})
   index({acknowledged_at: 1, acknowledged_by: 1}, {background: true})
   index({created_at: 1}, {background: true})
   # TODO add custom validation to prevent multiple open for a check and assertion
@@ -32,6 +32,8 @@ class Incident
   scope :open, -> () { where(status: STATUS_OPEN).desc(:id) }
   scope :close, -> () { where(status: STATUS_CLOSE).desc(:id) }
   scope :partial, -> () { where(status: STATUS_PARTIAL).desc(:id) }
+
+  scope :of_team, -> (team) { where(team: team) }
 
   def open?
     status == STATUS_OPEN

@@ -1,7 +1,7 @@
 class UserDecorator < SimpleDelegator
-  def open_incident
+  def open_incident(team)
     # TODO cache, add team
-    incidents.open.count
+    incidents.of_team(team).open.count
   end
 
   # Return a list of user team
