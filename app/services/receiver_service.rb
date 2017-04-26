@@ -3,7 +3,7 @@ class ReceiverService
   # @param Receiver object
   # @param boolean true false
   def self.save(receiver)
-    unless TeamPolicy.can_manage?(receiver.team, receiver.user) &&
+    unless TeamPolicy.can_manage?(receiver.team, receiver.user) ||
         TeamPolicy.can_view?(receiver.team, receiver.user)
       raise "UserCannotManageTeam"
     end
