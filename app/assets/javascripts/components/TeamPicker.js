@@ -8260,107 +8260,6 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
-var _user$project$TeamPicker$viewNewTeam = function (model) {
-	return (!model.newTeam) ? _elm_lang$html$Html$text('') : A2(
-		_elm_lang$html$Html$div,
-		{ctor: '[]'},
-		{
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$form,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$method('POST'),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$action('/users/sign_out'),
-						_1: {ctor: '[]'}
-					}
-				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$input,
-						{
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$type_('hidden'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$name('_method'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$value('delete'),
-									_1: {ctor: '[]'}
-								}
-							}
-						},
-						{ctor: '[]'}),
-					_1: {
-						ctor: '::',
-						_0: A2(
-							_elm_lang$html$Html$input,
-							{
-								ctor: '::',
-								_0: _elm_lang$html$Html_Attributes$type_('hidden'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$name('authenticity_token'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$value(model.formAuthenticityToken),
-										_1: {ctor: '[]'}
-									}
-								}
-							},
-							{ctor: '[]'}),
-						_1: {
-							ctor: '::',
-							_0: A2(
-								_elm_lang$html$Html$input,
-								{
-									ctor: '::',
-									_0: _elm_lang$html$Html_Attributes$type_('text'),
-									_1: {
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$name('name'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$value(''),
-											_1: {ctor: '[]'}
-										}
-									}
-								},
-								{ctor: '[]'}),
-							_1: {
-								ctor: '::',
-								_0: A2(
-									_elm_lang$html$Html$button,
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$name('button'),
-										_1: {
-											ctor: '::',
-											_0: _elm_lang$html$Html_Attributes$type_('submit'),
-											_1: {
-												ctor: '::',
-												_0: _elm_lang$html$Html_Attributes$class('button'),
-												_1: {ctor: '[]'}
-											}
-										}
-									},
-									{
-										ctor: '::',
-										_0: _elm_lang$html$Html$text('Save'),
-										_1: {ctor: '[]'}
-									}),
-								_1: {ctor: '[]'}
-							}
-						}
-					}
-				}),
-			_1: {ctor: '[]'}
-		});
-};
 var _user$project$TeamPicker$viewTeamList = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8464,7 +8363,7 @@ var _user$project$TeamPicker$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{newTeam: true}),
+						{newTeam: _p0._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
@@ -8489,7 +8388,174 @@ var _user$project$TeamPicker$Flag = F4(
 		return {formAuthenticityToken: a, domain: b, teams: c, current_team: d};
 	});
 var _user$project$TeamPicker$NoOp = {ctor: 'NoOp'};
-var _user$project$TeamPicker$NewTeam = {ctor: 'NewTeam'};
+var _user$project$TeamPicker$NewTeam = function (a) {
+	return {ctor: 'NewTeam', _0: a};
+};
+var _user$project$TeamPicker$viewNewTeam = function (model) {
+	return (!model.newTeam) ? _elm_lang$html$Html$text('') : A2(
+		_elm_lang$html$Html$li,
+		{ctor: '[]'},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$form,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$method('POST'),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$action('/teams'),
+						_1: {ctor: '[]'}
+					}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$input,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$type_('hidden'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$name('authenticity_token'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$value(model.formAuthenticityToken),
+									_1: {ctor: '[]'}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('field'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$p,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('control'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$input,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('input'),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$type_('text'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$name('team[name]'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$value(''),
+															_1: {
+																ctor: '::',
+																_0: _elm_lang$html$Html_Attributes$placeholder('Your Team'),
+																_1: {ctor: '[]'}
+															}
+														}
+													}
+												}
+											},
+											{ctor: '[]'}),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('field has-text-centered is-grouped'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$p,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('control'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: A2(
+												_elm_lang$html$Html$button,
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html_Attributes$name('button'),
+													_1: {
+														ctor: '::',
+														_0: _elm_lang$html$Html_Attributes$type_('submit'),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('button is-primary'),
+															_1: {ctor: '[]'}
+														}
+													}
+												},
+												{
+													ctor: '::',
+													_0: _elm_lang$html$Html$text('Save'),
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										}),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$p,
+											{
+												ctor: '::',
+												_0: _elm_lang$html$Html_Attributes$class('control is-link'),
+												_1: {ctor: '[]'}
+											},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$a,
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html_Events$onClick(
+															_user$project$TeamPicker$NewTeam(false)),
+														_1: {
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$class('button is-link'),
+															_1: {ctor: '[]'}
+														}
+													},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('Cancel'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
 var _user$project$TeamPicker$viewTeamFooter = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -8520,7 +8586,7 @@ var _user$project$TeamPicker$viewTeamFooter = function (model) {
 									_elm_lang$html$Html$a,
 									{
 										ctor: '::',
-										_0: _elm_lang$html$Html_Attributes$href('/teams'),
+										_0: _elm_lang$html$Html_Attributes$href('/users/edit'),
 										_1: {ctor: '[]'}
 									},
 									{
@@ -8565,7 +8631,8 @@ var _user$project$TeamPicker$viewTeamFooter = function (model) {
 												_0: _elm_lang$html$Html_Attributes$href('#'),
 												_1: {
 													ctor: '::',
-													_0: _elm_lang$html$Html_Events$onClick(_user$project$TeamPicker$NewTeam),
+													_0: _elm_lang$html$Html_Events$onClick(
+														_user$project$TeamPicker$NewTeam(true)),
 													_1: {ctor: '[]'}
 												}
 											},
@@ -8578,41 +8645,26 @@ var _user$project$TeamPicker$viewTeamFooter = function (model) {
 									}),
 								_1: {
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$li,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$form,
-												{
-													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$method('POST'),
-													_1: {
+									_0: _user$project$TeamPicker$viewNewTeam(model),
+									_1: {
+										ctor: '::',
+										_0: A2(
+											_elm_lang$html$Html$li,
+											{ctor: '[]'},
+											{
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$form,
+													{
 														ctor: '::',
-														_0: _elm_lang$html$Html_Attributes$action('/users/sign_out'),
-														_1: {ctor: '[]'}
-													}
-												},
-												{
-													ctor: '::',
-													_0: A2(
-														_elm_lang$html$Html$input,
-														{
+														_0: _elm_lang$html$Html_Attributes$method('POST'),
+														_1: {
 															ctor: '::',
-															_0: _elm_lang$html$Html_Attributes$type_('hidden'),
-															_1: {
-																ctor: '::',
-																_0: _elm_lang$html$Html_Attributes$name('_method'),
-																_1: {
-																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$value('delete'),
-																	_1: {ctor: '[]'}
-																}
-															}
-														},
-														{ctor: '[]'}),
-													_1: {
+															_0: _elm_lang$html$Html_Attributes$action('/users/sign_out'),
+															_1: {ctor: '[]'}
+														}
+													},
+													{
 														ctor: '::',
 														_0: A2(
 															_elm_lang$html$Html$input,
@@ -8621,10 +8673,10 @@ var _user$project$TeamPicker$viewTeamFooter = function (model) {
 																_0: _elm_lang$html$Html_Attributes$type_('hidden'),
 																_1: {
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$name('authenticity_token'),
+																	_0: _elm_lang$html$Html_Attributes$name('_method'),
 																	_1: {
 																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$value(model.formAuthenticityToken),
+																		_0: _elm_lang$html$Html_Attributes$value('delete'),
 																		_1: {ctor: '[]'}
 																	}
 																}
@@ -8633,32 +8685,51 @@ var _user$project$TeamPicker$viewTeamFooter = function (model) {
 														_1: {
 															ctor: '::',
 															_0: A2(
-																_elm_lang$html$Html$button,
+																_elm_lang$html$Html$input,
 																{
 																	ctor: '::',
-																	_0: _elm_lang$html$Html_Attributes$name('button'),
+																	_0: _elm_lang$html$Html_Attributes$type_('hidden'),
 																	_1: {
 																		ctor: '::',
-																		_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																		_0: _elm_lang$html$Html_Attributes$name('authenticity_token'),
 																		_1: {
 																			ctor: '::',
-																			_0: _elm_lang$html$Html_Attributes$class('button'),
+																			_0: _elm_lang$html$Html_Attributes$value(model.formAuthenticityToken),
 																			_1: {ctor: '[]'}
 																		}
 																	}
 																},
-																{
-																	ctor: '::',
-																	_0: _elm_lang$html$Html$text('Logout'),
-																	_1: {ctor: '[]'}
-																}),
-															_1: {ctor: '[]'}
+																{ctor: '[]'}),
+															_1: {
+																ctor: '::',
+																_0: A2(
+																	_elm_lang$html$Html$button,
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html_Attributes$name('button'),
+																		_1: {
+																			ctor: '::',
+																			_0: _elm_lang$html$Html_Attributes$type_('submit'),
+																			_1: {
+																				ctor: '::',
+																				_0: _elm_lang$html$Html_Attributes$class('button'),
+																				_1: {ctor: '[]'}
+																			}
+																		}
+																	},
+																	{
+																		ctor: '::',
+																		_0: _elm_lang$html$Html$text('Logout'),
+																		_1: {ctor: '[]'}
+																	}),
+																_1: {ctor: '[]'}
+															}
 														}
-													}
-												}),
-											_1: {ctor: '[]'}
-										}),
-									_1: {ctor: '[]'}
+													}),
+												_1: {ctor: '[]'}
+											}),
+										_1: {ctor: '[]'}
+									}
 								}
 							}
 						}
@@ -8734,11 +8805,7 @@ var _user$project$TeamPicker$view = function (model) {
 						_1: {
 							ctor: '::',
 							_0: _user$project$TeamPicker$viewTeamFooter(model),
-							_1: {
-								ctor: '::',
-								_0: _user$project$TeamPicker$viewNewTeam(model),
-								_1: {ctor: '[]'}
-							}
+							_1: {ctor: '[]'}
 						}
 					}) : _elm_lang$html$Html$text(''),
 				_1: {ctor: '[]'}

@@ -42,7 +42,7 @@ type alias Flag =
 type Msg
   = ToggleTeams Bool
   | SwitchTeam Team
-  | NewTeam
+  | NewTeam Bool
   | NoOp
 
 
@@ -59,9 +59,9 @@ update msg model =
       ({ model | showTeamList = not toggleFlag } , Cmd.none)
     SwitchTeam team ->
         ({ model | current_team = team }, Cmd.none)
-    NewTeam ->
+    NewTeam toggleFlag ->
         --Debug.log new_team
-        ({model | newTeam = True }, Cmd.none)
+        ({model | newTeam = toggleFlag }, Cmd.none)
 
 -- VIEW
 
@@ -80,7 +80,6 @@ view model =
           [
             viewTeamList model
             , viewTeamFooter model
-            , viewNewTeam model
           ]
        else
          text "")
@@ -100,12 +99,20 @@ viewNewTeam model =
   if not model.newTeam then
    text ""
   else
-   div [] [
-     form [ method "POST", action "/users/sign_out" ] [
-        input [ type_ "hidden", name "_method", value "delete" ] []
-        , input [ type_ "hidden", name "authenticity_token", value model.formAuthenticityToken] []
-        , input [ type_ "text", name "name", value ""] []
-        , button [ name "button", type_ "submit", class "button" ] [ text "Save" ]
+   li [] [
+     form [ method "POST", action "/teams" ] [
+        input [ type_ "hidden", name "authenticity_token", value model.formAuthenticityToken] []
+        , div [ class "field" ] [
+            p [ class "control" ] [ input [ class "input", type_ "text", name "team[name]", value "", placeholder "Your Team"] [] ]
+          ]
+        , div [ class "field has-text-centered is-grouped" ] [
+            p [ class "control" ] [
+              button [ name "button", type_ "submit", class "button is-primary" ] [ text "Save" ]
+            ]
+            ,p [ class "control is-link" ] [
+              a [ onClick (NewTeam False), class "button is-link" ] [ text "Cancel" ]
+            ]
+          ]
      ]
 
    ]
@@ -117,9 +124,10 @@ viewTeamFooter model =
     [
       hr [] []
       , ul [ class "menu-list" ] [
-        li []  [ a [ href "/teams" ] [ text "Account Setting" ] ]
+        li []  [ a [ href "/users/edit" ] [ text "Account Setting" ] ]
         , li []  [ a [ href "/teams" ] [ text "Manage teams" ] ]
-        , li []  [ a [ href "#", onClick NewTeam ] [ text "Add a new team" ] ]
+        , li []  [ a [ href "#", onClick (NewTeam True) ] [ text "Add a new team" ] ]
+        , viewNewTeam model
         , li []  [
           form [ method "POST", action "/users/sign_out" ] [
             input [ type_ "hidden", name "_method", value "delete" ] []
