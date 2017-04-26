@@ -8299,35 +8299,64 @@ var _user$project$TeamPicker$viewTeamList = function (model) {
 								{ctor: '[]'},
 								{
 									ctor: '::',
-									_0: A2(
-										_elm_lang$html$Html$span,
-										{ctor: '[]'},
-										{
-											ctor: '::',
-											_0: A2(
-												_elm_lang$html$Html$a,
+									_0: function () {
+										var _p0 = _elm_lang$core$List$head(model.teams);
+										if (_p0.ctor === 'Nothing') {
+											return _elm_lang$html$Html$text('');
+										} else {
+											return _elm_lang$core$Native_Utils.eq(team.id, _p0._0.id) ? A2(
+												_elm_lang$html$Html$span,
+												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html_Attributes$href(
-														A2(
-															_elm_lang$core$Basics_ops['++'],
-															'//team-',
-															A2(
-																_elm_lang$core$Basics_ops['++'],
-																team.id,
+													_0: A2(
+														_elm_lang$html$Html$a,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$href(
 																A2(
 																	_elm_lang$core$Basics_ops['++'],
-																	'.',
-																	A2(_elm_lang$core$Basics_ops['++'], model.domain, '/dashboard'))))),
+																	'//',
+																	A2(_elm_lang$core$Basics_ops['++'], model.domain, '/dashboard'))),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(team.name),
+															_1: {ctor: '[]'}
+														}),
 													_1: {ctor: '[]'}
-												},
+												}) : A2(
+												_elm_lang$html$Html$span,
+												{ctor: '[]'},
 												{
 													ctor: '::',
-													_0: _elm_lang$html$Html$text(team.name),
+													_0: A2(
+														_elm_lang$html$Html$a,
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html_Attributes$href(
+																A2(
+																	_elm_lang$core$Basics_ops['++'],
+																	'//team-',
+																	A2(
+																		_elm_lang$core$Basics_ops['++'],
+																		team.id,
+																		A2(
+																			_elm_lang$core$Basics_ops['++'],
+																			'.',
+																			A2(_elm_lang$core$Basics_ops['++'], model.domain, '/dashboard'))))),
+															_1: {ctor: '[]'}
+														},
+														{
+															ctor: '::',
+															_0: _elm_lang$html$Html$text(team.name),
+															_1: {ctor: '[]'}
+														}),
 													_1: {ctor: '[]'}
-												}),
-											_1: {ctor: '[]'}
-										}),
+												});
+										}
+									}(),
 									_1: {ctor: '[]'}
 								});
 						},
@@ -8338,8 +8367,8 @@ var _user$project$TeamPicker$viewTeamList = function (model) {
 };
 var _user$project$TeamPicker$update = F2(
 	function (msg, model) {
-		var _p0 = msg;
-		switch (_p0.ctor) {
+		var _p1 = msg;
+		switch (_p1.ctor) {
 			case 'NoOp':
 				return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 			case 'ToggleTeams':
@@ -8347,7 +8376,7 @@ var _user$project$TeamPicker$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{showTeamList: !_p0._0}),
+						{showTeamList: !_p1._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			case 'SwitchTeam':
@@ -8355,7 +8384,7 @@ var _user$project$TeamPicker$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{current_team: _p0._0}),
+						{current_team: _p1._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 			default:
@@ -8363,7 +8392,7 @@ var _user$project$TeamPicker$update = F2(
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
-						{newTeam: _p0._0}),
+						{newTeam: _p1._0}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
 		}
@@ -8816,7 +8845,7 @@ var _user$project$TeamPicker$main = _elm_lang$html$Html$programWithFlags(
 	{
 		init: _user$project$TeamPicker$init,
 		update: _user$project$TeamPicker$update,
-		subscriptions: function (_p1) {
+		subscriptions: function (_p2) {
 			return _elm_lang$core$Platform_Sub$none;
 		},
 		view: _user$project$TeamPicker$view
