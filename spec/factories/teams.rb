@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :team do
-    name 'Noty Team'
+    name "Team #{SecureRandom.hex}"
   end
 end

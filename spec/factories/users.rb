@@ -5,7 +5,12 @@ FactoryGirl.define  do
     password '123456789'
     password_confirmation '123456789'
     confirmed_at Time.now.utc
-    teams [FactoryGirl.build(:team), FactoryGirl.build(:team, name: 'Team 2')]
+    teams [FactoryGirl.build(:team)]
+
+    #after :create do |model|
+    #  model.teams = [FactoryGirl.create(:team, user: user), FactoryGirl.create(:team, user: user, name: 'Team 2')]
+    #  model.save!
+    #end
   end
 
   factory :admin, class: User do

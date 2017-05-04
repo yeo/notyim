@@ -12,14 +12,16 @@ RSpec.describe TeamsController, type: :controller do
   # TeamsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
-  before do
+  def save_team
     user.teams.map(&:save!)
   end
 
   describe "GET #index" do
     it "only lists current user 's team" do
+      save_team
       team = Team.create! valid_attributes
       sign_in user
+      user.teams << Team.create!(valid_attributes.merge(user: user))
       get :index, params: {} #, session: valid_session
       expect(assigns(:team)).to eq(user.teams.first)
       expect(assigns(:teams)).to eq(user.teams)
@@ -27,6 +29,7 @@ RSpec.describe TeamsController, type: :controller do
     end
 
     it 'set current team from domain' do
+      save_team
       team = user.teams.last
       @request.host = "team-#{team.id.to_s}.noty.dev"
       sign_in user
