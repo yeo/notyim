@@ -5,6 +5,11 @@ class ApplicationController < ActionController::Base
 
   private
   def current
-    @current ||= Trinity::Current.instance current_user, request
+    begin
+      @current ||= Trinity::Current.instance(current_user, request, session)
+    rescue => e
+      Bugsnag.notify e
+      head :forbidden
+    end
   end
 end
