@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'trinity'
 
 RSpec.describe TeamsController, type: :controller do
   let(:user) { FactoryGirl.create(:user) }
@@ -16,9 +17,13 @@ RSpec.describe TeamsController, type: :controller do
     user.teams.map(&:save!)
   end
 
-  describe "GET #index" do
+  before do
+    save_team
+    Trinity::Current.reset!
+  end
+
+  describe "GET #index with default domain" do
     it "only lists current user 's team" do
-      save_team
       team = Team.create! valid_attributes
       sign_in user
       user.teams << Team.create!(valid_attributes.merge(user: user))
@@ -29,7 +34,6 @@ RSpec.describe TeamsController, type: :controller do
     end
 
     it 'set current team from domain' do
-      save_team
       team = user.teams.last
       @request.host = "team-#{team.id.to_s}.noty.dev"
       sign_in user
