@@ -51,6 +51,8 @@ class TeamsController < DashboardController
   # PATCH/PUT /teams/1
   # PATCH/PUT /teams/1.json
   def update
+    return head(:forbidden) unless TeamPolicy.can_manage?(@team, current.user)
+
     respond_to do |format|
       if @team.update(team_params)
         format.html { redirect_to @team, notice: 'Team was successfully updated.' }
@@ -65,6 +67,7 @@ class TeamsController < DashboardController
   # DELETE /teams/1
   # DELETE /teams/1.json
   def destroy
+    return head(:forbidden) if @team.id.to_s == current.user.default_team.id.to_s
     @team.destroy
     respond_to do |format|
       format.html { redirect_to teams_url, notice: 'Team was successfully destroyed.' }

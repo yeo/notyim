@@ -12,6 +12,7 @@ class Team
   has_one :credit, dependent: :destroy
 
   scope :mine, ->(u) { where(user: u) }
+  validates_presence_of :name
 
   def format_as_json
     {id: self.id.to_s, name: name}
