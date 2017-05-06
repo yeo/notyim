@@ -18,7 +18,6 @@ RSpec.describe TeamsController, type: :controller do
   end
 
   before do
-    save_team user
     Trinity::Current.reset!
   end
 
@@ -26,14 +25,13 @@ RSpec.describe TeamsController, type: :controller do
     it "only lists current user 's team" do
       team = Team.create! valid_attributes
       sign_in user
+      user.reload
       user.teams << Team.create!(valid_attributes.merge(user: user))
       get :index, params: {} #, session: valid_session
       expect(assigns(:team)).to eq(user.teams.asc(:id).first)
       expect(assigns(:teams)).to eq(user.teams)
       expect(assigns(:team_membership)).to have_attributes(team: user.default_team)
     end
-  end
-  describe 'foo' do
 
     it 'set current team from domain' do
       team = FactoryGirl.create(:team, user: user)
@@ -47,18 +45,19 @@ RSpec.describe TeamsController, type: :controller do
     end
   end
 
-  #describe "GET #show" do
-  #  it "assigns the requested team as @team" do
-  #    team = Team.create! valid_attributes
-  #    get :show, params: {id: team.to_param}, session: valid_session
-  #    expect(assigns(:team)).to eq(team)
-  #    expect(assigns(:team)).to eq(team)
-  #  end
+  describe "GET #show" do
+    it "assigns the requested team as @team" do
+      sign_in user
+      team = user.default_team
+      get :show, params: {id: team.to_param} # session: valid_session
+      expect(assigns(:team_membership)).to have_attributes(team: team)
+      expect(subject).to render_template("teams/index")
+    end
 
-  #  it "forbidden if user cannot manage his team" do
+    it "forbidden if user cannot manage his team" do
 
-  #  end
-  #end
+    end
+  end
 
   #describe "GET #new" do
   #  it "assigns a new team as @team" do
