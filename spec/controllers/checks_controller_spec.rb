@@ -19,7 +19,8 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ChecksController, type: :controller do
-  let!(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create(:user) }
+  let(:user2) { FactoryGirl.create(:user, email: 'u2@noty.im') }
 
   # This should return the minimal set of attributes required to create a valid
   # Check. As you add validations to Check, be sure to
@@ -46,9 +47,18 @@ RSpec.describe ChecksController, type: :controller do
 
   describe "GET #show" do
     it "assigns the requested check as @check" do
+      sign_in user
       check = Check.create! valid_attributes
       get :show, params: {id: check.to_param}, session: valid_session
       expect(assigns(:check)).to eq(check)
+    end
+
+    it "responses with forbid for no-manage ccheck" do
+      sign_in user
+      check = Check.create!(valid_attributes.merge(user: user2))
+      get :show, params: {id: check.to_param}, session: valid_session
+      assert_response :forbidden
+      expect(assigns(:check)).to eq(nil)
     end
   end
 
