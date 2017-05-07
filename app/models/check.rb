@@ -36,14 +36,6 @@ class Check
   validates_presence_of :name, :uri, :type
   validates :type, :inclusion => { :in => TYPES }
   validates :uri, :format => URI::regexp(%w(http https))
-  before_save :assign_team
-
-  def assign_team
-    unless self.team
-      byebug
-      self.team = self.user.default_team
-    end
-  end
 
   def type_enum
     TYPES
