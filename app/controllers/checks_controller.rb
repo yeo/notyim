@@ -69,7 +69,10 @@ class ChecksController < DashboardController
     def set_check
       @check = Check.find(params[:id])
       if @check.persisted?
-        head :forbidden unless CheckPolicy::can_manage?(@check, current.user)
+        unless CheckPolicy::can_manage?(@check, current.user)
+          @check = nil
+          head :forbidden
+        end
         #redirect_to root_path, :flash => { :error => "Insufficient rights!" } unless CheckPolicy::can_manage?(@check, current.user)
       end
     end

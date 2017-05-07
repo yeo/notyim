@@ -28,7 +28,7 @@ RSpec.describe ChecksController, type: :controller do
   let(:valid_attributes) { FactoryGirl.attributes_for(:http_check).merge(user: user, team: user.default_team) }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    { uri: 'foo' }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -36,9 +36,13 @@ RSpec.describe ChecksController, type: :controller do
   # ChecksController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
+  before do
+    Trinity::Current.reset!
+    sign_in user
+  end
+
   describe "GET #index" do
     it "assigns all checks as @checks" do
-      sign_in user
       check = Check.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(assigns(:checks)).to eq([check])
@@ -47,14 +51,12 @@ RSpec.describe ChecksController, type: :controller do
 
   describe "GET #show" do
     it "assigns the requested check as @check" do
-      sign_in user
       check = Check.create! valid_attributes
-      get :show, params: {id: check.to_param}, session: valid_session
+      get :show, params: {id: check.id}, session: valid_session
       expect(assigns(:check)).to eq(check)
     end
 
     it "responses with forbid for no-manage ccheck" do
-      sign_in user
       check = Check.create!(valid_attributes.merge(user: user2))
       get :show, params: {id: check.to_param}, session: valid_session
       assert_response :forbidden
@@ -87,13 +89,15 @@ RSpec.describe ChecksController, type: :controller do
 
       it "assigns a newly created check as @check" do
         post :create, params: {check: valid_attributes}, session: valid_session
+        check = Check.desc(:id).first
         expect(assigns(:check)).to be_a(Check)
         expect(assigns(:check)).to be_persisted
+        expect(assigns(:check)).to eq(check)
       end
 
       it "redirects to the created check" do
         post :create, params: {check: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(Check.last)
+        expect(response).to redirect_to(Check.desc(:id).first)
       end
     end
 
@@ -101,6 +105,7 @@ RSpec.describe ChecksController, type: :controller do
       it "assigns a newly created but unsaved check as @check" do
         post :create, params: {check: invalid_attributes}, session: valid_session
         expect(assigns(:check)).to be_a_new(Check)
+        expect(assigns(:check)).to have_attributes(name: invalid_attributes[:name])
       end
 
       it "re-renders the 'new' template" do
@@ -113,19 +118,21 @@ RSpec.describe ChecksController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { name: 'new test', uri: 'http://newtype.com' }
       }
 
       it "updates the requested check" do
         check = Check.create! valid_attributes
-        put :update, params: {id: check.to_param, check: new_attributes}, session: valid_session
+        put :update, params: {id: check.id.to_s, check: new_attributes}, session: valid_session
         check.reload
-        skip("Add assertions for updated state")
+        expect(check.name).to eq(new_attributes[:name])
+        expect(check.uri).to eq(new_attributes[:uri])
       end
 
       it "assigns the requested check as @check" do
         check = Check.create! valid_attributes
-        put :update, params: {id: check.to_param, check: valid_attributes}, session: valid_session
+        put :update, params: {id: check.id.to_s, check: valid_attributes}, session: valid_session
+        check.reload
         expect(assigns(:check)).to eq(check)
       end
 
