@@ -19,13 +19,12 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ChecksController, type: :controller do
+  let!(:user) { FactoryGirl.create(:user) }
 
   # This should return the minimal set of attributes required to create a valid
   # Check. As you add validations to Check, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
-  }
+  let(:valid_attributes) { FactoryGirl.attributes_for(:http_check).merge(user: user, team: user.default_team) }
 
   let(:invalid_attributes) {
     skip("Add a hash of attributes invalid for your model")
@@ -38,6 +37,7 @@ RSpec.describe ChecksController, type: :controller do
 
   describe "GET #index" do
     it "assigns all checks as @checks" do
+      sign_in user
       check = Check.create! valid_attributes
       get :index, params: {}, session: valid_session
       expect(assigns(:checks)).to eq([check])

@@ -124,8 +124,8 @@ class User
 
   # Attempt create first team automatically
   def create_team
-    unless self.teams.present?
-      self.teams << Team.create!(name: 'My team', user: self)
+    if self.teams.blank?
+      Team.create!(name: "#{self.email}'s team", user: self)
     end
   end
 

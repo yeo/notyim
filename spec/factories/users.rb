@@ -9,8 +9,6 @@ FactoryGirl.define  do
 
     after :build do |user|
       user.skip_confirmation_notification!
-      #user.teams = [FactoryGirl.create(:team, user: user), FactoryGirl.create(:team, user: user, name: 'Team 2')]
-      #user.save!
     end
 
     after :create do |user|
