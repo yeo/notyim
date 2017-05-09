@@ -14,11 +14,18 @@ RSpec.describe IncidentService, type: :service do
   end
 
   describe '.notify' do
-    xit 'sends notification to user when has no receiver' do
+    let(:incident) { FactoryGirl.create(:incident) }
+    let(:user) { incident.user }
 
+    it 'sends notification to user when has no receiver' do
+      receiver = double(Receiver)
+      allow(Receiver).to receive(:new).and_return(receiver)
+      allow(NotifyReceiverService).to receive(:new).with(incident, receiver).and_return(service)
+      expect(service).to receive(:execute)
+      described_class.notify(incident, 'open')
     end
 
-    xit 'sends notification to receivers list' do
+    it 'sends notification to receivers list' do
 
     end
   end

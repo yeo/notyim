@@ -4,5 +4,9 @@ FactoryGirl.define do
     type Check::TYPE_HTTP
     uri 'https://noty.im'
     user FactoryGirl.build(:user)
+
+    after_create do |check|
+      FactoryGirl.create(:incident, team: check.team, user: check.user)
+    end
   end
 end
