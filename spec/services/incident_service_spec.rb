@@ -1,12 +1,12 @@
 require "rails_helper"
 
 RSpec.describe IncidentService, type: :service do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:check) { gen_check_and_assertion }
+  let(:user) { incident.user }
   let(:check_result) { FactoryGirl.build(:check_response) }
 
   describe '.create_for_assertion' do
     it 'create open incident' do
-      check = FactoryGirl.create(:http_check, user: user, team: user.teams.first)
       assertion = Assertion.create!(subject: 'http.status', condition: 'down', check: check)
       described_class.create_for_assertion(assertion, check_result)
       expect(Incident.desc(:id).first.assertion).to eq(assertion)
@@ -14,11 +14,11 @@ RSpec.describe IncidentService, type: :service do
   end
 
   describe '.notify' do
-    let(:incident) { FactoryGirl.create(:incident) }
-    let(:user) { incident.user }
+    let(:incident) { FactoryGirl.create(:incident, check: check, team: check.team, user: check.user, assertion: check.assertions.first) }
 
     it 'sends notification to user when has no receiver' do
       receiver = double(Receiver)
+      service = double
       allow(Receiver).to receive(:new).and_return(receiver)
       allow(NotifyReceiverService).to receive(:new).with(incident, receiver).and_return(service)
       expect(service).to receive(:execute)
