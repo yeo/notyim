@@ -13,4 +13,10 @@ class NotifyReceiverService
 
     yeller.notify_incident(incident, receiver)
   end
+
+  def self.execute(incident, receiver)
+    yeller = receiver.provider_class
+
+    yeller.notify_incident(incident, receiver)
+  end
 end
