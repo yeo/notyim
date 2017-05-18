@@ -125,6 +125,7 @@ class IncidentService
     if (receivers = incident.check.fetch_receivers).present?
       receivers.each { |receiver| NotifyReceiverService.execute incident, receiver }
     else
+      byebug
       receiver = Receiver.new(
         provider: 'Email',
         name: incident.check.user.email,
