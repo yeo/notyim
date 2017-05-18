@@ -123,7 +123,7 @@ class IncidentService
   def self.notify(incident, new_status)
     # TODO If user has not setup receivers, then default to their email
     if (receivers = incident.check.fetch_receivers).present?
-      receivers.map { |receiver| NotifyReceiverService.new incident, receiver }.each(&:execute)
+      receivers.each { |receiver| NotifyReceiverService.execute incident, receiver }
     else
       receiver = Receiver.new(
         provider: 'Email',
@@ -131,7 +131,7 @@ class IncidentService
         handler: incident.check.user.email,
         require_verify: false, verified: true
       )
-      NotifyReceiverService.new(incident, receiver).execute
+      NotifyReceiverService.execute(incident, receiver)
     end
   end
 end

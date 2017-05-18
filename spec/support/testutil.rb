@@ -8,7 +8,7 @@ module TestUtils
       check
     end
 
-    def gen_
+    def gen_incident
       user = FactoryGirl.create(:user)
       check = FactoryGirl.create(:http_check, user: user, team: user.teams.first)
       assertion = FactoryGirl.create(:assertion, check: check)
