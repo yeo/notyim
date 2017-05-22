@@ -58,7 +58,7 @@ module Trinity
         RequestStore.store[:current_request] ||= new(user, request, session)
 
         # Force recreare if current user is different form what we already had
-        if user.id != current.user.id
+        if user && (user.id != current.user.id)
           if (TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user))
             current.user = user
           else
