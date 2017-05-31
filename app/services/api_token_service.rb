@@ -6,7 +6,7 @@ class ApiTokenService
 
     t = user.id.to_s
     t << '.'
-    t << SecureRandom.hex(24)
+    t << Devise.friendly_token(48)
     user.api_tokens << ApiToken.new(token: t)
     user.api_tokens.desc(:id).first
   end
