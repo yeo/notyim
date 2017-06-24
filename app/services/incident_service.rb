@@ -32,7 +32,8 @@ class IncidentService
 
     return unless incident
 
-    if (incident.locations['open'].try(:length) || 0) >= Rails.configuration.incident_confirm_location
+    if (incident.locations['open'].try(:length) || 0) >= Rails.configuration.incident_confirm_location &&
+        (Time.now - incident.created_at >= 2.minute)
       incident.status = Incident::STATUS_OPEN
     end
     incident.save!
