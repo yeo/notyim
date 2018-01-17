@@ -46,3 +46,6 @@ node_modules
 
 .DS_Store
 app/assets/javascripts/components/elm/elm-stuff
+/public/packs
+/public/packs-test
+/node_modules

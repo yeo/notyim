@@ -10,8 +10,6 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 #Rails.application.config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
 #Rails.application.config.assets.precompile << /\.(?:svg|eot|woff|ttf)$/
 
-Rails.application.config.browserify_rails.commandline_options = "-t babelify --extension=\"es6.js\""
-
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
 # Rails.application.config.assets.precompile += %w( search.js )

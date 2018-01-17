@@ -10,14 +10,6 @@
 // Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 // about supported directives.
 // require_self
-//= require components
 // NPM Modules
 //= require chartist/dist/chartist.min
 // require_tree .
-
-// https://github.com/reactjs/react-rails/issues/413
-//var React = window.React = global.React = require('react')
-//var ReactDOM= window.ReactDOM = global.ReactDOM = require('react-dom')
-window.$ = window.jQuery = require('jquery')
-require('jquery-ujs')
-require('./common')
