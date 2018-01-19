@@ -66,7 +66,7 @@ GEM
     bson (4.2.2)
     bugsnag (6.2.0)
     builder (3.2.3)
-    bulma-rails (0.4.3)
+    bulma-rails (0.6.2)
       sass (~> 3.2)
     byebug (9.1.0)
     capistrano (3.10.1)
@@ -324,7 +324,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.9.0)
-    sass (3.5.3)
+    sass (3.5.5)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -395,7 +395,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   bugsnag
-  bulma-rails (~> 0.4.0)
+  bulma-rails (~> 0.6.2)
   byebug
   capistrano
   capistrano-bundler
