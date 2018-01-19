@@ -1,41 +1,35 @@
-<section class="hero is-medium has-text-centered">
-<div class="hero-head">
-  <div class="container">
-    <nav class="nav">
-    <div class="nav-left">
-      <%= render 'partials/logo' %>
+<div class="container">
+  <nav class="navbar">
+
+    <%= render 'partials/logo' %>
+
+    <div id="navbar-app" class="navbar-menu">
+      <div class="navbar-start">
+        <a class="navbar-item is-active" href="/#features">Features</a>
+        <a class="navbar-item" href="/#pricing">Price</a>
+        <a class="navbar-item" href="/docs">Docs</a>
+        <a class="navbar-item" href="//blog.noty.im">Blog</a>
+      </div>
+
+      <div class="navbar-end">
+        <% if !user_signed_in? %>
+          <span class="navbar-item">
+            <a class="button" href="<%= url_for(new_user_registration_path) %>">
+              <span>Register</span>
+            </a>
+            <a class="button is-primary" href="<%= url_for(new_user_session_path) %>">
+              <span>Login</span>
+            </a>
+          </span>
+        <% end %>
+
+        <% if user_signed_in? %>
+          <span class="navbar-item">
+            <%= link_to("Go to dashboard", user_root_path, class:"button is-primary") %>
+          </span>
+        <% end %>
+      </div>
     </div>
 
-    <span id="nav-toggle" class="nav-toggle">
-      <span></span>
-      <span></span>
-      <span></span>
-    </span>
-
-    <div id="nav-menu" class="nav-right nav-menu">
-      <a class="nav-item is-active" href="/#features">Features</a>
-      <a class="nav-item is-active" href="/#pricing">Price</a>
-      <a class="nav-item" href="/docs">Docs</a>
-      <a class="nav-item" href="//blog.noty.im">Blog</a>
-
-      <% if !user_signed_in? %>
-        <span class="nav-item">
-          <a class="button" href="<%= url_for(new_user_registration_path) %>">
-            <span>Register</span>
-          </a>
-          <a class="button is-primary" href="<%= url_for(new_user_session_path) %>">
-            <span>Login</span>
-          </a>
-        </span>
-      <% end %>
-
-      <% if user_signed_in? %>
-        <span class="nav-item">
-          <%= link_to("Go to dashboard", user_root_path, class:"button is-primary") %>
-        </span>
-      <% end %>
-    </div>
-    </nav>
-  </div>
+  </nav>
 </div>
-</section>

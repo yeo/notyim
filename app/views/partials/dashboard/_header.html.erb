@@ -1,59 +1,52 @@
-<section class="hero has-text-centered">
-<div class="hero-head">
-  <div class="container">
-    <nav class="nav">
-    <div class="nav-left">
-      <%= render 'partials/logo' %>
-      <% if user_signed_in? %>
-        <%= link_to("Checks", checks_path, class: "nav-item is-tab #{cp(checks_path)}") %>
-        <%= link_to incidents_path, class: "nav-item is-tab #{cp(incidents_path)}" do %>
-          Incidents
-          <% decorate current_user do |user| %>
-            <span class="tag is-warning is-small"><%= user.open_incident(current.team) %></span>
-          <% end %>
-        <% end %>
-        <%= link_to("Alert Contact", receivers_path, class: "nav-item is-tab #{cp(receivers_path)}") %>
-        <%# link_to("Team", teams_path, class: "nav-item is-tab #{cp(teams_path)}") %>
-        <!--<%= link_to notifications_path, class: "nav-item is-tab #{cp(notifications_path)}" do %>
-          Notifications <span class="tag is-warning is-small">10</span>
-        <% end %>-->
-        <!-- <a class="nav-item is-tab" href="<%= url_for(teams_path) %>">Team</a> -->
-      <% end %>
-    </div>
+<div class="container">
+  <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
+    <%= render 'partials/logo' %>
 
-    <span id="nav-toggle" class="nav-toggle">
-      <span></span>
-      <span></span>
-      <span></span>
-    </span>
-
-    <div id="nav-menu" class="nav-right nav-menu">
-      <% if user_signed_in? %>
-        <a class="nav-item is-primary" href="<%= url_for(edit_user_registration_path) %>">
-          <span>Account</span>
-        </a>
-
-        <!--
-        <span class="nav-item">
-          <% form_tag(destroy_user_session_path, :method => :delete) do |f| %>
-            <%= button_tag(class: 'button ') do %>
-              <span>Log out</span>
+    <div class="navbar-menu" id="navbar-app">
+      <div class="navbar-start">
+        <% if user_signed_in? %>
+          <%= link_to("Checks", checks_path, class: "navbar-item is-tab #{cp(checks_path)}") %>
+          <%= link_to incidents_path, class: "navbar-item is-tab #{cp(incidents_path)}" do %>
+            Incidents
+            <% decorate current_user do |user| %>
+              <span class="tag is-warning is-small"><%= user.open_incident(current.team) %></span>
             <% end %>
           <% end %>
-        </span>
-        -->
+          <%= link_to("Alert Contact", receivers_path, class: "navbar-item is-tab #{cp(receivers_path)}") %>
+          <%# link_to("Team", teams_path, class: "nav-item is-tab #{cp(teams_path)}") %>
+          <!--<%= link_to notifications_path, class: "nav-item is-tab #{cp(notifications_path)}" do %>
+            Notifications <span class="tag is-warning is-small">10</span>
+          <% end %>-->
+          <!-- <a class="nav-item is-tab" href="<%= url_for(teams_path) %>">Team</a> -->
+        <% end %>
+      </div>
 
-        <% decorate current_user do |user| %>
-        <%= elm_component('TeamPicker', {flags: {
+      <div  class="navbar-end">
+        <% if user_signed_in? %>
+          <a class="navbar-item is-primary" href="<%= url_for(edit_user_registration_path) %>">
+            <span>Account</span>
+          </a>
+
+          <!--
+            <span class="nav-item">
+            <% form_tag(destroy_user_session_path, :method => :delete) do |f| %>
+              <%= button_tag(class: 'button ') do %>
+                <span>Log out</span>
+              <% end %>
+            <% end %>
+            </span>
+          -->
+
+          <% decorate current_user do |user| %>
+            <%= elm_component('TeamPicker', {flags: {
               formAuthenticityToken: form_authenticity_token,
               domain: current.domain,
               teams: user.my_teams.map { |team| {id: team.id.to_s, name: team.name || ""} },
               current_team: {id: current.team.id.to_s, name: current.team.name || ""}
-        }}, {tag: 'div', class: "nav-item"}) %>
+            }}, {tag: 'div', class: "nav-item"}) %>
         <% end %>
       <% end %>
+      </div>
     </div>
-    </nav>
-  </div>
+  </nav>
 </div>
-</section>
