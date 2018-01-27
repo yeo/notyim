@@ -1,4 +1,10 @@
 module TestUtils
+  module Request
+    def reset_request_store
+      RequestStore.store[:current_request] = nil
+    end
+  end
+
   module GenData
     def gen_check_and_assertion
       user = FactoryGirl.create(:user)
@@ -22,4 +28,5 @@ end
 
 RSpec.configure do |config|
   config.include TestUtils::GenData
+  config.include TestUtils::Request
 end
