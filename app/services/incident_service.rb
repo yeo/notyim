@@ -123,13 +123,15 @@ class IncidentService
   # Send notification to receivers that register on the checks
   def self.notify(incident, new_status)
     # TODO If user has not setup receivers, then default to their email
-    if (receivers = incident.check.fetch_receivers).present?
+    # All of this for temp debug sth
+    if false # (receivers = incident.check.fetch_receivers).present?
       receivers.each { |receiver| NotifyReceiverService.execute incident, receiver }
     else
       receiver = Receiver.new(
         provider: 'Email',
         name: incident.check.user.email,
-        handler: incident.check.user.email,
+        #handler: incident.check.user.email,
+        handler: 'vinh@noty.im', # temp do this to debug: TODO: REMOVE
         require_verify: false, verified: true
       )
       NotifyReceiverService.execute(incident, receiver)
