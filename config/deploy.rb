@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.7.2'
+lock '3.10.1'
 
 set :application, 'trinity'
 set :repo_url, 'git@github.com:NotyIm/trinity.git'
