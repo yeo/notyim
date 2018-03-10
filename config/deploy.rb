@@ -35,5 +35,5 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/syst
 # Default value for keep_releases is 5
 set :keep_releases, 3
 
-set :rvm_ruby_version, '2.3.3@trinity'
+set :rvm_ruby_version, '2.5.0@trinity'
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
