@@ -17,7 +17,17 @@ class UptimeCalculateWorker
       check.uptime_1day = calculate(check, 1.day)
       check.uptime_1month = calculate(check, 1.month)
 
-      check.save!
+      begin
+        check.save!
+      rescue Mongoid::Errors::Validations => exception
+        Bugsnag.notify(exception) do |report|
+          # Adjust the severity of this error
+          report.severity = "error"
+
+          # Add customer information to this report
+          report.add_tab(:check, {id: check.id.to_s})
+        end
+      end
 
       calculate_daily_uptime(check)
     end
