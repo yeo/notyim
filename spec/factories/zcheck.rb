@@ -3,6 +3,6 @@ FactoryGirl.define do
     name 'Http Checkk'
     type Check::TYPE_HTTP
     uri 'https://noty.im'
-    user FactoryGirl.build(:user)
+    # user FactoryGirl.build(:user)
   end
 end
