@@ -3,13 +3,13 @@ source 'https://rubygems.org'
 ruby File.read('.ruby-version').split('@').first.strip
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
-  "https://github.com/#{repo_name}.git"
+  repo_name = '#{repo_name}/#{repo_name}' unless repo_name.include?('/')
+  'https://github.com/#{repo_name}.git'
 end
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.1.4'
+gem 'rails', '~> 5.2.0'
 # Use Puma as the app server
 gem 'puma'
 # Use SCSS for stylesheets
@@ -21,7 +21,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
-gem "bulma-rails", "~> 0.6.2"
+gem 'bulma-rails', '~> 0.6.2'
 gem 'webpacker', '~> 3.2'
 
 # Use Redis adapter to run Action Cable in production
@@ -52,7 +52,6 @@ gem 'connection_pool'
 gem 'request_store'
 
 gem 'newrelic_rpm'
-gem 'mailgun-ruby', '~>1.1.6'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -62,7 +61,6 @@ group :development, :test do
   gem 'awesome_print'
   gem 'rubocop'
   gem 'rspec-rails'
-  gem 'dotenv-rails'
 
   gem 'capistrano'
   gem 'capistrano-rvm'
