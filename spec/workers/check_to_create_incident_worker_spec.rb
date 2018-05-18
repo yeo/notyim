@@ -18,30 +18,40 @@ RSpec.describe CheckToCreateIncidentWorker, type: :worker do
   subject { described_class.new }
 
   describe '#perform' do
-    describe 'check has at least an assertion matches check response' do
-      it 'create incident' do
-        assertions = [
-          double(Assertion, subject: 'http.status', condition: 'eq', operand: 'down', check: check),
-          double(Assertion, subject: 'http.body', condition: 'contain', operand: 'heavy load', check: check),
-          double(Assertion, subject: 'http.response_time', condition: 'gt', operand: '9000', check: check),
-        ]
-        allow(check).to receive(:assertions).and_return assertions
+    describe 'match assetion' do
+      xit 'create an incident' do
 
-        expect(IncidentService).to receive(:create_for_assertion).with(assertions.last, check_response)
-        expect(IncidentService).to receive(:create_for_assertion).with(assertions.first, check_response)
-        subject.perform(check.id, check_response.raw_result)
       end
     end
 
-    describe 'check has no assertion matches check response' do
-      it 'does nothing' do
-        assertions = [
-          double(Assertion, subject: 'http.body', condition: 'contain', operand: 'heavy load', check: check),
-        ]
-        allow(check).to receive(:assertions).and_return assertions
-        expect(IncidentService).to_not receive(:create_for_assertion).with(anything, anything)
-        subject.perform(check.id, check_response.raw_result)
+    describe 'not match any assertion' do
+      xit 'close an incident' do
       end
     end
+    #describe 'check has at least an assertion matches check response' do
+    #  it 'create incident' do
+    #    assertions = [
+    #      double(Assertion, subject: 'http.status', condition: 'eq', operand: 'down', check: check),
+    #      double(Assertion, subject: 'http.body', condition: 'contain', operand: 'heavy load', check: check),
+    #      double(Assertion, subject: 'http.response_time', condition: 'gt', operand: '9000', check: check),
+    #    ]
+    #    allow(check).to receive(:assertions).and_return assertions
+
+    #    expect(IncidentService).to receive(:create_for_assertion).with(assertions.last, check_response)
+    #    expect(IncidentService).to receive(:create_for_assertion).with(assertions.first, check_response)
+    #    subject.perform(check.id, check_response.raw_result)
+    #  end
+    #end
+
+    #describe 'check has no assertion matches check response' do
+    #  it 'does nothing' do
+    #    assertions = [
+    #      double(Assertion, subject: 'http.body', condition: 'contain', operand: 'heavy load', check: check),
+    #    ]
+    #    allow(check).to receive(:assertions).and_return assertions
+    #    expect(IncidentService).to_not receive(:create_for_assertion).with(anything, anything)
+    #    subject.perform(check.id, check_response.raw_result)
+    #  end
+    #end
   end
 end

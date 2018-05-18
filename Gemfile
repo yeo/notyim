@@ -31,7 +31,7 @@ gem 'webpacker', '~> 3.2'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-gem 'mongoid', '~> 6.0.0'
+gem 'mongoid', '~> 7.0.0'
 gem 'devise'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
@@ -66,7 +66,7 @@ group :development, :test do
   gem 'capistrano-rvm'
   gem 'capistrano-rails'
   gem 'capistrano-bundler'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
 end
 
 group :development do
