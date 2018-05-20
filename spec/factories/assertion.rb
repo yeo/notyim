@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :assertion do
     subject "http.status"
     condition "eq"

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :check_response do
     raw_result({
       check_id: 123,

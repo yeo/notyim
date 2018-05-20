@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :incident, class: Incident do
     status 'open'
     error_message 'Request reject'
