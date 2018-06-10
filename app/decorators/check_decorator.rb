@@ -1,6 +1,10 @@
 class CheckDecorator < SimpleDelegator
   include CheckHelper
 
+  def element_id
+    self.id.to_s
+  end
+
   def current_status
     @__current_status ||= if record = current_metric
       return record['status_code'] if record['status_code'].present? && record['status_code'] != 0
