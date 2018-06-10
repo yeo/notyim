@@ -57,6 +57,7 @@ Rails.application.configure do
   # Those setting isn't on Rails, we store theme here to access them later on
   # Those need to take care when we update Rails
   # TODO: Update
+  config.action_mailer.delivery_method = :smtp
   config.local_proxy_public = ENV.fetch('NGROK', nil)
   config.incident_confirm_location = 1 # How many location need to match in order to confirm that an incident has occured
   config.incident_notification_interval = 10.minutes

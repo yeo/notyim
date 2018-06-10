@@ -1,4 +1,5 @@
-FactoryGirl.define do
+# frozen_string_literal: true
+FactoryBot.define do
   factory :incident, class: Incident do
     status 'open'
     error_message 'Request reject'

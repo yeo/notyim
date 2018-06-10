@@ -7,11 +7,15 @@ module Bot
     # Register a new user and bot at a same time
     def self.register(email, address)
       # TODO Add more validation since this is a two phase transaction
+      p = SecureRandom.hex
       user = User.new(
         email: email,
-        password: SecureRandom.hex,
+        password: p,
+        password_confirmation: p,
+        confirmed_at: Time.now.utc, # skip confirmation)
       )
       user.skip_confirmation!
+      user.skip_confirmation_notification!
       user.save!
       begin
         if bot = BotAccount.where(bot_uuid: ::Bot.uuid(address)).first
@@ -21,14 +25,13 @@ module Bot
         else
           bot = BotAccount.create!(
             bot_uuid: ::Bot.uuid(address),
-            address: address,
-            user: user
-          )
+            address: address.permit(:channelId, :user).to_hash,
+            user: user,
+            team: user.teams.first.id)
         end
         bot
       rescue
-        user.destroy
-        nil
+        user.destroy.yield_self { nil }
       end
     end
 

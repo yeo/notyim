@@ -22,32 +22,4 @@
           subjects: elm_format_subject_enum_for_select(assertion),
           conditions: elm_format_condition_enum_for_select(assertion),
   }) %>
-  <!--
-  <div class="control is-horizontal">
-    <p class="control-label">
-      <%= f.label :subject, 'When', class: :label %>
-    </p>
-    <p class="control">
-      <span class="select">
-        <%# f.select :subject, format_subject_enum_for_select(assertion) %>
-      </span>
-    </p>
-
-    <p class='control-label'><%= f.label :condition, 'is', class: :label %></p>
-    <p class="control">
-      <span class="select">
-        <%= f.select :condition, grouped_options_for_select(format_condition_enum_for_select(assertion)) %>
-      </span>
-    </p>
-
-    <p class='control-label'><%= f.label :operand, 'threshold', class: :label %></p>
-    <p class="control">
-      <%= f.text_field :operand, class: 'input', size: 20 %>
-    </p>
-
-    <p class="control is-expanded">
-      <%= f.submit "Save", class: 'button is-primary' %>
-    </p>
-  </div>
-  -->
 <% end %>

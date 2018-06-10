@@ -4,6 +4,7 @@ module Api
       skip_before_action :require_bot_account
 
       def create
+        # TODO: handle right error DocumentNotFound
         user = User.find_by(email: params[:email]) rescue nil
 
         if user
