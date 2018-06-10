@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 FactoryBot.define do
   factory :http_check, class: Check do
     name 'Http Checkk'

@@ -20,12 +20,10 @@ RSpec.describe Api::Bot::RegistrationsController, type: :controller do
 
     describe 'when email is already register' do
       it 'return 422' do
-        byebug
         u = User.new(email: 'foo@bar.com', password: '123456677', confirmed_at: Time.now.utc)
         #u.skip_confirmation_notification!
         #u.skip_confirmation!
         u.save!
-        byebug
         payload = {
           email: u.email,
           address: {
