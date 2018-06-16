@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'checks/index', type: :view do
-  let(:user) { create(:user) }
+  let(:check1) { FactoryBot.create(:check_with_user, name: 'Check 1') }
+  let(:check2) { FactoryBot.create(:check, user: check1.user, team: check1.user.default_team, name: 'Check 2') }
 
   before(:each) do
-    assign(:checks, [
-      create(:http_check, user: user, team: user.default_team, name: 'Check 1'),
-      create(:http_check, user: user, team: user.default_team, name: 'Check 2')
-    ])
+    assign(:checks, [check1, check2])
   end
 
   it 'renders a list of checks' do

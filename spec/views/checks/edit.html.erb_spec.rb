@@ -1,10 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "checks/edit", type: :view do
-  let(:user) { create(:user) }
-  let(:check) {
-      create(:http_check, user: user, team: user.default_team, name: 'Check 1')
-  }
+  let(:check) { FactoryBot.create(:check_with_user) }
+  let(:user) { check.user }
 
   before(:each) do
     @check = assign(:check, check)
