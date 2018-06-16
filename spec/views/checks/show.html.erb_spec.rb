@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "checks/show", type: :view do
   let(:user) { create(:user) }
   let(:check) {
-    create(:http_check, user: user, team: user.default_team, name: 'Check 1')
+    create(:check, user: user, team: user.default_team, name: 'Check 1')
   }
 
   before(:each) do

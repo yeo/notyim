@@ -1,13 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "assertions/edit", type: :view do
-  let(:user) { FactoryBot.create(:user) }
-  let(:check) {
-    FactoryBot.create(:http_check,
-      user: user,
-      team: user.default_team,
-      name: 'Check 1')
-  }
+  let(:check) { FactoryBot.build(:check) }
+  let(:user) { check.user }
   let(:assertion) { FactoryBot.create(:assertion, check: check) }
 
   before(:each) do
