@@ -7,15 +7,11 @@ git_source(:github) do |repo_name|
   'https://github.com/#{repo_name}.git'
 end
 
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.2.0'
-# Use Puma as the app server
 gem 'puma'
+# TODO: Get rid of this since we use webpakckk
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-# gem 'uglifier', '>= 1.3.0' fuck this, this is 2017
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
@@ -24,18 +20,13 @@ gem 'jbuilder', '~> 2.5'
 gem 'bulma-rails', '~> 0.6.2'
 gem 'webpacker', '~> 3.2'
 
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
 gem 'mongoid', '~> 7.0.0'
 gem 'devise'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
-gem 'rails_admin', :git => 'https://github.com/sferik/rails_admin'
 gem 'sidekiq'
 gem 'bugsnag'
 gem 'twilio-ruby', '~> 4.11.1'
@@ -52,9 +43,9 @@ gem 'connection_pool'
 gem 'request_store'
 
 gem 'newrelic_rpm'
+gem 'rails_admin', :git => 'https://github.com/sferik/rails_admin'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'awesome_print'
   gem 'bootsnap', require: false
   gem 'byebug', platform: :mri
@@ -83,7 +74,6 @@ end
 group :test do
   gem 'database_cleaner'
   gem 'rails-controller-testing'
+  gem "rspec_junit_formatter"
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
