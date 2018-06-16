@@ -45,9 +45,9 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.around(:each) do |example|
-    DatabaseCleaner.cleaning do
-      example.run
-    end
+    example.run
+    #DatabaseCleaner.cleaning do
+    #end
   end
 
   # Without calling this we have to manually put `render_views`

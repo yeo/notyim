@@ -8,7 +8,7 @@ module TestUtils
   module GenData
     def gen_check_and_assertion
       user = FactoryBot.create(:user)
-      check = FactoryBot.create(:http_check, user: user, team: user.teams.first)
+      check = FactoryBot.create(:check, user: user, team: user.teams.first)
       assertion = FactoryBot.create(:assertion, check: check)
 
       check
@@ -16,7 +16,7 @@ module TestUtils
 
     def gen_incident
       user = FactoryBot.create(:user)
-      check = FactoryBot.create(:http_check, user: user, team: user.teams.first)
+      check = FactoryBot.create(:check, user: user, team: user.teams.first)
       assertion = FactoryBot.create(:assertion, check: check)
       incident = FactoryBot.create(:incident, check: check, team: check.team, user: check.user, assertion: assertion)
 
