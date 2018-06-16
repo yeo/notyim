@@ -49,3 +49,5 @@ app/assets/javascripts/components/elm/elm-stuff
 /public/packs
 /public/packs-test
 /node_modules
+/elm-stuff
+*secret.env
