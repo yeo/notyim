@@ -2,46 +2,24 @@
 
 <div class="columns">
   <div class="column is-3">
-    <nav class="panel">
+    <nav class="panel team-list">
     <p class="panel-heading">Teams</p>
     <% @teams.each do |team| %>
 
       <a href="<%= team_path(team) %>" class="panel-block <%= team.id.to_s %> <%=  @team.id.to_s %> <%= team.id.to_s == @team.id.to_s ? 'is-active' : '' %>">
-        <!--<span class="panel-icon"><i class="fa fa-book"></i></span>-->
         <%= team.name %>
       </a>
 
-    <% if team.id == @team.id %>
-    <div class="panel-block">
-      <ul class="menu-list">
-        <li><a href="#member">Members</a></li>
-        <li><a href="#invite">Invite</a></li>
-        <li><a href="#setting">Setting</a></li>
-      </ul>
-    </div>
-    <% end %>
-
-
-      <!--
-      <tr>
-        <td><%= team.name %></td>
-        <td><%= team.user_id %></td>
-        <td><%= link_to 'Show', team %></td>
-        <td><%= link_to 'Edit', edit_team_path(team) %></td>
-        <td><%= link_to 'Destroy', team, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>-->
-    <% end %>
-
-    <!--
-    <div class="panel-block">
-      <h2 class="subtitle is-6">Create a new team</h2>
-      <div class="columns">
-        <div class="column">
-          <% render 'form', team: Team.new(user: @team.user) %>
-        </div>
+      <% if team.id == @team.id %>
+      <div class="panel-block" id="team-control-<%=team.id.to_s%>">
+        <ul class="menu-list current-team">
+          <li><a href="#member">Members</a></li>
+          <li><a href="#invite">Invite</a></li>
+          <li><a href="#setting">Setting</a></li>
+        </ul>
       </div>
-    </div>
-    -->
+      <% end %>
+    <% end %>
     </nav>
   </div>
 
