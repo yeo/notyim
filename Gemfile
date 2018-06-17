@@ -72,8 +72,9 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner'
-  gem 'rails-controller-testing'
+  gem "database_cleaner"
   gem "rspec_junit_formatter"
+  gem "capybara"
+  gem "webmock", require: false
+  gem "timecop"
 end
-
