@@ -43,7 +43,12 @@ FactoryBot.define  do
     status 'open'
     error_message 'Request reject'
     locations({ open: %w(1.1.1.1) })
-    check { FactoryBot.create(:check) }
+
+    check { FactoryBot.create(:check_with_user) }
+
+    assertion { FactoryBot.create(:assertion, check: check) }
+    team { FactoryBot.create(:team) }
+    user { team.user }
   end
 
   factory :check_response do

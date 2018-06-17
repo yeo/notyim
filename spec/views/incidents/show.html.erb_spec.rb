@@ -1,18 +1,24 @@
 require 'rails_helper'
 
-RSpec.describe "incidents/show", type: :view do
+RSpec.describe 'incidents/show', type: :view do
+  let(:incident) { FactoryBot.create(:incident, status: 'closed') }
+
   before(:each) do
-    @incident = assign(:incident, Incident.create!(
-      :check => nil,
-      :status => "Status",
-      :acknowledged_at => ""
-    ))
+    @incident = assign(:incident, incident)
+
+    render
   end
 
-  it "renders attributes in <p>" do
-    render
-    expect(rendered).to match(//)
+  it 'render status' do
+    expect(rendered).to match(/#{incident.status}/)
     expect(rendered).to match(/Status/)
-    expect(rendered).to match(//)
+  end
+
+  it 'render check' do
+    expect(rendered).to match(/#{incident.check.name}/)
+  end
+
+  it 'render assertion' do
+    expect(rendered).to match(/#{incident.assertion.subject}/)
   end
 end
