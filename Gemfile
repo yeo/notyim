@@ -44,10 +44,10 @@ gem 'request_store'
 
 gem 'newrelic_rpm'
 gem 'rails_admin', :git => 'https://github.com/sferik/rails_admin'
+gem 'bootsnap', require: false
 
 group :development, :test do
   gem 'awesome_print'
-  gem 'bootsnap', require: false
   gem 'byebug', platform: :mri
 
   gem 'capistrano'
