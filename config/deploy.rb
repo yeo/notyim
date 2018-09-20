@@ -1,5 +1,5 @@
 # config valid only for current version of Capistrano
-lock '3.10.1'
+lock '3.11.0'
 
 set :application, 'trinity'
 set :repo_url, 'git@github.com:NotyIm/trinity.git'
@@ -35,5 +35,5 @@ append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/syst
 # Default value for keep_releases is 5
 set :keep_releases, 3
 
-set :rvm_ruby_version, '2.5.0@trinity'
+set :rvm_ruby_version, '2.5.1@trinity'
 set :whenever_identifier, ->{ "#{fetch(:application)}_#{fetch(:stage)}" }
