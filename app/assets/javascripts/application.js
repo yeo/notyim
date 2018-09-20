@@ -12,4 +12,6 @@
 // require_self
 // NPM Modules
 //= require chartist/dist/chartist.min
+//= require jquery
+//= require jquery_ujs
 // require_tree .
