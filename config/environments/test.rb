@@ -51,6 +51,14 @@ Rails.application.configure do
   config.local_proxy_public = ENV.fetch('NGROK', nil)
   config.incident_confirm_location = 1 # How many location need to match in order to confirm that an incident has occured
   config.incident_notification_interval = 10.minutes
-  config.telegram_bot = "notydevbot"
+  config.telegram_bot = {
+    name: "notydevbot"
+  }
+  config.slack_bot = {
+    scope: 'bot',
+    client_id: '134',
+    redirect_uri: 'http://127.0.0.1:3000/bot/slack',
+    client_secret: '456'
+  }
   # End custom configuration
 end
