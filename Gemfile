@@ -43,7 +43,7 @@ gem 'connection_pool'
 gem 'request_store'
 
 gem 'newrelic_rpm'
-gem 'rails_admin', :git => 'https://github.com/sferik/rails_admin'
+gem 'rails_admin', '>= 1.4.1'
 gem 'bootsnap', require: false
 
 group :development, :test do
