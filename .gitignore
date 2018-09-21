@@ -51,3 +51,6 @@ app/assets/javascripts/components/elm/elm-stuff
 /node_modules
 /elm-stuff
 *secret.env
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
