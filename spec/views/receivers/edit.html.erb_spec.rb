@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "receivers/edit", type: :view do
+  include HomeHelper
+
   before(:each) do
     @receiver = assign(:receiver, Receiver.create!(
       :user => nil,
