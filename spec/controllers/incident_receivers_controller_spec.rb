@@ -11,7 +11,7 @@ RSpec.describe IncidentReceiversController, type: :controller do
 
     it 'creates receiver' do
       sign_in user.check
-      check = FactoryGirl.create(:check)
+      check = FactoryBot.create(:check)
       allow(CheckService).to receive(:register_receivers).with(check, :foo).and_return(true)
       post :create, check_id: check.id.to_s, contact_receivers: "foo"
       assert_redirected_to root_path
@@ -19,8 +19,8 @@ RSpec.describe IncidentReceiversController, type: :controller do
 
     it 'does not create when has no permission on check' do
       sign_in user.check
-      user2 = FactoryGirl.create(:user)
-      check = FactoryGirl.create(:check, user: user2)
+      user2 = FactoryBot.create(:user)
+      check = FactoryBot.create(:check, user: user2)
 
       allow(CheckService).to receive(:register_receivers).with(check, :foo).and_return(true)
       post :create, check_id: check.id.to_s, contact_receivers: "foo"

@@ -2,8 +2,8 @@ require 'rails_helper'
 require 'trinity'
 
 RSpec.describe TeamsController, type: :controller do
-  let!(:user) { FactoryGirl.create(:user, email: "#{SecureRandom.hex}@foo.con") }
-  let(:user2) { FactoryGirl.create(:user, email: 'foo@bar.con') }
+  let!(:user) { FactoryBot.create(:user, email: "#{SecureRandom.hex}@foo.con") }
+  let(:user2) { FactoryBot.create(:user, email: 'foo@bar.con') }
 
   let(:valid_attributes) { {name: 'team 1', user: user} }
   let(:invalid_attributes) { {name: ''} }
@@ -35,7 +35,7 @@ RSpec.describe TeamsController, type: :controller do
     end
 
     it 'set current team from domain' do
-      team = FactoryGirl.create(:team, user: user)
+      team = FactoryBot.create(:team, user: user)
       user.reload
       @request.host = "team-#{team.id.to_s}.noty.dev"
       sign_in user
@@ -58,7 +58,7 @@ RSpec.describe TeamsController, type: :controller do
     end
 
     it "forbidden if user cannot manage his team" do
-      team = FactoryGirl.create(:team, user: user2)
+      team = FactoryBot.create(:team, user: user2)
       user.reload
       @request.host = "team-#{team.id.to_s}.noty.dev"
       sign_in user

@@ -19,13 +19,13 @@ require 'rails_helper'
 # that an instance is receiving a specific message.
 
 RSpec.describe ChecksController, type: :controller do
-  let(:user) { FactoryGirl.create(:user) }
-  let(:user2) { FactoryGirl.create(:user, email: 'u2@noty.im') }
+  let(:user) { FactoryBot.create(:user) }
+  let(:user2) { FactoryBot.create(:user, email: 'u2@noty.im') }
 
   # This should return the minimal set of attributes required to create a valid
   # Check. As you add validations to Check, be sure to
   # adjust the attributes here as well.
-  let(:valid_attributes) { FactoryGirl.attributes_for(:http_check).merge(user: user, team: user.default_team) }
+  let(:valid_attributes) { FactoryBot.attributes_for(:check).merge(user: user, team: user.default_team) }
 
   let(:invalid_attributes) {
     { uri: 'foo' }
