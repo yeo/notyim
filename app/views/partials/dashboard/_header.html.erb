@@ -5,7 +5,7 @@
     <div class="navbar-menu" id="navbar-app">
       <div class="navbar-start">
         <% if user_signed_in? %>
-          <%= link_to("Checks", checks_path, class: "navbar-item is-tab #{cp(checks_path)}") %>
+          <%= link_to "Checks", checks_path, class: "navbar-item is-tab #{cp(checks_path)}" %>
           <%= link_to incidents_path, class: "navbar-item is-tab #{cp(incidents_path)}" do %>
             Incidents
             <% decorate current_user do |user| %>
@@ -14,9 +14,6 @@
           <% end %>
           <%= link_to("Alert Contact", receivers_path, class: "navbar-item is-tab #{cp(receivers_path)}") %>
           <%# link_to("Team", teams_path, class: "nav-item is-tab #{cp(teams_path)}") %>
-          <!--<%= link_to notifications_path, class: "nav-item is-tab #{cp(notifications_path)}" do %>
-            Notifications <span class="tag is-warning is-small">10</span>
-          <% end %>-->
           <!-- <a class="nav-item is-tab" href="<%= url_for(teams_path) %>">Team</a> -->
         <% end %>
       </div>
