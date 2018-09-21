@@ -4,8 +4,8 @@
       <% providers.each do |provider| %>
         <% next if !Yeller::Provider.class_of(provider).support_add_form? || (receiver.persisted? && receiver.provider != provider) %>
 
-        <div class="column is-half">
-          <div class='box alertcontact-provider'>
+        <div class="column is-half ">
+          <div class='box alertcontact-provider alertcontact-provider-<%= providers %>'>
             <h4 class="subtitle"><%= provider %></h4>
             <%= form_for(receiver) do |f| %>
               <%= hidden_field :receiver, :provider, value: provider %>
