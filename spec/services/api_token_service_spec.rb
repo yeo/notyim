@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe ApiTokenService, type: :service do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryBot.create(:user) }
 
   describe '.retreive_for_user' do
     describe 'when already has token' do

@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe IncidentService, type: :service do
   let(:check) { gen_check_and_assertion }
   let(:user) { incident.user }
-  let(:check_result) { FactoryGirl.build(:check_response) }
+  let(:check_result) { FactoryBot.build(:check_response) }
 
   describe '.create_for_assertion' do
     it 'create open incident' do
@@ -22,7 +22,7 @@ RSpec.describe IncidentService, type: :service do
   end
 
   describe '.notify' do
-    let(:incident) { FactoryGirl.create(:incident, check: check, team: check.team, user: check.user, assertion: check.assertions.first) }
+    let(:incident) { FactoryBot.create(:incident, check: check, team: check.team, user: check.user, assertion: check.assertions.first) }
 
     it 'sends notification to user email when has no receiver' do
       receiver = double(Receiver)
