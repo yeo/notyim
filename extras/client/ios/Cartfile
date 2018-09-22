@@ -1,0 +1,3 @@
+github "kishikawakatsumi/KeychainAccess"
+github "hkellaway/Gloss"
+github "Alamofire/Alamofire" ~> 4.5
