@@ -19,16 +19,15 @@ RSpec.describe "receivers/new", type: :view do
         Yeller::Provider.class_of(provider.first).support_add_form?
       }
 
-    Yeller::Provider.providers.each do |provider|
-      assert_select ".alertcontact-provider-#{provider}", count: 1
-    end
-
-    assert_select "form[action=?][method=?]", receivers_path, "post" do
-      assert_select "input[name=?]", "receiver[user_id]"
-      assert_select "input#receiver_provider[name=name]", "receiver[provider]"
-      assert_select "input#receiver_handler[name=?]", "receiver[handler]"
-      assert_select "input#receiver_require_verify[name=?]", "receiver[require_verify]"
-      assert_select "input#receiver_verified[name=?]", "receiver[verified]"
+    Yeller::Provider.providers.keys.select { |p| Yeller::Provider.class_of(p).support_add_form? }
+      .each do |p|
+      assert_select ".alertcontact-provider-#{p}", count: 1
+      assert_select "form[action=?][method=?]", receivers_path, "post" do
+        assert_select "input[name=?]", "receiver[name]"
+        assert_select "input[name=?]", "receiver[handler]"
+        assert_select "input[name=?]", "receiver[provider]", value: p
+        assert_select "input[name=?]", "commit", type: 'submit'
+      end
     end
   end
 end
