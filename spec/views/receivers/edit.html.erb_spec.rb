@@ -4,29 +4,32 @@ RSpec.describe "receivers/edit", type: :view do
   include HomeHelper
 
   before(:each) do
-    @receiver = assign(:receiver, Receiver.create!(
-      :user => nil,
-      :provider => "MyString",
-      :handler => "MyString",
-      :require_verify => false,
-      :verified => false
-    ))
+    @receiver = assign(:receiver, FactoryBot.create(:receiver))
   end
 
   it "renders the edit receiver form" do
     render
 
     assert_select "form[action=?][method=?]", receiver_path(@receiver), "post" do
-
-      assert_select "input#receiver_user_id[name=?]", "receiver[user_id]"
-
-      assert_select "input#receiver_provider[name=?]", "receiver[provider]"
-
-      assert_select "input#receiver_handler[name=?]", "receiver[handler]"
-
-      assert_select "input#receiver_require_verify[name=?]", "receiver[require_verify]"
-
-      assert_select "input#receiver_verified[name=?]", "receiver[verified]"
+      assert_select "input[name=?][value=?]", "receiver[name]", @receiver.name
+      assert_select "input[name=?][value=?]", "receiver[handler]", @receiver.handler
     end
+  end
+
+  it "renders resend button for unverfied receiver" do
+    render
+
+    assert_select "form[action=?][method=?]", "/verification/#{@receiver.last_verification.id.to_s}/resend", "post" do
+      assert_select "input[name=?][value=?]", "commit", "Resend verification code"
+    end
+  end
+
+  it "doesn't render resend button for verified receiver" do
+    @receiver.verify!
+
+    render
+
+    assert_select "form[action=?][method=?]", "/verification/#{@receiver.last_verification.id.to_s}/resend", "post", count: 0
+    assert_select "input[name=?][value=?]", "commit", "Resend verification code", count: 0
   end
 end

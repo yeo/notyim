@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resources :incidents, only: [:index, :show]
   resources :incident_voices, only: [:show]
 
-  resources :receivers
+  resources :receivers, except: [:show]
   post '/incident_receivers/:check_id', to: 'incident_receivers#create', as: :register_incident_receivers
 
   resources :teams, only: [:create, :update, :destroy, :index]

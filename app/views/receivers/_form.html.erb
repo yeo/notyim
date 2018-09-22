@@ -1,45 +1,49 @@
+<% if receiver.persisted? && receiver&.require_verify? && !receiver.verified? %>
+  <%= render 'receivers/verification/challenger', receiver: receiver %>
+<% end %>
+
 <div class="container">
-  <% Yeller::Provider.providers.keys.each_slice(2) do |providers| %>
+  <% Yeller::Provider.providers.keys.each do |provider| %>
+
     <div class="columns">
-      <% providers.each do |provider| %>
-        <% next if !Yeller::Provider.class_of(provider).support_add_form? || (receiver.persisted? && receiver.provider != provider) %>
+      <% next if !Yeller::Provider.class_of(provider).support_add_form? || (receiver.persisted? && receiver.provider != provider) %>
 
-        <div class="column is-half ">
-          <div class='box alertcontact-provider alertcontact-provider-<%= provider %>'>
-            <h4 class="subtitle"><%= provider %></h4>
-            <%= form_for(receiver) do |f| %>
-              <%= hidden_field :receiver, :provider, value: provider %>
+      <div class="column">
+        <div class='box alertcontact-provider alertcontact-provider-<%= provider %>'>
+          <h4 class="subtitle"><%= provider %></h4>
+          <%= form_for(receiver) do |f| %>
+            <%= hidden_field :receiver, :provider, value: provider %>
 
-              <% if receiver.errors.any? %>
-                <div id="error_explanation">
-                  <h2><%= pluralize(receiver.errors.count, "error") %> prohibited this receiver from being saved:</h2>
+            <% if receiver.errors.any? %>
+              <div id="error_explanation">
+                <h2><%= pluralize(receiver.errors.count, "error") %> prohibited this receiver from being saved:</h2>
 
-                  <ul>
-                    <% receiver.errors.full_messages.each do |message| %>
-                      <li><%= message %></li>
-                    <% end %>
-                  </ul>
-                </div>
-              <% end %>
-
-              <div class="field">
-                <%= f.label :name, Yeller::Provider.class_of(provider).label, class: 'label' %>
-                <p class="control">
-                <%= f.text_field :name, class: 'input' %>
-                </p>
-              </div>
-
-              <%= render "receivers/providers/#{provider.downcase}", f: f, receiver: receiver, provider: provider %>
-
-              <div class="field">
-                <p class="control">
-                <%= f.submit "Save", class: 'button is-primary' %>
-                </p>
+                <ul>
+                  <% receiver.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
               </div>
             <% end %>
-          </div>
+
+            <div class="field">
+              <%= f.label :name, Yeller::Provider.class_of(provider).label, class: 'label' %>
+              <p class="control">
+              <%= f.text_field :name, class: 'input' %>
+              </p>
+            </div>
+
+            <%= render "receivers/providers/#{provider.downcase}", f: f, receiver: receiver, provider: provider %>
+
+            <div class="field">
+              <p class="control">
+              <%= f.submit "Save", class: 'button is-primary' %>
+              </p>
+            </div>
+          <% end %>
         </div>
-      <% end %>
+      </div>
     </div>
+
   <% end %>
 </div>

@@ -25,7 +25,7 @@ RSpec.describe "receivers/new", type: :view do
       assert_select "form[action=?][method=?]", receivers_path, "post" do
         assert_select "input[name=?]", "receiver[name]"
         assert_select "input[name=?]", "receiver[handler]"
-        assert_select "input[name=?]", "receiver[provider]", value: p
+        assert_select "input[name=?][value=?]", "receiver[provider]", p
         assert_select "input[name=?]", "commit", type: 'submit'
       end
     end
