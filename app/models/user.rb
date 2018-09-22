@@ -86,6 +86,10 @@ class User
     flags.is_a?(Hash) && flags[:internal_tester] == true
   end
 
+  def beta?
+    flags.is_a?(Hash) && flags['beta_tester'] == true
+  end
+
   # Get a list of verifi receiver
   # @return Criteria[Receiver]
   def verified_receivers
