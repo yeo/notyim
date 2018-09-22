@@ -1,4 +1,2 @@
-.DS_Store
-.env
-run_linux.sh
-packaging/output/systemd/
+data/GeoLite2-Country.mmdb
+packaging/output
