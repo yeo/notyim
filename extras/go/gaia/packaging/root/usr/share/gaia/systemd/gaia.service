@@ -1,0 +1,29 @@
+#
+# systemd unit file for CentOS 7, Ubuntu bleeding edge
+#
+[Unit]
+Description=Gaia Noty Agent
+After=syslog.target network.target
+
+[Service]
+Type=simple
+EnvironmentFile=-/etc/gaia/gaia.conf
+Environment=GAIA_SERVER_HOST=https://gaia.noty.im
+ExecStart=/usr/bin/gaia client
+# allow `systemctl reload gaia`
+ExecReload=/bin/kill -HUP $MAINPID
+# Allow any 'adm' user to run gaiactl without sudo
+Group=adm
+UMask=0002
+
+# if we crash, restart
+RestartSec=1
+Restart=on-failure
+
+# use syslog for logging
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=gaia
+
+[Install]
+WantedBy=multi-user.target

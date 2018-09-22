@@ -1,0 +1,4 @@
+.DS_Store
+.env
+run_linux.sh
+packaging/output/systemd/

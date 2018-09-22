@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+if [ ! -d /etc/gaia ]; then
+  mkdir /etc/gaia
+fi
+
+if [ ! -f /etc/gaia/gaia.conf ]; then
+  cp /usr/share/gaia/systemd/gaia.conf /etc/gaia
+  # passwords in here, root readable only.
+  chmod 600 /etc/gaia/gaia.conf
+fi
+
+if which systemctl > /dev/null; then
+  echo "Using systemd to control gaia"
+  cp /usr/share/gaia/systemd/gaia.service /lib/systemd/system/gaia.service
+
+  systemctl daemon-reload || :
+  systemctl enable gaia || :
+  systemctl start gaia || :
+else
+  echo "Couldn't find systemd to control gaia, cannot proceed."
+  echo "Open an issue and tell us about your system."
+  exit 1
+fi
+
+cat <<"TXT"
+ _                            _
+  ___   __   __   __  
+ / __) / _\ (  ) / _\ 
+( (_ \/    \ )( /    \
+ \___/\_/\_/(__)\_/\_/
+Thank you for installing gaia!
+TXT
+
+echo Thank you!
+exit 0
