@@ -39,13 +39,19 @@ RSpec.describe Inspector::Http, type: :inspector do
     end
   end
 
-  describe 'code assertion' do
+  describe 'response code assertion' do
     it 'return true when match' do
       assertion = double(Assertion, subject: 'http.code', condition: 'eq', operand: '200')
-      check_response = double(CheckResponse, code: '302')
+      check_response = double(CheckResponse, status_code: '200')
+
+      expect(subject.check_http(assertion, check_response)).to be(true)
+    end
+
+    it 'return true when match' do
+      assertion = double(Assertion, subject: 'http.code', condition: 'eq', operand: '200')
+      check_response = double(CheckResponse, status_code: '301')
 
       expect(subject.check_http(assertion, check_response)).to be(false)
-
     end
   end
 end
