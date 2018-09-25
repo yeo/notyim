@@ -7,17 +7,17 @@ import (
 )
 
 // monitorCmd respresents the monitor command
-var serverCmd = &cobra.Command{
-	Use:   "server",
-	Short: "Gaia Server Mode",
-	Long:  `Run Gaia Server that command the client to run check and update result to our storage`,
+var clientCmd = &cobra.Command{
+	Use:   "client",
+	Short: "Gaia client Mode",
+	Long:  `Client fetch checks, execute and push result back`,
 	Run: func(cmd *cobra.Command, args []string) {
 		config := config.NewConfig()
-		server := agent.NewServer(config)
-		server.Start()
+		client := agent.NewClient(config)
+		client.Start()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(serverCmd)
+	rootCmd.AddCommand(clientCmd)
 }
