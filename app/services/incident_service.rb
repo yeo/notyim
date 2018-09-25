@@ -71,7 +71,7 @@ class IncidentService
 
     open_locations = incident.locations['open'].map { |l| l[:ip].strip }
     close_locations = incident.locations['close'].map { |l| l[:ip].strip }
-    
+
     # the best
     if (open_locations - close_locations).empty? || (incident.locations['close'].try(:length) || 0) >= Rails.configuration.incident_confirm_location
       close_incident incident
