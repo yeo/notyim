@@ -12,7 +12,7 @@
               <span class="tag is-warning is-small"><%= user.open_incident(current.team) %></span>
             <% end %>
           <% end %>
-          <%= link_to("Alert Contact", receivers_path, class: "navbar-item is-tab #{cp(receivers_path)}") %>
+          <%= link_to("Alert Channel", receivers_path, class: "navbar-item is-tab #{cp(receivers_path)}") %>
           <%# link_to("Team", teams_path, class: "nav-item is-tab #{cp(teams_path)}") %>
           <!-- <a class="nav-item is-tab" href="<%= url_for(teams_path) %>">Team</a> -->
         <% end %>
