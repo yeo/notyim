@@ -55,4 +55,15 @@ RSpec.configure do |config|
   # every where in controller spec.
   # http://codecrate.com/2014/11/rspec-controllers-best-practices.html
   config.render_views
+
+  # https://github.com/plataformatec/devise#controller-tests
+  # https://github.com/plataformatec/devise/pull/4071
+  # https://github.com/plataformatec/devise/issues/3913
+  # controller test
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  config.include Devise::Test::ControllerHelpers, type: :view
+
+  # integration test
+  config.include Devise::Test::IntegrationHelpers, type: :feature
+  config.include Devise::Test::IntegrationHelpers, type: :request
 end
