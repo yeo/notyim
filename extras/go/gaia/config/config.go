@@ -11,20 +11,15 @@ type Config struct {
 	AppHost     string
 	AppApiToken string
 
-	DbHost     string
-	DbUser     string
-	DbPassword string
-
 	InfluxdbHost     string
 	InfluxdbUsername string
 	InfluxdbPassword string
 	InfluxdbDb       string
 
-	MongoDBName string
+	MongodbUri string
 
-	GaiaServerHost   string
-	GaiaServerBindTo string
-	GaiaClientBindTo string
+	GaiaServer      string
+	GaiaBindAddress string
 }
 
 // NewConfig creates a configuration struct with a sane default value
@@ -43,18 +38,6 @@ func NewConfig() *Config {
 		c.AppApiToken = val
 	} else {
 		c.AppApiToken = ""
-	}
-
-	if val := os.Getenv("DbHost"); val != "" {
-		c.DbHost = val
-	} else {
-		c.DbHost = "127.0.0.1"
-	}
-
-	if val := os.Getenv("DbUser"); val != "" {
-		c.DbUser = val
-	} else {
-		c.DbUser = "value"
 	}
 
 	if val := os.Getenv("INFLUXDB_HOST"); val != "" {
@@ -81,28 +64,22 @@ func NewConfig() *Config {
 		c.InfluxdbDb = "noty"
 	}
 
-	if val := os.Getenv("GAIA_SERVER_HOST"); val != "" {
-		c.GaiaServerHost = val
+	if val := os.Getenv("GAIA_SERVER"); val != "" {
+		c.GaiaServer = val
 	} else {
-		c.GaiaServerHost = "127.0.0.1:28301"
+		c.GaiaServer = "127.0.0.1:19283"
 	}
 
-	if val := os.Getenv("GAIA_SERVER_BINDTO"); val != "" {
-		c.GaiaServerBindTo = val
+	if val := os.Getenv("GAIA_BIND_ADDRESS"); val != "" {
+		c.GaiaBindAddress = val
 	} else {
-		c.GaiaServerBindTo = "127.0.0.1:28300"
+		c.GaiaBindAddress = "127.0.0.1:19283"
 	}
 
-	if val := os.Getenv("GAIA_CLIENT_BINDTO"); val != "" {
-		c.GaiaClientBindTo = val
+	if val := os.Getenv("MONGODB_URI"); val != "" {
+		c.MongodbUri = val
 	} else {
-		c.GaiaClientBindTo = "127.0.0.1:28302"
-	}
-
-	if val := os.Getenv("MONGODB_NAME"); val != "" {
-		c.MongoDBName = val
-	} else {
-		c.MongoDBName = "trinity_development"
+		c.MongodbUri = "mongo://127.0.0.1/trinity_development"
 	}
 
 	return c

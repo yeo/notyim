@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+service Gaia {
+  rpc Register (RegistrationRequest) returns (RegistrationResponse) {}
+  rpc SyncCheck (SyncCheckRequest) returns (SyncCheckResponse) {}
+  rpc SaveCheckMetrics(SaveCheckMetricsRequest) returns (SaveCheckMetricsResponse) {}
+}
+
+message RegistrationRequest {
+  string name = 1;
+}
+
+message RegistrationResponse {
+  string name  = 1;
+  string addr = 2;
+}
+
+message SyncCheckRequest {
+  int32 lastVersion = 1;
+}
+
+message SyncCheckResponse {
+  int32 version = 1;
+
+  message Check {
+    enum CheckType {
+      HTTP = 0;
+      TCP = 1;
+      HEARTBEAT = 2;
+    }
+
+    CheckType check = 1;
+    string uri =  2;
+  }
+
+  repeated Check checks = 2;
+}
+
+message SaveCheckMetricsRequest {
+  string checkId = 1;
+  map<string, double> metrics = 2;
+}
+
+message SaveCheckMetricsResponse {
+  bool ok = 1;
+}
