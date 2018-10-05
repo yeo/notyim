@@ -3,7 +3,7 @@
 require 'trinity/influxdb'
 
 Trinity::InfluxDB.configure do |config|
-  config.influxdb_database = 'noty'
+  config.influxdb_database = "noty_#{Rails.env}"
   config.influxdb_username = ENV['INFLUXDB_USERNAME']
   config.influxdb_password = ENV['INFLUXDB_PASSWORD']
   config.influxdb_hosts    = (ENV['INFLUXDB_HOSTS'] || '127.0.0.1').split(',')

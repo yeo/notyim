@@ -22,9 +22,9 @@ rails db:seed
 The project gets help from many people. Please check credit and
 thankyou for a detail.
 
-# Life
+=======
+# Test setup
 
-With all love, for a better life, to my daughter and my wife.
-All my blood, tear eyes, and sweat.
-
-To my small family. Hope for a better life of 2017.
+```
+rails influxdb:setup
+```
