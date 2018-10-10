@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReceiversController < DashboardController
   before_action :set_receiver, only: [:show, :edit, :update, :destroy]
 

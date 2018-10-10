@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'trinity/policy'
 
 # Policy for check/alert channel acl
