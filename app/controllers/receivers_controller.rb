@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ReceiversController < DashboardController
   before_action :set_receiver, only: [:show, :edit, :update, :destroy]
 
@@ -42,6 +44,10 @@ class ReceiversController < DashboardController
   # Use callbacks to share common setup or constraints between actions.
   def set_receiver
     @receiver = Receiver.find(params[:id])
+    return if !@receiver.persisted? || ReceiverPolicy.can_manage?(@receiver, current.user)
+
+    @receiver = nil
+    head :forbidden
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
