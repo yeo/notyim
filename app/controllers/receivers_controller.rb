@@ -42,12 +42,10 @@ class ReceiversController < DashboardController
   # Use callbacks to share common setup or constraints between actions.
   def set_receiver
     @receiver = Receiver.find(params[:id])
-    if @receiver.persisted?
-      unless ReceiverPolicy::can_manage?(@receiver, current.user)
-        @receiver = nil
-        head :forbidden
-      end
-    end
+    return if !@receiver.persisted? || ReceiverPolicy.can_manage?(@receiver, current.user)
+
+    @receiver = nil
+    head :forbidden
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
