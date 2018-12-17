@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   'https://github.com/#{repo_name}.git'
 end
 
-gem 'rails', '~> 5.2.1'
+gem 'rails', '~> 5.2.2'
 gem 'puma'
 # TODO: Get rid of this since we use webpakckk
 # Use SCSS for stylesheets
@@ -18,7 +18,7 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 gem 'bulma-rails', '~> 0.6.2'
-gem 'webpacker', '~> 3.2'
+gem 'webpacker', '~> 3.5'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
