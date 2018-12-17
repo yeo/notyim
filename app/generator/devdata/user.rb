@@ -1,11 +1,12 @@
 module Devdata
-  module User
-    def generate
-      User.create!(
+  module UserGenerator
+    def self.generate
+      ::User.create!(
         email: 'vinh@noty.im',
-        password: '12345',
+        password: '123456',
         name: 'Vinh',
-        admin: true
+        admin: true,
+        confirmed_at: Time.now,
       )
     end
   end

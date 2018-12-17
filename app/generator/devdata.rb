@@ -1,7 +1,7 @@
+require 'devdata/user'
+
 module Devdata
   def self.generate
-    User.generate
+    ::Devdata::UserGenerator.generate
   end
 end
-
-require 'devdata/user'

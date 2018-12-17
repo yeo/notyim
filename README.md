@@ -7,6 +7,16 @@ Status](https://coveralls.io/repos/github/notyim/notyim/badge.svg?branch=master)
 [![codebeat
 badge](https://codebeat.co/badges/fe431b9d-623e-4705-9638-24f10d9b8b96)](https://codebeat.co/projects/github-com-notyim-notyim-master)
 
+# Set up
+
+```
+bundle install
+
+# Generate user and seed data
+rails db:seed
+# Then login with vinh@noty.im/123456
+```
+
 # Thank you
 
 The project gets help from many people. Please check credit and
