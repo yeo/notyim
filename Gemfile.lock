@@ -1,3 +1,13 @@
+GIT
+  remote: git@github.com:rails/webpacker
+  revision: 4103f4b771439fa008de6403f5729fb519758ecb
+  branch: 3-x-stable
+  specs:
+    webpacker (3.5.5)
+      activesupport (>= 4.2)
+      rack-proxy (>= 0.6.1)
+      railties (>= 4.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -391,10 +401,6 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
-    webpacker (3.5.5)
-      activesupport (>= 4.2)
-      rack-proxy (>= 0.6.1)
-      railties (>= 4.2)
     websocket-driver (0.7.0)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.3)
@@ -453,7 +459,7 @@ DEPENDENCIES
   twilio-ruby (~> 4.11.1)
   web-console (>= 3.3.0)
   webmock
-  webpacker (~> 3.5)
+  webpacker!
   whenever
 
 RUBY VERSION

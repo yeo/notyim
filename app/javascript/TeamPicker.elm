@@ -1,13 +1,14 @@
 port module TeamPicker exposing (..)
 
-import Html exposing (Html, Attribute, beginnerProgram, programWithFlags, div, button, a, hr, text, h2, p, label, select, option, span, input,ul, li, nav, form)
+import Browser exposing (element)
+import Html exposing (Html, Attribute, div, button, a, hr, text, h2, p, label, select, option, span, input,ul, li, nav, form)
 import Html.Attributes exposing (class, placeholder, type_, size, value, selected, name, disabled, href, method, action)
 import Html.Events exposing (onClick, onInput)
 import String
 import Debug
 
 main =
-  programWithFlags
+  element
     { init = init
     , update = update
     , subscriptions = \_ -> Sub.none

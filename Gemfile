@@ -18,7 +18,8 @@ gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 gem 'bulma-rails', '~> 0.6.2'
-gem 'webpacker', '~> 3.5'
+#gem 'webpacker', '~> 3.5'
+gem 'webpacker', git: 'git@github.com:rails/webpacker', branch: '3-x-stable'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
