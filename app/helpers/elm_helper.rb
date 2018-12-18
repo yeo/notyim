@@ -11,9 +11,9 @@ module ElmHelper
     html_options[:id] = id
 
     if flags = props[:flags]
-      content_tag(html_tag, "", html_options, false, &block) + javascript_tag("window.Elm.#{name}.embed(document.getElementById('#{id}'), #{flags.to_json})")
+      content_tag(html_tag, "", html_options, false, &block) + javascript_tag("window.Elm.#{name}.init({  node: document.getElementById('#{id}'), flags: #{flags.to_json} })")
     else
-      content_tag(html_tag, "", html_options, false, &block) + javascript_tag("window.Elm.#{name}.embed(document.getElementById('#{id}'))")
+      content_tag(html_tag, "", html_options, false, &block) + javascript_tag("window.Elm.#{name}.init({ node: document.getElementById('#{id}') })")
     end
   end
 end

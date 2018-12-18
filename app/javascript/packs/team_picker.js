@@ -1,4 +1,6 @@
-import Elm from '../TeamPicker'
+import {
+  Elm
+}from '../TeamPicker'
 
 if (typeof window.Elm  === "undefined") {
   window.Elm = Elm
