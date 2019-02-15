@@ -1,7 +1,7 @@
 production:
   clients:
     default:
-      uri: <%= ENV['MONGODB_URI'] || "mongodb://127.0.0.1:27018/noty_production" %>
+      uri: <%= ENV['MONGODB_URI'] || "mongodb://127.0.0.1:27017/noty_production" %>
       options:
         write:
           w: 1
@@ -18,7 +18,7 @@ development:
       # Provides the hosts the default client can connect to. Must be an array
       # of host:port pairs. (required)
       hosts:
-        - localhost:27018
+        - localhost:27017
       options:
         # Change the default write concern. (default = { w: 1 })
         # write:
