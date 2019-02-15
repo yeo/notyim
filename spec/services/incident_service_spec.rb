@@ -1,13 +1,15 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 RSpec.describe IncidentService, type: :service do
   let(:check) { gen_check_and_assertion }
   let(:user) { incident.user }
   let(:check_result) { FactoryBot.build(:check_response) }
 
-  let(:http_down) {
+  let(:http_down) do
     Assertion.create!(subject: 'http.status', condition: 'down', check: check)
-  }
+  end
 
   describe '.create_for_assertion' do
     it 'create open incident' do
@@ -31,23 +33,23 @@ RSpec.describe IncidentService, type: :service do
     it 'sends notification to user email when has no receiver' do
       receiver = double(Receiver)
       allow(Receiver).to receive(:new).with(provider: 'Email',
-          name: incident.check.user.email,
-          handler: incident.check.user.email,
-          require_verify: false, verified: true).
-        and_return(receiver)
+                                            name: incident.check.user.email,
+                                            handler: incident.check.user.email,
+                                            require_verify: false, verified: true)
+                                      .and_return(receiver)
 
       expect(NotifyReceiverService).to receive(:execute).with(incident, receiver)
       described_class.notify(incident, 'open')
     end
 
     it 'sends notification to receivers list' do
-      #if (receivers = incident.check.fetch_receivers).present?
+      # if (receivers = incident.check.fetch_receivers).present?
       receivers = Array.new(3, double(Receiver))
       allow(incident.check).to receive(:fetch_receivers).and_return(receivers)
 
-      receivers.each { |receiver|
+      receivers.each do |receiver|
         expect(NotifyReceiverService).to receive(:execute).with(incident, receiver)
-      }
+      end
       described_class.notify(incident, 'open')
     end
   end

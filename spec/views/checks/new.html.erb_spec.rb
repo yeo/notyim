@@ -1,12 +1,14 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'checks/new', type: :view do
   before(:each) do
     assign(:check, Check.new(
-      :name => 'MyString',
-      :uri => 'MyString',
-      :type => ''
-    ))
+                     name: 'MyString',
+                     uri: 'MyString',
+                     type: ''
+                   ))
   end
 
   it 'renders new check form' do

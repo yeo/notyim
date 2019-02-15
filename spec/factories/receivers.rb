@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 FactoryBot.define do
   factory :receiver, class: Receiver do
-    provider "Email"
-    name "email"
-    handler "r@noty.im"
+    provider 'Email'
+    name 'email'
+    handler 'r@noty.im'
     require_verify true
     verified true
 
@@ -10,15 +12,13 @@ FactoryBot.define do
     user { team.user }
 
     after :create do |r|
-      if r.provider == "Email"
-        Verification.create!(verified_at: Time.now, verifiable: r)
-      end
+      Verification.create!(verified_at: Time.now, verifiable: r) if r.provider == 'Email'
     end
 
     factory :slack_receiver, class: Receiver do
-      provider "Slack"
-      handler "1234"
-      name "slack"
+      provider 'Slack'
+      handler '1234'
+      name 'slack'
       require_verify false
       verified false
     end

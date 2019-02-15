@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 RSpec.describe CheckToCreateIncidentWorker, type: :worker do
   let(:check) { double(Check, id: 12, type: 'http') }
-  let(:check_response) {
+  let(:check_response) do
     double(CheckResponse,
            status: 'down',
            raw_result: :foo,
            error: true,
            body: 'ok',
-           time: 100000 )
-  }
+           time: 100_000)
+  end
 
   before do
     allow(Check).to receive(:find).with(check.id).and_return(check)
@@ -20,7 +22,6 @@ RSpec.describe CheckToCreateIncidentWorker, type: :worker do
   describe '#perform' do
     describe 'match assetion' do
       xit 'create an incident' do
-
       end
     end
 
@@ -28,7 +29,7 @@ RSpec.describe CheckToCreateIncidentWorker, type: :worker do
       xit 'close an incident' do
       end
     end
-    #describe 'check has at least an assertion matches check response' do
+    # describe 'check has at least an assertion matches check response' do
     #  it 'create incident' do
     #    assertions = [
     #      double(Assertion, subject: 'http.status', condition: 'eq', operand: 'down', check: check),
@@ -41,9 +42,9 @@ RSpec.describe CheckToCreateIncidentWorker, type: :worker do
     #    expect(IncidentService).to receive(:create_for_assertion).with(assertions.first, check_response)
     #    subject.perform(check.id, check_response.raw_result)
     #  end
-    #end
+    # end
 
-    #describe 'check has no assertion matches check response' do
+    # describe 'check has no assertion matches check response' do
     #  it 'does nothing' do
     #    assertions = [
     #      double(Assertion, subject: 'http.body', condition: 'contain', operand: 'heavy load', check: check),
@@ -52,6 +53,6 @@ RSpec.describe CheckToCreateIncidentWorker, type: :worker do
     #    expect(IncidentService).to_not receive(:create_for_assertion).with(anything, anything)
     #    subject.perform(check.id, check_response.raw_result)
     #  end
-    #end
+    # end
   end
 end

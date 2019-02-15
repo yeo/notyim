@@ -1,4 +1,6 @@
-require "rails_helper"
+# frozen_string_literal: true
+
+require 'rails_helper'
 
 RSpec.describe ApiTokenService, type: :service do
   let(:user) { FactoryBot.create(:user) }
@@ -17,8 +19,8 @@ RSpec.describe ApiTokenService, type: :service do
       it 'auto creates and return that one' do
         token = described_class.retreive_for_user(user)
         expect(token).to be_kind_of(ApiToken)
-        expect(token.token.split(".").first).to eq(user.id.to_s)
-        expect(token.token.split(".").second.length).to eq(48)
+        expect(token.token.split('.').first).to eq(user.id.to_s)
+        expect(token.token.split('.').second.length).to eq(48)
       end
     end
   end

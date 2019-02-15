@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "incidents/index", type: :view do
+RSpec.describe 'incidents/index', type: :view do
   let(:incident1) { FactoryBot.create(:incident, status: 'closed') }
-  let(:incident2) { FactoryBot.create(:incident ) }
-  let(:incidents) {
+  let(:incident2) { FactoryBot.create(:incident) }
+  let(:incidents) do
     Kaminari::PaginatableArray.new([incident1, incident2]).page(1).per(5).padding(5)
-  }
+  end
 
   before(:each) do
     assign(:incidents, incidents)

@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-FactoryBot.define  do
+FactoryBot.define do
   factory :user, class: User do
     email { "t-#{SecureRandom.hex}@noty.im" }
     name 'test'
     password '123456789'
     password_confirmation '123456789'
     confirmed_at Time.now.utc
-    #teams [FactoryBot.build(:team)]
+    # teams [FactoryBot.build(:team)]
 
     before :save do |user|
       puts user.email
@@ -42,7 +42,7 @@ FactoryBot.define  do
   factory :incident, class: Incident do
     status 'open'
     error_message 'Request reject'
-    locations({ open: %w(1.1.1.1) })
+    locations(open: %w[1.1.1.1])
 
     check { FactoryBot.create(:check_with_user) }
 
@@ -52,7 +52,7 @@ FactoryBot.define  do
   end
 
   factory :check_response do
-    raw_result({
+    raw_result(
       check_id: 123,
       type: 'http',
       time: [],
@@ -61,7 +61,7 @@ FactoryBot.define  do
       error_message: nil,
       http: {},
       from_ip: '1.2.3.4',
-      from_region: 'us',
-    })
+      from_region: 'us'
+    )
   end
 end

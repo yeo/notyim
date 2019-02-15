@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TestUtils
   module Request
     def reset_request_store
@@ -22,7 +24,6 @@ module TestUtils
 
       incident
     end
-
   end
 end
 
