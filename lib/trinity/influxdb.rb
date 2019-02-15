@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Trinity
 module Trinity
+  # InfluxDB Client
   module InfluxDB
     class << self
       attr_writer :configuration

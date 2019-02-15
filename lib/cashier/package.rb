@@ -1,7 +1,10 @@
 # frozen_string_literal: true
 
 require 'cashier/item'
+
+# Billing
 module Cashier
+  # Syntatix suger for item with some method
   class Package < Item
     def description
       "package #{name}"

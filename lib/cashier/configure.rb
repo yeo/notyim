@@ -3,24 +3,14 @@
 require 'cashier/subscription'
 require 'cashier/package'
 
+# Billing
 module Cashier
+  # Configure API
   class Configure
     attr_reader :packages
     attr_reader :subscriptions
-    attr_reader :sms_price, :minute_price
-    attr_reader :exchange_rate # value of 1 cents to our credit
-
-    def exchange_rate(v)
-      @exchange_rate = v
-    end
-
-    def sms_price(p)
-      @sms_price = p
-    end
-
-    def minute_price(p)
-      @minute_price = p
-    end
+    attr_writer :sms_price, :minute_price
+    attr_writer :exchange_rate # value of 1 cents to our credit
 
     def subscription(name, price, opts = {})
       @subscriptions ||= {}

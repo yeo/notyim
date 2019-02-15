@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-module Mongoid
+# Mongoid patch
+module Mongoids
+  # Thing we can mark as delete but not delete from db
   module Archivable
     def self.included(base)
       base.field :archived, type: Mongoid::Boolean, default: false

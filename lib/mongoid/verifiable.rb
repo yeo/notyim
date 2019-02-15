@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Mongoid patch
 module Mongoid
+  # Verifiable for thing we can trigger verification
   module Verifiable
     def self.included(base)
       base.field :require_verify, type: Mongoid::Boolean, default: true

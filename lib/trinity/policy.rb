@@ -2,8 +2,11 @@
 
 require 'trinity/current'
 
+# Trinity logic
 module Trinity
+  # Access Control
   module Policy
+    # Base class
     module Base
       def owner?; end
 

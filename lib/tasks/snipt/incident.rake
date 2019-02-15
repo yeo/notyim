@@ -51,7 +51,7 @@ namespace :snipt do
 
     desc 'Test notifiy email'
     task email_notify: :environment do
-      i = Incident.find '58c61f198c2455218f8754b7'
+      Incident.find '58c61f198c2455218f8754b7'
     end
   end
 end

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Billing
 module Cashier
+  # Item is a thing people paid for
   class Item
     attr_reader :name, :price, :opts
 

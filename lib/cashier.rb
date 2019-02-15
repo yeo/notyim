@@ -2,6 +2,7 @@
 
 require 'cashier/configure'
 
+# Cashier is our billing logic
 module Cashier
   def self.configure
     @_config ||= Configure.new

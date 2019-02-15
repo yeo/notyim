@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Billing
 module Cashier
+  # Customer map
   class Customer
     attr_reader :user
     def initialize(user)

@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Gaia handles gaia(noty daemon interaction)
 module Gaia
+  # Client API CLASS
   class Client
     attr_reader :checkers
 

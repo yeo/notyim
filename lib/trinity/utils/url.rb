@@ -1,13 +1,16 @@
 # frozen_string_literal: true
 
+# Trinity
 module Trinity
+  # Share Urls
   module Utils
+    # URL handling
     class Url
       include Rails.application.routes.url_helpers
       # extend self
 
       def self.instance
-        @__instance ||= new
+        @instance ||= new
       end
 
       def self.to(method, *args)
