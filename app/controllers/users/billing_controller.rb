@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
-class Users::BillingController < DashboardController
-  def show; end
+module Users
+  class BillingController < DashboardController
+    def show; end
+  end
 end
