@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Mongoid
   module Verifiable
     def self.included(base)
@@ -5,16 +7,16 @@ module Mongoid
       base.field :verified, type: Mongoid::Boolean
       base.has_many :verifications, as: :verifiable, dependent: :destroy
 
-      #base.extend ClassMethod
+      # base.extend ClassMethod
     end
 
     def verify!
       self.verified = true
-      self.save!
+      save!
     end
 
     def last_verification
-      self.verifications.desc(:id).limit(1).first
+      verifications.desc(:id).limit(1).first
     end
   end
 end

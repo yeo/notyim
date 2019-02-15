@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Trinity
-  #Encapsulate current request data
+  # Encapsulate current request data
   class Current
     attr_accessor :team, :user, :host, :domain
 
@@ -11,47 +13,42 @@ module Trinity
       detect_team if @user.present?
     end
 
-    def session
-      @session
-    end
+    attr_reader :session
 
     def signed_in?
       user.present?
     end
 
     def detect_team
-      begin
-        # TODO: Remove those magic string
-        if @host && @host.start_with?('team-') && (@host.end_with?('noty.im') || @host.end_with?('noty.dev'))
-          # TODO: Cache or do domain -> team mapping
-          team = TeamService.find_team_from_host @host
+      # TODO: Remove those magic string
+      if @host&.start_with?('team-') && @host&.end_with?('noty.im', 'noty.dev')
+        # TODO: Cache or do domain -> team mapping
+        team = TeamService.find_team_from_host @host
+        if TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user)
+          session[:team] = team.id.to_s
+          @team = team
+          return
+        else
+          raise 'Forbidden'
+        end
+      else
+        @team = @user.teams.first if @user.present?
+        if session[:team] && (team = Team.find(session[:team]))
           if TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user)
-            session[:team] = team.id.to_s
             @team = team
-            return
           else
-            raise "Forbidden"
+            @team = session[:team] = nil
+            raise 'Fordbidden'
           end
         else
-          @team = @user.teams.first if @user.present?
-          if session[:team] && (team = Team.find(session[:team]))
-            if TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user)
-              @team = team
-            else
-              @team = session[:team] = nil
-              raise "Fordbidden"
-            end
-          else
-            @team = @user.default_team
-            session[:team] = @user.default_team.id.to_s
-          end
+          @team = @user.default_team
+          session[:team] = @user.default_team.id.to_s
         end
-      rescue => e
-        session[:team] = nil
-        raise "Fordbidden"
       end
+    rescue StandardError => e
+      session[:team] = nil
+      raise 'Fordbidden'
     end
-
 
     class << self
       def instance(user, request, session)
@@ -59,10 +56,10 @@ module Trinity
 
         # Force recreare if current user is different form what we already had
         if user && (user.id != current.user.id)
-          if (TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user))
+          if TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user)
             current.user = user
           else
-            raise "Forbidden"
+            raise 'Forbidden'
           end
         end
 

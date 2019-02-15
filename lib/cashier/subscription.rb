@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cashier/item'
 module Cashier
   class Subscription < Item

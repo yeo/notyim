@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Trinity
   module InfluxDB
     class << self
@@ -5,11 +7,11 @@ module Trinity
       attr_writer :client
 
       def configuration
-        # TODO Use a proper configurationw rapper
+        # TODO: Use a proper configurationw rapper
         @configuration ||= OpenStruct.new
       end
 
-      def configure(silent = false)
+      def configure(_silent = false)
         yield(configuration)
 
         # if we change configuration, reload the client
@@ -20,13 +22,13 @@ module Trinity
 
       def client
         @client ||= ::InfluxDB::Client.new configuration.influxdb_database,
-          :username => configuration.influxdb_username,
-          :password => configuration.influxdb_password,
-          :hosts => configuration.influxdb_hosts,
-          :port => configuration.influxdb_port,
-          #:async => configuration.async,
-          #:use_ssl => configuration.use_ssl,
-          :retry => configuration.retry
+                                           username: configuration.influxdb_username,
+                                           password: configuration.influxdb_password,
+                                           hosts: configuration.influxdb_hosts,
+                                           port: configuration.influxdb_port,
+                                           #:async => configuration.async,
+                                           #:use_ssl => configuration.use_ssl,
+                                           retry: configuration.retry
       end
     end
   end

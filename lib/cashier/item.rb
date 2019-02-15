@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cashier
   class Item
     attr_reader :name, :price, :opts
@@ -10,7 +12,7 @@ module Cashier
 
     def self.find(id)
       config = ::Cashier.configure
-      config.send(self.name.demodulize.pluralize.downcase).fetch(id)
+      config.send(name.demodulize.pluralize.downcase).fetch(id)
     end
 
     # Type of item

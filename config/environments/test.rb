@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -29,7 +31,7 @@ Rails.application.configure do
   config.action_controller.allow_forgery_protection = false
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = {
-    :host => "127.0.0.1:3000",
+    host: '127.0.0.1:3000'
   }
 
   # Tell Action Mailer not to deliver emails to the real world.
@@ -43,7 +45,6 @@ Rails.application.configure do
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
-
   # Custom configuration
   # Those setting isn't on Rails, we store theme here to access them later on
   # Those need to take care when we update Rails
@@ -52,7 +53,7 @@ Rails.application.configure do
   config.incident_confirm_location = 1 # How many location need to match in order to confirm that an incident has occured
   config.incident_notification_interval = 10.minutes
   config.telegram_bot = {
-    name: "notydevbot"
+    name: 'notydevbot'
   }
   config.slack_bot = {
     scope: 'bot',

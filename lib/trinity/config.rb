@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Trinity
   class Config
     class << self
@@ -5,8 +7,7 @@ module Trinity
         yield instance
       end
 
-      def instance
-      end
+      def instance; end
     end
   end
 end

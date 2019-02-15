@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # alternatively, you can preconfigure the client like so
 Rails.configuration.twilio = { from: ENV.fetch('PHONE_FROM', nil) }
 Twilio.configure do |config|

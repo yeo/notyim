@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 namespace :sidekiq do
   desc 'Make sidekiq job stop process job'
   task :quiet do
     on roles(:app) do
-      # TODO Use sidekiqctl
+      # TODO: Use sidekiqctl
       puts capture("pgrep -f 'sidekiq' | xargs kill -USR1")
     end
   end

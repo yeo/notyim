@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :deploy do
   desc 'Install npm package using yarn'
   task :yarn do

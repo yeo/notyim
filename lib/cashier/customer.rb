@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cashier
   class Customer
     attr_reader :user
@@ -6,8 +8,6 @@ module Cashier
     end
 
     # Charge customer card and renew the plan
-    def renew
-
-    end
+    def renew; end
   end
 end

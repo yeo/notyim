@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Trinity
   module Utils
     class Url
       include Rails.application.routes.url_helpers
-      #extend self
+      # extend self
 
       def self.instance
         @__instance ||= new
@@ -10,9 +12,9 @@ module Trinity
 
       def self.to(method, *args)
         if Rails.env.production?
-          instance.send("#{method.to_s}_url", *args)
+          instance.send("#{method}_url", *args)
         else
-          path = instance.send("#{method.to_s}_path", *args)
+          path = instance.send("#{method}_path", *args)
           "#{Rails.configuration.local_proxy_public}#{path}"
         end
       end

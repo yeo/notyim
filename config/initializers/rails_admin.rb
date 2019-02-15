@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 RailsAdmin.config do |config|
   ### Popular gems integration
 
@@ -9,9 +11,9 @@ RailsAdmin.config do |config|
 
   ## == Cancan ==
   # config.authorize_with :cancan
-  config.authorize_with do |controller|
+  config.authorize_with do |_controller|
     unless current_user.try(:admin?)
-      flash[:error] = "You are not an admin"
+      flash[:error] = 'You are not an admin'
       redirect_to root_path
     end
   end
@@ -44,9 +46,9 @@ RailsAdmin.config do |config|
     # history_show
   end
 
-  config.included_models = %w(
+  config.included_models = %w[
     User
-    Team, Invitation
+    Team Invitation
     Check
     Incident
     Assertion
@@ -60,5 +62,5 @@ RailsAdmin.config do |config|
     Subscription
     Verification
     BotAccount
-  )
+  ]
 end

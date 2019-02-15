@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'cashier/subscription'
 require 'cashier/package'
 
@@ -21,12 +23,12 @@ module Cashier
     end
 
     def subscription(name, price, opts = {})
-      @subscriptions ||= Hash.new
+      @subscriptions ||= {}
       @subscriptions[name.to_s] = Subscription.new(name, price * 100, opts)
     end
 
     def package(name, price, opts = {})
-      @packages ||= Hash.new
+      @packages ||= {}
       @packages[name.to_s] = Package.new(name, price * 100, opts)
     end
   end

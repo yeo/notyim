@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Trinity
   module Semaphore
     def self.run_once(resource, lock_in = 10, value = 1)
@@ -7,9 +9,9 @@ module Trinity
             else
               resource.to_s
             end
-    
-      result = $redis.with { |c| c.set(key, value, {ex: lock_in, nx: true}) }
-      yield if block_given? if result == true
+
+      result = $redis.with { |c| c.set(key, value, ex: lock_in, nx: true) }
+      yield if result == true && block_given?
     end
   end
 end

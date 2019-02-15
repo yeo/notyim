@@ -1,1 +1,3 @@
-$redis = ConnectionPool.new { Redis.new url: (ENV['REDIS'] || "redis://127.0.0.1:6380/2") }
+# frozen_string_literal: true
+
+$redis = ConnectionPool.new { Redis.new url: (ENV['REDIS'] || 'redis://127.0.0.1:6380/2') }

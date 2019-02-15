@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -32,7 +34,7 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = {
-    :host => "127.0.0.1:3000",
+    host: '127.0.0.1:3000'
   }
 
   # Print deprecation notices to the Rails logger.
@@ -62,7 +64,7 @@ Rails.application.configure do
   config.incident_confirm_location = 1 # How many location need to match in order to confirm that an incident has occured
   config.incident_notification_interval = 10.minutes
   config.telegram_bot = {
-    name: "notydevbot"
+    name: 'notydevbot'
   }
   config.slack_bot = {
     scope: 'bot',

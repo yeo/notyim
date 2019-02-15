@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -49,18 +51,18 @@ Rails.application.configure do
   config.log_level = :debug
 
   # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_tags = [:request_id]
 
   # Use a different cache store in production.
   # config.cache_store = :mem_cache_store
-  config.cache_store = :redis_store, ENV['REDIS_CACHE'] || "redis://127.0.0.1:6379/1/cache", { expires_in: 90.minutes }
+  config.cache_store = :redis_store, ENV['REDIS_CACHE'] || 'redis://127.0.0.1:6379/1/cache', { expires_in: 90.minutes }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "trinity_#{Rails.env}"
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = {
-    :host => "noty.im",
+    host: 'noty.im'
   }
 
   # Ignore bad email addresses and do not raise email delivery errors.
@@ -81,7 +83,7 @@ Rails.application.configure do
   # require 'syslog/logger'
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new 'app-name')
 
-  if ENV["RAILS_LOG_TO_STDOUT"].present?
+  if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
     config.logger = ActiveSupport::TaggedLogging.new(logger)
@@ -96,13 +98,13 @@ Rails.application.configure do
   config.incident_confirm_location = 3 # How many location need to match in order to confirm that an incident has occured
   config.incident_notification_interval = 30.minutes
   config.telegram_bot = {
-    name: "notyimbot"
+    name: 'notyimbot'
   }
   config.slack_bot = {
     scope: 'bot',
     client_id: '51439348069.132808101893',
     redirect_uri: "https://#{config.action_mailer.default_url_options[:host]}/bot/slack",
-    client_secret: ENV.fetch("SLACK_CLIENT_SECRET")
+    client_secret: ENV.fetch('SLACK_CLIENT_SECRET')
   }
   # End custom configuration
 end
