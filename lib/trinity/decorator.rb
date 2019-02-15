@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+# Trinity standalone logic
 module Trinity
+  # Decorator
   module Decorator
     def decorate(model, klass = nil)
       klass ||= "#{model.class}Decorator".constantize
