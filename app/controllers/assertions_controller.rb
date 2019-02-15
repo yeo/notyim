@@ -1,10 +1,11 @@
+# frozen_string_literal: true
+
 class AssertionsController < DashboardController
-  before_action :set_assertion, only: [:show, :edit, :update, :destroy]
+  before_action :set_assertion, only: %i[show edit update destroy]
   before_action :set_check
 
   # GET /assertions/1/edit
-  def edit
-  end
+  def edit; end
 
   # POST /assertions
   # POST /assertions.json
@@ -48,34 +49,31 @@ class AssertionsController < DashboardController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_assertion
-      @assertion = Assertion.find(params[:id])
-      if !@assertion.check? || !CheckPolicy::can_manage?(@assertion.check, current.user)
-        head :forbidden
-      end
-    end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def assertion_params
-      params.require(:assertion).permit(:subject, :condition, :operand)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_assertion
+    @assertion = Assertion.find(params[:id])
+    head :forbidden if !@assertion.check? || !CheckPolicy.can_manage?(@assertion.check, current.user)
+  end
 
-    def set_check
-      begin
-        if @assertion
-          @check = @assertion.check
-        else
-          if check_id = params['assertion'][:check_id]
-            @check = Check.find(check_id)
-          end
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def assertion_params
+    params.require(:assertion).permit(:subject, :condition, :operand)
+  end
+
+  def set_check
+    begin
+      if @assertion
+        @check = @assertion.check
+      else
+        if check_id = params['assertion'][:check_id]
+          @check = Check.find(check_id)
         end
-      rescue
-        head :bad_request
       end
-
-      if !@check || !CheckPolicy::can_manage?(@check, current.user)
-        head :bad_request
-      end
+    rescue StandardError
+      head :bad_request
     end
+
+    head :bad_request if !@check || !CheckPolicy.can_manage?(@check, current.user)
+  end
 end

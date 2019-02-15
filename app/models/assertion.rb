@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mongoid/archivable'
 
 class Assertion
@@ -13,7 +15,7 @@ class Assertion
   # @reference Check::Types
   SUBJECT_TYPES = {
     "#{Check::TYPE_TCP}.status" => 'status',
-    "#{Check::TYPE_TCP}.body" =>  'response body',
+    "#{Check::TYPE_TCP}.body" => 'response body',
     "#{Check::TYPE_TCP}.response_time" => 'response time',
 
     "#{Check::TYPE_HTTP}.status" => 'status',
@@ -22,41 +24,41 @@ class Assertion
     "#{Check::TYPE_HTTP}.response_time" => 'response time',
 
     "#{Check::TYPE_HEARTBEAT}.run_duration" => 'processing time',
-    "#{Check::TYPE_HEARTBEAT}.beat" => 'beat event',
+    "#{Check::TYPE_HEARTBEAT}.beat" => 'beat event'
   }.freeze
 
   # Condition key has to match with check type:
   # @reference Check::Types
   CONDITION_TYPES = {
     Check::TYPE_TCP => {
-      :down => 'Down',
-      :up   => 'Up',
+      down: 'Down',
+      up: 'Up',
 
-      :gt => 'Greater than',
-      :lt => 'Less than',
-      :contain => 'Contains',
-      :in => 'Includes in'
+      gt: 'Greater than',
+      lt: 'Less than',
+      contain: 'Contains',
+      in: 'Includes in'
     },
 
     Check::TYPE_HTTP => {
-      :down => 'Down',
-      :up   => 'Up',
+      down: 'Down',
+      up: 'Up',
 
-      :eq => 'Equal',
-      :ne => 'Not equal',
-      :gt => 'Greater than',
-      :lt => 'Less than',
-      :contain => 'Contains',
-      :in => 'Includes in'
+      eq: 'Equal',
+      ne: 'Not equal',
+      gt: 'Greater than',
+      lt: 'Less than',
+      contain: 'Contains',
+      in: 'Includes in'
     },
 
     Check::TYPE_HEARTBEAT => {
-      :gt => 'Longer than',
-      :lt => 'Less than',
-      :beat_started => 'start',
-      :not_beat_started => 'not start',
-      :beat_completed => 'completed',
-      :not_beat_completed => 'not completed',
+      gt: 'Longer than',
+      lt: 'Less than',
+      beat_started: 'start',
+      not_beat_started: 'not start',
+      beat_completed: 'completed',
+      not_beat_completed: 'not completed'
     }
   }.freeze
 
@@ -64,9 +66,9 @@ class Assertion
   has_many :incidents, dependent: :destroy
 
   validates_presence_of :subject, :condition
-  validates :subject, :inclusion => { :in => SUBJECT_TYPES }
+  validates :subject, inclusion: { in: SUBJECT_TYPES }
 
-  index({check_id: 1}, {background: true})
+  index({ check_id: 1 }, background: true)
 
   def subject_enum
     SUBJECT_TYPES

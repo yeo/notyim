@@ -1,19 +1,19 @@
+# frozen_string_literal: true
+
 class ChecksController < DashboardController
-  before_action :set_check, only: [:show, :edit, :update, :destroy]
+  before_action :set_check, only: %i[show edit update destroy]
 
   def index
     @checks = current.user.checks.where(team: current.team)
   end
 
-  def show
-  end
+  def show; end
 
   def new
     @check = Check.new
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @check = Check.new(check_params)
@@ -33,11 +33,11 @@ class ChecksController < DashboardController
   end
 
   def update
-		if @check.update(check_params)
-			redirect_to @check, notice: 'Check was successfully updated'
-		else
-		  render :edit
-		end
+    if @check.update(check_params)
+      redirect_to @check, notice: 'Check was successfully updated'
+    else
+      render :edit
+    end
   end
 
   def destroy
@@ -46,18 +46,19 @@ class ChecksController < DashboardController
   end
 
   private
-	def set_check
-		@check = Check.find(params[:id])
-		if @check.persisted?
-			unless CheckPolicy::can_manage?(@check, current.user)
-				@check = nil
-				head :forbidden
-			end
-			#redirect_to root_path, :flash => { :error => "Insufficient rights!" } unless CheckPolicy::can_manage?(@check, current.user)
-		end
-	end
 
-	def check_params
-		params.require(:check).permit(:name, :uri, :type)
-	end
+  def set_check
+    @check = Check.find(params[:id])
+    if @check.persisted?
+      unless CheckPolicy.can_manage?(@check, current.user)
+        @check = nil
+        head :forbidden
+      end
+      # redirect_to root_path, :flash => { :error => "Insufficient rights!" } unless CheckPolicy::can_manage?(@check, current.user)
+    end
+  end
+
+  def check_params
+    params.require(:check).permit(:name, :uri, :type)
+  end
 end

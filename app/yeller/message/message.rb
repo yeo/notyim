@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Yeller
   class Message
-
     attr_reader :subject, :message
     def initialize(s, m)
       @subject = s

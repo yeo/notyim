@@ -1,17 +1,17 @@
+# frozen_string_literal: true
+
 class VerificationController < ApplicationController
   before_action :set_verification
-  protect_from_forgery :except => [:interactive_voice]
+  protect_from_forgery except: [:interactive_voice]
 
   # POST /receivers
   # POST /receivers.json
   def create
-    # TODO Impelement this
-    if params[:receiver_id].empty?
-      return head :bad_request
-    end
+    # TODO: Impelement this
+    return head :bad_request if params[:receiver_id].empty?
 
     receiver = Receiver.find(params[:reciever_id])
-    # TODO check permission
+    # TODO: check permission
 
     render :nothing
   end
@@ -29,16 +29,16 @@ class VerificationController < ApplicationController
     if VerificationService.check_to_verify(@verification, params[:code])
       case @verification.verifiable
       when Receiver
-        redirect_to receivers_url, flash: { notice: "You have succesflly confirm the contact" }
+        redirect_to receivers_url, flash: { notice: 'You have succesflly confirm the contact' }
       else
         if user_signed_in?
-          redirect_to dashboard_url, flash: { notice: "You have succesflly confirm the contact" }
+          redirect_to dashboard_url, flash: { notice: 'You have succesflly confirm the contact' }
         else
-          redirect_to root_url, flash: { notice: "You have succesflly confirm the contact" }
+          redirect_to root_url, flash: { notice: 'You have succesflly confirm the contact' }
         end
       end
     else
-      redirect_to root_url, flash: { error: "Invalid code" }
+      redirect_to root_url, flash: { error: 'Invalid code' }
     end
   end
 
@@ -48,9 +48,9 @@ class VerificationController < ApplicationController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_verification
     @verification = Verification.find(params[:id])
   end
-
 end

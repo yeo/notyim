@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'base'
 require 'securerandom'
 require 'trinity/decorator'
@@ -16,13 +18,14 @@ module Yeller
 
       # Generate a verification code
       # @param Receiver object
-      def self.generate_code(receiver)
+      def self.generate_code(_receiver)
         SecureRandom.hex
       end
 
       def self.create_verification_request!(receiver)
         user = receiver.user
         raise MissingUserForReceiver unless user
+
         # TODO: maybe queue this in future
         VerificationMailer.confirm_contact(receiver.id.to_s).deliver_now
       end
@@ -30,6 +33,7 @@ module Yeller
       def self.acknowledge_verification(receiver)
         user = receiver.user
         raise MissingUserForReceiver unless user
+
         # TODO: maybe queue this in future
         VerificationMailer.acknowledge(receiver.id.to_s).deliver_now
       end

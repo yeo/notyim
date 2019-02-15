@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class TeamMembership
-  ROLE_EDITOR = 'editor'.freeze
-  ROLES = %w(editor admin).freeze
+  ROLE_EDITOR = 'editor'
+  ROLES = %w[editor admin].freeze
 
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -9,5 +11,5 @@ class TeamMembership
   belongs_to :team
 
   field :role, type: String
-  validates :role, :inclusion => { :in => ROLES }
+  validates :role, inclusion: { in: ROLES }
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApiTokenService
   def self.retreive_for_user(user)
     if (token = user.api_tokens.desc(:id).first).present?

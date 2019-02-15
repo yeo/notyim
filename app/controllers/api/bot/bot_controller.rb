@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'trinity/current'
 require 'trinity/policy'
 
@@ -8,14 +10,13 @@ module Api
       before_action :require_api_token, :require_bot_account
 
       private
-      def current
-        @current
-      end
+
+      attr_reader :current
 
       def require_api_token
-        #if request.headers['HTTP_X_API_TOKEN'] != "fake-toke-for-now"
+        # if request.headers['HTTP_X_API_TOKEN'] != "fake-toke-for-now"
         #  head :forbidden
-        #end
+        # end
       end
 
       # Find associated user with this bot account
@@ -25,7 +26,7 @@ module Api
           begin
             bot = BotAccount.find_by(token: token)
             @current = Trinity::Current.new bot.user
-          rescue
+          rescue StandardError
             head :forbidden
           end
         else

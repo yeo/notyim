@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mongoid/archivable'
 
 class Check
@@ -6,9 +8,9 @@ class Check
   include Mongoid::Archivable
   include Teamify
 
-  TYPE_HTTP = 'http'.freeze
-  TYPE_TCP  = 'tcp'.freeze
-  TYPE_HEARTBEAT = 'heartbeat'.freeze
+  TYPE_HTTP = 'http'
+  TYPE_TCP  = 'tcp'
+  TYPE_HEARTBEAT = 'heartbeat'
   TYPES = [TYPE_HTTP, TYPE_TCP, TYPE_HEARTBEAT].freeze
 
   field :name, type: String
@@ -28,42 +30,42 @@ class Check
   has_many :incidents, dependent: :destroy
   has_one :daily_uptime, dependent: :destroy
 
-  index({created_at: 1, updated_at: 1}, {background: true})
-  #index({type: 1}, {background: true})
-  index({status_page_domain: 1}, {background: true})
-  index({user: 1, team: 1}, {background: true})
+  index({ created_at: 1, updated_at: 1 }, background: true)
+  # index({type: 1}, {background: true})
+  index({ status_page_domain: 1 }, background: true)
+  index({ user: 1, team: 1 }, background: true)
 
   validates_presence_of :name, :uri, :type
-  validates :type, :inclusion => { :in => TYPES }
-  validates :uri, :format => URI::regexp(%w(http https))
+  validates :type, inclusion: { in: TYPES }
+  validates :uri, format: URI.regexp(%w[http https])
 
   def type_enum
     TYPES
   end
 
   def up?
-    incidents.open.length == 0
+    incidents.open.empty?
   end
 
   # Check if the receiver was register to receiver notificatio for this check
   # @param Receiver|String
   def register_receiver?(r)
-    return false if !receivers
+    return false unless receivers
 
-    r = if r.respond_to? :id
-          r.id.to_s
-        end
+    r = (r.id.to_s if r.respond_to? :id)
 
     receivers.include? r
   end
 
   # @return Array<Receiver>
   def fetch_receivers
-    if receivers.blank?
-      return []
-    end
+    return [] if receivers.blank?
 
-    if _receivers = receivers.map { |id| Receiver.find(id) rescue nil }.select { |d| d.present? }
+    if _receivers = receivers.map do |id|
+         Receiver.find(id)
+                    rescue StandardError
+                      nil
+       end .select(&:present?)
       _receivers
     end
   end

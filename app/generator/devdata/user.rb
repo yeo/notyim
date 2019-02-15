@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Devdata
   module UserGenerator
     def self.generate
@@ -6,7 +8,7 @@ module Devdata
         password: '123456',
         name: 'Vinh',
         admin: true,
-        confirmed_at: Time.now,
+        confirmed_at: Time.now
       )
     end
   end

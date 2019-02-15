@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Bot
   class SlackController < ApplicationController
     def create
@@ -5,9 +7,7 @@ module Bot
       state = params[:state]
       SlackCodeExchangeWorker.perform_async(code, state)
 
-      if user_signed_in?
-        redirect_to receivers_path, notice: 'Thank you. You have succesfully connect to noty chat bot'
-      end
+      redirect_to receivers_path, notice: 'Thank you. You have succesfully connect to noty chat bot' if user_signed_in?
     end
   end
 end

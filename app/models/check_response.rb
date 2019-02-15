@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CheckResponse
   include Mongoid::Document
 
@@ -50,9 +52,9 @@ class CheckResponse
 
   def status
     if error.nil? || !error
-      'up'.freeze
+      'up'
     else
-      'down'.freeze
+      'down'
     end
   end
 

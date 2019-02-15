@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'base'
 require 'trinity/utils/url'
 
@@ -13,14 +15,15 @@ module Yeller
 
       # Generate a verification code
       # @param Receiver object
-      def self.generate_code(receiver)
-        (Random.rand * 1000000).round
+      def self.generate_code(_receiver)
+        (Random.rand * 1_000_000).round
       end
 
       def self.create_verification_request!(receiver)
         user = receiver.user
         verification = receiver.last_verification
         raise MissingUserForReceiver unless user
+
         url = Trinity::Utils::Url.to(:interactive_voice_verification, verification)
         ::Yeller::Transporter::Phone.call(receiver.handler, url)
       end
@@ -31,13 +34,13 @@ module Yeller
 
       # Create call request to notify incident
       def self.notify_incident(incident, receiver)
-        #TODO we should make sure phone # is valid to avoid waste money
+        # TODO: we should make sure phone # is valid to avoid waste money
         incident = decorate(incident)
         content = <<~HEREDOC
-        #{incident.short_summary}
-        Service: #{incident.check.uri}
-          #{incident.assertion.condition}
-          is #{incident.assertion.operand}
+          #{incident.short_summary}
+          Service: #{incident.check.uri}
+            #{incident.assertion.condition}
+            is #{incident.assertion.operand}
         HEREDOC
 
         n = log_notification(incident, content)
@@ -69,7 +72,6 @@ module Yeller
 
         response.text
       end
-
     end
   end
 end

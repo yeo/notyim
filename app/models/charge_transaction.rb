@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class ChargeTransaction
   include Mongoid::Document
   include Mongoid::Timestamps
   include Teamify
 
-  CHARGE_TYPE_ONE_TIME_PAYMENT = "one_time_payment".freeze
-  CHARGE_TYPE_SUBSCRIPTION = "subscription".freeze
+  CHARGE_TYPE_ONE_TIME_PAYMENT = 'one_time_payment'
+  CHARGE_TYPE_SUBSCRIPTION = 'subscription'
 
   field :amount, type: Float
   field :charge_type, type: String

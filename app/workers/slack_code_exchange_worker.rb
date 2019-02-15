@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'net/http'
 
 class SlackCodeExchangeWorker
   include Sidekiq::Worker
-  #sidekiq_options(retry: 5)
-
+  # sidekiq_options(retry: 5)
 
   # @param sting check id
   # @param Hash result
@@ -17,7 +18,7 @@ class SlackCodeExchangeWorker
     # TODO: should we really want to validate token? It's a random unused value for now
     user = User.find user_id
     team = Team.find team_id
-    # TODO check if team belongs to this user
+    # TODO: check if team belongs to this user
 
     uri = URI('https://slack.com/api/oauth.access')
     slack = Rails.configuration.slack_bot
@@ -30,7 +31,7 @@ class SlackCodeExchangeWorker
       handler: payload['team_id'],
       provider_params: payload,
       user: user,
-      team: team,
+      team: team
     )
     receiver.provider_attributes(payload)
     ReceiverService.save(receiver)

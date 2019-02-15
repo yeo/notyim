@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UptimeCalculateWorker
   include Sidekiq::Worker
 
@@ -22,10 +24,10 @@ class UptimeCalculateWorker
       rescue Mongoid::Errors::Validations => exception
         Bugsnag.notify(exception) do |report|
           # Adjust the severity of this error
-          report.severity = "error"
+          report.severity = 'error'
 
           # Add customer information to this report
-          report.add_tab(:check, {id: check.id.to_s})
+          report.add_tab(:check, id: check.id.to_s)
         end
       end
 
@@ -37,13 +39,13 @@ class UptimeCalculateWorker
 
   def calculate(check, duration)
     open_incident = check.incidents.open.first
-    if open_incident
-      # Because this incident is still on-going, we set the second elemtn to now
-      # to calculate downtime
-      open_incident = [[open_incident.created_at, Time.now.utc]]
-    else
-      open_incident = []
-    end
+    open_incident = if open_incident
+                      # Because this incident is still on-going, we set the second elemtn to now
+                      # to calculate downtime
+                      [[open_incident.created_at, Time.now.utc]]
+                    else
+                      []
+                    end
 
     incidents = open_incident + Incident.where(check: check, :created_at.gt => duration.ago).pluck(:created_at, :closed_at)
     if incidents.count == 0
@@ -61,16 +63,16 @@ class UptimeCalculateWorker
 
   # @param Check
   def calculate_daily_uptime(check)
-    today = Time.zone.now.strftime("%D")
+    today = Time.zone.now.strftime('%D')
     daily_uptime = check.daily_uptime
     if daily_uptime
-      day, _ = daily_uptime.histories.last
+      day, = daily_uptime.histories.last
       daily_uptime.histories.pop if day == today
     else
       daily_uptime = DailyUptime.create!(histories: [], check: check)
     end
 
-    daily_uptime.histories << [ today, calculate(check, 1.day) ]
+    daily_uptime.histories << [today, calculate(check, 1.day)]
     daily_uptime.histories.shift if daily_uptime.histories.length > 366
     daily_uptime.save
   end

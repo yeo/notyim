@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'securerandom'
 
 class Invitation
@@ -8,18 +10,16 @@ class Invitation
   field :accepted_at, type: Time
   field :code, type: String
 
-  index({code: 1}, {background: true})
-  index({accepted_at: 1}, {background: true})
+  index({ code: 1 }, background: true)
+  index({ accepted_at: 1 }, background: true)
 
   belongs_to :invitable, polymorphic: true
   belongs_to :user
 
   before_save :set_code
-  scope :pending, ->() { where(accepted_at: {:$eq => nil}) }
+  scope :pending, -> { where(accepted_at: { :$eq => nil }) }
 
   def set_code
-    if !self.code
-      self.code = SecureRandom.hex
-    end
+    self.code = SecureRandom.hex unless code
   end
 end

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'trinity'
 
 class IncidentService
-
   attr_reader :incident
   def initialize(incident)
     @incident = incident
@@ -19,9 +20,9 @@ class IncidentService
     incident = (assertion.partial_incidents.first || assertion.ongoing_incident)
 
     if incident
-      # TODO Probably do something for stil down/still happen incident notification
-      if !incident.locations['open'].any? { |where| where[:ip] == check_response.from_ip }
-        incident.locations['open'] << {ip: check_response.from_ip, message: check_response.error_message || check_response.body}
+      # TODO: Probably do something for stil down/still happen incident notification
+      if incident.locations['open'].none? { |where| where[:ip] == check_response.from_ip }
+        incident.locations['open'] << { ip: check_response.from_ip, message: check_response.error_message || check_response.body }
         incident.locations['open'] = incident.locations['open'].uniq { |l| l[:ip] }
       end
     else
@@ -33,7 +34,7 @@ class IncidentService
     return unless incident
 
     if (incident.locations['open'].try(:length) || 0) >= Rails.configuration.incident_confirm_location &&
-        (Time.now - incident.created_at >= 2.minute)
+       (Time.now - incident.created_at >= 2.minute)
       incident.status = Incident::STATUS_OPEN
     end
     incident.save!
@@ -54,7 +55,7 @@ class IncidentService
   # @param Assertion assertion
   # @param CheckResponse check_response
   def self.close_for_assertion(assertion, check_response)
-    if (partial_incidents = assertion.partial_incidents).length > 0
+    unless (partial_incidents = assertion.partial_incidents).empty?
       # Since this is partial incident, just delete them
       partial_incidents.each(&:destroy)
       return
@@ -62,8 +63,8 @@ class IncidentService
 
     # Check doesn't match, and we have an on-going incident, this mean we can close it
     if incident = assertion.ongoing_incident
-      if !incident.locations['close'].any? { |where| where[:ip] == check_response.from_ip }
-        incident.locations['close'] << {ip: check_response.from_ip, message: check_response.error_message}
+      if incident.locations['close'].none? { |where| where[:ip] == check_response.from_ip }
+        incident.locations['close'] << { ip: check_response.from_ip, message: check_response.error_message }
       end
     else
       return
@@ -99,7 +100,7 @@ class IncidentService
       user: assertion.check.user,
       team: assertion.check.team,
       error_message: check_result.error_message,
-      locations: {open: [{ip: check_result.from_ip, message: check_result.error_message}], close: []}
+      locations: { open: [{ ip: check_result.from_ip, message: check_result.error_message }], close: [] }
     )
 
     incident.assertion = assertion
@@ -121,8 +122,8 @@ class IncidentService
   end
 
   # Send notification to receivers that register on the checks
-  def self.notify(incident, new_status)
-    # TODO If user has not setup receivers, then default to their email
+  def self.notify(incident, _new_status)
+    # TODO: If user has not setup receivers, then default to their email
     if (receivers = incident.check.fetch_receivers).present?
       receivers.each { |receiver| NotifyReceiverService.execute incident, receiver }
     else

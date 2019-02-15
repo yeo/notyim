@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ReceiversController < DashboardController
-  before_action :set_receiver, only: [:show, :edit, :update, :destroy]
+  before_action :set_receiver, only: %i[show edit update destroy]
 
   def index
     @receivers = current.user.receivers
@@ -11,8 +11,7 @@ class ReceiversController < DashboardController
     @receiver = Receiver.new(user: current.user, team: current.team)
   end
 
-  def edit
-  end
+  def edit; end
 
   def create
     @receiver = Receiver.new(receiver_params)
@@ -41,6 +40,7 @@ class ReceiversController < DashboardController
   end
 
   private
+
   # Use callbacks to share common setup or constraints between actions.
   def set_receiver
     @receiver = Receiver.find(params[:id])

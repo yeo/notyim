@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mongoid/archivable'
 
 class Team
@@ -7,7 +9,7 @@ class Team
 
   field :name, type: String
   belongs_to :user
-  has_many :invites, as: :invitable, class_name: "Invitation"
+  has_many :invites, as: :invitable, class_name: 'Invitation'
   has_many :team_memberships, dependent: :destroy
   has_one :credit, dependent: :destroy
 
@@ -15,6 +17,6 @@ class Team
   validates_presence_of :name
 
   def format_as_json
-    {id: self.id.to_s, name: name}
+    { id: id.to_s, name: name }
   end
 end

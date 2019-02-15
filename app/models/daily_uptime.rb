@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class DailyUptime
   include Mongoid::Document
   include Mongoid::Timestamps::Created
@@ -5,5 +7,5 @@ class DailyUptime
   belongs_to :check
   field :histories, type: Array, default: []
 
-  index({check_id: 1}, {background: true})
+  index({ check_id: 1 }, background: true)
 end

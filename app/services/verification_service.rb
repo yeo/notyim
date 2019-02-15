@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VerificationService
   # CHeck to see whether we can verify
   def self.check_to_verify(verification, input)
@@ -17,9 +19,7 @@ class VerificationService
   def self.generate(receiver)
     verification = receiver.last_verification
 
-    if verification && ((Time.now - verification.created_at) > 24.hour)
-      verification.destroy
-    end
+    verification.destroy if verification && ((Time.now - verification.created_at) > 24.hour)
 
     verification = receiver.create_verification!
     receiver.provider_class.create_verification_request!(receiver)
@@ -34,9 +34,7 @@ class VerificationService
           r.Say c, voice: 'alice'
           r.Pause length: 1
         end
-        if i <= 1
-          r.Say "I will repeat #{2 - i} more time", voice: 'alice'
-        end
+        r.Say "I will repeat #{2 - i} more time", voice: 'alice' if i <= 1
         r.Pause length: 1
       end
     end

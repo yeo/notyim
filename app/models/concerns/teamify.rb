@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Teamify
   extend ActiveSupport::Concern
 
@@ -5,6 +7,6 @@ module Teamify
     belongs_to :team
     scope :of_team, ->(t) { where(team: t) }
 
-    index({team: 1}, {background: true})
+    index({ team: 1 }, background: true)
   end
 end

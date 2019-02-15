@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yeller'
 require 'mongoid/verifiable'
 
@@ -20,14 +22,14 @@ class Receiver
   before_create :set_verification
 
   validates_presence_of :provider, :name, :handler
-  validates :provider, :inclusion => { :in => Yeller::Provider.providers.keys }
+  validates :provider, inclusion: { in: Yeller::Provider.providers.keys }
 
-  index({provider: 1}, {background: true})
-  index({handler: 1, user_id: 1}, {background: true})
-  validates :handler, uniqueness: { scope: [:user, :provider] }
+  index({ provider: 1 }, background: true)
+  index({ handler: 1, user_id: 1 }, background: true)
+  validates :handler, uniqueness: { scope: %i[user provider] }
 
   scope :of_user, ->(user) { where(user: user) }
-  scope :verified,  ->() { where(verified: true) }
+  scope :verified, -> { where(verified: true) }
 
   # Return provider class that hold utilities method for this provider
   def provider_class
@@ -49,8 +51,6 @@ class Receiver
   # because it keeps triggering callback and create unlimited amout of verification
   # until stack deep limit is reached
   def create_verification!
-    if self.require_verify?
-      Verification.create!(code: provider_class.generate_code(self), verifiable: self)
-    end
+    Verification.create!(code: provider_class.generate_code(self), verifiable: self) if require_verify?
   end
 end

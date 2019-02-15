@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 module Yeller
   module Provider
-    extend self
+    module_function
+
     LOCK = Mutex.new
 
     def register(klass)
@@ -19,6 +22,6 @@ module Yeller
   end
 end
 
-Dir.glob(File.expand_path("../provider/*.rb", __FILE__)).each do |file|
+Dir.glob(File.expand_path('provider/*.rb', __dir__)).each do |file|
   require file
 end

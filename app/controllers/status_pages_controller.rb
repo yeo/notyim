@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatusPagesController < DashboardController
   before_action :set_check
 
@@ -17,9 +19,10 @@ class StatusPagesController < DashboardController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_check
-      @check = Check.find(params[:check][:id])
-      head :forbidden unless CheckPolicy::can_manage?(@check, current.user)
-    end
+
+  # Use callbacks to share common setup or constraints between actions.
+  def set_check
+    @check = Check.find(params[:check][:id])
+    head :forbidden unless CheckPolicy.can_manage?(@check, current.user)
+  end
 end

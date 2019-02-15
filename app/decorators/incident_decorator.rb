@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class IncidentDecorator < SimpleDelegator
   include ActionView::Helpers::TextHelper
   include Rails.application.routes.url_helpers
@@ -16,10 +18,10 @@ class IncidentDecorator < SimpleDelegator
   def short_summary
     "<strong>#{short_status.upcase} alert</strong> for #{check.uri}"
   end
+
   def short_summary_plain
     "*#{short_status.upcase} alert* for #{check.uri}"
   end
-
 
   def icon
     case status
@@ -34,14 +36,14 @@ class IncidentDecorator < SimpleDelegator
   #
   # We then can use this to send a short text to end user
   def reason
-    #TODO Refactor this into its own class
+    # TODO: Refactor this into its own class
     case check.type
-      when Check::TYPE_HTTP
-        http_reason
-      when Check::TYPE_TCP
-        tcp_reason
-      when Check::TYPE_HEARTBEAT
-        hearbeat_reason
+    when Check::TYPE_HTTP
+      http_reason
+    when Check::TYPE_TCP
+      tcp_reason
+    when Check::TYPE_HEARTBEAT
+      hearbeat_reason
     end
   end
 
@@ -60,14 +62,14 @@ class IncidentDecorator < SimpleDelegator
 
     [_subject, _verb, _object].join ' '
   end
-  def tcp_reason
-  end
-  def hearbeat_reason
-  end
 
-  #def subject
+  def tcp_reason; end
+
+  def hearbeat_reason; end
+
+  # def subject
   #  "━ [noty alert][#{status == 'close' ? 'UP' : 'DOWN'}] #{incident.check.uri}"
-  #end
+  # end
 
   # Short, online subject, use in email
   def subject
@@ -92,6 +94,6 @@ class IncidentDecorator < SimpleDelegator
 
   # How many time this happen
   def frequency
-    Incident.where(assertion: self.assertion).count
+    Incident.where(assertion: assertion).count
   end
 end

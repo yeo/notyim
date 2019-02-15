@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module Bot
     class VerificationController < BotController
@@ -10,11 +12,11 @@ module Api
           bot_account.user = user
           bot_account.save!
 
-          redirect_to root_path, notice: "You have succesfully link the bot account and your noty.im account. Thank you"
+          redirect_to root_path, notice: 'You have succesfully link the bot account and your noty.im account. Thank you'
         else
           head :forbidden
           # Using head to save us some request. this means something is wrong anyway
-          #redirect_to root_path, flash: {error: "Invalid code"}
+          # redirect_to root_path, flash: {error: "Invalid code"}
         end
       end
     end

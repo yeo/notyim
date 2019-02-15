@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class User
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -8,11 +10,11 @@ class User
          :recoverable, :rememberable, :trackable, :validatable,
          :confirmable
 
-  devise :omniauthable, :omniauth_providers => [:github, :twitter]
+  devise :omniauthable, omniauth_providers: %i[github twitter]
 
   ## Database authenticatable
-  field :email,              type: String, default: ""
-  field :encrypted_password, type: String, default: ""
+  field :email,              type: String, default: ''
+  field :encrypted_password, type: String, default: ''
 
   ## Recoverable
   field :reset_password_token,   type: String
@@ -30,7 +32,7 @@ class User
 
   field :name,               type: String
   field :admin,              type: Boolean, default: false
-  field :providers,           type: Hash
+  field :providers, type: Hash
 
   validates_presence_of :email
   validates_uniqueness_of :email
@@ -39,7 +41,7 @@ class User
   field :confirmed_at,         type: Time
   field :confirmation_sent_at, type: Time
   field :unconfirmed_email,    type: String # Only if using reconfirmable
-  index({confirmation_token: 1}, {background: true})
+  index({ confirmation_token: 1 }, background: true)
 
   ## Lockable
   field :failed_attempts, type: Integer, default: 30 # Only if lock strategy is :failed_attempts
@@ -49,17 +51,17 @@ class User
   # Billing system
   # subscription is monthly payment
   field :balance, type: Float
-  field :time_zone, default: "UTC"
+  field :time_zone, default: 'UTC'
   field :flags, type: Hash
 
-  index({email: 1}, {background: true})
-  index({admin: 1}, {background: true})
-  index({created_at: 1}, {background: true})
+  index({ email: 1 }, background: true)
+  index({ admin: 1 }, background: true)
+  index({ created_at: 1 }, background: true)
 
-  has_many :teams,  dependent: :destroy
+  has_many :teams, dependent: :destroy
   has_many :team_memberships, dependent: :destroy
 
-  has_many :checks,  dependent: :destroy
+  has_many :checks, dependent: :destroy
   has_many :incidents, dependent: :destroy
   has_many :receivers, dependent: :destroy
 
@@ -76,7 +78,7 @@ class User
   end
 
   def subscription_expire_at
-    active_subscription && active_subscription.expire_at
+    active_subscription&.expire_at
   end
 
   # Private internal tester
@@ -110,16 +112,16 @@ class User
       user = User.new(
         name: payload.info.name,
         email: payload.info.email,
-        password: Devise.friendly_token[0,20],
-        providers: {payload.provider => payload.uid},
+        password: Devise.friendly_token[0, 20],
+        providers: { payload.provider => payload.uid },
         confirmed_at: Time.now.utc
       )
       # Auto confirm omni auth since it rely on upstream provider
       user.confirm
       user.save!
     else
-      if !user.providers
-        user.providers = {payload.provider => payload.uid}
+      unless user.providers
+        user.providers = { payload.provider => payload.uid }
         user.save!
       end
     end
@@ -129,9 +131,7 @@ class User
 
   # Attempt create first team automatically
   def create_team
-    if self.teams.blank?
-      Team.create!(name: "#{self.email}'s team", user: self)
-    end
+    Team.create!(name: "#{email}'s team", user: self) if teams.blank?
   end
 
   def default_team

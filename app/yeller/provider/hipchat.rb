@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'base'
 
 module Yeller
@@ -6,7 +8,7 @@ module Yeller
       Yeller::Provider.register(self)
 
       configure do
-        label! "Room".freeze
+        label! 'Room'
       end
 
       # Send out notification for an incident. This is
@@ -16,16 +18,14 @@ module Yeller
       # @param Receiver receiver
       # @param Incident incident
       def self.notify_incident(incident, receiver)
-        client = HipChat::Client.new(receiver.handler, :api_version => 'v2')
+        client = HipChat::Client.new(receiver.handler, api_version: 'v2')
         incident = decorate(incident)
-        ##{incident.short_summary_plain}
+        # #{incident.short_summary_plain}
         body = <<~HEREDOC
-        #{incident.subject}
-
-        Service: #{incident.check.uri}
-        Incident Detail: #{incident.url}
-
-        Reason: #{incident.reason}
+          #{incident.subject}
+           Service: #{incident.check.uri}
+          Incident Detail: #{incident.url}
+           Reason: #{incident.reason}
         HEREDOC
 
         client[receiver.name].send("noty - [#{incident.status} alert]", body, message_format: 'text', color: incident.open? ? 'red' : 'green')

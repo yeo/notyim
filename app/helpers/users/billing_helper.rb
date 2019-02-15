@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Users::BillingHelper
   def active_subscriptions
     config = ::Cashier.configure

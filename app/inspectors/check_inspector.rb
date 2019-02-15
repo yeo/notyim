@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'inspector/eval'
 require 'inspector/http'
 

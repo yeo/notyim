@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Api
   module Bot
     class MeController < BotController
@@ -8,9 +10,9 @@ module Api
 
         if bot = BotAccount.find_by(token: token)
           if bot.user
-            render json: {id: bot.user.id.to_s}
+            render json: { id: bot.user.id.to_s }
           else
-            render json: {message: 'pending linking'}
+            render json: { message: 'pending linking' }
           end
         else
           head :forbidden

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StripeToken
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -8,5 +10,5 @@ class StripeToken
 
   belongs_to :user
 
-  scope :latest, ->() { desc(:id).first }
+  scope :latest, -> { desc(:id).first }
 end

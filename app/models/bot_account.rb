@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BotAccount
   include Mongoid::Document
   include Mongoid::Timestamps
@@ -11,8 +13,8 @@ class BotAccount
   # Meta data about this bot
   field :meta
 
-  index({bot_uuid: 1}, {background: true})
-  index({token: 1}, {background: true})
+  index({ bot_uuid: 1 }, background: true)
+  index({ token: 1 }, background: true)
 
   validates_uniqueness_of :bot_uuid
   validates_uniqueness_of :token
@@ -22,8 +24,6 @@ class BotAccount
   before_create :set_token
 
   def set_token
-    unless self.token
-      self.token = SecureRandom.hex
-    end
+    self.token = SecureRandom.hex unless token
   end
 end

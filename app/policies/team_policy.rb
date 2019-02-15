@@ -1,12 +1,12 @@
+# frozen_string_literal: true
+
 require 'trinity/policy'
 
 class TeamPolicy
   extend Trinity::Policy::Base
 
   def self.can_manage?(team, user)
-    if user && team
-      team.user.id == user.id
-    end
+    team.user.id == user.id if user && team
   end
 
   def self.can_view?(team, user)

@@ -1,16 +1,16 @@
+# frozen_string_literal: true
+
 class ReceiverService
   # Create receiver and its logic from parameter
   # @param Receiver object
   # @param boolean true false
   def self.save(receiver)
     unless TeamPolicy.can_manage?(receiver.team, receiver.user) ||
-        TeamPolicy.can_view?(receiver.team, receiver.user)
-      raise "UserCannotManageTeam"
+           TeamPolicy.can_view?(receiver.team, receiver.user)
+      raise 'UserCannotManageTeam'
     end
 
-    if receiver.save! && receiver.require_verify?
-      VerificationService.generate(receiver)
-    end
+    VerificationService.generate(receiver) if receiver.save! && receiver.require_verify?
 
     if receiver.provider_class.auto_assign_after_create?
       receiver.user.checks.each do |check|

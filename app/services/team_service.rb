@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TeamService
   # Accept an invitation
   def self.accept_invite(user, invite)
@@ -29,6 +31,6 @@ class TeamService
   # This include:
   # Team that user own and team that user is a member
   def self.fetch_user_teams(user)
-    user.teams.to_a + user.team_memberships.map { |m| m.team }.to_a
+    user.teams.to_a + user.team_memberships.map(&:team).to_a
   end
 end

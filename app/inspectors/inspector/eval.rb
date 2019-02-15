@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Inspector
   class Eval
     SLOW_THRESHOLD = 9000 # in milliseconds
@@ -40,21 +42,20 @@ module Inspector
       end
 
       def beat_started
-        raise "not impl"
+        raise 'not impl'
       end
 
       def not_beat_started
-        raise "not impl"
+        raise 'not impl'
       end
 
       def beat_completed
-        raise "not impl"
+        raise 'not impl'
       end
 
       def not_beat_completed
-        raise "not impl"
+        raise 'not impl'
       end
-
     end
   end
 end

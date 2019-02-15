@@ -1,19 +1,21 @@
+# frozen_string_literal: true
+
 require 'trinity'
 
 class ChargeService
-  def self.purchase(user, team, item, stripe_token=nil)
+  def self.purchase(user, team, item, stripe_token = nil)
     customer = get_or_create_token(user, stripe_token)
-    raise "Missing stripe token" unless customer
+    raise 'Missing stripe token' unless customer
 
     purchase = case item.type
                when 'package' then Cashier::Package.find(item.id)
                when 'subscription' then Cashier::Subscription.find(item.id)
                end
-    raise "Purchase not found" unless purchase
+    raise 'Purchase not found' unless purchase
 
     charge = charge!(customer, purchase)
 
-    Cashier::PurchaseSuccessWorker.perform_async(user.id.to_s, team.id.to_s, {type: item.type, id: item.id}, charge.to_hash)
+    Cashier::PurchaseSuccessWorker.perform_async(user.id.to_s, team.id.to_s, { type: item.type, id: item.id }, charge.to_hash)
 
     charge
   end
@@ -23,7 +25,7 @@ class ChargeService
   #         in case of user, we will charge the lastest linked card
   # @param Object purchase has to include
   #        - price amount in cent
-  #        - description 
+  #        - description
   def self.charge!(token, purchase)
     case token
     when User
@@ -51,27 +53,26 @@ class ChargeService
   # @param String stripe token
   def self.create_customer(user, stripe_token)
     customer = Stripe::Customer.create(
-      :email => user.email,
-      :source  => stripe_token
+      email: user.email,
+      source: stripe_token
     )
 
     # The token is single-time used only but we store it for reference/debug purpose
     (user.stripe_tokens << StripeToken.new(
-      :token  => stripe_token,
-      :customer => customer.id
+      token: stripe_token,
+      customer: customer.id
     )).last
   end
 
   def self.charge_user
     charge = Stripe::Charge.create(
-      :customer    => customer.id,
-      :amount      => @amount,
-      :description => 'NotyIM customer',
-      :currency    => 'usd'
+      customer: customer.id,
+      amount: @amount,
+      description: 'NotyIM customer',
+      currency: 'usd'
     )
   end
-  # Charge user moeny and set expired day
-  def self.charge_user_for_plan(user, plan)
 
-  end
+  # Charge user moeny and set expired day
+  def self.charge_user_for_plan(user, plan); end
 end

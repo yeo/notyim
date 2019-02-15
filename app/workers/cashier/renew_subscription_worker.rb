@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Cashier
   class RenewSubscriptionWorker
     include Sidekiq::Worker

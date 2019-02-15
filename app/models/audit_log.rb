@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 class AuditLog
   include Mongoid::Document
   include Mongoid::Timestamps::Created
 
-  SYSTEM_COMPOSER = 'system'.freeze
+  SYSTEM_COMPOSER = 'system'
 
   belongs_to :auditable, polymorphic: true
 
   # auditable id is enough, no need for extra type column to save index size
   # the object id is unique enough
-  index({auditable: 1, created_at: 1, event: 1}, {background: true})
-  index({composer: 1}, {background: true})
+  index({ auditable: 1, created_at: 1, event: 1 }, background: true)
+  index({ composer: 1 }, background: true)
 
   field :event
   field :snapshot
@@ -37,7 +39,7 @@ class AuditLog
   #
   # @return bool
   def self.has?(event, on, created_at)
-    self.where(auditable: on, event: event, created_at: {'$gt' => created_at}).count >= 1
+    where(auditable: on, event: event, created_at: { '$gt' => created_at }).count >= 1
   end
 
   # Compose an log

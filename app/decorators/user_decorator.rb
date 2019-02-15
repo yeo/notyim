@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 class UserDecorator < SimpleDelegator
   def open_incident(team)
-    # TODO cache, add team
+    # TODO: cache, add team
     incidents.of_team(team).open.count
   end
 

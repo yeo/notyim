@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Yeller
   module Transporter
     class SmsTest < Sms
@@ -5,7 +7,7 @@ module Yeller
         @__test_client = Twilio::REST::Client.new ENV['TWILIO_TEST_ACCOUNT_SID'], ENV['TWILIO_TEST_AUTH_TOKEN']
       end
 
-      def self.send(to, body, from=nil)
+      def self.send(to, body, _from = nil)
         super(to, body, ENV['PHONE_FROM_TEST'])
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'base'
 
 module Yeller
@@ -14,14 +16,12 @@ module Yeller
       def self.notify_incident(incident, receiver)
         incident = decorate(incident)
         notifier = ::Slack::Notifier.new receiver.handler
-        ##{incident.short_summary_plain}
+        # #{incident.short_summary_plain}
         notifier.ping <<~HEREDOC
-        #{incident.subject}
-
-        Service: #{incident.check.uri}
-        Incident Detail: #{incident.url}
-
-        Reason: #{incident.reason}
+          #{incident.subject}
+           Service: #{incident.check.uri}
+          Incident Detail: #{incident.url}
+           Reason: #{incident.reason}
         HEREDOC
       end
     end

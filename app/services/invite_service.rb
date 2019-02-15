@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'trinity'
 
 class InviteService
   def self.invite(user, target, email)
-    # TODO check for policy
+    # TODO: check for policy
     invite = Invitation.new(invitable: target, email: email, user: user)
     invite.save!
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'base'
 
 module Yeller
@@ -12,13 +14,14 @@ module Yeller
 
       # Generate a verification code
       # @param Receiver object
-      def self.generate_code(receiver)
-        (Random.rand * 1000000).round
+      def self.generate_code(_receiver)
+        (Random.rand * 1_000_000).round
       end
 
       def self.create_verification_request!(receiver)
         user = receiver.user
         raise MissingUserForReceiver unless user
+
         # TODO: maybe queue this in future
         if user.internal_tester?
           ::Yeller::Transporter::SmsTest.send(receiver.handler, "Your noty.im verification code: #{receiver.last_verification.code}.\n")
@@ -28,11 +31,12 @@ module Yeller
       end
 
       def self.acknowledge_verification(receiver)
-        # TODO Use email to save SMS cost
+        # TODO: Use email to save SMS cost
         return
 
         user = receiver.user
         raise MissingUserForReceiver unless user
+
         # TODO: maybe queue this in future
         if user.internal_tester?
           ::Yeller::Transporter::SmsTest.send(receiver.handler, "You are all set. We'll message to this number.")
@@ -48,14 +52,14 @@ module Yeller
       # @param Receiver receiver
       # @param Incident incident
       def self.notify_incident(incident, receiver)
-        #TODO we should make sure phone # is valid to avoid waste money
+        # TODO: we should make sure phone # is valid to avoid waste money
         incident = decorate(incident)
         content = <<~HEREDOC
-        #{incident.short_summary}
-        Service: #{incident.check.uri}
-        Type: #{incident.assertion.subject}
-        Condition: #{incident.assertion.condition}
-        Match: #{incident.assertion.operand}
+          #{incident.short_summary}
+          Service: #{incident.check.uri}
+          Type: #{incident.assertion.subject}
+          Condition: #{incident.assertion.condition}
+          Match: #{incident.assertion.operand}
         HEREDOC
         user = incident.user
 
@@ -74,7 +78,6 @@ module Yeller
           end
         end
       end
-
     end
   end
 end

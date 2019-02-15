@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 class DocsService
   SECTIONS = {
     getting_started: {
-      label: 'Check',
+      label: 'Check'
     },
     chatbot: {
-      label: 'Chat bot',
+      label: 'Chat bot'
     },
     api: {
       label: 'API(Coming soon)'
@@ -12,5 +14,5 @@ class DocsService
   }.freeze
 
   PAGE = {
-  }
+  }.freeze
 end

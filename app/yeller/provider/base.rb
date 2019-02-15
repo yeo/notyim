@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'trinity/decorator'
 
 module Yeller
@@ -23,7 +25,7 @@ module Yeller
       # otherwise it can just be a name
       def self.label
         @__attributes ||= {}
-        @__attributes[:label] || "Friendly name".freeze
+        @__attributes[:label] || 'Friendly name'
       end
 
       # Support adding form or not
@@ -44,9 +46,9 @@ module Yeller
       end
 
       # Get notification class of this provider
-      #def self.notify_class
+      # def self.notify_class
       #  "Yeller::Notify::#{identity.camelize}".constantize
-      #end
+      # end
 
       # Configure what to do with this provider
       def self.configure
@@ -66,9 +68,7 @@ module Yeller
 
       # Does this provider require verificaion
       def self.require_verify?
-        if @__attributes
-          @__attributes[:require_verify] == true
-        end
+        @__attributes[:require_verify] == true if @__attributes
       end
 
       # Require verification with code(Interactive)
@@ -78,34 +78,32 @@ module Yeller
 
       # DOes this require verification with code (Interactive)
       def self.require_input_verification_code?
-        if @__attributes
-          @__attributes[:require_input_verification_code]
-        end
+        @__attributes[:require_input_verification_code] if @__attributes
       end
 
       # Create a verification request
       # This can be send out an email for them to lick on link,
       # or send sms code so they enter on the site
-      def self.create_verification_request!(receiver)
-        raise "Please implement"
+      def self.create_verification_request!(_receiver)
+        raise 'Please implement'
       end
 
       # Confirm verification
-      def self.acknowledge_verification(receiver)
-        raise "Please implement"
+      def self.acknowledge_verification(_receiver)
+        raise 'Please implement'
       end
 
       # Send out notification for an incident. This is
       # a complex logic including
       #   - generate the message
       #   - fanout the message to receiver
-      def self.notify_incident(receiver, incident)
-        raise "Please implement"
+      def self.notify_incident(_receiver, _incident)
+        raise 'Please implement'
       end
 
       # Send welcome message
-      def self.notify_welcome(receiver)
-        raise "Please implement"
+      def self.notify_welcome(_receiver)
+        raise 'Please implement'
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'trinity/decorator'
 
 module Api
@@ -14,7 +16,7 @@ module Api
           name: params[:uri],
           uri: params[:uri],
           user: current.user,
-          team: current.user.teams.first,
+          team: current.user.teams.first
         )
 
         render json: check
@@ -22,7 +24,7 @@ module Api
 
       def index
         checks = Check.where(user: current.user).limit(6).map do |c|
-          {id: c.id.to_s, uri: c.uri}
+          { id: c.id.to_s, uri: c.uri }
         end
         render json: checks
       end
@@ -37,7 +39,7 @@ module Api
           current_status: check.current_status,
           uptime_1hour: check.uptime_1hour,
           uptime_1day: check.uptime_1day,
-          chart_url: "http://chartd.co/a.png?w=580&h=180&d0=RXZZfhgdURRUYZgfccZXUM&d1=roksqfdcjfKGGMQOSXchUO&d2=y3vuuvljghrgcYZZcdVckg&ymin=45&ymax=90&s0=4991AE&s1=FF8300.&s2=FF5DAA-"
+          chart_url: 'http://chartd.co/a.png?w=580&h=180&d0=RXZZfhgdURRUYZgfccZXUM&d1=roksqfdcjfKGGMQOSXchUO&d2=y3vuuvljghrgcYZZcdVckg&ymin=45&ymax=90&s0=4991AE&s1=FF8300.&s2=FF5DAA-'
         }
       end
     end

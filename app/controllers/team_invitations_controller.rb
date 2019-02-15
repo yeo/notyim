@@ -1,17 +1,17 @@
+# frozen_string_literal: true
+
 class TeamInvitationsController < DashboardController
-  before_action :check_invite, only: [:show, :update]
+  before_action :check_invite, only: %i[show update]
 
   def create
     team = Team.find params[:team]
 
-    if !TeamPolicy.can_manage?(team, current.user)
-      return head :forbidden
-    end
+    return head :forbidden unless TeamPolicy.can_manage?(team, current.user)
 
     if InviteService.invite(current.user, team, params[:email])
-      redirect_to team, notice: "We send out invitation"
+      redirect_to team, notice: 'We send out invitation'
     else
-      redirect_to team, notice: "An error has occur. Please check email"
+      redirect_to team, notice: 'An error has occur. Please check email'
     end
   end
 
@@ -29,18 +29,15 @@ class TeamInvitationsController < DashboardController
   end
 
   private
+
   def check_invite
     @invite = Invitation.find params[:id]
-    if @invite.code != params[:code]
-      return head :forbidden
-    end
+    return head :forbidden if @invite.code != params[:code]
 
     if @invite.email != current_user.email
       redirect_to user_root_path, alert: "The invitation email wasn't match your email account"
     end
 
-    if @invite.accepted_at
-      redirect_to user_root_path, alert: "The invitation has been used already"
-    end
+    redirect_to user_root_path, alert: 'The invitation has been used already' if @invite.accepted_at
   end
 end

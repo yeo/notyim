@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Inspector
   module Http
     # Check the response matches an assertion
     def check_http(assertion, check_response)
-      _check_type, check_property  = assertion.subject.split(".")
+      _check_type, check_property = assertion.subject.split('.')
       case assertion.condition
       when 'up', 'down'
         ::Inspector::Eval.send(assertion.condition, check_response)

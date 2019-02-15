@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 # Send out notification to receiver action
 class NotifyReceiverService
-
   attr_reader :receiver, :incident
   def initialize(incident, receiver)
     @receiver = receiver

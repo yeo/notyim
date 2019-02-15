@@ -1,18 +1,20 @@
+# frozen_string_literal: true
+
 module Bot
   def self.uuid(address)
-    [address['channelId'], address['user']['id']].join("_")
+    [address['channelId'], address['user']['id']].join('_')
   end
 
   class RegistrationService
     # Register a new user and bot at a same time
     def self.register(email, address)
-      # TODO Add more validation since this is a two phase transaction
+      # TODO: Add more validation since this is a two phase transaction
       p = SecureRandom.hex
       user = User.new(
         email: email,
         password: p,
         password_confirmation: p,
-        confirmed_at: Time.now.utc, # skip confirmation)
+        confirmed_at: Time.now.utc # skip confirmation)
       )
       user.skip_confirmation!
       user.skip_confirmation_notification!
@@ -27,19 +29,18 @@ module Bot
             bot_uuid: ::Bot.uuid(address),
             address: address.permit(:channelId, :user).to_hash,
             user: user,
-            team: user.teams.first.id)
+            team: user.teams.first.id
+          )
         end
         bot
-      rescue
+      rescue StandardError
         user.destroy.yield_self { nil }
       end
     end
 
     # Register bot account to an *existing* user
     def self.add_bot_to_user(user, address)
-      if user.is_a?(String) && user.include?("@")
-        user = User.find_by(email: user)
-      end
+      user = User.find_by(email: user) if user.is_a?(String) && user.include?('@')
 
       if bot = BotAccount.where(bot_uuid: ::Bot.uuid(address)).first
         bot.link_verification_code = SecureRandom.hex

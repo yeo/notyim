@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TeamCreditService
   def self.initialize_credit(team)
     Credit.create!(team: team, sms: 0, voice_second: 0)
@@ -15,7 +17,7 @@ class TeamCreditService
     team.credit.voice_second >= 60
   end
 
-  def self.deduct_sms!(team, amount=1)
+  def self.deduct_sms!(team, _amount = 1)
     initialize_credit(team, team)
     team.reload
     credit = team.credit
@@ -24,7 +26,7 @@ class TeamCreditService
     credit.save!
   end
 
-  def self.deduct_voice_minute!(team, amount=1)
+  def self.deduct_voice_minute!(team, amount = 1)
     initialize_credit(team, team)
     team.reload
 

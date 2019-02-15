@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'base'
 
 module Yeller
@@ -25,15 +27,12 @@ module Yeller
       # @param Incident incident
       def self.notify_incident(incident, receiver)
         incident = decorate(incident)
-        notifier = ::Slack::Notifier.new receiver.provider_params["incoming_webhook"]["url"]
+        notifier = ::Slack::Notifier.new receiver.provider_params['incoming_webhook']['url']
         text = <<~HEREDOC
-        #{incident.subject}
-
-        #{incident.short_summary_plain}
-
-        Incident Detail: #{incident.url}
-
-        Reason: #{incident.reason}
+          #{incident.subject}
+           #{incident.short_summary_plain}
+           Incident Detail: #{incident.url}
+           Reason: #{incident.reason}
         HEREDOC
 
         attachments = {
@@ -46,15 +45,15 @@ module Yeller
       end
 
       def self.notify_welcome(receiver)
-        notifier = ::Slack::Notifier.new receiver.provider_params["incoming_webhook"]["url"]
+        notifier = ::Slack::Notifier.new receiver.provider_params['incoming_webhook']['url']
         text = <<~HEREDOC
-        Welcome to noty.im. You are all set. We will notify this channel when incident occurs.
+          Welcome to noty.im. You are all set. We will notify this channel when incident occurs.
         HEREDOC
 
         attachments = {
-          fallback: "Learn more from our doc https://noty.im/docs",
-          text: "Learn more from our doc https://noty.im/docs",
-          color: 'green',
+          fallback: 'Learn more from our doc https://noty.im/docs',
+          text: 'Learn more from our doc https://noty.im/docs',
+          color: 'green'
         }
 
         notifier.post(text: text, attachments: attachments, icon_emoji: ':wave:')
