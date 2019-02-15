@@ -7,6 +7,7 @@ AllCops:
     - extras/**/*
     - vendor/**/*
     - tmp/**/*
+    - node_modules/**/*
 
 
 Metrics/LineLength:
@@ -17,3 +18,7 @@ MethodLength:
 
 BlockLength:
   Max: 70
+
+Style/Documentation:
+  Description: Document classes and non-namespace modules.
+  Enabled: false
