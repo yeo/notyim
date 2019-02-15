@@ -14,6 +14,7 @@ module Api
       attr_reader :current
 
       def require_api_token
+        pass
         # if request.headers['HTTP_X_API_TOKEN'] != "fake-toke-for-now"
         #  head :forbidden
         # end
@@ -22,7 +23,7 @@ module Api
       # Find associated user with this bot account
       def require_bot_account
         # TODO: Probably we should use a right authentication strategy?
-        if token = request.headers['HTTP_X_BOT_TOKEN']
+        if (token = request.headers['HTTP_X_BOT_TOKEN'])
           begin
             bot = BotAccount.find_by(token: token)
             @current = Trinity::Current.new bot.user

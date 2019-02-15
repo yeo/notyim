@@ -14,7 +14,7 @@ module Api
         check = Check.create!(
           type: Check::TYPE_HTTP,
           name: params[:uri],
-          uri: params[:uri],
+          uri: uri,
           user: current.user,
           team: current.user.teams.first
         )

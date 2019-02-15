@@ -7,15 +7,14 @@ module Api
 
       def show
         token = params[:token] || request.headers['HTTP_X_BOT_TOKEN']
+        bot = BotAccount.find_by(token: token)
 
-        if bot = BotAccount.find_by(token: token)
-          if bot.user
-            render json: { id: bot.user.id.to_s }
-          else
-            render json: { message: 'pending linking' }
-          end
+        return head(:forbidden) unless bot
+
+        if bot.user
+          render json: { id: bot.user.id.to_s }
         else
-          head :forbidden
+          render json: { message: 'pending linking' }
         end
       end
     end

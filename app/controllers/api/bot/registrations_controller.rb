@@ -7,25 +7,29 @@ module Api
 
       def create
         # TODO: handle right error DocumentNotFound
-        user = begin
-                 User.find_by(email: params[:email])
-               rescue StandardError
-                 nil
-               end
+        @user = find_user_from_request
 
-        if user
-          begin
-            bot = ::Bot::RegistrationService.add_bot_to_user(user, params[:address])
-            render json: bot
-          rescue StandardError => e
-            Bugsnag.notify e
-            render json: { error: 'Exist user' }, status: 422
-          end
-        else
-          # Create a bot user
-          bot = ::Bot::RegistrationService.register(params[:email], params[:address])
-          render json: { id: bot.user.id.to_s, token: bot.token }
-        end
+        return add_bot_to_user if @user
+
+        # Create a bot user
+        bot = ::Bot::RegistrationService.register(params[:email], params[:address])
+        render json: { id: bot.user.id.to_s, token: bot.token }
+      end
+
+      private
+
+      def add_bot_to_user
+        bot = ::Bot::RegistrationService.add_bot_to_user(@user, params[:address])
+        render json: bot
+      rescue StandardError => e
+        Bugsnag.notify e
+        render json: { error: 'Exist user' }, status: 422
+      end
+
+      def find_user_from_request
+        User.find_by(email: params[:email])
+      rescue Mongoid::Errors::DocumentNotFound
+        nil
       end
     end
   end
