@@ -4,10 +4,10 @@ require 'cashier'
 
 Cashier.configure do |config|
   # We use cents for all currency unit
-  config.exchange_rate 1000 # 1 cent -> 1000 credit
+  config.exchange_rate = 1000 # 1 cent -> 1000 credit
 
-  config.sms_price 0.07 * 100 / 1000
-  config.minute_price 0.3
+  config.sms_price = 0.07 * 100 / 1000
+  config.minute_price = 0.3
 
   config.subscription :trial, 0,
                       check: 1,
