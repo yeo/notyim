@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Mongoid patch
-module Mongoids
+module Mongoid
   # Thing we can mark as delete but not delete from db
   module Archivable
     def self.included(base)
