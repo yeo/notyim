@@ -23,7 +23,11 @@ module Trinity
       end
 
       def create_db!
-        @client.query "create #{configuration.influxdb_database}"
+        client.query %(CREATE DATABASE "#{configuration.influxdb_database}")
+      end
+
+      def drop_db!
+        client.query %(DROP DATABASE "#{configuration.influxdb_database}")
       end
 
       def client

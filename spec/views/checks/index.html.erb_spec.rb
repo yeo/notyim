@@ -8,6 +8,12 @@ RSpec.describe 'checks/index', type: :view do
 
   before(:each) do
     assign(:checks, [check1, check2])
+
+    use_influxdb
+  end
+
+  after(:each) do
+    cleanup_influxdb!
   end
 
   it 'renders a list of checks' do

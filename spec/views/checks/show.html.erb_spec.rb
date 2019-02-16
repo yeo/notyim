@@ -10,6 +10,12 @@ RSpec.describe 'checks/show', type: :view do
 
   before(:each) do
     assign(:check, check)
+
+    use_influxdb
+  end
+
+  after(:each) do
+    cleanup_influxdb!
   end
 
   it 'renders attributes in <p>' do
