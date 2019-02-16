@@ -8,9 +8,9 @@ class IncidentsController < DashboardController
   def index
     @incidents = case params[:status]
                  when 'close'
-                   current.user.incidents.not_archived.close.desc(:id).page(params[:page])
+                   close_incidents
                  else
-                   current.user.incidents.not_archived.open.desc(:id).page(params[:page])
+                   open_incidents
                  end
   end
 
@@ -39,5 +39,13 @@ class IncidentsController < DashboardController
   # Never trust parameters from the scary internet, only allow the white list through.
   def incident_params
     params.require(:incident).permit(:check_id, :status, :acknowledged_at)
+  end
+
+  def close_incidents
+    current.user.incidents.not_archived.close.desc(:id).page(params[:page])
+  end
+
+  def open_incidents
+    current.user.incidents.not_archived.open.desc(:id).page(params[:page])
   end
 end

@@ -13,14 +13,10 @@ class AssertionsController < DashboardController
     @assertion = Assertion.new(assertion_params)
     @assertion.check = @check
 
-    respond_to do |format|
-      if @assertion.save
-        format.html { redirect_to edit_check_path(@assertion.check), notice: 'Assertion was successfully created.' }
-        format.json { render :show, status: :created, location: @assertion }
-      else
-        format.html { render :new }
-        format.json { render json: @assertion.errors, status: :unprocessable_entity }
-      end
+    if @assertion.save
+      format.html { redirect_to edit_check_path(@assertion.check), notice: 'Assertion was successfully created.' }
+    else
+      format.html { render :new }
     end
   end
 
@@ -63,13 +59,8 @@ class AssertionsController < DashboardController
 
   def set_check
     begin
-      if @assertion
-        @check = @assertion.check
-      else
-        if check_id = params['assertion'][:check_id]
-          @check = Check.find(check_id)
-        end
-      end
+      @check = @assertion&.check
+      @check ||= Check.find(params['assertion'][:check_id])
     rescue StandardError
       head :bad_request
     end

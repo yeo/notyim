@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class TeamInvitationsController < DashboardController
-  before_action :check_invite, only: %i[show update]
+  before_action :set_invite, :check_invite, only: %i[show update]
 
   def create
     team = Team.find params[:team]
@@ -24,20 +24,31 @@ class TeamInvitationsController < DashboardController
   def update
     if TeamService.accept_invite(current.user, @invite)
       # TODO: Redirect to team login page
-      redirect_to root_url, notice: "You are now a member of team #{@invite.invitable.name}"
+      return redirect_to root_url, notice: t('team.confirm_join', name: @invite.invitable.name)
     end
+
+    head :internal_server_error
   end
 
   private
 
-  def check_invite
+  def set_invite
     @invite = Invitation.find params[:id]
-    return head :forbidden if @invite.code != params[:code]
+    @code = @invite.code
+    return head(:forbidden) unless @code&.present?
+  rescue Mongoid::Errors::DocumentNotFound
+    redirect_to root_url, alert: t('team.invite_code_invalid')
+  end
 
-    if @invite.email != current_user.email
-      redirect_to user_root_path, alert: "The invitation email wasn't match your email account"
-    end
+  def check_invite
+    return head(:forbidden) if @code != params[:code]
 
-    redirect_to user_root_path, alert: 'The invitation has been used already' if @invite.accepted_at
+    alert = if @invite.email != current_user.email
+              'team.invite_code_mismatch'
+            elsif @invite.accepted_at
+              'team.invite_is_used'
+            end
+
+    redirect_to user_root_path, alert: t(alert)
   end
 end

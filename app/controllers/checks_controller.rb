@@ -16,19 +16,12 @@ class ChecksController < DashboardController
   def edit; end
 
   def create
-    @check = Check.new(check_params)
-    @check.uri = "http://#{@check.uri}" if @check.uri && !@check.uri.start_with?('http')
-    @check.user = current.user
-    @check.team = current.team
+    build_check
 
-    respond_to do |format|
-      if @check.save
-        format.html { redirect_to @check, notice: 'Check was successfully created.' }
-        format.json { render :show, status: :created, location: @check }
-      else
-        format.html { render :new }
-        format.json { render json: @check.errors, status: :unprocessable_entity }
-      end
+    if @check.save
+      redirect_to @check, notice: t('dashboard.check_created')
+    else
+      render :new
     end
   end
 
@@ -49,16 +42,22 @@ class ChecksController < DashboardController
 
   def set_check
     @check = Check.find(params[:id])
-    if @check.persisted?
-      unless CheckPolicy.can_manage?(@check, current.user)
-        @check = nil
-        head :forbidden
-      end
-      # redirect_to root_path, :flash => { :error => "Insufficient rights!" } unless CheckPolicy::can_manage?(@check, current.user)
-    end
+
+    return unless @check.persisted?
+    return if CheckPolicy.can_manage?(@check, current.user)
+
+    @check = nil
+    head :forbidden
   end
 
   def check_params
     params.require(:check).permit(:name, :uri, :type)
+  end
+
+  def build_check
+    @check = Check.new(check_params)
+    @check.uri = "http://#{@check.uri}" if @check.uri && !@check.uri.start_with?('http')
+    @check.user = current.user
+    @check.team = current.team
   end
 end

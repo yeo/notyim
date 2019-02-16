@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
-class Dashboard::HomeController < DashboardController
-  def index; end
+module Dashboard
+  class HomeController < DashboardController
+    def index; end
+  end
 end

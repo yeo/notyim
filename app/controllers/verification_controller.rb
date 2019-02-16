@@ -10,8 +10,8 @@ class VerificationController < ApplicationController
     # TODO: Impelement this
     return head :bad_request if params[:receiver_id].empty?
 
-    receiver = Receiver.find(params[:reciever_id])
     # TODO: check permission
+    Receiver.find(params[:reciever_id])
 
     render :nothing
   end
