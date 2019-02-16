@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "elm-hot-webpack-loader": "^1.0.2",
-    "webpack-cli": "^2.0.11",
-    "webpack-dev-server": "^2.11.1"
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
   }
 }
