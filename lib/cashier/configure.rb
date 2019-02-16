@@ -9,8 +9,8 @@ module Cashier
   class Configure
     attr_reader :packages
     attr_reader :subscriptions
-    attr_writer :sms_price, :minute_price
-    attr_writer :exchange_rate # value of 1 cents to our credit
+    attr_accessor :sms_price, :minute_price
+    attr_accessor :exchange_rate # value of 1 cents to our credit
 
     def subscription(name, price, opts = {})
       @subscriptions ||= {}
