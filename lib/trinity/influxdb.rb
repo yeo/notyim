@@ -22,6 +22,10 @@ module Trinity
         ::InfluxDB::Logging.logger = configuration.logger unless configuration.logger.nil?
       end
 
+      def create_db!
+        @client.query "create #{configuration.influxdb_database}"
+      end
+
       def client
         @client ||= ::InfluxDB::Client.new configuration.influxdb_database,
                                            username: configuration.influxdb_username,

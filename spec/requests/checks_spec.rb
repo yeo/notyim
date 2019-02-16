@@ -5,6 +5,7 @@ require 'rails_helper'
 RSpec.describe 'Checks', type: :request do
   let(:uri) { 'https://foo.com' }
   let(:user) { FactoryBot.create(:user) }
+  let(:user2) { FactoryBot.create(:user) }
   let(:check) { FactoryBot.create(:check, user: user, team: user.teams.first, uri: uri) }
 
   before do
@@ -26,6 +27,15 @@ RSpec.describe 'Checks', type: :request do
       get checks_path
       expect(response).to have_http_status(200)
       expect(response.body).to include(check.name)
+    end
+
+    it "doesn't show other user's check" do
+      check
+      c2 = FactoryBot.create(:check, user: user2, team: user2.teams.first, uri: uri)
+
+      get "/checks"
+      expect(response).to have_http_status(200)
+      expect(response.body).to_not include(c2.uri)
     end
   end
 
