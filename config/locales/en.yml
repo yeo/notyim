@@ -21,3 +21,26 @@
 
 en:
   hello: "Hello world"
+
+  dashboard:
+    check_created: 'Check was successfully created.'
+
+  bot:
+    success_link: 'You have succesfully link the bot account and your noty.im account. Thank you'
+
+  team:
+    invite_code_mismatch: "The invitation email wasn't match your email account"
+    invite_code_invalid: "Invite code is invalid or expired"
+    invite_is_used: 'The invitation has been used already'
+    confirm_join: "You are now a member of team %{name}"
+
+  status_page:
+    success_enable: 'Public status page enabled succesfully. Make sure your point your domain to our CNAME st.noty.im'
+    error_enable: 'Cannot enable public page'
+
+  membership:
+
+  payment:
+    card_error: 'Invalid credit card'
+    success_charge: 'Thanks you. We have charge an amount of %{amount} on your card succesfully'
+    fail_charge: 'Fail to charge your card. We are notified this error and will contact with your shortly to fix this billing issue. Mean while, you may want to re-try with another card.'
