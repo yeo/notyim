@@ -23,7 +23,7 @@ class HomeController < ApplicationController
   end
 
   def find_check_from_host
-    return unless is_status_page?
+    return unless status_page?
 
     @check = if (found = request.host.match(/status-(.*)\.noty/))
                Check.find(found[1])
