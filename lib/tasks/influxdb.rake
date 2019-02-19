@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'trinity/influxdb'
+
 namespace :influxdb do
   db_name = Trinity::InfluxDB.configuration.influxdb_database
   RPS = [
