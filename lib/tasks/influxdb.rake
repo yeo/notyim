@@ -11,7 +11,7 @@ namespace :influxdb do
     %(create retention policy "a_year" on "#{db_name}" duration 52w REPLICATION 1;)
   ].freeze
 
-  desc "Configure query and retention policy"
+  desc 'Configure query and retention policy'
   task setup: :environment do
     client = Trinity::InfluxDB.client
     RPS.each do |q|
@@ -19,7 +19,7 @@ namespace :influxdb do
     end
   end
 
-  desc "Create influxdb database"
+  desc 'Create influxdb database'
   task create_db: :environment do
     Trinity::InfluxDB.create_db!
   end
