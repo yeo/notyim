@@ -73,12 +73,14 @@ module Trinity
 
     def load_team_from_session
       # If session already has a team, ensure user can see this team
-      team = Team.find(session[:team])
+      @team = Team.find(session[:team])
 
-      unless TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user)
+      unless TeamPolicy.can_manage?(@team, user) || TeamPolicy.can_view?(@team, user)
         @team = session[:team] = nil
         raise 'Fordbidden'
       end
+
+      session[:team] = @team.id.to_s
     rescue Mongoid::Errors::DocumentNotFound => e
       Bugsnag.notify e
 
