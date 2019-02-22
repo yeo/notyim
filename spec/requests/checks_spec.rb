@@ -9,6 +9,8 @@ RSpec.describe 'Checks', type: :request do
   let(:check) { FactoryBot.create(:check, user: user, team: user.teams.first, uri: uri) }
 
   before do
+    use_influxdb
+
     Trinity::Current.reset!
     sign_in user
   end
@@ -36,6 +38,10 @@ RSpec.describe 'Checks', type: :request do
       get "/checks"
       expect(response).to have_http_status(200)
       expect(response.body).to_not include(c2.uri)
+    end
+
+    xit 'shows team\'s check' do
+
     end
   end
 
