@@ -42,8 +42,9 @@ jobs:
             - noty-yarn-
 
       - run:
-          name: Yarn Install
-          command: yarn install --cache-folder ~/.cache/yarn
+          name: "Yarn Install temp use npm"
+          # command: yarn install --cache-folder ~/.cache/yarn
+          command: npm install --cache-folder ~/.cache/yarn
 
       # Store yarn / webpacker cache
       - save_cache:
