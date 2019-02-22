@@ -24,13 +24,13 @@ Rails.application.routes.draw do
   # TODO: delete
   resources :team_invitations, only: %i[create show update]
 
-  mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   # devise_for :users
   devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }
 
   require 'sidekiq/web'
   authenticate :user, ->(u) { u.admin? } do
     mount Sidekiq::Web => '/sidekiq'
+    mount RailsAdmin::Engine => '/admin', as: 'rails_admin'
   end
 
   root to: 'home#index'

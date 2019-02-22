@@ -50,6 +50,7 @@ module Trinity
     end
 
     private
+
     def find_team_from_host
       # TODO: Cache or do domain -> team mapping
       team = TeamService.find_team_from_host @host
@@ -60,21 +61,28 @@ module Trinity
     end
 
     def load_default_team_for_user
-      @team = @user.teams.first if @user.present?
-      if !session[:team] || (!team = Team.find(session[:team]))
+      unless session[:team]
         @team = @user.default_team
         session[:team] = @user.default_team.id.to_s
 
         return
       end
 
-      if TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user)
-        @team = team
-      else
+      load_team_from_session
+    end
+
+    def load_team_from_session
+      # If session already has a team, ensure user can see this team
+      team = Team.find(session[:team])
+
+      unless TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user)
         @team = session[:team] = nil
         raise 'Fordbidden'
       end
-    end
+    rescue Mongoid::Errors::DocumentNotFound => e
+      Bugsnag.notify e
 
+      not_found
+    end
   end
 end
