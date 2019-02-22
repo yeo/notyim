@@ -7,6 +7,10 @@ class ApplicationController < ActionController::Base
 
   private
 
+  def not_found
+    raise ActionController::RoutingError.new('Not Found')
+  end
+
   def current
     @current ||= Trinity::Current.instance(current_user, request, session)
   rescue StandardError => e
