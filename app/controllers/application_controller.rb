@@ -11,6 +11,7 @@ class ApplicationController < ActionController::Base
     @current ||= Trinity::Current.instance(current_user, request, session)
   rescue StandardError => e
     Bugsnag.notify e
-    head :forbidden
+
+    raise e
   end
 end

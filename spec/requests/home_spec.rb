@@ -26,14 +26,14 @@ RSpec.describe 'Home', type: :request do
         sign_in user
         get root_path
 
-        puts response.body
         expect(response).to have_http_status(200)
         expect(response.body).to include('Go to dashboard')
       end
     end
-  end
 
-  describe 'status page' do
-
+    describe 'domain is status page' do
+      xit 'renders check/show' do
+      end
+    end
   end
 end
