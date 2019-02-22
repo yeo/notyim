@@ -44,7 +44,7 @@ jobs:
       - run:
           name: "Yarn Install temp use npm"
           # command: yarn install --cache-folder ~/.cache/yarn
-          command: npm install --cache-folder ~/.cache/yarn
+          command: npm install
 
       # Store yarn / webpacker cache
       - save_cache:
