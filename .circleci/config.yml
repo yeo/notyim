@@ -11,6 +11,7 @@ jobs:
           RAILS_ENV: test
       - image: circleci/mongo
       - image: circleci/redis
+      - image: influxdb
     steps:
       - checkout
 
@@ -55,6 +56,14 @@ jobs:
       - run:
           name: Wait for DB
           command: dockerize -wait tcp://localhost:27017 -timeout 1m
+
+      - run:
+          name: Wait for Redis
+          command: dockerize -wait tcp://localhost:6379 -timeout 1m
+
+      - run:
+          name: Wait for InfluxBD
+          command: dockerize -wait tcp://localhost:8086 -timeout 1m
 
       # We're MONGOOOOO
       #- run:
