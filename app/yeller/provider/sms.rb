@@ -68,7 +68,7 @@ module Yeller
         if user.internal_tester?
           ::Yeller::Transporter::SmsTest.send(receiver.handler, content)
         else
-          if TeamCreditService.has_credit_sms?(incident.team)
+          if TeamCreditService.enough_credit_sms?(incident.team)
             TeamCreditService.deduct_sms!(incident.team)
             ::Yeller::Transporter::Sms.send(receiver.handler, content)
           else

@@ -1,4 +1,6 @@
 # frozen_string_literal: true
 
-module Dashboard::HomeHelper
+module Dashboard
+  module HomeHelper
+  end
 end

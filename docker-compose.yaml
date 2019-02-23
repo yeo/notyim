@@ -1,14 +1,22 @@
 version: '3'
 services:
+  app:
+    build: .
+    command: ["sleep", "infinity"]
+    environment:
+    - REDIS=redis://redis:6379/2
+    - MONGODB_URI=mongodb://mongodb:27017/noty_dev
+    ports:
+    - "6789:3000"
   redis:
     image: redis
-    ports:
-      - "6379:6379"
+    #ports:
+    #  - "6379:6379"
   influxdb:
     image: influxdb
-    ports:
-      - "8086:8086"
+    #ports:
+    #  - "8086:8086"
   mongodb:
     image: mongo
-    ports:
-      - "27017:27017"
+    #ports:
+    #  - "27017:27017"

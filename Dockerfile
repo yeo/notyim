@@ -1,4 +1,4 @@
-FROM ruby:2.5.1
+FROM ruby:2.6.1 as build
 
 ENV LANG C.UTF-8
 
@@ -12,8 +12,11 @@ RUN \
   apt remove -y cmdtest && \
   apt-get update -qq && \
   apt-get install -y build-essential nodejs yarn && \
+  mkdir /root && \
   rm -rf /var/cache/apt/* && \
-  gem install --no-doc --no-ri bundler
+  gem install bundler && \
+  ssh-keyscan github.com >> ~/.ssh/known_hosts
+
 
 # This is to make use of docker cache
 COPY Gemfile Gemfile.lock .ruby-version  ./
@@ -26,5 +29,12 @@ COPY . /app
 RUN \
     yarn install && \
     bundle exec rake assets:precompile
+
+
+# Final image
+FROM build
+
+WORKDIR /app
+EXPOSE 300
 
 CMD ["puma", "-C", "config/puma.rb"]

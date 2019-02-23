@@ -32,7 +32,13 @@ RSpec.describe 'Home', type: :request do
     end
 
     describe 'domain is status page' do
-      xit 'renders check/show' do
+      describe 'not signin' do
+        xit 'render 403 if status page not enable'
+      end
+
+      describe 'signin' do
+        xit "returns 403 if user aren't part of team"
+        xit "returns checks/show status page"
       end
     end
   end

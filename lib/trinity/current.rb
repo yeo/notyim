@@ -75,9 +75,9 @@ module Trinity
       # If session already has a team, ensure user can see this team
       @team = Team.find(session[:team])
 
-      unless TeamPolicy.can_manage?(@team, user) || TeamPolicy.can_view?(@team, user)
+      unless can_view_team?
         @team = session[:team] = nil
-        raise 'Fordbidden'
+        return head(:forbidden)
       end
 
       session[:team] = @team.id.to_s
@@ -85,6 +85,10 @@ module Trinity
       Bugsnag.notify e
 
       not_found
+    end
+
+    def can_view_team?
+      TeamPolicy.can_manage?(team, user) || TeamPolicy.can_view?(team, user)
     end
   end
 end
