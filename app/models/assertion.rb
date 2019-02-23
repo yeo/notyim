@@ -79,10 +79,10 @@ class Assertion
   end
 
   def ongoing_incident
-    @__ongoing_incident ||= incidents.open.first
+    @ongoing_incident ||= incidents.open.first
   end
 
   def partial_incidents
-    @__partial_incidents ||= incidents.partial
+    @partial_incidents ||= incidents.partial
   end
 end

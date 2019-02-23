@@ -49,24 +49,20 @@ class Check
 
   # Check if the receiver was register to receiver notificatio for this check
   # @param Receiver|String
-  def register_receiver?(r)
-    return false unless receivers
+  def register_receiver?(receiver)
+    receiver = receiver.id.to_s if receiver.respond_to? :id
 
-    r = (r.id.to_s if r.respond_to? :id)
-
-    receivers.include? r
+    receivers.include? receiver
   end
 
   # @return Array<Receiver>
   def fetch_receivers
     return [] if receivers.blank?
 
-    if _receivers = receivers.map do |id|
-         Receiver.find(id)
-                    rescue StandardError
-                      nil
-       end .select(&:present?)
-      _receivers
-    end
+    receivers.map do |id|
+      Receiver.find(id)
+    rescue Mongoid::Errors::DocumentNotFound
+      nil
+    end.select(&:present?)
   end
 end

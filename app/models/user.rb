@@ -4,6 +4,8 @@ class User
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  class OmniAuthMissingEmail < StandardError; end
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -105,26 +107,32 @@ class User
 
   def self.from_omniauth(payload)
     email = payload.info.email
-    return unless email
+    raise OmniAuthMissingEmail unless email
 
     user = User.where(email: email).first
-    if !user
-      user = User.new(
-        name: payload.info.name,
-        email: payload.info.email,
-        password: Devise.friendly_token[0, 20],
-        providers: { payload.provider => payload.uid },
-        confirmed_at: Time.now.utc
-      )
-      # Auto confirm omni auth since it rely on upstream provider
-      user.confirm
+
+    if user
+      user.providers ||= {}
+      user.providers[payload.provider] = payload.uid
       user.save!
-    else
-      unless user.providers
-        user.providers = { payload.provider => payload.uid }
-        user.save!
-      end
+
+      return user
     end
+
+    create_user_from_omniauth(payload)
+  end
+
+  def self.create_user_from_omniauth(payload)
+    user = User.new(
+      name: payload.info.name,
+      email: payload.info.email,
+      password: Devise.friendly_token[0, 20],
+      providers: { payload.provider => payload.uid },
+      confirmed_at: Time.now.utc
+    )
+    # Auto confirm omni auth since it rely on upstream provider
+    user.confirm
+    user.save!
 
     user
   end

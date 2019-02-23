@@ -33,7 +33,7 @@ class Receiver
 
   # Return provider class that hold utilities method for this provider
   def provider_class
-    @__klass ||= Yeller::Provider.class_of(provider)
+    @provider_class ||= Yeller::Provider.class_of(provider)
   end
 
   # Callback to set verification class depend on provider

@@ -25,11 +25,11 @@ class Verification
 
   # Verify user with input
   def check_to_verify(input)
-    if verify?(input)
-      self.verified_at = Time.now
-      save!
+    return unless verify?(input)
 
-      verifiable.verify!
-    end
+    self.verified_at = Time.now
+    save!
+
+    verifiable.verify!
   end
 end
