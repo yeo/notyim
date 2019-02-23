@@ -5,13 +5,13 @@ class TeamCreditService
     Credit.create!(team: team, sms: 0, voice_second: 0)
   end
 
-  def self.has_credit_sms?(team)
+  def self.enough_credit_sms?(team)
     return false unless team.credit
 
     team.credit.sms >= 1
   end
 
-  def self.has_credit_voice?(team)
+  def self.enough_credit_voice?(team)
     return false unless team.credit
 
     team.credit.voice_second >= 60

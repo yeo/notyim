@@ -13,8 +13,6 @@ class InviteService
   end
 
   def self.find_team_membership_request_by_code(code)
-    if invite = Invitation.where(code: code).first
-      invite.invitable
-    end
+    Invitation.where(code: code).first&.invitable
   end
 end

@@ -2,9 +2,7 @@
 
 class ApiTokenService
   def self.retreive_for_user(user)
-    if (token = user.api_tokens.desc(:id).first).present?
-      return token
-    end
+    return if user.api_tokens.count.positive?
 
     t = user.id.to_s
     t << '.'

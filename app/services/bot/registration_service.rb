@@ -28,21 +28,28 @@ module Bot
       user.destroy.then { nil }
     end
 
-    # Register bot account to an *existing* user
-    def self.add_bot_to_user(user, address)
-      user = User.find_by(email: user) if user.is_a?(String) && user.include?('@')
-
-      if bot = BotAccount.where(bot_uuid: ::Bot.uuid(address)).first
-        bot.link_verification_code = SecureRandom.hex
-        bot.address = address
-        bot.save!
-      else
-        bot = BotAccount.create!(
+    def self.find_or_create_bot_from_address
+      bot = BotAccount.where(bot_uuid: ::Bot.uuid(address)).first
+      unless bot
+        return BotAccount.create!(
           bot_uuid: ::Bot.uuid(address),
           address: address,
           link_verification_code: SecureRandom.hex
         )
       end
+
+      bot.tap do
+        bot.link_verification_code = SecureRandom.hex
+        bot.address = address
+        bot.save!
+      end
+    end
+
+    # Register bot account to an *existing* user
+    def self.add_bot_to_user(user, address)
+      user = User.find_by(email: user) if user.is_a?(String) && user.include?('@')
+
+      bot = find_or_create_bot_from_address(address)
 
       # Send an email to confirm
       BotAccountMailer.verify_link_account(user.id.to_s, bot.id.to_s).deliver_later

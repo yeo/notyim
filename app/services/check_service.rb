@@ -36,9 +36,9 @@ class CheckService
   def self.auto_create_assertions(id)
     check = Check.find(id.to_s)
 
-    if check.assertions.empty?
-      check.assertions = CheckService.default_assertions_for_type(check.type)
-      check.save!
-    end
+    return unless check.assertions.empty?
+
+    check.assertions = CheckService.default_assertions_for_type(check.type)
+    check.save!
   end
 end
