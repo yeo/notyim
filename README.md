@@ -19,12 +19,11 @@ rails db:seed
 
 # Thank you
 
-The project gets help from many people. Please check credit and
-thankyou for a detail.
+The project gets help from many people. Check [thankyou.md] file.
 
-=======
 # Test setup
 
 ```
-rails influxdb:setup
+docker-compse up
+rspec
 ```
