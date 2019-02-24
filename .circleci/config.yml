@@ -70,7 +70,7 @@ jobs:
       #    name: Database setup
       #    command: bin/rails db:schema:load --trace
 
-      - run: shell
+      - run:
           name: Generate coveralls key
           command: |
             echo $COVERALLS_KEY > .coveralls.yml
