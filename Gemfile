@@ -81,4 +81,5 @@ group :test do
   gem 'rspec_junit_formatter'
   gem 'timecop'
   gem 'webmock', require: false
+  gem "coveralls", "~> 0.7.1", require: false
 end
