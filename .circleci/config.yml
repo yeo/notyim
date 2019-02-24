@@ -42,6 +42,12 @@ jobs:
             - noty-yarn-{{ checksum "yarn.lock" }}
             - noty-yarn-
 
+      - restore_cache:
+          keys:
+            - noty-npm-{{ checksum "yarn.lock" }}
+          paths:
+          - node_modules
+
       - run:
           name: "Yarn Install temp use npm"
           # command: yarn install --cache-folder ~/.cache/yarn
@@ -52,6 +58,12 @@ jobs:
           key: noty-yarn-{{ checksum "yarn.lock" }}
           paths:
             - ~/.cache/yarn
+
+      # Store yarn / webpacker cache
+      - save_cache:
+          key: noty-npm-{{ checksum "package.json" }}
+          paths:
+            - node_modules
 
       - run:
           name: Wait for DB
