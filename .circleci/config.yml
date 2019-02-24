@@ -71,9 +71,9 @@ jobs:
       #    command: bin/rails db:schema:load --trace
 
       - run: shell
-        name: Generate coveralls key
-        command: |
-          echo $COVERALLS_KEY > .coveralls.yml
+          name: Generate coveralls key
+          command: |
+            echo $COVERALLS_KEY > .coveralls.yml
 
       # Run rspec in parallel
       - type: shell
