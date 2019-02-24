@@ -11,6 +11,7 @@ RSpec.describe ApiTokenService, type: :service do
         t = ApiToken.new(token: SecureRandom.hex)
         user.api_tokens << t
         token = described_class.retreive_for_user(user)
+
         expect(token.token).to eq(t.token)
       end
     end
@@ -18,6 +19,7 @@ RSpec.describe ApiTokenService, type: :service do
     describe 'when has no token' do
       it 'auto creates and return that one' do
         token = described_class.retreive_for_user(user)
+
         expect(token).to be_kind_of(ApiToken)
         expect(token.token.split('.').first).to eq(user.id.to_s)
         expect(token.token.split('.').second.length).to eq(48)
