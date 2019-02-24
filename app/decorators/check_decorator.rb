@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'trinity/influxdb'
+
 class CheckDecorator < SimpleDelegator
   include CheckHelper
 
