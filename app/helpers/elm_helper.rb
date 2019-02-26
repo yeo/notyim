@@ -12,10 +12,15 @@ module ElmHelper
     id = [name, rand(10_000_000)].join('-')
     html_options[:id] = id
 
-    if flags = props[:flags]
-      content_tag(html_tag, '', html_options, false, &block) + javascript_tag("window.Elm.#{name}.init({  node: document.getElementById('#{id}'), flags: #{flags.to_json} })")
+    html = content_tag(html_tag, '', html_options, false, &block)
+    html << elm_js_tag(name, props)
+  end
+
+  def elm_js_tag(name, props)
+    if (flags = props[:flags])
+      javascript_tag("window.Elm.#{name}.init({ node: document.getElementById('#{id}'), flags: #{flags.to_json} })")
     else
-      content_tag(html_tag, '', html_options, false, &block) + javascript_tag("window.Elm.#{name}.init({ node: document.getElementById('#{id}') })")
+      javascript_tag("window.Elm.#{name}.init({ node: document.getElementById('#{id}') })")
     end
   end
 end

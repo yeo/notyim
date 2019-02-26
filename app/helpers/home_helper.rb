@@ -3,14 +3,21 @@
 require 'trinity/current'
 
 module HomeHelper
-  SLACK_OAUTH_URL = "https://slack.com/oauth/authorize"
+  SLACK_OAUTH_URL = 'https://slack.com/oauth/authorize'
+  SLACK_CLIENT_ID = Rails.configuration.slack_bot[:client_id]
+  SLACK_SCOPE     = 'bot,incoming-webhook,chat:write:bot'
+  SLACK_REDIRECT_URI = Rails.configuration.slack_bot[:redirect_uri]
 
   def new_slack_url
-    if (current = Trinity::Current.current) && current.signed_in?
-      "#{SLACK_OAUTH_URL}?state=#{current.user.id}.#{current.team.id}.#{SecureRandom.hex}&client_id=#{Rails.configuration.slack_bot[:client_id]}&scope=bot,incoming-webhook,chat:write:bot&redirect_uri=#{Rails.configuration.slack_bot[:redirect_uri]}"
-    else
-      "#{SLACK_OAUTH_URL}?client_id=#{Rails.configuration.slack_bot[:client_id]}&scope=bot,incoming-webhook,chat:write:bot&state=notydev&redirect_uri=#{Rails.configuration.slack_bot[:redirect_uri]}"
-    end
+    url = SLACK_OAUTH_URL
+
+    state = if (current = Trinity::Current.current) && current.signed_in?
+              "state=#{current.user.id}.#{current.team.id}.#{SecureRandom.hex}"
+            else
+              'state=anonymous'
+            end
+
+    url << "?#{state}&client_id=#{SLACK_CLIENT_ID}&scope=#{SLACK_SCOPE}&redirect_uri=#{SLACK_REDIRECT_URI}"
   end
 
   def new_telegram_url
@@ -19,13 +26,5 @@ module HomeHelper
     else
       "https://telegram.me/#{Rails.configuration.telegram_bot[:name]}"
     end
-  end
-
-  def slack_unauth_url
-    "#{SLACK_OAUTH_URL}?client_id=#{Rails.configuration.slack_bot[:client_id]}&scope=#{scope}&state=notydev&redirect_uri=#{Rails.configuration.slack_bot[:redirect_uri]}"
-  end
-
-  def slack_scope
-    "bot,incoming-webhook,chat:write:bot"
   end
 end
