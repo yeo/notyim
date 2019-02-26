@@ -17,7 +17,7 @@ module HomeHelper
               'state=anonymous'
             end
 
-    url << "?#{state}&client_id=#{SLACK_CLIENT_ID}&scope=#{SLACK_SCOPE}&redirect_uri=#{SLACK_REDIRECT_URI}"
+    url + "?#{state}&client_id=#{SLACK_CLIENT_ID}&scope=#{SLACK_SCOPE}&redirect_uri=#{SLACK_REDIRECT_URI}"
   end
 
   def new_telegram_url
