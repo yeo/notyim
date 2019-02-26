@@ -13,10 +13,10 @@ module ElmHelper
     html_options[:id] = id
 
     html = content_tag(html_tag, '', html_options, false, &block)
-    html << elm_js_tag(name, props)
+    html << elm_js_tag(id, name, props)
   end
 
-  def elm_js_tag(name, props)
+  def elm_js_tag(id, name, props)
     if (flags = props[:flags])
       javascript_tag("window.Elm.#{name}.init({ node: document.getElementById('#{id}'), flags: #{flags.to_json} })")
     else
