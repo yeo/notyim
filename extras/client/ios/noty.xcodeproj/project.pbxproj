@@ -64,6 +64,7 @@
 		1751030F1EC81FA300495074 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		1770E1B81FA2F59C00FD3736 /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Client.swift; path = API/Client.swift; sourceTree = "<group>"; };
 		178F6BC51EAA738E00F3A6A2 /* MonitorsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MonitorsListViewController.swift; sourceTree = "<group>"; };
+		A365F76321C1031400E75373 /* noty.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = noty.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +118,7 @@
 		1715F27E1E978D0100462D53 /* noty */ = {
 			isa = PBXGroup;
 			children = (
+				A365F76321C1031400E75373 /* noty.entitlements */,
 				1770E1BA1FA2F5A200FD3736 /* API */,
 				171A2C181EC823CF00B08FFB /* Services */,
 				175103121EC8216600495074 /* UI */,
@@ -261,6 +263,11 @@
 					1715F27B1E978D0000462D53 = {
 						CreatedOnToolsVersion = 8.0;
 						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 					1715F2911E978D0100462D53 = {
 						CreatedOnToolsVersion = 8.0;
@@ -490,6 +497,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
+				CODE_SIGN_ENTITLEMENTS = noty/noty.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 456HYLV3SG;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -512,6 +521,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = "LaunchImage-2";
+				CODE_SIGN_ENTITLEMENTS = noty/noty.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 456HYLV3SG;
