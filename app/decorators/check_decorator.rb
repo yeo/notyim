@@ -10,22 +10,21 @@ class CheckDecorator < SimpleDelegator
   end
 
   def current_status
-    @__current_status ||= if record = current_metric
-                            return record['status_code'] if record['status_code'].present? && record['status_code'] != 0
+    @current_status ||= if (record = current_metric)
+                          return record['status_code'] if record['status_code'].present? && record['status_code'] != 0
 
-                            'Down' if record['status'] == '0' || record['error'] == true
-                          else
-                            'Unknow'
-    end
+                          'Down' if record['status'] == '0' || record['error'] == true
+                        else
+                          'Unknow'
+                        end
   end
 
   def mean_time(unit: :ms)
     result = influxdb.query "select mean(time_Total) from http_response where check_id = '#{id}' AND time > now() - 1h"
-    if result&.first && m = result&.first['values']&.first['mean']
-      "#{m.round(2)}ms"
-    else
-      '0ms'
-    end
+    return "0#{unit}" unless result&.first
+
+    m = result.first['values']&.first
+    m['mean'] ? "#{m['mean'].round(2)}#{unit}" : "0#{unit}"
   end
 
   def uptime_stat
@@ -33,14 +32,20 @@ class CheckDecorator < SimpleDelegator
   end
 
   def simple_line_chart_data(duration = 24, group = 5, label_step = 5)
-    if result = influxdb.query("select mean(time_Total) from http_response where check_id = '#{id}' AND time > now() - #{duration}h GROUP BY time(#{group}m)").try(:first)
-      {
-        labels: result['values'].each_with_index.map { |p, i| i % label_step == 0 ? Time.parse(p['time']).strftime('%H:%M') : '' },
-        series: [result['values'].map { |p| p['mean']&.round(2) || 0 }]
-      }
-    else
-      { labels: [], series: [] }
-    end
+    query = check_total_latency_by_min(id, group, duration)
+    result = influxdb.query(query).try(:first)
+
+    return { labels: [], series: [] } unless result
+
+    line_chart_data_labels(result['values'], label_step)
+  end
+
+  def line_chart_data_labels(points)
+    labels = points.each_with_index.map { |p, i| (i % label_step).zero? ? Time.parse(p['time']).strftime('%H:%M') : '' }
+    {
+      labels: labels,
+      series: [points.map { |p| p['mean']&.round(2) || 0 }]
+    }
   end
 
   def last_hour_chart_data
@@ -53,8 +58,9 @@ class CheckDecorator < SimpleDelegator
 
   # Build histogram with 50ms step
   def last_day_distributed_chart_data(duration = 24)
-    histogram = nil
-    influxdb.query("select mean(time_Total) from http_response where check_id = '#{id}' AND time > now() - #{duration}h group by time(5m)") do |_name, _tag, points|
+    query = check_total_latency_by_min(id, 5, duration)
+
+    influxdb.query(query) do |_name, _tag, points|
       histogram = Hash[*points.select { |p| p['mean'].present? }
                               .map { |p| ((p['mean'] || 0).to_i / 50) * 50 }
                               .group_by { |v| v }
@@ -62,81 +68,85 @@ class CheckDecorator < SimpleDelegator
                   .sort.flatten
     end
 
-    if histogram
-      {
-        labels: histogram.each_with_index.select { |_v, k| k.even? }.map { |e| "#{e.first}ms" },
-        series: histogram.each_with_index.select { |_v, k| k.odd? }.map(&:first)
-      }.to_json.html_safe
-    else
-      '{}'
-    end
+    return '{}' unless histogram
+    {
+      labels: histogram.each_with_index.select { |_v, k| k.even? }.map { |e| "#{e.first}ms" },
+      series: histogram.each_with_index.select { |_v, k| k.odd? }.map(&:first)
+    }.to_json.html_safe
   end
 
   # Return chart data for last year uptime
   # The structure is organize into a 2 dimmension array
   # first index is the week. second index is day of week
   def last_year_uptime
-    return @__last_year_uptime if @__last_year_uptime
+    return @last_year_uptime if @last_year_uptime
 
     first_sunday = first_dow_one_year_ago
     histories = daily_uptime ? daily_uptime.histories.to_h : {}
 
-    @__last_year_uptime ||= Array.new(52) do |week|
+    @last_year_uptime ||= Array.new(52) do |week|
       Array.new(7) do |day_of_week|
         shift = first_sunday + week.week + day_of_week.day
         uptime = histories[shift.strftime('%D')] || 'unknow'
 
-        summary = case uptime
-                  when 0
-                    '100% down'
-                  when 100
-                    '100% uptime'
-                  when 'unknow'
-                    if shift >= Time.now.end_of_day
-                      'Not monitored yet'
-                    else
-                      'No data'
-                    end
-                  else
-                    "#{uptime}% uptime"
-                end
-
-        stat = (case uptime
-                when 'unknow'
-                  'nodata'
-                when 100
-                  'up'
-                when 0
-                  'down'
-                when 90..100
-                  'slow'
-                else
-                  'down'
-           end).freeze
-        OpenStruct.new(
-          time: shift,
-          up: uptime,
-          summary: summary,
-          desc: "#{shift.strftime '%D'}: #{summary}",
-          stat: stat
-        )
+        summary_uptime(uptime, shift)
       end
     end
   end
 
   private
 
+  def summary_uptime(uptime, shift)
+    summary = case uptime
+              when 0
+                '100% down'
+              when 100
+                '100% uptime'
+              when 'unknow'
+                if shift >= Time.now.end_of_day
+                  'Not monitored yet'
+                else
+                  'No data'
+                end
+              else
+                "#{uptime}% uptime"
+              end
+
+    stat = case uptime
+           when 'unknow'
+             'nodata'
+           when 100
+             'up'
+           when 0
+             'down'
+           when 90..100
+             'slow'
+           else
+             'down'
+           end
+
+    OpenStruct.new(time: shift, up: uptime, summary: summary, desc: "#{shift.strftime '%D'}: #{summary}", stat: stat)
+  end
+
   def influxdb
-    @__c ||= Trinity::InfluxDB.client
+    @influxdb ||= Trinity::InfluxDB.client
   end
 
   def current_metric
-    return @__current_metric if @__current_metric
+    return @current_metric if @current_metric
 
-    influxdb.query "select * from http_response where check_id = '#{id}' order by time desc limit 1" do |_name, _tags, points|
-      @__current_metric = points.first
+    query = "select * from http_response where check_id = '#{id}' order by time desc limit 1"
+    influxdb.query query do |_name, _tags, points|
+      @current_metric = points.first
     end
 
-    @__current_metric
+    @current_metric
+  end
+
+  def check_total_latency_by_min(id, group, duration)
+    %(SELECT mean\(time_Total\)
+      FROM http_response
+      WHERE check_id = '#{id}' AND time > now\(\) - #{duration}h
+      GROUP BY time\(#{group}m\))
   end
 end
