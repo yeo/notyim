@@ -48,19 +48,18 @@ class IncidentDecorator < SimpleDelegator
   end
 
   def http_reason
-    _subject = assertion.subject.gsub(/[\._]/, ' ')
-    _assertion = decorate(assertion)
+    a_subject = assertion.subject.gsub(/[\._]/, ' ')
+    a_assertion = decorate(assertion)
     case assertion
-    when :down
-    when :up
-      _verb = 'is'
-      _object = condition.to_s
+    when :down, :up
+      a_verb = 'is'
+      a_object = condition.to_s
     else
-      _verb = _assertion.human_condition
-      _object = _assertion.operand
+      a_verb = a_assertion.human_condition
+      a_object = a_assertion.operand
     end
 
-    [_subject, _verb, _object].join ' '
+    [a_subject, a_verb, a_object].join ' '
   end
 
   def tcp_reason; end
@@ -68,7 +67,7 @@ class IncidentDecorator < SimpleDelegator
   def hearbeat_reason; end
 
   # def subject
-  #  "━ [noty alert][#{status == 'close' ? 'UP' : 'DOWN'}] #{incident.check.uri}"
+  #  "- [noty alert][#{status == 'close' ? 'UP' : 'DOWN'}] #{incident.check.uri}"
   # end
 
   # Short, online subject, use in email
@@ -83,17 +82,21 @@ class IncidentDecorator < SimpleDelegator
   def duration
     diff = updated_at - created_at
     hour = (diff / 3600).to_i
-    if hour >= 1
-      minute = (diff - (hour * 3600)).to_i / 60
-      "#{pluralize(hour.to_i, 'hour')} #{pluralize(minute, 'minute')}"
-    else
-      minute = (diff / 60).to_i
-      pluralize(minute, 'minute')
-    end
+    minute = (hour >= 1 ? (diff - (hour * 3600)) / 60 : (diff / 60)).to_i
+
+    format_duration(hour, minute)
   end
 
   # How many time this happen
   def frequency
     Incident.where(assertion: assertion).count
+  end
+
+  private
+
+  def duration_format(hour, minute)
+    return pluralize(minute, 'minute') if hour < 1
+
+    "#{pluralize(hour.to_i, 'hour')} #{pluralize(minute, 'minute')}"
   end
 end
