@@ -59,6 +59,7 @@ class CheckDecorator < SimpleDelegator
   # Build histogram with 50ms step
   def last_day_distributed_chart_data(duration = 24)
     query = check_total_latency_by_min(id, 5, duration)
+    histogram = nil
 
     influxdb.query(query) do |_name, _tag, points|
       histogram = Hash[*points.select { |p| p['mean'].present? }
