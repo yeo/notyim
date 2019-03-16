@@ -14,9 +14,6 @@ RSpec.describe 'Teams', type: :request do
       expect(response.body).to include(user.default_team.name)
     end
 
-    xit 'lists all teams' do
-
-    end
+    xit 'lists all teams'
   end
-
 end

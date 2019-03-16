@@ -11,7 +11,7 @@ module TestUtils
     def gen_check_and_assertion
       user = FactoryBot.create(:user)
       check = FactoryBot.create(:check, user: user, team: user.teams.first)
-      assertion = FactoryBot.create(:assertion, check: check)
+      FactoryBot.create(:assertion, check: check)
 
       check
     end

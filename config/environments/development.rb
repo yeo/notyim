@@ -61,7 +61,8 @@ Rails.application.configure do
   # TODO: Update
   config.action_mailer.delivery_method = :smtp
   config.local_proxy_public = ENV.fetch('NGROK', nil)
-  config.incident_confirm_location = 1 # How many location need to match in order to confirm that an incident has occured
+  # How many location need to match in order to confirm that an incident has occured
+  config.incident_confirm_location = 1
   config.incident_notification_interval = 10.minutes
   config.telegram_bot = {
     name: 'notydevbot'

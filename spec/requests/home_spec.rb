@@ -38,7 +38,7 @@ RSpec.describe 'Home', type: :request do
 
       describe 'signin' do
         xit "returns 403 if user aren't part of team"
-        xit "returns checks/show status page"
+        xit 'returns checks/show status page'
       end
     end
   end

@@ -28,7 +28,13 @@ RSpec.describe IncidentService, type: :service do
   end
 
   describe '.notify' do
-    let(:incident) { FactoryBot.create(:incident, check: check, team: check.team, user: check.user, assertion: check.assertions.first) }
+    let(:incident) do
+      FactoryBot.create(:incident,
+                        check: check,
+                        team: check.team,
+                        user: check.user,
+                        assertion: check.assertions.first)
+    end
 
     it 'sends notification to user email when has no receiver' do
       receiver = double(Receiver)

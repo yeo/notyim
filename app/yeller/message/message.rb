@@ -3,9 +3,9 @@
 module Yeller
   class Message
     attr_reader :subject, :message
-    def initialize(s, m)
-      @subject = s
-      @message = m
+    def initialize(subject, message)
+      @subject = subject
+      @message = message
     end
   end
 end

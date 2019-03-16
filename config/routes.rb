@@ -25,7 +25,11 @@ Rails.application.routes.draw do
   resources :team_invitations, only: %i[create show update]
 
   # devise_for :users
-  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks', registrations: 'users/registrations' }
+  devise_for :users,
+             controllers: {
+               omniauth_callbacks: 'users/omniauth_callbacks',
+               registrations: 'users/registrations'
+             }
 
   require 'sidekiq/web'
   authenticate :user, ->(u) { u.admin? } do
@@ -71,6 +75,6 @@ Rails.application.routes.draw do
   end
 
   scope module: 'status_page' do
-    get '/', to: 'checks#show', constraints: ->(request) { byebug; request.host.start_with? 'status' }
+    get '/', to: 'checks#show', constraints: ->(request) { request.host.start_with? 'status' }
   end
 end

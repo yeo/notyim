@@ -13,7 +13,7 @@ module Yeller
     end
 
     def providers
-      @__providers ||= {}
+      @providers ||= {}
     end
 
     def class_of(identify)

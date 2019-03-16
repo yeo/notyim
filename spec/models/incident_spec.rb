@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Incident, type: :model do
   describe '#send_alert callback' do
-    it 'queue the job when' do
-    end
+    xit 'queue the job when'
   end
 end

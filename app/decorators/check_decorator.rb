@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'trinity/influxdb'
-
 class CheckDecorator < SimpleDelegator
   include CheckHelper
 
@@ -20,7 +18,7 @@ class CheckDecorator < SimpleDelegator
   end
 
   def mean_time(unit: :ms)
-    result = influxdb.query "select mean(time_Total) from http_response where check_id = '#{id}' AND time > now() - 1h"
+    result = MetricService.check_mean_time_in_last_hour(id)
     return "0#{unit}" unless result&.first
 
     m = result.first['values']&.first
@@ -32,9 +30,7 @@ class CheckDecorator < SimpleDelegator
   end
 
   def simple_line_chart_data(duration = 24, group = 5, label_step = 5)
-    query = check_total_latency_by_min(id, group, duration)
-    result = influxdb.query(query).try(:first)
-
+    result = MetricService.latency_data(id, group, duration)
     return { labels: [], series: [] } unless result
 
     line_chart_data_labels(result['values'], label_step)
@@ -58,19 +54,7 @@ class CheckDecorator < SimpleDelegator
 
   # Build histogram with 50ms step
   def last_day_distributed_chart_data(duration = 24)
-    histogram = nil
-
-    query = check_total_latency_by_min(id, 5, duration)
-    influxdb.query(query) do |_name, _tag, points|
-      histogram = Hash[*points
-                  .select { |p| p['mean'].present? }
-                  .map { |p| ((p['mean'] || 0).to_i / 50) * 50 }
-                  .group_by { |v| v }
-                  .flat_map { |k, v| [k, v.length] }]
-                  .sort.flatten
-    end
-
-    return '{}' unless histogram
+    histogram = MetricService.check_latency(id, 5, duration)
 
     {
       labels: histogram.each_with_index.select { |_v, k| k.even? }.map { |e| "#{e.first}ms" },
@@ -82,12 +66,16 @@ class CheckDecorator < SimpleDelegator
   # The structure is organize into a 2 dimmension array
   # first index is the week. second index is day of week
   def last_year_uptime
-    return @last_year_uptime if @last_year_uptime
+    @last_year_uptime ||= build_52_weeks_uptime
+  end
 
+  private
+
+  def build_52_weeks_uptime
     first_sunday = first_dow_one_year_ago
     histories = daily_uptime ? daily_uptime.histories.to_h : {}
 
-    @last_year_uptime ||= Array.new(52) do |week|
+    Array.new(52) do |week|
       Array.new(7) do |day_of_week|
         shift = first_sunday + week.week + day_of_week.day
         uptime = histories[shift.strftime('%D')] || 'unknow'
@@ -96,8 +84,6 @@ class CheckDecorator < SimpleDelegator
       end
     end
   end
-
-  private
 
   def format_uptime(uptime)
     case uptime
@@ -138,25 +124,7 @@ class CheckDecorator < SimpleDelegator
     OpenStruct.new(time: shift, up: uptime, summary: stat, desc: "#{shift.strftime '%D'}: #{summary}", stat: stat)
   end
 
-  def influxdb
-    @influxdb ||= Trinity::InfluxDB.client
-  end
-
   def current_metric
-    return @current_metric if @current_metric
-
-    query = "select * from http_response where check_id = '#{id}' order by time desc limit 1"
-    influxdb.query query do |_name, _tags, points|
-      @current_metric = points.first
-    end
-
-    @current_metric
-  end
-
-  def check_total_latency_by_min(id, group, duration)
-    %(SELECT mean\(time_Total\)
-      FROM http_response
-      WHERE check_id = '#{id}' AND time > now\(\) - #{duration}h
-      GROUP BY time\(#{group}m\))
+    @current_metric ||= MetricService.current_metric(id)
   end
 end
