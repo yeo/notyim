@@ -58,18 +58,20 @@ class CheckDecorator < SimpleDelegator
 
   # Build histogram with 50ms step
   def last_day_distributed_chart_data(duration = 24)
-    query = check_total_latency_by_min(id, 5, duration)
     histogram = nil
 
+    query = check_total_latency_by_min(id, 5, duration)
     influxdb.query(query) do |_name, _tag, points|
-      histogram = Hash[*points.select { |p| p['mean'].present? }
-                              .map { |p| ((p['mean'] || 0).to_i / 50) * 50 }
-                              .group_by { |v| v }
-                              .flat_map { |k, v| [k, v.length] }]
+      histogram = Hash[*points
+                  .select { |p| p['mean'].present? }
+                  .map { |p| ((p['mean'] || 0).to_i / 50) * 50 }
+                  .group_by { |v| v }
+                  .flat_map { |k, v| [k, v.length] }]
                   .sort.flatten
     end
 
     return '{}' unless histogram
+
     {
       labels: histogram.each_with_index.select { |_v, k| k.even? }.map { |e| "#{e.first}ms" },
       series: histogram.each_with_index.select { |_v, k| k.odd? }.map(&:first)
@@ -97,36 +99,43 @@ class CheckDecorator < SimpleDelegator
 
   private
 
+  def format_uptime(uptime)
+    case uptime
+    when 0
+      '100% down'
+    when 100
+      '100% uptime'
+    when 'unknow'
+      if shift >= Time.now.end_of_day
+        'Not monitored yet'
+      else
+        'No data'
+      end
+    else
+      "#{uptime}% uptime"
+    end
+  end
+
+  def format_stat(uptime)
+    case uptime
+    when 'unknow'
+      'nodata'
+    when 100
+      'up'
+    when 0
+      'down'
+    when 90..100
+      'slow'
+    else
+      'down'
+    end
+  end
+
   def summary_uptime(uptime, shift)
-    summary = case uptime
-              when 0
-                '100% down'
-              when 100
-                '100% uptime'
-              when 'unknow'
-                if shift >= Time.now.end_of_day
-                  'Not monitored yet'
-                else
-                  'No data'
-                end
-              else
-                "#{uptime}% uptime"
-              end
+    summary = format_uptime(uptime)
+    stat = format_stat(uptime)
 
-    stat = case uptime
-           when 'unknow'
-             'nodata'
-           when 100
-             'up'
-           when 0
-             'down'
-           when 90..100
-             'slow'
-           else
-             'down'
-           end
-
-    OpenStruct.new(time: shift, up: uptime, summary: summary, desc: "#{shift.strftime '%D'}: #{summary}", stat: stat)
+    OpenStruct.new(time: shift, up: uptime, summary: stat, desc: "#{shift.strftime '%D'}: #{summary}", stat: stat)
   end
 
   def influxdb
