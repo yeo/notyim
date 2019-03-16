@@ -1,4 +1,4 @@
-FROM ruby:2.6.1 as build
+FROM ruby:2.6.2 as build
 
 ENV LANG C.UTF-8
 
