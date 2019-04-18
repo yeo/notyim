@@ -8,19 +8,20 @@ class MetricService
     @influxdb ||= Trinity::InfluxDB.client
   end
 
-  def self.current_metric
+  def self.current_metric(id)
     query = "select * from http_response where check_id = '#{id}' order by time desc limit 1"
     metric = nil
-    influxdb.query(query) { |_name, _tags, points| metric = points.first }
-    metric
+    metric.tap do
+      influxdb.query(query) { |_name, _tags, points| metric = points.first }
+    end
   end
 
-  def check_mean_time_in_last_hour(id)
+  def self.check_mean_time_in_last_hour(id)
     influxdb.query "select mean(time_Total) from http_response where check_id = '#{id}' AND time > now() - 1h"
   end
 
   def self.latency_data(id, group_by_minute, duration_in_hour)
-    stmt = check_total_latency_by_min(id, group_by_minute, duration_in_hour)
+    stmt = check_total_latency_by_minute(id, group_by_minute, duration_in_hour)
 
     influxdb.query(stmt).try(:first)
   end
@@ -52,5 +53,5 @@ class MetricService
       WHERE check_id = '#{id}' AND time > now\(\) - #{duration_in_hour}h
       GROUP BY time\(#{group_by_minute}m\))
   end
-  private_class_method :check_total_latency_by_min
+  private_class_method :check_total_latency_by_minute
 end
