@@ -1,0 +1,42 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: web
+  namespace: noty
+spec:
+  selector:
+    app: web
+  ports:
+    - protocol: TCP
+      port: 80
+      name: web
+      targetPort: 3000
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "noty-ingress"
+  namespace: noty
+spec:
+  tls:
+  - hosts:
+    - noty.im
+    - next.noty.im
+    secretName: tls
+  rules:
+  - host: next.noty.im
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: web
+          servicePort: web
+  - host: "*.noty.im"
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: web
+          servicePort: web
