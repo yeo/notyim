@@ -10,7 +10,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma'
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 5.2.3'
 
 # TODO: Get rid of this since we use webpakckk
 # Use SCSS for stylesheets
