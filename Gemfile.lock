@@ -57,8 +57,8 @@ GEM
     bugsnag (6.11.1)
       concurrent-ruby (~> 1.0)
     builder (3.2.3)
-    bulma-rails (0.6.2)
-      sass (~> 3.2)
+    bulma-rails (0.7.5)
+      sassc (~> 2.0)
     byebug (11.0.0)
     capistrano (3.11.0)
       airbrussh (>= 1.0.0)
@@ -350,7 +350,7 @@ GEM
       unicode-display_width (~> 1.4.0)
     ruby-progressbar (1.10.0)
     safe_yaml (1.0.4)
-    sass (3.7.3)
+    sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
       rb-fsevent (~> 0.9, >= 0.9.4)
@@ -447,7 +447,7 @@ DEPENDENCIES
   awesome_print
   bootsnap
   bugsnag
-  bulma-rails (~> 0.6.2)
+  bulma-rails (~> 0.7.5)
   byebug
   capistrano
   capistrano-bundler
