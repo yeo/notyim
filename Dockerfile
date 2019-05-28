@@ -12,7 +12,7 @@ RUN \
   apt remove -y cmdtest && \
   apt-get update -qq && \
   apt-get install -y build-essential nodejs yarn && \
-  mkdir -p /root && \
+  mkdir -p /root/.ssh && \
   rm -rf /var/cache/apt/* && \
   gem install bundler && \
   ssh-keyscan github.com >> ~/.ssh/known_hosts
