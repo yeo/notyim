@@ -43,7 +43,7 @@ gem 'request_store'
 gem 'sidekiq'
 gem 'slack-notifier'
 gem 'stripe'
-gem 'twilio-ruby', '~> 4.11.1'
+gem 'twilio-ruby', '~> 5.25.3'
 gem 'whenever', require: false
 
 gem 'bootsnap', require: false
