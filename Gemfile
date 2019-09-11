@@ -20,7 +20,7 @@ gem 'sassc-rails'
 gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'bulma-rails', '~> 0.6.2'
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.9'
 gem 'webpacker', '~> 4.0'
 # gem 'webpacker', git: 'git@github.com:rails/webpacker', branch: '3-x-stable'
 
