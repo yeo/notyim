@@ -10,19 +10,15 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma'
-gem 'rails', '~> 5.2.3'
+gem 'rails', '~> 6.0.0'
 
 # TODO: Get rid of this since we use webpakckk
 # Use SCSS for stylesheets
 gem 'sassc-rails'
 
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'bulma-rails', '~> 0.6.2'
-gem 'jbuilder', '~> 2.5'
-gem 'webpacker', '~> 4.0'
-# gem 'webpacker', git: 'git@github.com:rails/webpacker', branch: '3-x-stable'
+gem 'jbuilder'
+gem 'webpacker'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
@@ -32,7 +28,7 @@ gem 'connection_pool'
 gem 'devise'
 gem 'hipchat'
 gem 'influxdb'
-gem 'kaminari', '~> 1.0'
+gem 'kaminari'
 gem 'kaminari-mongoid'
 gem 'mongoid', '~> 7.0.0'
 gem 'omniauth-github'
@@ -48,7 +44,7 @@ gem 'whenever', require: false
 
 gem 'bootsnap', require: false
 gem 'newrelic_rpm'
-gem 'rails_admin', '>= 1.4.1'
+gem 'rails_admin'
 
 group :development, :test do
   gem 'awesome_print'
