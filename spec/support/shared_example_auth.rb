@@ -1,4 +1,6 @@
-RSpec.shared_examples "require authenticated user" do |path|
+# frozen_string_literal: true
+
+RSpec.shared_examples 'require authenticated user' do |path|
   it 'redirecsts to login page' do
     get path
 

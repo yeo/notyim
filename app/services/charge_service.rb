@@ -7,17 +7,26 @@ class ChargeService
     customer = get_or_create_token(user, stripe_token)
     raise 'Missing stripe token' unless customer
 
+    charge = charge!(customer, purchase_from_item(item))
+    Cashier::PurchaseSuccessWorker.perform_async(
+      user.id.to_s,
+      team.id.to_s,
+      { type: item.type, id: item.id },
+      charge.to_hash
+    )
+
+    charge
+  end
+
+  def self.purchase_from_item(item)
     purchase = case item.type
                when 'package' then Cashier::Package.find(item.id)
                when 'subscription' then Cashier::Subscription.find(item.id)
                end
+
     raise 'Purchase not found' unless purchase
 
-    charge = charge!(customer, purchase)
-
-    Cashier::PurchaseSuccessWorker.perform_async(user.id.to_s, team.id.to_s, { type: item.type, id: item.id }, charge.to_hash)
-
-    charge
+    purchase
   end
 
   # Charge given token
@@ -65,7 +74,7 @@ class ChargeService
   end
 
   def self.charge_user
-    charge = Stripe::Charge.create(
+    Stripe::Charge.create(
       customer: customer.id,
       amount: @amount,
       description: 'NotyIM customer',

@@ -4,41 +4,41 @@ module Inspector
   class Eval
     SLOW_THRESHOLD = 9000 # in milliseconds
     class << self
-      def down(a)
-        a.status == 'down'
+      def down(obj)
+        obj.status == 'down'
       end
 
-      def up(a)
-        a.status == 'up'
+      def up(obj)
+        obj.status == 'up'
       end
 
-      def slow(a, threshold)
-        t = a.total_response_time || 0
+      def slow(obj, threshold)
+        t = obj.total_response_time || 0
         t > threshold
       end
 
-      def eq(a, b)
-        (a == b) || (a.to_s == b.to_s)
+      def eq(obj1, obj2)
+        (obj1 == obj2) || (obj1.to_s == obj2.to_s)
       end
 
-      def ne(a, b)
-        !eq(a, b)
+      def ne(obj1, obj2)
+        !eq(obj1, obj2)
       end
 
-      def gt(a, b)
-        a.to_f > b.to_f
+      def gt(obj1, obj2)
+        obj1.to_f > obj2.to_f
       end
 
-      def lt(a, b)
-        a.to_f < b.to_f
+      def lt(obj1, obj2)
+        obj1.to_f < obj2.to_f
       end
 
-      def contain(a, b)
-        a.include? b
+      def contain(obj1, obj2)
+        obj1.include? obj2
       end
 
-      def in(a, b)
-        contain(b, a)
+      def in(obj1, obj2)
+        contain(obj2, obj1)
       end
 
       def beat_started

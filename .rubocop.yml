@@ -8,10 +8,16 @@ AllCops:
     - vendor/**/*
     - tmp/**/*
     - node_modules/**/*
+    - bin/spring
+    - bin/setup
+    - bin/update
 
 
 Metrics/LineLength:
   Max: 120
+
+Metrics/ClassLength:
+  Max: 150
 
 MethodLength:
   Max: 35

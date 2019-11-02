@@ -17,3 +17,6 @@ console:
 
 docker:
 	$(d) build -t ${DOCKER_TAG} .
+
+lint:
+	bundle exec rubocop

@@ -5,12 +5,12 @@ source 'https://rubygems.org'
 ruby File.read('.ruby-version').split('@').first.strip
 
 git_source(:github) do |repo_name|
-  repo_name = '#{repo_name}/#{repo_name}' unless repo_name.include?('/')
-  'https://github.com/#{repo_name}.git'
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
+  "https://github.com/#{repo_name}.git"
 end
 
 gem 'puma'
-gem 'rails', '~> 5.2.2'
+gem 'rails', '~> 5.2.3'
 
 # TODO: Get rid of this since we use webpakckk
 # Use SCSS for stylesheets
@@ -77,9 +77,9 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'coveralls', '~> 0.7.1', require: false
   gem 'database_cleaner'
   gem 'rspec_junit_formatter'
   gem 'timecop'
   gem 'webmock', require: false
-  gem "coveralls", "~> 0.7.1", require: false
 end

@@ -22,17 +22,19 @@ module Yeller
         user = receiver.user
         raise MissingUserForReceiver unless user
 
+        content = "Your noty.im verification code: #{receiver.last_verification.code}.\n"
         # TODO: maybe queue this in future
         if user.internal_tester?
-          ::Yeller::Transporter::SmsTest.send(receiver.handler, "Your noty.im verification code: #{receiver.last_verification.code}.\n")
+          ::Yeller::Transporter::SmsTest.send(receiver.handler, content)
         else
-          ::Yeller::Transporter::Sms.send(receiver.handler, "Your noty.im verification code: #{receiver.last_verification.code}.\n")
+          ::Yeller::Transporter::Sms.send(receiver.handler, content)
         end
       end
 
       def self.acknowledge_verification(receiver)
         # TODO: Use email to save SMS cost
-        return
+        # Temp disable
+        return if true # rubocop:disable Lint/LiteralAsCondition
 
         user = receiver.user
         raise MissingUserForReceiver unless user
@@ -61,23 +63,30 @@ module Yeller
           Condition: #{incident.assertion.condition}
           Match: #{incident.assertion.operand}
         HEREDOC
-        user = incident.user
 
         log_notification(incident, content)
 
-        if user.internal_tester?
-          ::Yeller::Transporter::SmsTest.send(receiver.handler, content)
-        else
-          if TeamCreditService.enough_credit_sms?(incident.team)
-            TeamCreditService.deduct_sms!(incident.team)
-            ::Yeller::Transporter::Sms.send(receiver.handler, content)
-          else
-            e = Exception.new(message: 'no sms balance', user: user.id.to_s)
-            Bugsnag.notify e
-            return nil
-          end
-        end
+        perform_notify_incident(incident, receiver, content)
       end
+
+      def self.perform_notify_incident(incident, receiver, content)
+        return ::Yeller::Transporter::SmsTest.send(receiver.handler, content) if incident.user.internal_tester?
+
+        unless TeamCreditService.enough_credit_sms?(incident.team)
+          Bugsnag.notify(Exception.new(message: 'no sms balance', user: user.id.to_s))
+
+          return
+        end
+        send_and_deduct_credit!(incident, receiver, content)
+      end
+      private_class_method :perform_notify_incident
+
+      def self.send_and_deduct_credit!(incident, receiver, content)
+        # TODO: Use mongodb4 transaction
+        TeamCreditService.deduct_sms!(incident.team)
+        ::Yeller::Transporter::Sms.send(receiver.handler, content)
+      end
+      private_class_method :send_and_deduct_credit!
     end
   end
 end

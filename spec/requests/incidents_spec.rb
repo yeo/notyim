@@ -9,12 +9,10 @@ RSpec.describe 'Incidents', type: :request do
       expect(response).to have_http_status(200)
     end
 
-    xit 'shows all incident with flag' do
-
-    end
+    xit 'shows all incident with flag'
   end
 
   describe 'GET /incidnets/:id' do
-    it 'show detail incident'
+    xit 'show detail incident'
   end
 end

@@ -21,7 +21,7 @@ class VerificationService
 
     verification.destroy if verification && ((Time.now - verification.created_at) > 24.hour)
 
-    verification = receiver.create_verification!
+    receiver.create_verification!
     receiver.provider_class.create_verification_request!(receiver)
   end
 

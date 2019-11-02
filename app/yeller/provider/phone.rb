@@ -35,32 +35,39 @@ module Yeller
       # Create call request to notify incident
       def self.notify_incident(incident, receiver)
         # TODO: we should make sure phone # is valid to avoid waste money
-        incident = decorate(incident)
+        content, url = prepare_phone_payload(decorate(incident))
+        log_notification(incident, content)
+
+        return ::Yeller::Transporter::PhoneTest.call(receiver.handler, url) if incident.user.internal_tester?
+
+        send_and_deduct_credit!(incident, receiver, url)
+      end
+
+      def self.prepare_phone_payload(incident)
         content = <<~HEREDOC
           #{incident.short_summary}
           Service: #{incident.check.uri}
             #{incident.assertion.condition}
             is #{incident.assertion.operand}
         HEREDOC
-
-        n = log_notification(incident, content)
         url = Trinity::Utils::Url.to(:incident_voice, incident)
 
-        user = incident.user
-        if user.internal_tester?
-          ::Yeller::Transporter::PhoneTest.call(receiver.handler, url)
-        else
-          if TeamCreditService.enough_credit_voice?(incident.team)
-            TeamCreditService.deduct_voice_minute!(incident.team)
-
-            PhoneTransporterWorker.perform_async receiver.id.to_s, url
-          else
-            e = Exception.new(message: 'no voice balance', user: user.id.to_s)
-            Bugsnag.notify e
-            return nil
-          end
-        end
+        [content, url]
       end
+      private_class_method :prepare_phone_payload
+
+      def self.send_and_deduct_credit!(incident, receiver, url)
+        if TeamCreditService.enough_credit_voice?(incident.team)
+          e = Exception.new(message: 'no voice balance', user: user.id.to_s)
+          Bugsnag.notify e
+
+          return
+        end
+
+        TeamCreditService.deduct_voice_minute!(incident.team)
+        PhoneTransporterWorker.perform_async receiver.id.to_s, url
+      end
+      private_class_method :send_and_deduct_credit!
 
       # Render twilio for incident call
       def self.incident_twilio_notification(incident)

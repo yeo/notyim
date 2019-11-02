@@ -3,6 +3,9 @@
 require 'trinity'
 
 class IncidentService
+  INCIDENT_ALERT_INTERVAL = Rails.configuration.incident_notification_interval.to_i
+  DOWNLOCATION_THRESHOLD = Rails.configuration.incident_confirm_location
+
   attr_reader :incident
   def initialize(incident)
     @incident = incident
@@ -17,21 +20,7 @@ class IncidentService
   #         incident which was created
   #         false not create an incident, an ongoing aleady has
   def self.create_for_assertion(assertion, check_response)
-    incident = (assertion.partial_incidents.first || assertion.ongoing_incident)
-
-    if incident
-      # TODO: Probably do something for stil down/still happen incident notification
-      if incident.locations['open'].none? { |where| where[:ip] == check_response.from_ip }
-        incident.locations['open'] << { ip: check_response.from_ip, message: check_response.error_message || check_response.body }
-        incident.locations['open'] = incident.locations['open'].uniq { |l| l[:ip] }
-      end
-    else
-      Trinity::Semaphore.run_once [assertion.check.id.to_s, assertion.id.to_s] do
-        incident = open_incident(assertion, check_response)
-      end
-    end
-
-    return unless incident
+    return unless (incident = create_incident_or_attach_down_location(assertion, check_response))
 
     if (incident.locations['open'].try(:length) || 0) >= Rails.configuration.incident_confirm_location &&
        (Time.now - incident.created_at >= 2.minute)
@@ -39,11 +28,32 @@ class IncidentService
     end
     incident.save!
 
-    if incident.open?
-      Trinity::Semaphore.run_once ['alert', 'open', assertion.check.id.to_s, incident.id.to_s], Rails.configuration.incident_notification_interval.to_i do
-        notify(incident, Incident::STATUS_OPEN)
-      end
-    end
+    notify_open_incident(incident)
+
+    incident
+  end
+
+  def notify_open_incident(incident)
+    return unless incident.open?
+
+    action = ['alert', 'open', assertion.check.id.to_s, incident.id.to_s]
+    Trinity::Semaphore.run_once(action, INCIDENT_ALERT_INTERVAL) { notify(incident, Incident::STATUS_OPEN) }
+  end
+
+  def self.create_incident_or_attach_down_location(assertion, check_response)
+    incident = (assertion.partial_incidents.first || assertion.ongoing_incident)
+
+    return attach_down_location_to_incident(incident, check_response) if incident
+
+    action = [assertion.check.id.to_s, assertion.id.to_s]
+    Trinity::Semaphore.run_once(action) { open_incident(assertion, check_response) }
+  end
+
+  def self.attach_down_location_to_incident(incident, check_response)
+    # TODO: Probably do something for stil down/still happen incident notification
+    down_location = { ip: check_response.from_ip, message: check_response.error_message || check_response.body }
+    incident.locations['open'] << down_location
+    incident.locations['open'] = incident.locations['open'].uniq { |l| l[:ip] }
 
     incident
   end
@@ -55,38 +65,55 @@ class IncidentService
   # @param Assertion assertion
   # @param CheckResponse check_response
   def self.close_for_assertion(assertion, check_response)
-    unless (partial_incidents = assertion.partial_incidents).empty?
-      # Since this is partial incident, just delete them
-      partial_incidents.each(&:destroy)
-      return
-    end
+    return if close_partial_incident(assertion)
 
     # Check doesn't match, and we have an on-going incident, this mean we can close it
-    if incident = assertion.ongoing_incident
-      if incident.locations['close'].none? { |where| where[:ip] == check_response.from_ip }
-        incident.locations['close'] << { ip: check_response.from_ip, message: check_response.error_message }
-      end
-    else
-      return
+    incident = assertion.ongoing_incident
+    return unless incident
+
+    # if incident.locations['close'].none? { |where| where[:ip] == check_response.from_ip }
+    unless close_incident_from_ip?(incident, check_response.from_ip)
+      incident.locations['close'] << { ip: check_response.from_ip, message: check_response.error_message }
     end
 
-    open_locations = incident.locations['open'].map { |l| l[:ip].strip }
-    close_locations = incident.locations['close'].map { |l| l[:ip].strip }
-
-    # the best
-    if (open_locations - close_locations).empty? || (incident.locations['close'].try(:length) || 0) >= Rails.configuration.incident_confirm_location
-      close_incident incident
-    end
-
-    if incident.close?
-      Trinity::Semaphore.run_once ['alert', 'close', assertion.check.id.to_s, incident.id.to_s], Rails.configuration.incident_notification_interval.to_i do
-        notify incident, Incident::STATUS_CLOSE
-      end
-    end
-
-    incident.save!
+    check_and_close_incident!(incident, assertion)
 
     incident
+  end
+
+  def self.check_and_close_incident!(incident, assertion)
+    down_locations = find_ip_of_down_locations(incident)
+    close_incident!(incident) if down_locations.length >= DOWNLOCATION_THRESHOLD
+    alert_close_incident(incident, assertion) unless incident.close?
+
+    incident.close?
+  end
+
+  def self.find_ip_of_down_locations(incident)
+    down_location = incident.locations['open'].map { |l| l[:ip].strip } -
+                    incident.locations['close'].map { |l| l[:ip].strip }
+    down_location = incident.locations['close'] if down_location.empty?
+
+    down_location
+  end
+
+  def self.alert_close_incident(incident, assertion)
+    action = ['alert', 'close', assertion.check.id.to_s, incident.id.to_s]
+    Trinity::Semaphore.run_once(action, INCIDENT_ALERT_INTERVAL) { notify incident, Incident::STATUS_CLOSE }
+  end
+
+  def self.close_partial_incident(assertion)
+    partial_incidents = assertion.partial_incidents
+    return false unless partial_incidents.present?
+
+    # Since this is partial incident, just delete them
+    partial_incidents.each(&:destroy)
+
+    true
+  end
+
+  def self.close_incident_from_ip?(incident, ip)
+    incident.locations['close'].any? { |where| where[:ip] == ip }
   end
 
   # Create an open incident.
@@ -103,17 +130,17 @@ class IncidentService
       locations: { open: [{ ip: check_result.from_ip, message: check_result.error_message }], close: [] }
     )
 
-    incident.assertion = assertion
-    incident.save!
-
-    incident
+    incident.tap do
+      incident.assertion = assertion
+      incident.save!
+    end
   end
 
   # Close an incident
   #
   # Set status of incident to close. Don't trigger any notification flow
   # @param Incident incident
-  def self.close_incident(incident)
+  def self.close_incident!(incident)
     incident.status = Incident::STATUS_CLOSE
     incident.closed_at = Time.now.utc
     incident.save!

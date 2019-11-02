@@ -35,14 +35,12 @@ RSpec.describe 'Checks', type: :request do
       check
       c2 = FactoryBot.create(:check, user: user2, team: user2.teams.first, uri: uri)
 
-      get "/checks"
+      get '/checks'
       expect(response).to have_http_status(200)
       expect(response.body).to_not include(c2.uri)
     end
 
-    xit 'shows team\'s check' do
-
-    end
+    xit 'shows team\'s check'
   end
 
   describe 'GET /checks/:id' do

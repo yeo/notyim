@@ -22,9 +22,10 @@ class TeamService
 
   def self.find_team_from_host(domain)
     match = /team-([^\.]+)\.noty.*/.match domain
-    if match && (team_id = match[1])
-      Team.find team_id
-    end
+
+    return unless match && (team_id = match[1])
+
+    Team.find(team_id)
   end
 
   # Find a list of team that user belongs to

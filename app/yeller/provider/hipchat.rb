@@ -18,17 +18,13 @@ module Yeller
       # @param Receiver receiver
       # @param Incident incident
       def self.notify_incident(incident, receiver)
-        client = HipChat::Client.new(receiver.handler, api_version: 'v2')
-        incident = decorate(incident)
-        # #{incident.short_summary_plain}
-        body = <<~HEREDOC
-          #{incident.subject}
-           Service: #{incident.check.uri}
-          Incident Detail: #{incident.url}
-           Reason: #{incident.reason}
-        HEREDOC
+        notification = Exception.new(
+          message: 'Remove HipChat Usage',
+          user: receiver.user.id.to_s,
+          incident: incident.id.to_s
+        )
 
-        client[receiver.name].send("noty - [#{incident.status} alert]", body, message_format: 'text', color: incident.open? ? 'red' : 'green')
+        Bugsnag.notify(notification)
       end
     end
   end
