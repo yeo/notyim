@@ -297,7 +297,7 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.0)
       ffi (~> 1.0)
-    redis (3.3.5)
+    redis (4.1.3)
     redis-actionpack (5.1.0)
       actionpack (>= 4.0, < 7)
       redis-rack (>= 1, < 3)
@@ -463,7 +463,7 @@ DEPENDENCIES
   puma
   rails (~> 6.0.0)
   rails_admin
-  redis (~> 3.2)
+  redis (~> 4.1)
   redis-rails
   request_store
   rspec-rails
