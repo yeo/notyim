@@ -15,12 +15,14 @@ Rails.application.configure do
   config.consider_all_requests_local = true
 
   # Enable/disable caching. By default caching is disabled.
-  if Rails.root.join('tmp/caching-dev.txt').exist?
+  # Run rails dev:cache to toggle caching.
+  if Rails.root.join('tmp', 'caching-dev.txt').exist?
     config.action_controller.perform_caching = true
+    config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :memory_store
     config.public_file_server.headers = {
-      'Cache-Control' => 'public, max-age=172800'
+      'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
   else
     config.action_controller.perform_caching = false
@@ -29,6 +31,7 @@ Rails.application.configure do
   end
 
   config.active_job.queue_adapter = :sidekiq
+
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
@@ -48,30 +51,10 @@ Rails.application.configure do
   # Suppress logger output for asset requests.
   config.assets.quiet = true
 
-  # Raises error for missing translations
+  # Raises error for missing translations.
   # config.action_view.raise_on_missing_translations = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
-
-  # Custom configuration
-  # Those setting isn't on Rails, we store theme here to access them later on
-  # Those need to take care when we update Rails
-  # TODO: Update
-  config.action_mailer.delivery_method = :smtp
-  config.local_proxy_public = ENV.fetch('NGROK', nil)
-  # How many location need to match in order to confirm that an incident has occured
-  config.incident_confirm_location = 1
-  config.incident_notification_interval = 10.minutes
-  config.telegram_bot = {
-    name: 'notydevbot'
-  }
-  config.slack_bot = {
-    scope: 'bot',
-    client_id: '51439348069.157091434678',
-    redirect_uri: 'http://127.0.0.1:3000/bot/slack',
-    client_secret: ENV.fetch('SLACK_CLIENT_SECRET', nil)
-  }
-  # End custom configuration
 end

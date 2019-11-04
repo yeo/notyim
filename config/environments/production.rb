@@ -16,20 +16,19 @@ Rails.application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
+  # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
+  # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
+  # config.require_master_key = true
+
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
-  # Compress JavaScripts and CSS.
-  # We disabled js compressor because it makes js undetermine between different
-  # servers. We also server thing via gzip, no reason to waste time here
-  # config.assets.js_compressor = :uglifier
+  # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
-
-  # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   config.action_controller.asset_host = 'https://assets.noty.im'
@@ -38,7 +37,7 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
 
-  # Mount Action Cable outside main process or domain
+  # Mount Action Cable outside main process or domain.
   # config.action_cable.mount_path = nil
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
@@ -57,9 +56,11 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
   config.cache_store = :redis_store, ENV['REDIS_CACHE'] || 'redis://127.0.0.1:6379/1/cache', { expires_in: 90.minutes }
 
-  # Use a real queuing backend for Active Job (and separate queues per environment)
+  # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
-  # config.active_job.queue_name_prefix = "trinity_#{Rails.env}"
+  config.active_job.queue_name_prefix = "trinity_production"
+  config.active_job.queue_adapter = :sidekiq
+
   config.action_mailer.perform_caching = false
   config.action_mailer.default_url_options = {
     host: 'noty.im'
@@ -86,26 +87,27 @@ Rails.application.configure do
   if ENV['RAILS_LOG_TO_STDOUT'].present?
     logger           = ActiveSupport::Logger.new(STDOUT)
     logger.formatter = config.log_formatter
-    config.logger = ActiveSupport::TaggedLogging.new(logger)
+    config.logger    = ActiveSupport::TaggedLogging.new(logger)
   end
 
-  config.active_job.queue_adapter = :sidekiq
-
-  # Custom configuration
-  # Those setting isn't on Rails, we store theme here to access them later on
-  # Those need to take care when we update Rails
-  config.action_mailer.delivery_method = :smtp
-  # How many location need to match in order to confirm that an incident has occured
-  config.incident_confirm_location = 3
-  config.incident_notification_interval = 30.minutes
-  config.telegram_bot = {
-    name: 'notyimbot'
-  }
-  config.slack_bot = {
-    scope: 'bot',
-    client_id: '51439348069.132808101893',
-    redirect_uri: "https://#{config.action_mailer.default_url_options[:host]}/bot/slack",
-    client_secret: ENV.fetch('SLACK_CLIENT_SECRET')
-  }
-  # End custom configuration
+  # Inserts middleware to perform automatic connection switching.
+  # The `database_selector` hash is used to pass options to the DatabaseSelector
+  # middleware. The `delay` is used to determine how long to wait after a write
+  # to send a subsequent read to the primary.
+  #
+  # The `database_resolver` class is used by the middleware to determine which
+  # database is appropriate to use based on the time delay.
+  #
+  # The `database_resolver_context` class is used by the middleware to set
+  # timestamps for the last write to the primary. The resolver uses the context
+  # class timestamps to determine how long to wait before reading from the
+  # replica.
+  #
+  # By default Rails will store a last write timestamp in the session. The
+  # DatabaseSelector middleware is designed as such you can define your own
+  # strategy for connection switching and pass that into the middleware through
+  # these configuration options.
+  # config.active_record.database_selector = { delay: 2.seconds }
+  # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
+  # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
 end
