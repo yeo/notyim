@@ -57,4 +57,23 @@ Rails.application.configure do
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
+
+  # Custom configuration
+  # Those setting isn't on Rails, we store theme here to access them later on
+  # Those need to take care when we update Rails
+  # TODO: Update
+  config.local_proxy_public = ENV.fetch('NGROK', nil)
+  # How many location need to match in order to confirm that an incident has occured
+  config.incident_confirm_location = 1
+  config.incident_notification_interval = 10.minutes
+  config.telegram_bot = {
+    name: 'notydevbot'
+  }
+  config.slack_bot = {
+    scope: 'bot',
+    client_id: '51439348069.157091434678',
+    redirect_uri: 'http://127.0.0.1:3000/bot/slack',
+    client_secret: ENV.fetch('SLACK_CLIENT_SECRET', nil)
+  }
+  # End custom configuration
 end

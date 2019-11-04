@@ -110,4 +110,22 @@ Rails.application.configure do
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
   # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+
+  # Custom configuration
+  # Those setting isn't on Rails, we store theme here to access them later on
+  # Those need to take care when we update Rails
+  config.action_mailer.delivery_method = :smtp
+  # How many location need to match in order to confirm that an incident has occured
+  config.incident_confirm_location = 3
+  config.incident_notification_interval = 30.minutes
+  config.telegram_bot = {
+    name: 'notyimbot'
+  }
+  config.slack_bot = {
+    scope: 'bot',
+    client_id: '51439348069.132808101893',
+    redirect_uri: "https://#{config.action_mailer.default_url_options[:host]}/bot/slack",
+    client_secret: ENV.fetch('SLACK_CLIENT_SECRET')
+  }
+  # End custom configuration
 end
