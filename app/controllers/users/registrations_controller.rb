@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Users
+module Users
   class RegistrationsController < Devise::RegistrationsController
     layout 'dashboard', only: [:edit]
   end
