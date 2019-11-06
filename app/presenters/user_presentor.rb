@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
-class UserPresenter < ApplicationPresenter
+class UserPresentor < ApplicationPresenter
   def plan; end
 end

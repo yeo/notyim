@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
-require 'yeller'
+require 'yeller/processor'
+require 'yeller/provider'
 require 'mongoid/verifiable'
 
 class Receiver
@@ -22,7 +23,7 @@ class Receiver
   before_create :set_verification
 
   validates_presence_of :provider, :name, :handler
-  validates :provider, inclusion: { in: Yeller::Provider.providers.keys }
+  validates :provider, inclusion: { in: ::Yeller::Provider.providers.keys }
 
   index({ provider: 1 }, background: true)
   index({ handler: 1, user_id: 1 }, background: true)
@@ -33,7 +34,7 @@ class Receiver
 
   # Return provider class that hold utilities method for this provider
   def provider_class
-    @provider_class ||= Yeller::Provider.class_of(provider)
+    @provider_class ||= ::Yeller::Provider.class_of(provider)
   end
 
   # Callback to set verification class depend on provider
