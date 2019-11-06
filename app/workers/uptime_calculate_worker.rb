@@ -27,8 +27,8 @@ class UptimeCalculateWorker
 
     begin
       check.save!
-    rescue Mongoid::Errors::Validations => exception
-      Bugsnag.notify(exception) do |report|
+    rescue Mongoid::Errors::Validations => e
+      Bugsnag.notify(e) do |report|
         # Adjust the severity of this error
         report.severity = 'error'
 

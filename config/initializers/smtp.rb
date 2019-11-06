@@ -7,5 +7,5 @@ Rails.application.config.action_mailer.smtp_settings = {
   port: 587,
   domain: ENV['SMTP_DOMAIN'] || Rails.application.credentials[:SMTP_DOMAIN],
   user_name: ENV['SMTP_USER_NAME'] || Rails.application.credentials[:SMTP_USER_NAME],
-  password: ENV['SMTP_PASSWORD'] || Rails.application.credentials[:SMTP_PASSWORD],
+  password: ENV['SMTP_PASSWORD'] || Rails.application.credentials[:SMTP_PASSWORD]
 }

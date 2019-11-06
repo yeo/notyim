@@ -15,7 +15,7 @@ RSpec.describe 'checks/edit', type: :view do
   it 'renders the edit check form' do
     render
 
-    expect(rendered).to match(%r{https://status-#{check.id.to_s}\.noty\.im})
+    expect(rendered).to match(%r{https://status-#{check.id}\.noty\.im})
     assert_select 'a', check.name
     assert_select 'a[href=?]', check_path(@check), 'Destroy!'
     assert_select 'form[action=?][method=?]', check_path(@check), 'post' do
