@@ -12,10 +12,6 @@ end
 gem 'puma'
 gem 'rails', '~> 6.0.0'
 
-# TODO: Get rid of this since we use webpakckk
-# Use SCSS for stylesheets
-gem 'sassc-rails'
-
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'
 gem 'webpacker'

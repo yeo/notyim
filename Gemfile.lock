@@ -469,7 +469,6 @@ DEPENDENCIES
   rspec-rails
   rspec_junit_formatter
   rubocop
-  sassc-rails
   sidekiq
   slack-notifier
   spring
