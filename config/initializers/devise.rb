@@ -275,7 +275,12 @@ Devise.setup do |config|
   # When using OmniAuth, Devise cannot automatically set OmniAuth path,
   # so you need to do it manually. For the users scope, it would be:
   # config.omniauth_path_prefix = '/my_engine/users/auth'
-  config.omniauth :github, ENV['GITHUB_CLIENT_ID'], ENV['GITHUB_CLIENT_SECRET'], scope: 'user:email'
-  config.omniauth :twitter, ENV['TWITTER_CLIENT_ID'], ENV['TWITTER_CLIENT_SECRET']
+  config.omniauth :github,
+                  ENV['GITHUB_CLIENT_ID'] || Rails.application.credentials[:GITHUB_CLIENT_ID],
+                  ENV['GITHUB_CLIENT_SECRET'] || Rails.application.credentials[:GITHUB_CLIENT_SECRET],
+                  scope: 'user:email'
+  config.omniauth :twitter,
+                  ENV['TWITTER_CLIENT_ID'] || Rails.application.credentials[:TWITTER_CLIENT_ID],
+                  ENV['TWITTER_CLIENT_SECRET'] || Rails.application.credentials[:TWITTER_CLIENT_SECRET]
 end
 # rubocop:enable Metrics/LineLength
