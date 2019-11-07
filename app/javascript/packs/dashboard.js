@@ -13,5 +13,21 @@ import "regenerator-runtime/runtime";
 require.context('../images', true);
 import '../src/application.scss';
 import * as Chartist from 'chartist';
+
+import {
+  Elm as AssertEditor
+} from '../AssertEditor';
+
+import {
+  Elm as TeamPicker
+} from '../TeamPicker'
+
+
 window.Chartist = Chartist;
 
+if (typeof window.Elm  === "undefined") {
+  window.Elm = {}
+}
+
+window.Elm.AssertEditor = AssertEditor.AssertEditor
+window.Elm.TeamPicker = TeamPicker.TeamPicker
