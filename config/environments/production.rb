@@ -124,7 +124,7 @@ Rails.application.configure do
     scope: 'bot',
     client_id: '51439348069.132808101893',
     redirect_uri: "https://#{config.action_mailer.default_url_options[:host]}/bot/slack",
-    client_secret: ENV.fetch('SLACK_CLIENT_SECRET')
+    client_secret: ENV.fetch('SLACK_CLIENT_SECRET', Rails.application.credentials[:SLACK_CLIENT_SECRET])
   }
   # End custom configuration
 end
