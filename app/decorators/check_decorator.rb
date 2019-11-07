@@ -85,7 +85,7 @@ class CheckDecorator < SimpleDelegator
     end
   end
 
-  def format_uptime(uptime)
+  def format_uptime(uptime, shift)
     case uptime
     when 0
       '100% down'
@@ -118,7 +118,7 @@ class CheckDecorator < SimpleDelegator
   end
 
   def summary_uptime(uptime, shift)
-    summary = format_uptime(uptime)
+    summary = format_uptime(uptime, shift)
     stat = format_stat(uptime)
 
     OpenStruct.new(time: shift, up: uptime, summary: stat, desc: "#{shift.strftime '%D'}: #{summary}", stat: stat)
