@@ -2,8 +2,11 @@ package gaia
 
 import (
 	"fmt"
+	"log"
 	"net/http"
+	"sync"
 
+	"github.com/gorilla/websocket"
 	"github.com/labstack/echo"
 	"github.com/orcaman/concurrent-map"
 
@@ -13,10 +16,10 @@ import (
 
 // Server is main struct that hold gaia server component
 type Server struct {
-	Config *Config
 	*echo.Echo
+	Config   *Config
 	DBClient *db.Client
-	Checks   *cmap.ConcurrentMap
+	Syncer   *Syncer
 }
 
 // SetupRoute configures router layer
@@ -30,24 +33,52 @@ func (s *Server) SetupRoute() {
 	})
 
 	s.Echo.GET("/checks", func(c echo.Context) error {
-		return c.JSON(http.StatusOK, s.Checks)
+		return c.JSON(http.StatusOK, s.Syncer.Checks)
+	})
+
+	var upgrader = websocket.Upgrader{}
+
+	s.Echo.GET("/ws/:name", func(c echo.Context) error {
+		name := c.Param("name")
+
+		conn, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
+		if err != nil {
+			return err
+		}
+
+		// Store this connection into our agent list
+		s.Syncer.AddAgent(name, conn)
+
+		defer func() {
+			// When we close we will make sure we delete the agent first
+			s.Syncer.DeleteAgent(name)
+			conn.Close()
+		}()
+
+		// At this point, connection is succesful. We will started to copy checks
+		go s.Syncer.PushChecksToAgent(name)
+
+		// Keep listening for messge from client like Check Result push
+		for {
+			mt, message, err := conn.ReadMessage()
+			if err != nil {
+				return err
+			}
+			log.Printf("Receive websocket message from client: %s %s", mt, message)
+		}
 	})
 }
 
 // SetupChecker starts checker process
 func (s *Server) SetupChecker() {
+	fmt.Println("Setup Checker")
 	repo := dao.New(s.DBClient, s.Config.MongoDBName)
 
-	var subscribe = func(c *dao.Check) {
-		fmt.Println("Hook up", c)
-		s.Checks.Set(c.ID.Hex(), c)
-	}
-	go repo.ListenToChecks(subscribe)
+	fmt.Println("Register mongodb changestream subscriber")
+	go repo.ListenToChecks(s.Syncer.DbListener)
 
-	fmt.Println("Starting checker")
-
-	s.Checks, _ = repo.GetChecks()
-	fmt.Println("Loaded", s.Checks.Count(), "checks")
+	fmt.Println("Building checks database")
+	s.Syncer.LoadAllChecks(repo)
 }
 
 // Run officially starts our server
@@ -60,14 +91,18 @@ func (s *Server) Run() {
 func InitServer() {
 	fmt.Println("Personification of the Earth")
 
-	e := echo.New()
-
 	config := LoadConfig()
+	checks := cmap.New()
+	syncer := &Syncer{
+		Agents: &sync.Map{},
+		Checks: &checks,
+	}
 
 	server := &Server{
-		Echo:     e,
+		Echo:     echo.New(),
 		Config:   config,
 		DBClient: db.Connect(config.MongoURI),
+		Syncer:   syncer,
 	}
 
 	server.SetupRoute()

@@ -14,6 +14,22 @@ import (
 	"github.com/notyim/gaia/db"
 )
 
+type OperationType int
+
+const (
+	Insert OperationType = iota
+	Replace
+	Delete
+)
+
+func (o OperationType) FromString(s string) OperationType {
+	return map[string]OperationType{
+		"insert":  Insert,
+		"replace": Replace,
+		"delete":  Delete,
+	}[s]
+}
+
 type Repo struct {
 	client *mongo.Client
 	dbName string
@@ -54,7 +70,7 @@ func (r *Repo) GetChecks() (*cmap.ConcurrentMap, error) {
 			log.Fatal(err)
 		}
 
-		checks.Set(result.ID.Hex(), result)
+		checks.Set(result.ID.Hex(), &result)
 	}
 
 	if err := cur.Err(); err != nil {
@@ -68,7 +84,9 @@ func RecordCheckResult() {
 
 }
 
-func (r *Repo) ListenToChecks(subscribe func(*Check)) {
+type CheckListener func(OperationType, *Check)
+
+func (r *Repo) ListenToChecks(subscribe CheckListener) {
 	collection := r.client.Database(r.dbName).Collection("checks")
 	ctx := context.Background()
 
@@ -92,11 +110,13 @@ func (r *Repo) ListenToChecks(subscribe func(*Check)) {
 			log.Println(cs.Current)
 
 			cs.Decode(&change)
-			log.Println("Get change", change)
+			log.Printf("Get change %v\n", change)
 			if err != nil {
 				log.Fatal("Fail 2 decode", err)
 			}
-			subscribe(&change.FullDocument)
+
+			var o OperationType
+			subscribe(o.FromString(change.OperationType), &change.FullDocument)
 		}
 	}
 }
