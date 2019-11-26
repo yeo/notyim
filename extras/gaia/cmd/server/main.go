@@ -5,5 +5,6 @@ import (
 )
 
 func main() {
-	gaia.InitServer()
+	s := gaia.InitServer()
+	s.Run()
 }

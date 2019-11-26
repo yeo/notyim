@@ -17,9 +17,10 @@ import (
 // Server is main struct that hold gaia server component
 type Server struct {
 	*echo.Echo
-	Config   *Config
-	DBClient *db.Client
-	Syncer   *Syncer
+	Config    *Config
+	DBClient  *db.Client
+	Syncer    *Syncer
+	Scheduler *Scheduler
 }
 
 // SetupRoute configures router layer
@@ -81,6 +82,10 @@ func (s *Server) SetupChecker() {
 	s.Syncer.LoadAllChecks(repo)
 }
 
+func (s *Server) SetupSchedule() {
+	go s.Scheduler.Run(s.Syncer)
+}
+
 // Run officially starts our server
 func (s *Server) Run() {
 	s.Echo.Logger.Fatal(s.Echo.Start(":28300"))
@@ -88,7 +93,7 @@ func (s *Server) Run() {
 
 // InitServer is main entrypoint into system
 // Thing start from here. It glues components
-func InitServer() {
+func InitServer() *Server {
 	fmt.Println("Personification of the Earth")
 
 	config := LoadConfig()
@@ -99,13 +104,16 @@ func InitServer() {
 	}
 
 	server := &Server{
-		Echo:     echo.New(),
-		Config:   config,
-		DBClient: db.Connect(config.MongoURI),
-		Syncer:   syncer,
+		Echo:      echo.New(),
+		Config:    config,
+		DBClient:  db.Connect(config.MongoURI),
+		Syncer:    syncer,
+		Scheduler: NewScheduler(),
 	}
 
 	server.SetupRoute()
 	server.SetupChecker()
-	server.Run()
+	server.SetupSchedule()
+
+	return server
 }

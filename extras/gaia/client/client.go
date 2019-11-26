@@ -1,6 +1,7 @@
 package client
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/url"
@@ -9,7 +10,15 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
+
+	"github.com/notyim/gaia"
 )
+
+func InitClient() *Agent {
+	a := New()
+
+	return a
+}
 
 func New() *Agent {
 	hostname, _ := os.Hostname()
@@ -25,7 +34,14 @@ type Agent struct {
 }
 
 func (a *Agent) Run() {
+	go a.StartScheduler()
 	a.SyncState()
+}
+
+// StartScheduler initialize all checkers
+// Each checker usually run on 4 go-routine which regularly get job from server to process
+func (a *Agent) StartScheduler() {
+
 }
 
 func (a *Agent) SyncState() {
@@ -41,7 +57,7 @@ func (a *Agent) SyncState() {
 	}
 	defer c.Close()
 
-	ticker := time.NewTicker(time.Second)
+	ticker := time.NewTicker(60 * time.Second)
 	defer ticker.Stop()
 
 	done := make(chan struct{})
@@ -55,18 +71,22 @@ func (a *Agent) SyncState() {
 				// Retrying server connection
 				return
 			}
-			log.Printf("Message from server: %s", message)
+			log.Printf("Message from server %s", message)
 		}
 	}()
 
+	pingCmd := gaia.NewEventPing()
+	pingPayload, _ := json.Marshal(pingCmd)
 	for {
 		select {
 		case <-done:
 			return
 		case t := <-ticker.C:
-			err := c.WriteMessage(websocket.TextMessage, []byte(t.String()))
+			log.Println("Ticker at", t)
+			err := c.WriteMessage(websocket.TextMessage, pingPayload)
 			if err != nil {
-				log.Println("write:", err)
+				// TODO: Impelement retry and re-connect
+				log.Println("Write Error:", err)
 				return
 			}
 		case <-interrupt:

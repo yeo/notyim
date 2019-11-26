@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	agent := client.New()
+	agent := client.InitClient()
 
 	agent.Run()
 }
