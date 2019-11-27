@@ -1,6 +1,8 @@
 package gaia
 
 import (
+	"time"
+
 	"github.com/notyim/gaia/dao"
 )
 
@@ -20,18 +22,6 @@ const (
 	EventTypePing = iota + 2000
 )
 
-type Event interface {
-	visit(v EventVisitor)
-}
-
-type EventVisitor struct {
-	visitInsert  func(*EventCheckInsert)
-	visitReplace func(*EventCheckReplace)
-	visitDelete  func(*EventCheckDelete)
-	visitResull  func(*EventCheckResult)
-	visitExecute func(*EventRunCheck)
-}
-
 type EventCheckInsert struct {
 	EventType EventType
 	*dao.Check
@@ -48,6 +38,8 @@ type EventCheckDelete struct {
 }
 
 type EventCheckResult struct {
+	EventType EventType
+	ID        string
 }
 
 type EventRunCheck struct {
@@ -57,6 +49,7 @@ type EventRunCheck struct {
 
 type EventPing struct {
 	EventType EventType
+	At        time.Time
 }
 
 func NewEventPing() *EventPing {

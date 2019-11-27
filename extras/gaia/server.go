@@ -61,11 +61,24 @@ func (s *Server) SetupRoute() {
 
 		// Keep listening for messge from client like Check Result push
 		for {
-			mt, message, err := conn.ReadMessage()
+			_, message, err := conn.ReadMessage()
 			if err != nil {
 				return err
 			}
-			log.Printf("Receive websocket message from client: %s %s", mt, message)
+
+			var evt GenericEvent
+			if err = evt.UnmarshalJSON(message); err != nil {
+				log.Println("Cannot unmarshalJSON")
+				continue
+			}
+
+			switch evt.EventType {
+			case EventTypePing:
+				log.Printf("Agent %s ping", name)
+			case EventTypeCheckResult:
+				log.Printf("Agent check result %v", evt.EventCheckResult)
+			}
+
 		}
 	})
 }
@@ -104,8 +117,8 @@ func InitServer() *Server {
 	}
 
 	server := &Server{
-		Echo:      echo.New(),
 		Config:    config,
+		Echo:      echo.New(),
 		DBClient:  db.Connect(config.MongoURI),
 		Syncer:    syncer,
 		Scheduler: NewScheduler(),
