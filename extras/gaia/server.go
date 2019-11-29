@@ -1,6 +1,7 @@
 package gaia
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -79,7 +80,13 @@ func (s *Server) SetupRoute() {
 			case EventTypePing:
 				log.Printf("Agent %s ping", name)
 			case EventTypeCheckHTTPResult:
-				log.Printf("Agent check result %v", evt.EventCheckHTTPResult)
+				log.Printf("Agent check result %s %d", evt.EventCheckHTTPResult.ID, evt.EventCheckHTTPResult.Result)
+				payload, err := json.Marshal(evt.EventCheckHTTPResult.Result)
+				if err != nil {
+					log.Printf("Cannot encode json %v", err)
+					continue
+				}
+				s.Queue.Enqueue("CheckToCreateIncidentWorker", []interface{}{evt.EventCheckHTTPResult.ID, string(payload)}, "check")
 			}
 
 		}

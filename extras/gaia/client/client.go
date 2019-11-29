@@ -203,7 +203,7 @@ func (a *Agent) SyncState() {
 						ContentLength: res.ContentLength,
 						Header:        res.Header,
 						Timing:        result.ToCheckTiming(),
-						Body:          body,
+						Body:          string(body),
 					}
 
 					log.Printf("Response metric %v\n", metric)
@@ -213,6 +213,8 @@ func (a *Agent) SyncState() {
 						EventType: gaia.EventTypeCheckHTTPResult,
 						ID:        check.ID.Hex(),
 						Result:    metric,
+						Agent:     a.Name,
+						Region:    "US",
 					}
 					resultPayload, _ := json.Marshal(runResult)
 					a.PushToServer(resultPayload)

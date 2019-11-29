@@ -14,18 +14,8 @@ import (
 	"time"
 )
 
-type CheckTiming struct {
-	NameLookup    time.Duration `json:"name_lookup"`
-	Connect       time.Duration `json:"connect"`
-	TLSHandshake  time.Duration `json:"tls_handshake"`
-	StartTransfer time.Duration `json:"start_transfer"`
-	Total         time.Duration `json:"total"`
-	// Redirect
-	// Someday we will implment redirect following maybe?
-}
-
 type CheckResponse struct {
-	Body          []byte       `json:"body"`
+	Body          string       `json:"body"`
 	RunAt         time.Time    `json:"run_at"`
 	Timing        *CheckTiming `json:"timing"`
 	Header        http.Header  `json:"headers"`
@@ -34,6 +24,16 @@ type CheckResponse struct {
 	ContentLength int64        `json:"content_length"` // length of body
 	StatusCode    int          `json:"status_code"`    // status code
 	Status        string       `json:"status"`         // status code
+}
+
+type CheckTiming struct {
+	NameLookup    time.Duration `json:"name_lookup"`
+	Connect       time.Duration `json:"connect"`
+	TLSHandshake  time.Duration `json:"tls_handshake"`
+	StartTransfer time.Duration `json:"start_transfer"`
+	Total         time.Duration `json:"total"`
+	// Redirect
+	// Someday we will implment redirect following maybe?
 }
 
 // Result stores httpstat info.

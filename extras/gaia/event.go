@@ -42,6 +42,8 @@ type EventCheckHTTPResult struct {
 	EventType EventType
 	ID        string
 	Result    *httpscanner.CheckResponse
+	Agent     string
+	Region    string
 }
 
 type EventRunCheck struct {
