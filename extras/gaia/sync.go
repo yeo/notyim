@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"sync"
+	"time"
 
 	"github.com/gorilla/websocket"
 	"github.com/orcaman/concurrent-map"
@@ -18,19 +19,23 @@ type ScheduleChecks interface {
 
 // Syncer maintenances state between server and agent. Whenever checks are updated, sync replicate the state to agent
 type Syncer struct {
-	Checks *cmap.ConcurrentMap
-	Agents *sync.Map
+	Checks     *cmap.ConcurrentMap
+	Agents     *sync.Map
+	TotalAgent int
 }
 
 func (s *Syncer) AddAgent(name string, conn *websocket.Conn) {
 	log.Println("Agent connected", name)
 	s.Agents.Store(name, conn)
+	s.TotalAgent += 1
+	log.Println("Connected agent: ", s.TotalAgent)
 }
 
 func (s *Syncer) DeleteAgent(name string) {
 	log.Println("Agent disconnected", name)
 	s.Agents.Delete(name)
-	log.Println("Log Connected agent")
+	s.TotalAgent -= 1
+	log.Println("Connected agent: ", s.TotalAgent)
 	s.Agents.Range(func(name, conn interface{}) bool {
 		log.Println(" * ", name)
 		return true
@@ -115,14 +120,17 @@ func (s *Syncer) PushChecksToAgent(name string) {
 		}
 		total += 1
 	}
-	log.Println("Pushed checks to agent:", name, total)
+	log.Println("Pushed checks to agent", name, total)
 }
 
 func (s *Syncer) ScheduleChecks() {
 	s.Agents.Range(func(name, conn interface{}) bool {
 		agent := name.(string)
 
+		to := time.Now()
+		i := 0
 		for _, check := range s.Checks.Items() {
+			i++
 			command := EventRunCheck{
 				EventType: EventTypeRunCheck,
 				ID:        check.(*dao.Check).ID.Hex(),
@@ -132,6 +140,7 @@ func (s *Syncer) ScheduleChecks() {
 				s.PushMessageToAgent(agent, payload)
 			}
 		}
+		log.Printf("Push %d messages in %v\n", i, time.Now().Sub(to))
 
 		return true
 	})

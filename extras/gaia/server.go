@@ -12,6 +12,7 @@ import (
 
 	"github.com/notyim/gaia/dao"
 	"github.com/notyim/gaia/db"
+	"github.com/notyim/gaia/sidekiq"
 )
 
 // Server is main struct that hold gaia server component
@@ -21,6 +22,8 @@ type Server struct {
 	DBClient  *db.Client
 	Syncer    *Syncer
 	Scheduler *Scheduler
+	// TODO: Refactor queue into interface
+	Queue *sidekiq.Client
 }
 
 // SetupRoute configures router layer
@@ -75,8 +78,8 @@ func (s *Server) SetupRoute() {
 			switch evt.EventType {
 			case EventTypePing:
 				log.Printf("Agent %s ping", name)
-			case EventTypeCheckResult:
-				log.Printf("Agent check result %v", evt.EventCheckResult)
+			case EventTypeCheckHTTPResult:
+				log.Printf("Agent check result %v", evt.EventCheckHTTPResult)
 			}
 
 		}
@@ -116,17 +119,19 @@ func InitServer() *Server {
 		Checks: &checks,
 	}
 
+	q := sidekiq.NewClient(config.Redis())
+
 	server := &Server{
 		Config:    config,
 		Echo:      echo.New(),
 		DBClient:  db.Connect(config.MongoURI),
 		Syncer:    syncer,
 		Scheduler: NewScheduler(),
+		Queue:     q,
 	}
 
 	server.SetupRoute()
 	server.SetupChecker()
 	server.SetupSchedule()
-
 	return server
 }

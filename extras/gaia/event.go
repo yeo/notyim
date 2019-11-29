@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/notyim/gaia/dao"
+	"github.com/notyim/gaia/scanner/httpscanner"
 )
 
 type EventType int
@@ -15,7 +16,7 @@ const (
 )
 const (
 	EventTypeRunCheck = iota + 1000
-	EventTypeCheckResult
+	EventTypeCheckHTTPResult
 )
 
 const (
@@ -37,9 +38,10 @@ type EventCheckDelete struct {
 	*dao.Check
 }
 
-type EventCheckResult struct {
+type EventCheckHTTPResult struct {
 	EventType EventType
 	ID        string
+	Result    *httpscanner.CheckResponse
 }
 
 type EventRunCheck struct {

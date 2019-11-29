@@ -1,18 +1,25 @@
 package client
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
+	"net"
+	"net/http"
 	"net/url"
 	"os"
 	"os/signal"
+	"sync"
 	"time"
 
 	"github.com/gorilla/websocket"
 	"github.com/orcaman/concurrent-map"
 
 	"github.com/notyim/gaia"
+	"github.com/notyim/gaia/dao"
+	"github.com/notyim/gaia/scanner/httpscanner"
 )
 
 func New() *Agent {
@@ -30,6 +37,8 @@ type Agent struct {
 	Name   string
 	Checks *cmap.ConcurrentMap
 	conn   *websocket.Conn
+	// Gorilla websocket doesn't support concurently write, therefore this mutex
+	mu sync.Mutex
 }
 
 func (a *Agent) Run() {
@@ -84,6 +93,8 @@ func (a *Agent) Connect() {
 }
 
 func (a *Agent) PushToServer(payload []byte) error {
+	a.mu.Lock()
+	defer a.mu.Unlock()
 	err := a.conn.WriteMessage(websocket.TextMessage, payload)
 	if err != nil {
 		// TODO: Impelement retry and re-connect
@@ -115,13 +126,98 @@ func (a *Agent) SyncState() {
 			case gaia.EventTypeCheckInsert:
 				a.Checks.Set(evt.EventCheckInsert.Check.ID.Hex(), evt.EventCheckInsert.Check)
 			case gaia.EventTypeCheckReplace:
+				a.Checks.Set(evt.EventCheckReplace.Check.ID.Hex(), evt.EventCheckReplace.Check)
 			case gaia.EventTypeCheckDelete:
+				a.Checks.Remove(evt.EventCheckDelete.ID.Hex())
 			case gaia.EventTypeRunCheck:
 				log.Println("Run check", evt.EventRunCheck)
-				//Simulate check result
-				runResult := gaia.EventCheckResult{ID: "vinhtest", EventType: gaia.EventTypeCheckResult}
-				resultPayload, _ := json.Marshal(runResult)
-				a.PushToServer(resultPayload)
+
+				val, ok := a.Checks.Get(evt.EventRunCheck.ID)
+				if !ok {
+					log.Println("Server request check but it didn't exist on client state", evt.EventRunCheck)
+					continue
+				}
+				check := val.(*dao.Check)
+				log.Println("Start to check", check.URI)
+
+				go func(chk *dao.Check) {
+					t0 := time.Now()
+					defer func() {
+						log.Printf("Check %s finish in %v", chk.URI, time.Now().Sub(t0))
+
+					}()
+					req, err := http.NewRequest("GET", chk.URI, nil)
+					if err != nil {
+						log.Println("Error creating http request for")
+						return
+					}
+
+					req.Header.Set("User-Agent", "noty/2.0 (https://noty.im)")
+					var result httpscanner.Result
+					var cancel context.CancelFunc
+					ctx := httpscanner.WithHTTPStat(req.Context(), &result)
+					ctx, cancel = context.WithCancel(ctx)
+					time.AfterFunc(30*time.Second, func() {
+						cancel()
+					})
+
+					req = req.WithContext(ctx)
+
+					httpClient := &http.Client{
+						Timeout: 30 * time.Second,
+						Transport: &http.Transport{
+							Dial: (&net.Dialer{
+								Timeout:   30 * time.Second,
+								KeepAlive: 30 * time.Second,
+							}).Dial,
+							TLSHandshakeTimeout:   10 * time.Second,
+							ResponseHeaderTimeout: 10 * time.Second,
+							ExpectContinueTimeout: 1 * time.Second,
+						},
+
+						CheckRedirect: func(req *http.Request, via []*http.Request) error {
+							// always refuse to formatllow redirects,
+							return http.ErrUseLastResponse
+						},
+					}
+
+					res, err := httpClient.Do(req)
+					if res != nil {
+						defer res.Body.Close()
+					}
+					if err != nil {
+						log.Println("Error when perform http check request")
+						return
+					}
+					body, err := ioutil.ReadAll(res.Body)
+					if err != nil {
+						fmt.Println(err)
+						return
+					}
+					result.End(time.Now())
+
+					metric := &httpscanner.CheckResponse{
+						RunAt:         time.Now(),
+						StatusCode:    res.StatusCode,
+						Status:        res.Status,
+						ContentLength: res.ContentLength,
+						Header:        res.Header,
+						Timing:        result.ToCheckTiming(),
+						Body:          body,
+					}
+
+					log.Printf("Response metric %v\n", metric)
+					log.Printf("Timing %v", result.Durations())
+
+					runResult := gaia.EventCheckHTTPResult{
+						EventType: gaia.EventTypeCheckHTTPResult,
+						ID:        check.ID.Hex(),
+						Result:    metric,
+					}
+					resultPayload, _ := json.Marshal(runResult)
+					a.PushToServer(resultPayload)
+				}(check)
+
 			default:
 				log.Println("Receive an unknow message", err)
 			}
