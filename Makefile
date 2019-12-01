@@ -6,6 +6,9 @@ DOCKER_LATEST  := ${DOCKER_OWNER}/${DOCKER_REPO}:latest
 
 d := docker
 
+runall:
+	overmind start
+
 webpack:
 	bin/webpack-dev-server --profile --color
 
