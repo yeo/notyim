@@ -14,6 +14,13 @@ type Config struct {
 	MongoDBName string
 
 	*RedisConfig
+
+	*InfluxDBConfig
+}
+
+type InfluxDBConfig struct {
+	Addr string
+	DB   string
 }
 
 type RedisConfig struct {
@@ -46,6 +53,12 @@ func LoadConfig() *Config {
 	}
 	c.RedisConfig = redisConfig
 
+	influxdbConfig := &InfluxDBConfig{Addr: "http://localhost:8086", DB: "noty_development"}
+	if os.Getenv("INFLUXDB_HOST") != "" {
+		influxdbConfig.Addr = os.Getenv("INFLUXDB_HOST")
+	}
+	c.InfluxDBConfig = influxdbConfig
+
 	return &c
 }
 
@@ -53,5 +66,12 @@ func (c *Config) Redis() *sidekiq.Config {
 	return &sidekiq.Config{
 		Addr: c.RedisConfig.Addr,
 		DB:   c.RedisConfig.DB,
+	}
+}
+
+func (c *Config) Sink() *SinkConfig {
+	return &SinkConfig{
+		Addr: c.InfluxDBConfig.Addr,
+		DB:   c.InfluxDBConfig.DB,
 	}
 }

@@ -59,3 +59,13 @@ type EventPing struct {
 func NewEventPing() *EventPing {
 	return &EventPing{EventType: EventTypePing}
 }
+
+func (e *EventCheckHTTPResult) ToMetric() map[string]interface{} {
+	return map[string]interface{}{
+		"NameLookup":    e.Result.Timing.NameLookup,
+		"Connect":       e.Result.Timing.Connect,
+		"TLSHandshake":  e.Result.Timing.TLSHandshake,
+		"StartTransfer": e.Result.Timing.StartTransfer,
+		"Total":         e.Result.Timing.Total,
+	}
+}

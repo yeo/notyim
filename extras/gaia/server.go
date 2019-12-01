@@ -1,7 +1,6 @@
 package gaia
 
 import (
-	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,7 +12,6 @@ import (
 
 	"github.com/notyim/gaia/dao"
 	"github.com/notyim/gaia/db"
-	"github.com/notyim/gaia/sidekiq"
 )
 
 // Server is main struct that hold gaia server component
@@ -24,7 +22,7 @@ type Server struct {
 	Syncer    *Syncer
 	Scheduler *Scheduler
 	// TODO: Refactor queue into interface
-	Queue *sidekiq.Client
+	Sink *Sink
 }
 
 // SetupRoute configures router layer
@@ -81,14 +79,8 @@ func (s *Server) SetupRoute() {
 				log.Printf("Agent %s ping", name)
 			case EventTypeCheckHTTPResult:
 				log.Printf("Agent check result %s %d", evt.EventCheckHTTPResult.ID, evt.EventCheckHTTPResult.Result)
-				payload, err := json.Marshal(evt.EventCheckHTTPResult.Result)
-				if err != nil {
-					log.Printf("Cannot encode json %v", err)
-					continue
-				}
-				s.Queue.Enqueue("CheckToCreateIncidentWorker", []interface{}{evt.EventCheckHTTPResult.ID, string(payload)}, "check")
+				s.Sink.Pipe <- evt.EventCheckHTTPResult
 			}
-
 		}
 	})
 }
@@ -109,6 +101,10 @@ func (s *Server) SetupSchedule() {
 	go s.Scheduler.Run(s.Syncer)
 }
 
+func (s *Server) SetupSink() {
+	go s.Sink.Run()
+}
+
 // Run officially starts our server
 func (s *Server) Run() {
 	s.Echo.Logger.Fatal(s.Echo.Start(":28300"))
@@ -126,17 +122,16 @@ func InitServer() *Server {
 		Checks: &checks,
 	}
 
-	q := sidekiq.NewClient(config.Redis())
-
 	server := &Server{
 		Config:    config,
 		Echo:      echo.New(),
 		DBClient:  db.Connect(config.MongoURI),
 		Syncer:    syncer,
 		Scheduler: NewScheduler(),
-		Queue:     q,
+		Sink:      NewSink(config.Sink(), config.Redis()),
 	}
 
+	server.SetupSink()
 	server.SetupRoute()
 	server.SetupChecker()
 	server.SetupSchedule()
