@@ -19,10 +19,10 @@ Metrics/LineLength:
 Metrics/ClassLength:
   Max: 150
 
-MethodLength:
+Metrics/MethodLength:
   Max: 35
 
-BlockLength:
+Metrics/BlockLength:
   Max: 70
 
 Style/Documentation:
