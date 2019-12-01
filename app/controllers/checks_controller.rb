@@ -56,8 +56,20 @@ class ChecksController < DashboardController
 
   def build_check
     @check = Check.new(check_params)
-    @check.uri = "http://#{@check.uri}" if @check.uri && !@check.uri.start_with?('http')
+    @check.uri = auto_prefix
     @check.user = current.user
     @check.team = current.team
+  end
+
+  def auto_prefix
+    case @check.type
+    when Check::TYPE_HTTP
+      "http://#{@check.uri}" unless @check.uri.start_with?('http')
+    when Check::TYPE_TCP
+      "tcp://#{@check.uri}" unless @check.uri.start_with?('tcp')
+    when Check::TYPE_HEARTBEAT
+      # In heartbeat check, we will automaticallt generate this id
+      "https://gaia.noty.im/beat/#{@check.id}"
+    end
   end
 end
