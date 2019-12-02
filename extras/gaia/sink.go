@@ -51,7 +51,7 @@ func (s *Sink) Run() {
 		select {
 		case evt := <-s.Pipe:
 			checkResult := evt.(*EventCheckHTTPResult)
-			log.Printf("Start to process in Sync %v", checkResult)
+			log.Printf("Start to process in Sync %s %v", checkResult.ID, checkResult.Result.Timing)
 
 			payload, err := json.Marshal(checkResult.Result)
 			if err != nil {

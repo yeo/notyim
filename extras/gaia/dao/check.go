@@ -44,6 +44,18 @@ type Check struct {
 	UpdatedAt time.Time          `bson:"updated_at"`
 }
 
+func (c *Check) IsHttp() bool {
+	return c.Type == "http"
+}
+
+func (c *Check) IsTCP() bool {
+	return c.Type == "tcp"
+}
+
+func (c *Check) IsBeat() bool {
+	return c.Type == "heartbeat"
+}
+
 func New(dbClient *db.Client, dbName string) *Repo {
 	return &Repo{
 		client: dbClient.Client,

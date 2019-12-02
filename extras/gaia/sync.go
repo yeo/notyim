@@ -17,11 +17,32 @@ type ScheduleChecks interface {
 	ScheduleChecks()
 }
 
+// Track last time gaia talk to client
+// Track last time client ping gaia
+// Track last time client send check result
+
+type AgentActivity struct {
+	LastMessageFromServer time.Time
+	LastResultSent        time.Time
+}
+
 // Syncer maintenances state between server and agent. Whenever checks are updated, sync replicate the state to agent
 type Syncer struct {
 	Checks     *cmap.ConcurrentMap
 	Agents     *sync.Map
 	TotalAgent int
+	activity   *sync.Map
+}
+
+func (s *Syncer) ListAgents() []string {
+	var agents []string
+	s.Agents.Range(func(name, conn interface{}) bool {
+		agents = append(agents, name.(string))
+
+		return true
+	})
+
+	return agents
 }
 
 func (s *Syncer) AddAgent(name string, conn *websocket.Conn) {

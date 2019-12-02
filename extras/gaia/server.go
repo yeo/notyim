@@ -1,17 +1,21 @@
 package gaia
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
 	"sync"
 
 	"github.com/gorilla/websocket"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/orcaman/concurrent-map"
+	"github.com/unrolled/secure"
 
 	"github.com/notyim/gaia/dao"
 	"github.com/notyim/gaia/db"
+	"github.com/notyim/gaia/errorlog"
 )
 
 // Server is main struct that hold gaia server component
@@ -27,16 +31,33 @@ type Server struct {
 
 // SetupRoute configures router layer
 func (s *Server) SetupRoute() {
+	secureMiddleware := secure.New(secure.Options{
+		AllowedHosts:         []string{"noty.ax", "gaia.noty.im"},
+		AllowedHostsAreRegex: true,
+		HostsProxyHeaders:    []string{"X-Forwarded-Host"},
+		FrameDeny:            true,
+		ReferrerPolicy:       "same-origin",
+		IsDevelopment:        s.Config.IsDev(),
+	})
+
 	s.Echo.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Gaia Ok.\nInstall server with.\ncurl -s https://gaia.noty.im/install | bash")
 	})
 
-	s.Echo.POST("/join", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Join request received.")
+	s.Echo.GET("/agents", func(c echo.Context) error {
+		return c.JSON(http.StatusOK, s.Syncer.ListAgents())
 	})
 
 	s.Echo.GET("/checks", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, s.Syncer.Checks)
+	})
+
+	s.Echo.GET("/beat/:id", func(c echo.Context) error {
+		//beatEvent := EventCheckBeat{
+		//	EventType: EventTypeBeat,
+		//}
+		//s.Sink.Pipe <- evt.EventCheckHTTPResult
+		return nil
 	})
 
 	var upgrader = websocket.Upgrader{}
@@ -74,15 +95,21 @@ func (s *Server) SetupRoute() {
 				continue
 			}
 
+			log.Printf("Receive event %s from agent %s\n", evt.EventType, name)
+
 			switch evt.EventType {
 			case EventTypePing:
 				log.Printf("Agent %s ping", name)
 			case EventTypeCheckHTTPResult:
-				log.Printf("Agent check result %s %d", evt.EventCheckHTTPResult.ID, evt.EventCheckHTTPResult.Result)
 				s.Sink.Pipe <- evt.EventCheckHTTPResult
 			}
 		}
 	})
+
+	s.Echo.Use(echo.WrapMiddleware(secureMiddleware.Handler))
+	s.Echo.Use(middleware.Logger())
+	s.Echo.Use(middleware.Recover())
+	errorlog.WrapMiddleware(s.Echo)
 }
 
 // SetupChecker starts checker process
@@ -113,6 +140,8 @@ func (s *Server) Run() {
 // InitServer is main entrypoint into system
 // Thing start from here. It glues components
 func InitServer() *Server {
+	SetupErrorLog()
+
 	fmt.Println("Personification of the Earth")
 
 	config := LoadConfig()
@@ -136,4 +165,9 @@ func InitServer() *Server {
 	server.SetupChecker()
 	server.SetupSchedule()
 	return server
+}
+
+func SetupErrorLog() {
+	errorlog.Hook()
+	errorlog.Capture(errors.New("my error"))
 }

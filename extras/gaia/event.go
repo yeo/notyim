@@ -14,9 +14,11 @@ const (
 	EventTypeCheckReplace
 	EventTypeCheckDelete
 )
+
 const (
 	EventTypeRunCheck = iota + 1000
 	EventTypeCheckHTTPResult
+	EventTypeBeat
 )
 
 const (
@@ -46,6 +48,28 @@ type EventCheckHTTPResult struct {
 	Region    string
 }
 
+func (e *EventCheckHTTPResult) ToMetric() map[string]interface{} {
+	return map[string]interface{}{
+		"NameLookup":    e.Result.Timing.NameLookup,
+		"Connect":       e.Result.Timing.Connect,
+		"TLSHandshake":  e.Result.Timing.TLSHandshake,
+		"StartTransfer": e.Result.Timing.StartTransfer,
+		"Total":         e.Result.Timing.Total,
+	}
+}
+
+type EventCheckTCPResult struct {
+	EventType EventType
+	ID        string
+}
+
+type EventCheckBeat struct {
+	EventType EventType
+	ID        string
+	Action    string
+	BeatAt    time.Time
+}
+
 type EventRunCheck struct {
 	EventType EventType
 	ID        string
@@ -58,14 +82,4 @@ type EventPing struct {
 
 func NewEventPing() *EventPing {
 	return &EventPing{EventType: EventTypePing}
-}
-
-func (e *EventCheckHTTPResult) ToMetric() map[string]interface{} {
-	return map[string]interface{}{
-		"NameLookup":    e.Result.Timing.NameLookup,
-		"Connect":       e.Result.Timing.Connect,
-		"TLSHandshake":  e.Result.Timing.TLSHandshake,
-		"StartTransfer": e.Result.Timing.StartTransfer,
-		"Total":         e.Result.Timing.Total,
-	}
 }

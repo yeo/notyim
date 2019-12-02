@@ -75,3 +75,7 @@ func (c *Config) Sink() *SinkConfig {
 		DB:   c.InfluxDBConfig.DB,
 	}
 }
+
+func (c *Config) IsDev() bool {
+	return c.AppEnv == "development"
+}
