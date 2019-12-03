@@ -37,7 +37,12 @@ type Agent struct {
 	mu sync.Mutex
 }
 
+func (a *Agent) ID() string {
+	return a.Name
+}
+
 func (a *Agent) Run() {
+	gaia.SetupErrorLog()
 	a.Connect()
 	go a.StartCheckers()
 	a.SyncState()
@@ -135,7 +140,7 @@ func (a *Agent) SyncState() {
 				}
 				check := val.(*dao.Check)
 				log.Println("Start to check", check.URI)
-				go scanner.Check(check)
+				go scanner.Check(check, a)
 			default:
 				log.Println("Receive an unknow message", err)
 			}

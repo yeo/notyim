@@ -5,6 +5,7 @@ import (
 
 	"github.com/notyim/gaia/dao"
 	"github.com/notyim/gaia/scanner/httpscanner"
+	"github.com/notyim/gaia/scanner/tcpscanner"
 )
 
 type EventType int
@@ -19,6 +20,7 @@ const (
 	EventTypeRunCheck = iota + 1000
 	EventTypeCheckHTTPResult
 	EventTypeBeat
+	EventTypeCheckTCPResult
 )
 
 const (
@@ -43,9 +45,9 @@ type EventCheckDelete struct {
 type EventCheckHTTPResult struct {
 	EventType EventType
 	ID        string
-	Result    *httpscanner.CheckResponse
 	Agent     string
 	Region    string
+	Result    *httpscanner.CheckResponse
 }
 
 func (e *EventCheckHTTPResult) ToMetric() map[string]interface{} {
@@ -61,6 +63,9 @@ func (e *EventCheckHTTPResult) ToMetric() map[string]interface{} {
 type EventCheckTCPResult struct {
 	EventType EventType
 	ID        string
+	Agent     string
+	Region    string
+	Result    *tcpscanner.CheckResponse
 }
 
 type EventCheckBeat struct {

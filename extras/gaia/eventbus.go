@@ -17,6 +17,7 @@ type GenericEvent struct {
 
 	*EventRunCheck
 	*EventCheckHTTPResult
+	*EventCheckTCPResult
 
 	*EventPing
 }

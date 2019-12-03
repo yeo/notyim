@@ -34,6 +34,17 @@ type Syncer struct {
 	activity   *sync.Map
 }
 
+func NewSyncer() *Syncer {
+	checks := cmap.New()
+	syncer := Syncer{
+		Agents:   &sync.Map{},
+		Checks:   &checks,
+		activity: &sync.Map{},
+	}
+
+	return &syncer
+}
+
 func (s *Syncer) ListAgents() []string {
 	var agents []string
 	s.Agents.Range(func(name, conn interface{}) bool {

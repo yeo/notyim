@@ -49,6 +49,7 @@ func (c *Check) IsHttp() bool {
 }
 
 func (c *Check) IsTCP() bool {
+	log.Println(c.ID.Hex(), "has type", c.Type)
 	return c.Type == "tcp"
 }
 

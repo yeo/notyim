@@ -22,7 +22,11 @@ func Hook() {
 }
 
 func WrapMiddleware(e *echo.Echo) {
-	e.Use(sentryecho.New(sentryecho.Options{}))
+	e.Use(sentryecho.New(sentryecho.Options{
+		Repanic:         true,
+		WaitForDelivery: false,
+		Timeout:         10 * time.Second,
+	}))
 }
 
 func Flush() {

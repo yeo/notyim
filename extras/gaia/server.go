@@ -1,16 +1,13 @@
 package gaia
 
 import (
-	"errors"
 	"fmt"
 	"log"
 	"net/http"
-	"sync"
 
 	"github.com/gorilla/websocket"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/orcaman/concurrent-map"
 	"github.com/unrolled/secure"
 
 	"github.com/notyim/gaia/dao"
@@ -95,21 +92,21 @@ func (s *Server) SetupRoute() {
 				continue
 			}
 
-			log.Printf("Receive event %s from agent %s\n", evt.EventType, name)
+			log.Printf("Receive event %v from agent %s\n", evt.EventType, name)
 
 			switch evt.EventType {
-			case EventTypePing:
-				log.Printf("Agent %s ping", name)
 			case EventTypeCheckHTTPResult:
 				s.Sink.Pipe <- evt.EventCheckHTTPResult
+			case EventTypeCheckTCPResult:
+				s.Sink.Pipe <- evt.EventCheckTCPResult
 			}
 		}
 	})
 
+	errorlog.WrapMiddleware(s.Echo)
 	s.Echo.Use(echo.WrapMiddleware(secureMiddleware.Handler))
 	s.Echo.Use(middleware.Logger())
 	s.Echo.Use(middleware.Recover())
-	errorlog.WrapMiddleware(s.Echo)
 }
 
 // SetupChecker starts checker process
@@ -145,17 +142,12 @@ func InitServer() *Server {
 	fmt.Println("Personification of the Earth")
 
 	config := LoadConfig()
-	checks := cmap.New()
-	syncer := &Syncer{
-		Agents: &sync.Map{},
-		Checks: &checks,
-	}
 
 	server := &Server{
 		Config:    config,
 		Echo:      echo.New(),
 		DBClient:  db.Connect(config.MongoURI),
-		Syncer:    syncer,
+		Syncer:    NewSyncer(),
 		Scheduler: NewScheduler(),
 		Sink:      NewSink(config.Sink(), config.Redis()),
 	}
@@ -169,5 +161,4 @@ func InitServer() *Server {
 
 func SetupErrorLog() {
 	errorlog.Hook()
-	errorlog.Capture(errors.New("my error"))
 }
