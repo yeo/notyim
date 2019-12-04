@@ -144,6 +144,7 @@ func (a *Agent) SyncState() {
 				log.Println("write close:", err)
 				return
 			}
+			a.ScannerPool.Close()
 
 			select {
 			case <-done:

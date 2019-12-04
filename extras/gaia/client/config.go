@@ -5,7 +5,8 @@ import (
 )
 
 type Config struct {
-	GaiaAddr string
+	GaiaAddr  string
+	GaiaToken string
 
 	WorkerPool int
 }
@@ -19,6 +20,8 @@ func LoadConfig() *Config {
 	if os.Getenv("GAIA_ADDR") != "" {
 		c.GaiaAddr = os.Getenv("GAIA_ADDR")
 	}
-
+	if os.Getenv("GAIA_TOKEN") != "" {
+		c.GaiaToken = os.Getenv("GAIA_TOKEN")
+	}
 	return &c
 }
