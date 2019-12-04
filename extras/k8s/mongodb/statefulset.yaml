@@ -2,17 +2,74 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mongo
+  namespace: noty
 spec:
   ports:
   - port: 27017
+  clusterIP: None
   selector:
     app: mongodb
-  clusterIP: None
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: 2016-02-18T18:52:05Z
+  name: mongo-config
+  namespace: noty
+data:
+  mongod.conf: |
+    # mongod.conf
+    # for documentation of all options, see:
+    #   http://docs.mongodb.org/manual/reference/configuration-options/
+
+    # Where and how to store data.
+    storage:
+      dbPath: /data/db
+      journal:
+        enabled: true
+    #  engine:
+    #  mmapv1:
+    #  wiredTiger:
+
+    # where to write logging data.
+    systemLog:
+      destination: file
+      logAppend: true
+      path: /var/log/mongodb/mongod.log
+
+    # network interfaces
+    net:
+      port: 27017
+      bindIp: 0.0.0.0,mongodb-0.noty
+      bindIpAll: true
+
+
+    # how the process runs
+    processManagement:
+      timeZoneInfo: /usr/share/zoneinfo
+
+    #security:
+
+    #operationProfiling:
+
+    replication:
+      replSetName: rs0
+
+    #sharding:
+
+    ## Enterprise-Only Options:
+
+    #auditLog:
+
+    #snmp:
+
 ---
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: StatefulSet
 metadata:
   name: mongodb
+  namespace: noty
 spec:
   serviceName: "mongodb"
   replicas: 1
@@ -29,16 +86,24 @@ spec:
         name: mongo
         command:
         - mongod
-        - "--replSet"
-        - rs0
+        - --replSet
+        - noty
+        - --bind_ip_all
+        - --config
+        - /etc/mongod/mongod.conf
         ports:
         - containerPort: 27017
           name: mongodb
         volumeMounts:
         - name: mongodb-data-dir
           mountPath: /data/db
+        - name: mongodb-config-dir
+          mountPath: /etc/mongod
       volumes:
       - name: mongodb-data-dir
         hostPath:
           path: /opt/k8s/data/noty/mongodb
           type: Directory
+      - name: mongodb-config-dir
+        configMap:
+          name: mongo-config
