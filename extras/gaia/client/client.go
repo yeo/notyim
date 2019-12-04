@@ -18,23 +18,27 @@ import (
 	"github.com/notyim/gaia/scanner"
 )
 
+type Agent struct {
+	Name   string
+	Checks *cmap.ConcurrentMap
+	conn   *websocket.Conn
+	// Gorilla websocket doesn't support concurently write, therefore this mutex
+	mu          sync.Mutex
+	config      *Config
+	ScannerPool *scanner.Pool
+}
+
 func New() *Agent {
 	hostname, _ := os.Hostname()
 	checks := cmap.New()
 	a := Agent{
 		Name:   fmt.Sprintf("%s#%d", hostname, os.Getpid()),
 		Checks: &checks,
+		config: LoadConfig(),
 	}
+	a.ScannerPool = scanner.NewPool(&a, a.config.WorkerPool)
 
 	return &a
-}
-
-type Agent struct {
-	Name   string
-	Checks *cmap.ConcurrentMap
-	conn   *websocket.Conn
-	// Gorilla websocket doesn't support concurently write, therefore this mutex
-	mu sync.Mutex
 }
 
 func (a *Agent) ID() string {
@@ -44,47 +48,11 @@ func (a *Agent) ID() string {
 func (a *Agent) Run() {
 	gaia.SetupErrorLog()
 	a.Connect()
-	go a.StartCheckers()
 	a.SyncState()
 }
 
-type Scanner interface {
-	Perform()
-	Stop()
-}
-
-type HTTPScanner struct {
-	Queue chan string
-	Done  chan bool
-}
-
-func (s *HTTPScanner) Peform() {
-	select {
-	case job := <-s.Queue:
-		log.Println("Doing HTTP scane for", job)
-	case <-s.Done:
-		s.Stop()
-	}
-}
-func (s *HTTPScanner) Stop() {
-	log.Println("Stop Scanner")
-}
-
-func (a *Agent) StartCheckers() {
-	scanner := HTTPScanner{
-		Queue: make(chan string, 10000),
-		Done:  make(chan bool),
-	}
-
-	go func() {
-		for {
-			scanner.Peform()
-		}
-	}()
-}
-
 func (a *Agent) Connect() {
-	u := url.URL{Scheme: "ws", Host: "localhost:28300", Path: "/ws/" + a.Name}
+	u := url.URL{Scheme: "ws", Host: a.config.GaiaAddr, Path: "/ws/" + a.Name}
 	var err error
 	a.conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
 
@@ -105,8 +73,33 @@ func (a *Agent) PushToServer(payload []byte) error {
 	return err
 }
 
+func (a *Agent) ProcessServerCommand(evt *gaia.GenericEvent) {
+	switch evt.EventType {
+	case gaia.EventTypeCheckInsert:
+		a.Checks.Set(evt.EventCheckInsert.Check.ID.Hex(), evt.EventCheckInsert.Check)
+	case gaia.EventTypeCheckReplace:
+		a.Checks.Set(evt.EventCheckReplace.Check.ID.Hex(), evt.EventCheckReplace.Check)
+	case gaia.EventTypeCheckDelete:
+		a.Checks.Remove(evt.EventCheckDelete.ID.Hex())
+	case gaia.EventTypeRunCheck:
+		log.Println("Run check", evt.EventRunCheck)
+
+		val, ok := a.Checks.Get(evt.EventRunCheck.ID)
+		if !ok {
+			log.Println("Server request check but it didn't exist on client state", evt.EventRunCheck)
+			return
+		}
+		check := val.(*dao.Check)
+		log.Println("Start to check", check.URI)
+		a.ScannerPool.Queue <- check
+	default:
+		log.Println("Receive an unknow message", evt)
+	}
+}
+
 func (a *Agent) SyncState() {
 	defer a.conn.Close()
+	done := make(chan struct{})
 
 	go func() {
 		for {
@@ -122,28 +115,7 @@ func (a *Agent) SyncState() {
 			if err = evt.UnmarshalJSON(message); err != nil {
 				continue
 			}
-
-			switch evt.EventType {
-			case gaia.EventTypeCheckInsert:
-				a.Checks.Set(evt.EventCheckInsert.Check.ID.Hex(), evt.EventCheckInsert.Check)
-			case gaia.EventTypeCheckReplace:
-				a.Checks.Set(evt.EventCheckReplace.Check.ID.Hex(), evt.EventCheckReplace.Check)
-			case gaia.EventTypeCheckDelete:
-				a.Checks.Remove(evt.EventCheckDelete.ID.Hex())
-			case gaia.EventTypeRunCheck:
-				log.Println("Run check", evt.EventRunCheck)
-
-				val, ok := a.Checks.Get(evt.EventRunCheck.ID)
-				if !ok {
-					log.Println("Server request check but it didn't exist on client state", evt.EventRunCheck)
-					continue
-				}
-				check := val.(*dao.Check)
-				log.Println("Start to check", check.URI)
-				go scanner.Check(check, a)
-			default:
-				log.Println("Receive an unknow message", err)
-			}
+			go a.ProcessServerCommand(&evt)
 		}
 	}()
 
@@ -152,8 +124,6 @@ func (a *Agent) SyncState() {
 
 	ticker := time.NewTicker(60 * time.Second)
 	defer ticker.Stop()
-
-	done := make(chan struct{})
 
 	pingCmd := gaia.NewEventPing()
 	pingPayload, _ := json.Marshal(pingCmd)
@@ -174,9 +144,11 @@ func (a *Agent) SyncState() {
 				log.Println("write close:", err)
 				return
 			}
+
 			select {
 			case <-done:
-			case <-time.After(time.Second):
+			// 30 seconds to force close
+			case <-time.After(3 * time.Second):
 			}
 			return
 		}

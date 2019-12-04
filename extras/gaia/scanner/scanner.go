@@ -50,7 +50,12 @@ func checkTCP(check *dao.Check, agent MetricWriter) {
 		Region:    "US",
 		Result:    response,
 	}
-	resultPayload, _ := json.Marshal(runResult)
+	resultPayload, err := json.Marshal(runResult)
+	if err != nil {
+		errorlog.Capture(err)
+		return
+	}
+	log.Println("Push tcp check result to client", runResult, string(resultPayload))
 	agent.PushToServer(resultPayload)
 }
 

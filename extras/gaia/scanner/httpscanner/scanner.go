@@ -163,10 +163,6 @@ func (r Result) Format(s fmt.State, verb rune) {
 
 }
 
-// Format formats stats result.
-func (r Result) ToMetric() {
-}
-
 // WithHTTPStat is a wrapper of httptrace.WithClientTrace. It records the
 // time of each httptrace hooks.
 func WithHTTPStat(ctx context.Context, r *Result) context.Context {

@@ -16,6 +16,7 @@ type GenericEvent struct {
 	*EventCheckDelete
 
 	*EventRunCheck
+
 	*EventCheckHTTPResult
 	*EventCheckTCPResult
 
@@ -72,6 +73,15 @@ func (e *GenericEvent) UnmarshalJSON(data []byte) error {
 
 		e.EventCheckHTTPResult = &cmd
 		e.EventType = EventTypeCheckHTTPResult
+
+	case EventTypeCheckTCPResult:
+		var cmd EventCheckTCPResult
+		if err := json.Unmarshal(data, &cmd); err != nil {
+			return fmt.Errorf("Unmarshal event error: %w", err)
+		}
+
+		e.EventCheckTCPResult = &cmd
+		e.EventType = EventTypeCheckTCPResult
 
 	case EventTypePing:
 		var cmd EventPing
