@@ -115,6 +115,7 @@ func (s *Syncer) DbListener(t dao.OperationType, c *dao.Check) {
 			EventType: EventTypeCheckReplace,
 			Check:     c,
 		}
+		s.Checks.Set(c.ID.Hex(), c)
 
 		if payload, err := json.Marshal(evt); err == nil {
 			s.PushMessages(payload)

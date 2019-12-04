@@ -92,7 +92,7 @@ func (s *Server) SetupRoute() {
 				continue
 			}
 
-			log.Printf("Receive event %v from agent %s\n", evt.EventType, name)
+			log.Printf("Receive event %v from agent %s\n", evt, name)
 
 			switch evt.EventType {
 			case EventTypeCheckHTTPResult:
