@@ -1,6 +1,7 @@
 package gaia
 
 import (
+	"log"
 	"os"
 	"strconv"
 
@@ -34,6 +35,10 @@ func LoadConfig() *Config {
 		MongoDBName: "trinity_development",
 	}
 
+	if os.Getenv("APPENV") != "" {
+		c.AppEnv = os.Getenv("APPENV")
+	}
+
 	c.MongoURI = os.Getenv("MONGO_URI")
 	if c.MongoURI == "" {
 		c.MongoURI = "mongodb://localhost:27017"
@@ -57,7 +62,11 @@ func LoadConfig() *Config {
 	if os.Getenv("INFLUXDB_HOST") != "" {
 		influxdbConfig.Addr = os.Getenv("INFLUXDB_HOST")
 	}
+	if !c.IsDev() {
+		influxdbConfig.DB = "noty_production"
+	}
 	c.InfluxDBConfig = influxdbConfig
+	log.Println("Loaded config", c)
 
 	return &c
 }

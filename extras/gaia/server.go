@@ -29,7 +29,7 @@ type Server struct {
 // SetupRoute configures router layer
 func (s *Server) SetupRoute() {
 	secureMiddleware := secure.New(secure.Options{
-		AllowedHosts:         []string{"noty.ax", "gaia.noty.im"},
+		AllowedHosts:         []string{"noty.ax", "gaia.noty.im", "laputa.noty.im", ".*.noty.im"},
 		AllowedHostsAreRegex: true,
 		HostsProxyHeaders:    []string{"X-Forwarded-Host"},
 		FrameDeny:            true,

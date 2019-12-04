@@ -52,7 +52,11 @@ func (a *Agent) Run() {
 }
 
 func (a *Agent) Connect() {
-	u := url.URL{Scheme: "ws", Host: a.config.GaiaAddr, Path: "/ws/" + a.Name}
+	scheme := "wss"
+	if a.config.GaiaAddr == "localhost:28300" {
+		scheme = "ws"
+	}
+	u := url.URL{Scheme: scheme, Host: a.config.GaiaAddr, Path: "/ws/" + a.Name}
 	var err error
 	a.conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
 
