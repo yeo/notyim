@@ -1,0 +1,25 @@
+---
+- hosts: gaia
+  remote_user: root
+  tasks:
+
+  - name: Ensure gaia exist
+    get_url:
+      url: https://github.com/notyim/notyim/releases/download/gaia-0.1.1/gaia-agent
+      dest: /usr/bin/gaia-agent
+      mode: '0700'
+
+  - name: Ensure systemd file
+    template:
+      src: systemd.j2
+      dest: /etc/systemd/system/gaia.service
+    notify:
+    - restart gaia
+
+  handlers:
+   - name: restart gaia
+     systemd:
+       name: gaia
+       state: restarted
+       enabled: yes
+       daemon_reload: yes
