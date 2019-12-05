@@ -9,7 +9,7 @@ class MetricService
   end
 
   def self.current_metric(id)
-    query = "select * from http_response where check_id = '#{id}' order by time desc limit 1"
+    query = "select * from check_response where check_id = '#{id}' order by time desc limit 1"
     metric = nil
     metric.tap do
       influxdb.query(query) { |_name, _tags, points| metric = points.first }
@@ -17,7 +17,7 @@ class MetricService
   end
 
   def self.check_mean_time_in_last_hour(id)
-    influxdb.query "select mean(time_Total) from http_response where check_id = '#{id}' AND time > now() - 1h"
+    influxdb.query "select mean(time_Total) from check_response where check_id = '#{id}' AND time > now() - 1h"
   end
 
   def self.latency_data(id, group_by_minute, duration_in_hour)
@@ -49,7 +49,7 @@ class MetricService
 
   def self.check_total_latency_by_minute(id, group_by_minute, duration_in_hour)
     %(SELECT mean\(time_Total\)
-      FROM http_response
+      FROM check_response
       WHERE check_id = '#{id}' AND time > now\(\) - #{duration_in_hour}h
       GROUP BY time\(#{group_by_minute}m\))
   end
