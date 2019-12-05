@@ -37,7 +37,7 @@ class Check
 
   validates_presence_of :name, :uri, :type
   validates :type, inclusion: { in: TYPES }
-  validates :uri, format: URI.regexp(%w[http https])
+  validates :uri, format: URI.regexp(%w[tcp udp http https])
 
   def type_enum
     TYPES
