@@ -26,6 +26,12 @@ type AgentActivity struct {
 	LastResultSent        time.Time
 }
 
+type AgentConnection struct {
+	*websocket.Conn
+	IP     string
+	Region string
+}
+
 // Syncer maintenances state between server and agent. Whenever checks are updated, sync replicate the state to agent
 type Syncer struct {
 	Checks     *cmap.ConcurrentMap
@@ -56,7 +62,7 @@ func (s *Syncer) ListAgents() []string {
 	return agents
 }
 
-func (s *Syncer) AddAgent(name string, conn *websocket.Conn) {
+func (s *Syncer) AddAgent(name string, conn *AgentConnection) {
 	log.Println("Agent connected", name)
 	s.Agents.Store(name, conn)
 	s.TotalAgent += 1
@@ -125,20 +131,22 @@ func (s *Syncer) DbListener(t dao.OperationType, c *dao.Check) {
 
 func (s *Syncer) PushMessages(m []byte) {
 	// Second, notify gaia client
-	s.Agents.Range(func(name, conn interface{}) bool {
-		conn.(*websocket.Conn).WriteMessage(websocket.TextMessage, m)
+	s.Agents.Range(func(name, agent interface{}) bool {
+		agent.(*AgentConnection).Conn.WriteMessage(websocket.TextMessage, m)
 		return true
 	})
 }
 
 func (s *Syncer) PushMessageToAgent(agentName string, payload []byte) {
-	conn, _ := s.Agents.Load(agentName)
-	conn.(*websocket.Conn).WriteMessage(websocket.TextMessage, payload)
+	agent, _ := s.Agents.Load(agentName)
+	agent.(*AgentConnection).Conn.WriteMessage(websocket.TextMessage, payload)
 }
 
 func (s *Syncer) PushChecksToAgent(name string) {
 	log.Println("About to push checks to agent", name)
-	conn, _ := s.Agents.Load(name)
+	aagent, _ := s.Agents.Load(name)
+	agent := aagent.(*AgentConnection)
+	conn := agent.Conn
 
 	total := 0
 	for _, check := range s.Checks.Items() {
@@ -149,7 +157,7 @@ func (s *Syncer) PushChecksToAgent(name string) {
 		}
 
 		if payload, err := json.Marshal(evt); err == nil {
-			conn.(*websocket.Conn).WriteMessage(websocket.TextMessage, payload)
+			conn.WriteMessage(websocket.TextMessage, payload)
 		}
 		total += 1
 	}

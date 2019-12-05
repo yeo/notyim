@@ -19,9 +19,12 @@ import (
 )
 
 type Agent struct {
-	Name   string
-	Checks *cmap.ConcurrentMap
-	conn   *websocket.Conn
+	Name           string
+	Checks         *cmap.ConcurrentMap
+	gaiaAddress    *url.URL
+	conn           *websocket.Conn
+	isReconnecting bool
+
 	// Gorilla websocket doesn't support concurently write, therefore this mutex
 	mu          sync.Mutex
 	config      *Config
@@ -32,9 +35,10 @@ func New() *Agent {
 	hostname, _ := os.Hostname()
 	checks := cmap.New()
 	a := Agent{
-		Name:   fmt.Sprintf("%s#%d", hostname, os.Getpid()),
-		Checks: &checks,
-		config: LoadConfig(),
+		Name:           fmt.Sprintf("%s#%d", hostname, os.Getpid()),
+		Checks:         &checks,
+		config:         LoadConfig(),
+		isReconnecting: false,
 	}
 	a.ScannerPool = scanner.NewPool(&a, a.config.WorkerPool)
 
@@ -57,11 +61,36 @@ func (a *Agent) Connect() {
 		scheme = "ws"
 	}
 	u := url.URL{Scheme: scheme, Host: a.config.GaiaAddr, Path: "/ws/" + a.Name}
+	a.gaiaAddress = &u
 	var err error
-	a.conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
+	a.conn, _, err = websocket.DefaultDialer.Dial(a.gaiaAddress.String(), nil)
 
 	if err != nil {
 		log.Fatal("dial:", err)
+	}
+}
+
+func (a *Agent) ReconnectWithRetry(cause error) {
+	// TODO: is a mutex safer/better
+	if a.isReconnecting {
+		log.Println("Don't try to reconnect because one is in-progeess")
+		return
+	}
+	defer func() {
+		a.isReconnecting = false
+	}()
+	a.isReconnecting = true
+	log.Println("Got an error when writing to gaia", cause, "Will reconnect until succesful")
+
+	for {
+		var err error
+		a.conn, _, err = websocket.DefaultDialer.Dial(a.gaiaAddress.String(), nil)
+		if err == nil {
+			log.Println("Reconnect succesfully at", time.Now())
+			break
+		}
+		log.Println("Still getting error", err, "Wainting for 5 second before retrying")
+		time.Sleep(5 * time.Second)
 	}
 }
 
@@ -70,8 +99,7 @@ func (a *Agent) PushToServer(payload []byte) error {
 	defer a.mu.Unlock()
 	err := a.conn.WriteMessage(websocket.TextMessage, payload)
 	if err != nil {
-		// TODO: Impelement retry and re-connect
-		log.Println("Write Error:", err)
+		go a.ReconnectWithRetry(err)
 	}
 
 	return err
@@ -111,7 +139,8 @@ func (a *Agent) SyncState() {
 			if err != nil {
 				log.Println("Error when recieving message from server", err)
 				// Retrying server connection
-				return
+				a.ReconnectWithRetry(err)
+				continue
 			}
 			log.Printf("Message from server %s", message)
 
@@ -146,7 +175,6 @@ func (a *Agent) SyncState() {
 			err := a.conn.WriteMessage(websocket.CloseMessage, websocket.FormatCloseMessage(websocket.CloseNormalClosure, ""))
 			if err != nil {
 				log.Println("write close:", err)
-				return
 			}
 			a.ScannerPool.Close()
 

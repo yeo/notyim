@@ -61,6 +61,8 @@ func (s *Server) SetupRoute() {
 
 	s.Echo.GET("/ws/:name", func(c echo.Context) error {
 		name := c.Param("name")
+		region := c.QueryParam("region")
+		ip := c.RealIP()
 
 		conn, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 		if err != nil {
@@ -68,7 +70,7 @@ func (s *Server) SetupRoute() {
 		}
 
 		// Store this connection into our agent list
-		s.Syncer.AddAgent(name, conn)
+		s.Syncer.AddAgent(name, &AgentConnection{Conn: conn, IP: ip, Region: region})
 
 		defer func() {
 			// When we close we will make sure we delete the agent first
