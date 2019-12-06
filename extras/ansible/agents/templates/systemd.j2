@@ -6,7 +6,6 @@ Wants=network-online.target systemd-networkd-wait-online.service
 [Service]
 Restart=always
 
-; Always set "-root" to something safe in case it gets forgotten in the Caddyfile.
 Environment=GAIA_ADDR=laputa.noty.im
 Environment=GAIA_TOKEN=laputa.noty.im
 Environment=SENTRY_DSN={{sentry_dsn}}
