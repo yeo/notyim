@@ -22,6 +22,8 @@ config/initializers/secret_token.rb
 # TODO Comment out this rule if environment variables can be committed
 .env
 *.env
+*.enc
+*.key
 
 ## Environment normalization:
 /.bundle
@@ -53,3 +55,8 @@ app/assets/javascripts/components/elm/elm-stuff
 extras
 
 .byebug_history
+
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+/config/credentials.yml.enc

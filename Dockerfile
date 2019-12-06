@@ -49,7 +49,7 @@ FROM nginx as web
 RUN apt-get update -qq && apt-get -y install apache2-utils
 
 # copy over static assetss
-COPY public /app/public
+COPY --from=build /app/public/ /app/public
 COPY app/scripts/docker/nginx.conf /etc/nginx/conf.d/noty.conf
 
 # Use the "exec" form of CMD so Nginx shuts down gracefully on SIGTERM (i.e. `docker stop`)
