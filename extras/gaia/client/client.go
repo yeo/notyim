@@ -20,6 +20,7 @@ import (
 
 type Agent struct {
 	Name           string
+	Region         string
 	Checks         *cmap.ConcurrentMap
 	gaiaAddress    *url.URL
 	conn           *websocket.Conn
@@ -36,6 +37,7 @@ func New() *Agent {
 	checks := cmap.New()
 	a := Agent{
 		Name:           fmt.Sprintf("%s#%d", hostname, os.Getpid()),
+		Region:         os.Getenv("REGION"),
 		Checks:         &checks,
 		config:         LoadConfig(),
 		isReconnecting: false,
@@ -60,7 +62,7 @@ func (a *Agent) Connect() {
 	if a.config.GaiaAddr == "localhost:28300" {
 		scheme = "ws"
 	}
-	u := url.URL{Scheme: scheme, Host: a.config.GaiaAddr, Path: "/ws/" + a.Name}
+	u := url.URL{Scheme: scheme, Host: a.config.GaiaAddr, Path: "/ws/" + a.Name, RawQuery: "region=" + a.Region + "&apikey=" + a.config.GaiaApiKey}
 	a.gaiaAddress = &u
 	var err error
 	a.conn, _, err = websocket.DefaultDialer.Dial(a.gaiaAddress.String(), nil)
@@ -97,12 +99,18 @@ func (a *Agent) ReconnectWithRetry(cause error) {
 func (a *Agent) PushToServer(payload []byte) error {
 	a.mu.Lock()
 	defer a.mu.Unlock()
-	err := a.conn.WriteMessage(websocket.TextMessage, payload)
-	if err != nil {
-		go a.ReconnectWithRetry(err)
+	if a.conn != nil {
+		err := a.conn.WriteMessage(websocket.TextMessage, payload)
+		if err != nil {
+			go a.ReconnectWithRetry(err)
+		}
+
+		return err
 	}
 
-	return err
+	log.Println("Gaia connection is nil. Probably we haven't finishing connecting to gaia or gaia is down")
+
+	return nil
 }
 
 func (a *Agent) ProcessServerCommand(evt *gaia.GenericEvent) {
@@ -165,6 +173,8 @@ func (a *Agent) SyncState() {
 		case <-done:
 			return
 		case t := <-ticker.C:
+			// TODO: Do its own client heal check and stop the whole app if needed so gaia-agent can be restarted with
+			// systemd
 			log.Println("Ticker at", t)
 			a.PushToServer(pingPayload)
 		case <-interrupt:

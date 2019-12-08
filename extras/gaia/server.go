@@ -109,9 +109,22 @@ func (s *Server) SetupRoute() {
 	s.Echo.Use(echo.WrapMiddleware(secureMiddleware.Handler))
 	s.Echo.Use(middleware.Logger())
 	s.Echo.Use(middleware.Recover())
-	s.Echo.Use(middleware.KeyAuth(func(key string, c echo.Context) (bool, error) {
-		return key == s.Config.ApiKey, nil
-	}))
+	s.Echo.Use(s.Auth)
+}
+
+func (s *Server) Auth(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		key := c.QueryParam("apikey")
+		if key == "" {
+			key = c.Request().Header.Get("apikey")
+		}
+
+		if key == s.Config.ApiKey {
+			return next(c)
+		} else {
+			return echo.ErrUnauthorized
+		}
+	}
 }
 
 // SetupChecker starts checker process
