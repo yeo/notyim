@@ -9,6 +9,7 @@ import (
 )
 
 type Config struct {
+	ApiKey string
 	AppEnv string
 
 	MongoURI    string
@@ -31,8 +32,13 @@ type RedisConfig struct {
 
 func LoadConfig() *Config {
 	c := Config{
+		ApiKey:      "banhmitrung",
 		AppEnv:      "development",
 		MongoDBName: "trinity_development",
+	}
+
+	if os.Getenv("APIKEY") != "" {
+		c.ApiKey = os.Getenv("APIKEY")
 	}
 
 	if os.Getenv("APPENV") != "" {
