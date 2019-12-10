@@ -70,7 +70,7 @@ func (s *Server) SetupRoute() {
 		}
 
 		// Store this connection into our agent list
-		s.Syncer.AddAgent(name, &AgentConnection{Conn: conn, IP: ip, Region: region})
+		s.Syncer.AddAgent(name, &AgentConnection{Conn: conn, IP: ip, Region: region, Stats: &AgentActivity{}})
 
 		defer func() {
 			// When we close we will make sure we delete the agent first
@@ -81,28 +81,14 @@ func (s *Server) SetupRoute() {
 		// At this point, connection is succesful. We will started to copy checks
 		go s.Syncer.PushChecksToAgent(name)
 
-		// Keep listening for messge from client like Check Result push
-		for {
-			_, message, err := conn.ReadMessage()
-			if err != nil {
-				return err
-			}
-
-			var evt GenericEvent
-			if err = evt.UnmarshalJSON(message); err != nil {
-				log.Println("Cannot unmarshalJSON")
-				continue
-			}
-
-			log.Printf("Receive event %v from agent %s\n", evt, name)
-
-			switch evt.EventType {
-			case EventTypeCheckHTTPResult:
-				s.Sink.Pipe <- evt.EventCheckHTTPResult
-			case EventTypeCheckTCPResult:
-				s.Sink.Pipe <- evt.EventCheckTCPResult
-			}
+		if err = s.Syncer.ListenFromAgent(name, s.Sink); err != nil {
+			// Should we close this?
+			errorlog.Capture(err)
+			log.Println("Error read from client", err)
+			return err
 		}
+
+		return nil
 	})
 
 	errorlog.WrapMiddleware(s.Echo)

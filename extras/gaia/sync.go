@@ -11,6 +11,7 @@ import (
 	"github.com/orcaman/concurrent-map"
 
 	"github.com/notyim/gaia/dao"
+	"github.com/notyim/gaia/errorlog"
 )
 
 type ScheduleChecks interface {
@@ -22,14 +23,21 @@ type ScheduleChecks interface {
 // Track last time client send check result
 
 type AgentActivity struct {
-	LastMessageFromServer time.Time
-	LastResultSent        time.Time
+	FirstSeenAt            time.Time
+	LastServerPush         time.Time
+	LastReceivedFromClient time.Time
 }
 
 type AgentConnection struct {
 	*websocket.Conn
 	IP     string
 	Region string
+	Stats  *AgentActivity
+}
+
+func (a *AgentConnection) WriteMessage(msgType int, m []byte) {
+	a.Conn.WriteMessage(msgType, m)
+	a.Stats.LastServerPush = time.Now()
 }
 
 // Syncer maintenances state between server and agent. Whenever checks are updated, sync replicate the state to agent
@@ -37,25 +45,24 @@ type Syncer struct {
 	Checks     *cmap.ConcurrentMap
 	Agents     *sync.Map
 	TotalAgent int
-	activity   *sync.Map
 }
 
 func NewSyncer() *Syncer {
 	checks := cmap.New()
 	syncer := Syncer{
-		Agents:   &sync.Map{},
-		Checks:   &checks,
-		activity: &sync.Map{},
+		Agents: &sync.Map{},
+		Checks: &checks,
 	}
 
 	return &syncer
 }
 
-func (s *Syncer) ListAgents() []string {
-	var agents []string
-	s.Agents.Range(func(name, conn interface{}) bool {
-		agents = append(agents, name.(string))
+func (s *Syncer) ListAgents() map[string]*AgentActivity {
+	var agents map[string]*AgentActivity
+	agents = make(map[string]*AgentActivity)
 
+	s.Agents.Range(func(name, ac interface{}) bool {
+		agents[name.(string)] = ac.(*AgentConnection).Stats
 		return true
 	})
 
@@ -66,6 +73,7 @@ func (s *Syncer) AddAgent(name string, conn *AgentConnection) {
 	log.Println("Agent connected", name)
 	s.Agents.Store(name, conn)
 	s.TotalAgent += 1
+	conn.Stats.FirstSeenAt = time.Now()
 	log.Println("Connected agent: ", s.TotalAgent)
 }
 
@@ -131,22 +139,23 @@ func (s *Syncer) DbListener(t dao.OperationType, c *dao.Check) {
 
 func (s *Syncer) PushMessages(m []byte) {
 	// Second, notify gaia client
-	s.Agents.Range(func(name, agent interface{}) bool {
-		agent.(*AgentConnection).Conn.WriteMessage(websocket.TextMessage, m)
+	s.Agents.Range(func(name, ac interface{}) bool {
+		agent := ac.(*AgentConnection)
+		agent.WriteMessage(websocket.TextMessage, m)
 		return true
 	})
 }
 
 func (s *Syncer) PushMessageToAgent(agentName string, payload []byte) {
-	agent, _ := s.Agents.Load(agentName)
-	agent.(*AgentConnection).Conn.WriteMessage(websocket.TextMessage, payload)
+	ac, _ := s.Agents.Load(agentName)
+	agent := ac.(*AgentConnection)
+	agent.WriteMessage(websocket.TextMessage, payload)
 }
 
 func (s *Syncer) PushChecksToAgent(name string) {
 	log.Println("About to push checks to agent", name)
-	aagent, _ := s.Agents.Load(name)
-	agent := aagent.(*AgentConnection)
-	conn := agent.Conn
+	ac, _ := s.Agents.Load(name)
+	agent := ac.(*AgentConnection)
 
 	total := 0
 	for _, check := range s.Checks.Items() {
@@ -157,7 +166,7 @@ func (s *Syncer) PushChecksToAgent(name string) {
 		}
 
 		if payload, err := json.Marshal(evt); err == nil {
-			conn.WriteMessage(websocket.TextMessage, payload)
+			agent.WriteMessage(websocket.TextMessage, payload)
 		}
 		total += 1
 	}
@@ -185,4 +194,37 @@ func (s *Syncer) ScheduleChecks() {
 
 		return true
 	})
+}
+
+func (s *Syncer) ListenFromAgent(name string, sink *Sink) error {
+	ac, _ := s.Agents.Load(name)
+	agent := ac.(*AgentConnection)
+	conn := agent.Conn
+
+	// Keep listening for messge from client like Check Result push
+	for {
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			errorlog.Capture(err)
+			return err
+		}
+		agent.Stats.LastReceivedFromClient = time.Now()
+
+		log.Printf("Receive raw event %v from agent %s\n", string(message), name)
+		var evt GenericEvent
+		if err = evt.UnmarshalJSON(message); err != nil {
+			log.Println("Cannot unmarshalJSON")
+			errorlog.Capture(err)
+			continue
+		}
+
+		log.Printf("Receive event %v from agent %s\n", evt, name)
+
+		switch evt.EventType {
+		case EventTypeCheckHTTPResult:
+			sink.Pipe <- evt.EventCheckHTTPResult
+		case EventTypeCheckTCPResult:
+			sink.Pipe <- evt.EventCheckTCPResult
+		}
+	}
 }
