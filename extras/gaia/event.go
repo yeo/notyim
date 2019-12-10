@@ -120,6 +120,34 @@ type EventCheckBeat struct {
 	BeatAt    time.Time
 }
 
+func (e *EventCheckBeat) BeatType() string {
+	if e.Action == "" {
+		return "_na_"
+	}
+
+	return e.Action
+}
+
+func (e *EventCheckBeat) CheckID() string {
+	return e.ID
+}
+
+func (e *EventCheckBeat) CheckType() string {
+	return "beat"
+}
+
+func (e *EventCheckBeat) QueuePayload() ([]byte, error) {
+	payload := `{"action":"` + e.BeatType() + `"}`
+
+	return []byte(payload), nil
+}
+
+func (e *EventCheckBeat) MetricPayload() (map[string]interface{}, error) {
+	return map[string]interface{}{
+		"action": e.BeatType(),
+	}, nil
+}
+
 type EventRunCheck struct {
 	EventType EventType
 	ID        string

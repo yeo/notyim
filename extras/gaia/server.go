@@ -49,13 +49,8 @@ func (s *Server) SetupRoute() {
 		return c.JSON(http.StatusOK, s.Syncer.Checks)
 	})
 
-	s.Echo.GET("/beat/:id", func(c echo.Context) error {
-		//beatEvent := EventCheckBeat{
-		//	EventType: EventTypeBeat,
-		//}
-		//s.Sink.Pipe <- evt.EventCheckHTTPResult
-		return nil
-	})
+	s.Echo.POST("/beat/:id", handleBeat(s.Sink.Pipe))
+	s.Echo.POST("/beat/:id/:action", handleBeat(s.Sink.Pipe))
 
 	var upgrader = websocket.Upgrader{}
 
