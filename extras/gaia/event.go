@@ -30,22 +30,22 @@ const (
 )
 
 type EventCheckInsert struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 	*dao.Check
 }
 
 type EventCheckReplace struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 	*dao.Check
 }
 
 type EventCheckDelete struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 	*dao.Check
 }
 
 type EventCheckHTTPResult struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 	ID        string
 	IP        string
 	Region    string
@@ -121,7 +121,7 @@ func (e *EventCheckTCPResult) CheckType() string {
 }
 
 type EventCheckBeat struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 	ID        string
 	Action    string
 	BeatAt    time.Time
@@ -156,12 +156,12 @@ func (e *EventCheckBeat) MetricPayload() (map[string]interface{}, error) {
 }
 
 type EventRunCheck struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 	ID        string
 }
 
 type EventPing struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 	At        time.Time
 }
 

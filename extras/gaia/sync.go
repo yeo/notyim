@@ -210,7 +210,6 @@ func (s *Syncer) ListenFromAgent(name string, sink *Sink) error {
 		}
 		agent.Stats.LastReceivedFromClient = time.Now()
 
-		log.Printf("Receive raw event %v from agent %s\n", string(message), name)
 		var evt GenericEvent
 		if err = evt.UnmarshalJSON(message); err != nil {
 			log.Println("Cannot unmarshalJSON")

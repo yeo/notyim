@@ -6,11 +6,11 @@ import (
 )
 
 type EventWrapper struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 }
 
 type GenericEvent struct {
-	EventType EventType
+	EventType EventType `json:"event_type"`
 	*EventCheckInsert
 	*EventCheckReplace
 	*EventCheckDelete
