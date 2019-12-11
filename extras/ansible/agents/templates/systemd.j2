@@ -7,9 +7,8 @@ Wants=network-online.target systemd-networkd-wait-online.service
 Restart=always
 
 Environment=GAIA_ADDR=laputa.noty.im
-Environment=GAIA_TOKEN=laputa.noty.im
+Environment=GAIA_TOKEN={{apikey}}
 Environment=SENTRY_DSN={{sentry_dsn}}
-Environment=REGION={{agent_region}}
 ExecStart=/usr/bin/gaia-agent
 
 ; Use graceful shutdown with a reasonable timeout
