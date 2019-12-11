@@ -47,19 +47,24 @@ type EventCheckDelete struct {
 type EventCheckHTTPResult struct {
 	EventType EventType
 	ID        string
-	Agent     string
+	IP        string
 	Region    string
 	Result    *httpscanner.CheckResponse
 }
 
 func (e *EventCheckHTTPResult) MetricPayload() (map[string]interface{}, error) {
 	return map[string]interface{}{
+		"body_size":          len(e.Result.Body),
+		"error":              e.Result.Error,
+		"from_ip":            e.IP,
+		"from_region":        e.Region,
+		"status":             e.Result.Status,
+		"status_code":        e.Result.StatusCode,
 		"time_NameLookup":    e.Result.Timing.NameLookup,
 		"time_Connect":       e.Result.Timing.Connect,
 		"time_TLSHandshake":  e.Result.Timing.TLSHandshake,
 		"time_StartTransfer": e.Result.Timing.StartTransfer,
 		"time_Total":         e.Result.Timing.Total,
-		"status_code":        e.Result.Status,
 	}, nil
 }
 
@@ -83,16 +88,18 @@ func (e *EventCheckHTTPResult) QueuePayload() ([]byte, error) {
 type EventCheckTCPResult struct {
 	EventType EventType `json:"event_type"`
 	ID        string
-	Agent     string
+	IP        string
 	Region    string
 	Result    *tcpscanner.CheckResponse
 }
 
 func (e *EventCheckTCPResult) MetricPayload() (map[string]interface{}, error) {
 	return map[string]interface{}{
-		"time_Total": e.Result.Timing.Total,
-		"error":      e.Result.Error,
-		"port_open":  e.Result.PortOpen,
+		"error":       e.Result.Error,
+		"from_ip":     e.IP,
+		"from_region": e.Region,
+		"port_open":   e.Result.PortOpen,
+		"time_Total":  e.Result.Timing.Total,
 	}, nil
 }
 

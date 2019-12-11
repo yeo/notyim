@@ -18,7 +18,8 @@ import (
 
 type MetricWriter interface {
 	PushToServer([]byte) error
-	ID() string
+	IPAddress() string
+	Region() string
 }
 
 func Check(check *dao.Check, agent MetricWriter) {
@@ -46,8 +47,8 @@ func checkTCP(check *dao.Check, agent MetricWriter) {
 	runResult := gaia.EventCheckTCPResult{
 		EventType: gaia.EventTypeCheckTCPResult,
 		ID:        check.ID.Hex(),
-		Agent:     agent.ID(),
-		Region:    "US",
+		IP:        agent.IPAddress(),
+		Region:    agent.Region(),
 		Result:    response,
 	}
 	resultPayload, err := json.Marshal(runResult)
@@ -131,9 +132,9 @@ func checkHTTP(check *dao.Check, agent MetricWriter) {
 	runResult := gaia.EventCheckHTTPResult{
 		EventType: gaia.EventTypeCheckHTTPResult,
 		ID:        check.ID.Hex(),
+		IP:        agent.IPAddress(),
+		Region:    agent.Region(),
 		Result:    metric,
-		Agent:     agent.ID(),
-		Region:    "US",
 	}
 	resultPayload, _ := json.Marshal(runResult)
 	agent.PushToServer(resultPayload)

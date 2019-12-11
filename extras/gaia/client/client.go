@@ -15,12 +15,17 @@ import (
 
 	"github.com/notyim/gaia"
 	"github.com/notyim/gaia/dao"
+	"github.com/notyim/gaia/me"
 	"github.com/notyim/gaia/scanner"
 )
 
+type AgentInfo struct {
+	Name   string
+	IPinfo *me.IPinfo
+}
+
 type Agent struct {
-	Name           string
-	Region         string
+	AgentInfo      *AgentInfo
 	Checks         *cmap.ConcurrentMap
 	gaiaAddress    *url.URL
 	conn           *websocket.Conn
@@ -34,10 +39,18 @@ type Agent struct {
 
 func New() *Agent {
 	hostname, _ := os.Hostname()
+	ipinfo, err := me.Fetch()
+	if err != nil {
+		log.Fatal("Failt to fetch GEO IP")
+	}
+
+	agentInfo := AgentInfo{
+		Name:   fmt.Sprintf("%s#%d", hostname, os.Getpid()),
+		IPinfo: ipinfo,
+	}
 	checks := cmap.New()
 	a := Agent{
-		Name:           fmt.Sprintf("%s#%d", hostname, os.Getpid()),
-		Region:         os.Getenv("REGION"),
+		AgentInfo:      &agentInfo,
 		Checks:         &checks,
 		config:         LoadConfig(),
 		isReconnecting: false,
@@ -45,10 +58,6 @@ func New() *Agent {
 	a.ScannerPool = scanner.NewPool(&a, a.config.WorkerPool)
 
 	return &a
-}
-
-func (a *Agent) ID() string {
-	return a.Name
 }
 
 func (a *Agent) Run() {
@@ -62,7 +71,7 @@ func (a *Agent) Connect() {
 	if a.config.GaiaAddr == "localhost:28300" {
 		scheme = "ws"
 	}
-	u := url.URL{Scheme: scheme, Host: a.config.GaiaAddr, Path: "/ws/" + a.Name, RawQuery: "region=" + a.Region + "&apikey=" + a.config.GaiaApiKey}
+	u := url.URL{Scheme: scheme, Host: a.config.GaiaAddr, Path: "/ws/" + a.AgentInfo.Name, RawQuery: "region=" + a.AgentInfo.IPinfo.Region + "&apikey=" + a.config.GaiaApiKey}
 	a.gaiaAddress = &u
 	var err error
 	a.conn, _, err = websocket.DefaultDialer.Dial(a.gaiaAddress.String(), nil)
@@ -70,6 +79,14 @@ func (a *Agent) Connect() {
 	if err != nil {
 		log.Fatal("dial:", err)
 	}
+}
+
+func (a *Agent) IPAddress() string {
+	return a.AgentInfo.IPinfo.IP
+}
+
+func (a *Agent) Region() string {
+	return a.AgentInfo.IPinfo.Region
 }
 
 func (a *Agent) ReconnectWithRetry(cause error) {
