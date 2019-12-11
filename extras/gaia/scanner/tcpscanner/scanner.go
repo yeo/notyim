@@ -45,6 +45,10 @@ func Check(protocol, hostport string) (*CheckResponse, error) {
 			PortOpen:     false,
 			Error:        true,
 			ErrorMessage: err.Error(),
+			Timing: &CheckTiming{
+				Connect: -1,
+				Total:   -1,
+			},
 		}, nil
 	}
 
