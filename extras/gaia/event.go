@@ -94,13 +94,18 @@ type EventCheckTCPResult struct {
 }
 
 func (e *EventCheckTCPResult) MetricPayload() (map[string]interface{}, error) {
-	return map[string]interface{}{
+	m := map[string]interface{}{
 		"error":       e.Result.Error,
 		"from_ip":     e.IP,
 		"from_region": e.Region,
 		"port_open":   e.Result.PortOpen,
-		"time_Total":  e.Result.Timing.Total,
-	}, nil
+	}
+
+	if e.Result.Timing {
+		m["time_Total"] = e.Result.Timing.Total
+	}
+
+	return m, nil
 }
 
 func (e *EventCheckTCPResult) QueuePayload() ([]byte, error) {
