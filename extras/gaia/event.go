@@ -101,7 +101,7 @@ func (e *EventCheckTCPResult) MetricPayload() (map[string]interface{}, error) {
 		"port_open":   e.Result.PortOpen,
 	}
 
-	if e.Result.Timing {
+	if e.Result.Timing != nil {
 		m["time_Total"] = e.Result.Timing.Total
 	}
 

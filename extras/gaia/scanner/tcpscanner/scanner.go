@@ -42,12 +42,13 @@ func Check(protocol, hostport string) (*CheckResponse, error) {
 		}
 
 		return &CheckResponse{
+			Body:         "",
 			PortOpen:     false,
 			Error:        true,
 			ErrorMessage: err.Error(),
 			Timing: &CheckTiming{
-				Connect: -1,
-				Total:   -1,
+				Connect: t1.Sub(t0),
+				Total:   time.Now().Sub(t0),
 			},
 		}, nil
 	}
