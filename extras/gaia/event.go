@@ -60,11 +60,11 @@ func (e *EventCheckHTTPResult) MetricPayload() (map[string]interface{}, error) {
 		"from_region":        e.Region,
 		"status":             e.Result.Status,
 		"status_code":        e.Result.StatusCode,
-		"time_NameLookup":    e.Result.Timing.NameLookup,
-		"time_Connect":       e.Result.Timing.Connect,
-		"time_TLSHandshake":  e.Result.Timing.TLSHandshake,
-		"time_StartTransfer": e.Result.Timing.StartTransfer,
-		"time_Total":         e.Result.Timing.Total,
+		"time_NameLookup":    int64(e.Result.Timing.NameLookup) / int64(time.Millisecond),
+		"time_Connect":       int64(e.Result.Timing.Connect) / int64(time.Millisecond),
+		"time_TLSHandshake":  int64(e.Result.Timing.TLSHandshake) / int64(time.Millisecond),
+		"time_StartTransfer": int64(e.Result.Timing.StartTransfer) / int64(time.Millisecond),
+		"time_Total":         int64(e.Result.Timing.Total) / int64(time.Millisecond),
 	}, nil
 }
 
@@ -102,7 +102,7 @@ func (e *EventCheckTCPResult) MetricPayload() (map[string]interface{}, error) {
 	}
 
 	if e.Result.Timing != nil {
-		m["time_Total"] = e.Result.Timing.Total
+		m["time_Total"] = int64(e.Result.Timing.Total) / int64(time.Millisecond)
 	}
 
 	return m, nil
