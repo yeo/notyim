@@ -1,6 +1,6 @@
 FROM ruby:2.6.2 as build
 
-ARG RAILS_ENV 
+ARG RAILS_ENV
 ENV LANG=C.UTF-8 \
   GEM_HOME=/bundle \
   BUNDLE_JOBS=4 \
@@ -41,6 +41,7 @@ RUN \
 
 RUN mkdir -p /app/tmp/pids /app/tmp/sockets
 
+
 # NGINX  DOCKER IMAGE
 # Our primary nginx image in front-of Rails app with puma
 FROM nginx as web
@@ -56,17 +57,12 @@ COPY app/scripts/docker/nginx.conf /etc/nginx/conf.d/noty.conf
 CMD [ "nginx", "-g", "daemon off;" ]
 
 
-# Final image
-FROM build as app
-
-ENV RAILS_ENV production
-
-CMD ["puma", "-C", "config/puma.rb"]
-
-
 # PRIMARY APP DOCKER IMAGE
 # Our primary Rails app image
 FROM build as app
 
 EXPOSE 3000
-CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
+
+ENV RAILS_LOG_TO_STDOUT 1
+
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb", "--control", "tcp://127.0.0.1:9293", "--control-token", "conchi"]

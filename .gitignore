@@ -62,3 +62,6 @@ app/assets/javascripts/components/elm/elm-stuff
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Ignore any of these file. We usually put these in a share directory and symlink to them
+secret.sh
