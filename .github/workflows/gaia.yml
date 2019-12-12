@@ -1,0 +1,13 @@
+name: Build Gaia
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: golang:latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build
+      run: cd extras/gaia/cmd/server && go build
