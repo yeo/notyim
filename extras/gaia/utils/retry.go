@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"match/rand"
+	"math/rand"
 	"time"
 )
 
@@ -26,7 +26,7 @@ func Retry(attempts int, sleep time.Duration, f func() error) error {
 			sleep = sleep + jitter/2
 
 			time.Sleep(sleep)
-			return retry(attempts, 2*sleep, f)
+			return Retry(attempts, 2*sleep, f)
 		}
 		return err
 	}
