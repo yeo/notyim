@@ -36,7 +36,7 @@ class CheckDecorator < SimpleDelegator
     line_chart_data_labels(result['values'], label_step)
   end
 
-  def line_chart_data_labels(points)
+  def line_chart_data_labels(points, label_step)
     labels = points.each_with_index.map { |p, i| (i % label_step).zero? ? Time.parse(p['time']).strftime('%H:%M') : '' }
     {
       labels: labels,
