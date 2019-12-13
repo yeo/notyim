@@ -85,7 +85,7 @@ func (r *Result) ToCheckTiming() *CheckTiming {
 		Connect:       d["Connect"],
 		TLSHandshake:  d["TLSHandshake"],
 		StartTransfer: d["StartTransfer"],
-		Total:         d["total"],
+		Total:         d["Total"],
 	}
 }
 

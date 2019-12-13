@@ -127,7 +127,7 @@ func checkHTTP(check *dao.Check, agent MetricWriter) {
 	}
 
 	//log.Printf("Response metric %v\n", metric)
-	log.Printf("Timing %v", result.Durations())
+	log.Printf("Scanner Timing %v", result.Durations())
 
 	runResult := gaia.EventCheckHTTPResult{
 		EventType: gaia.EventTypeCheckHTTPResult,
