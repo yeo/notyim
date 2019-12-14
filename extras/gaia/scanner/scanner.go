@@ -1,11 +1,8 @@
 package scanner
 
 import (
-	"context"
 	"encoding/json"
-	"io/ioutil"
 	"log"
-	"net"
 	"net/http"
 	"time"
 
@@ -63,8 +60,8 @@ func checkTCP(check *dao.Check, agent MetricWriter) {
 func checkHTTP(check *dao.Check, agent MetricWriter) {
 	t0 := time.Now()
 	defer func() {
+		// Telegram hook to report abnormal thing
 		log.Printf("Check %s finish in %v", check.URI, time.Now().Sub(t0))
-
 	}()
 	req, err := http.NewRequest("GET", check.URI, nil)
 	if err != nil {
@@ -72,62 +69,7 @@ func checkHTTP(check *dao.Check, agent MetricWriter) {
 		return
 	}
 
-	req.Header.Set("User-Agent", "noty/2.0 (https://noty.im)")
-	var result httpscanner.Result
-	var cancel context.CancelFunc
-	ctx := httpscanner.WithHTTPStat(req.Context(), &result)
-	ctx, cancel = context.WithCancel(ctx)
-	time.AfterFunc(30*time.Second, func() {
-		cancel()
-	})
-
-	req = req.WithContext(ctx)
-
-	httpClient := &http.Client{
-		Timeout: 30 * time.Second,
-		Transport: &http.Transport{
-			Dial: (&net.Dialer{
-				Timeout:   30 * time.Second,
-				KeepAlive: 30 * time.Second,
-			}).Dial,
-			TLSHandshakeTimeout:   10 * time.Second,
-			ResponseHeaderTimeout: 10 * time.Second,
-			ExpectContinueTimeout: 1 * time.Second,
-		},
-
-		CheckRedirect: func(req *http.Request, via []*http.Request) error {
-			// always refuse to formatllow redirects,
-			return http.ErrUseLastResponse
-		},
-	}
-
-	res, err := httpClient.Do(req)
-	if res != nil {
-		defer res.Body.Close()
-	}
-	if err != nil {
-		log.Println("Error when perform http check request")
-		return
-	}
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Println("Cannot read body", err)
-		return
-	}
-	result.End(time.Now())
-
-	metric := &httpscanner.CheckResponse{
-		RunAt:         time.Now(),
-		StatusCode:    res.StatusCode,
-		Status:        res.Status,
-		ContentLength: res.ContentLength,
-		Header:        res.Header,
-		Timing:        result.ToCheckTiming(),
-		Body:          string(body),
-	}
-
-	//log.Printf("Response metric %v\n", metric)
-	log.Printf("Scanner Timing %v", result.Durations())
+	metric := httpscanner.Check(req)
 
 	runResult := gaia.EventCheckHTTPResult{
 		EventType: gaia.EventTypeCheckHTTPResult,

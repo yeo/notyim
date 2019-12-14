@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 Bugsnag.configure do |config|
-  config.api_key = Rails.application.credentials[:BUGSNAG_KEY]
+  config.api_key = ENV['BUGSNAG_KEY'] || Rails.application.credentials[:BUGSNAG_KEY]
   config.app_version = ENV['GIT_COMMIT'] || 'master'
 end

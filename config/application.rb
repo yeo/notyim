@@ -39,7 +39,7 @@ module Trinity
       scope: 'bot',
       client_id: '51439348069.157091434678',
       redirect_uri: 'http://127.0.0.1:3000/bot/slack',
-      client_secret: ENV.fetch('SLACK_CLIENT_SECRET', Rails.application.credentials.fetch(:SLACK_CLIENT_SECRET))
+      client_secret: Rails.application.credentials.fetch(:SLACK_CLIENT_SECRET, ENV['SLACK_CLIENT_SECRET'])
     }
     # End custom configuration
 

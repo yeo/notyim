@@ -8,6 +8,9 @@ import (
 	"crypto/tls"
 	"fmt"
 	"io"
+	"io/ioutil"
+	"log"
+	"net"
 	"net/http"
 	"net/http/httptrace"
 	"strings"
@@ -181,6 +184,7 @@ func (r *Result) End(t time.Time) {
 	}
 
 	r.contentTransfer = r.transferDone.Sub(r.transferStart)
+	fmt.Println("END")
 	r.total = r.transferDone.Sub(r.dnsStart)
 }
 
@@ -199,7 +203,7 @@ func (r *Result) Total(t time.Time) time.Duration {
 }
 
 func withClientTrace(ctx context.Context, r *Result) context.Context {
-	return httptrace.WithClientTrace(ctx, &httptrace.ClientTrace{
+	trace := &httptrace.ClientTrace{
 		DNSStart: func(i httptrace.DNSStartInfo) {
 			r.dnsStart = time.Now()
 		},
@@ -290,5 +294,76 @@ func withClientTrace(ctx context.Context, r *Result) context.Context {
 
 			r.transferStart = r.serverDone
 		},
+	}
+
+	return httptrace.WithClientTrace(ctx, trace)
+}
+
+func Check(req *http.Request) *CheckResponse {
+	req.Header.Set("User-Agent", "noty/2.0 (https://noty.im)")
+	var result Result
+
+	ctx := WithHTTPStat(req.Context(), &result)
+
+	var cancel context.CancelFunc
+	ctx, cancel = context.WithCancel(ctx)
+	time.AfterFunc(30*time.Second, func() {
+		cancel()
 	})
+
+	req = req.WithContext(ctx)
+
+	httpClient := &http.Client{
+		Timeout: 30 * time.Second,
+		Transport: &http.Transport{
+			//Dial: (&net.Dialer{
+			//	Timeout:   30 * time.Second,
+			//	KeepAlive: 30 * time.Second,
+			//}).Dial,
+			DialContext: (&net.Dialer{
+				Timeout:   30 * time.Second,
+				KeepAlive: 30 * time.Second,
+				DualStack: true,
+			}).DialContext,
+			TLSHandshakeTimeout:   10 * time.Second,
+			ResponseHeaderTimeout: 10 * time.Second,
+			ExpectContinueTimeout: 10 * time.Second,
+		},
+
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			// always refuse to formatllow redirects,
+			return http.ErrUseLastResponse
+		},
+	}
+
+	res, err := httpClient.Do(req)
+	if res != nil {
+		defer res.Body.Close()
+	}
+
+	if err != nil {
+		log.Println("Error when perform http check request")
+		return nil
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		log.Println("Cannot read body", err)
+		return nil
+	}
+	result.End(time.Now())
+
+	metric := &CheckResponse{
+		RunAt:         time.Now(),
+		StatusCode:    res.StatusCode,
+		Status:        res.Status,
+		ContentLength: res.ContentLength,
+		Header:        res.Header,
+		Timing:        result.ToCheckTiming(),
+		Body:          string(body),
+	}
+
+	//log.Printf("Response metric %v\n", metric)
+	log.Printf("Scanner Timing %v", result.Durations())
+
+	return metric
 }
