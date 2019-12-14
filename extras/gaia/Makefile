@@ -1,4 +1,4 @@
-version := 0.2.3
+version := 0.2.10
 commit := $(shell git rev-parse HEAD)
 gaia_version := gaia-$(version)
 gaia_version_commit := gaia-$(version)-$(commit)

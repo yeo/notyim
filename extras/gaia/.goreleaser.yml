@@ -3,18 +3,24 @@ before:
     # you may remove this if you don't use vgo
     # - go mod tidy
     - go generate ./...
+
 builds:
 - env:
   - CGO_ENABLED=0
   main: ./cmd/server/main.go
   id: "server"
   binary: "gaia-server"
+  ldflags:
+  - -s -w -X github.com/notyim/gaia.AppVersion={{.Version}} -X github.com/notyim/gaia.BuildCommit={{.Commit}} -X github.com/notyim/gaia.BuildDate={{.Date}}
 
 - env:
   - CGO_ENABLED=0
   main: ./cmd/client/main.go
   id: "client"
   binary: "gaia-agent"
+  ldflags:
+  - -s -w -X github.com/notyim/gaia.AppVersion={{.Version}} -X github.com/notyim/gaia.BuildCommit={{.Commit}} -X github.com/notyim/gaia.BuildDate={{.Date}}
+
 
 archives:
 - replacements:

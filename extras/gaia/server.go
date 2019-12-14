@@ -38,7 +38,7 @@ func (s *Server) SetupRoute() {
 	})
 
 	s.Echo.GET("/", func(c echo.Context) error {
-		return c.String(http.StatusOK, "Gaia Ok.\nInstall server with.\ncurl -s https://gaia.noty.im/install | bash")
+		return c.String(http.StatusOK, Version("Server")+"\nInstall server with.\ncurl -s https://gaia.noty.im/install | bash")
 	})
 
 	s.Echo.GET("/agents", func(c echo.Context) error {
@@ -57,15 +57,18 @@ func (s *Server) SetupRoute() {
 	s.Echo.GET("/ws/:name", func(c echo.Context) error {
 		name := c.Param("name")
 		region := c.QueryParam("region")
+		version := c.QueryParam("version")
 		ip := c.RealIP()
 
+		log.Println("yo man")
 		conn, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 		if err != nil {
+			log.Println(err)
 			return err
 		}
 
 		// Store this connection into our agent list
-		s.Syncer.AddAgent(name, &AgentConnection{Conn: conn, IP: ip, Region: region, Stats: &AgentActivity{}})
+		s.Syncer.AddAgent(name, &AgentConnection{Conn: conn, IP: ip, Version: version, Region: region, Stats: &AgentActivity{}})
 
 		defer func() {
 			// When we close we will make sure we delete the agent first

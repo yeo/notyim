@@ -20,8 +20,9 @@ import (
 )
 
 type AgentInfo struct {
-	Name   string
-	IPinfo *me.IPinfo
+	Name    string
+	Version string
+	IPinfo  *me.IPinfo
 }
 
 type Agent struct {
@@ -45,8 +46,9 @@ func New() *Agent {
 	}
 
 	agentInfo := AgentInfo{
-		Name:   fmt.Sprintf("%s#%d", hostname, os.Getpid()),
-		IPinfo: ipinfo,
+		Name:    fmt.Sprintf("%s#%d", hostname, os.Getpid()),
+		Version: gaia.Version("Client"),
+		IPinfo:  ipinfo,
 	}
 	checks := cmap.New()
 	a := Agent{
@@ -71,13 +73,19 @@ func (a *Agent) Connect() {
 	if a.config.GaiaAddr == "localhost:28300" {
 		scheme = "ws"
 	}
-	u := url.URL{Scheme: scheme, Host: a.config.GaiaAddr, Path: "/ws/" + a.AgentInfo.Name, RawQuery: "region=" + a.AgentInfo.IPinfo.Region + "&apikey=" + a.config.GaiaApiKey}
+	params := url.Values{}
+	params.Add("version", a.AgentInfo.Version)
+	params.Add("region", a.AgentInfo.IPinfo.Region)
+	params.Add("apikey", a.config.GaiaApiKey)
+
+	u := url.URL{Scheme: scheme, Host: a.config.GaiaAddr, Path: "/ws/" + a.AgentInfo.Name, RawQuery: params.Encode()}
 	a.gaiaAddress = &u
 	var err error
+	log.Println("Connect to", a.gaiaAddress.String())
 	a.conn, _, err = websocket.DefaultDialer.Dial(a.gaiaAddress.String(), nil)
 
 	if err != nil {
-		log.Fatal("dial:", err)
+		log.Fatal("dial:", a.config.GaiaAddr, err)
 	}
 }
 

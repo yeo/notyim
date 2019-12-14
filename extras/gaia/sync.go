@@ -30,9 +30,10 @@ type AgentActivity struct {
 
 type AgentConnection struct {
 	*websocket.Conn
-	IP     string
-	Region string
-	Stats  *AgentActivity
+	Version string
+	IP      string
+	Region  string
+	Stats   *AgentActivity
 }
 
 func (a *AgentConnection) WriteMessage(msgType int, m []byte) {
@@ -62,7 +63,9 @@ func (s *Syncer) ListAgents() map[string]*AgentActivity {
 	agents = make(map[string]*AgentActivity)
 
 	s.Agents.Range(func(name, ac interface{}) bool {
-		agents[name.(string)] = ac.(*AgentConnection).Stats
+		ag := ac.(*AgentConnection)
+
+		agents[name.(string)+ag.Version] = ag.Stats
 		return true
 	})
 
