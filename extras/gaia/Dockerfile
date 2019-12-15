@@ -7,8 +7,7 @@ ADD . /app
 ADD .goreleaser.yml /app
 
 
-RUN cd /app/cmd/server && \
-  /app/bin/goreleaser --snapshot --rm-dist
+RUN /app/bin/goreleaser --snapshot --rm-dist
 
 # final stage
 FROM debian:buster-slim
