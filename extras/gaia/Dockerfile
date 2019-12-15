@@ -1,16 +1,19 @@
 FROM golang as builder
 
 WORKDIR /app
+RUN  curl -sfL https://install.goreleaser.com/github.com/goreleaser/goreleaser.sh | sh
 
 ADD . /app
+ADD .goreleaser.yml /app
 
-RUN cd /app/cmd/server && go build -o /app/gaia-server && \
-    cd /app/cmd/client && go build -o /app/gaia-client
+
+RUN cd /app/cmd/server && \
+  /app/bin/goreleaser --snapshot --rm-dist
 
 # final stage
 FROM debian:buster-slim
 WORKDIR /app
 
-COPY --from=builder /app/gaia-server /usr/bin/gaia-server
+COPY --from=builder /app/dist/server_linux_amd64/gaia-server /usr/bin/gaia-server
 
 ENTRYPOINT /usr/bin/gaia-server

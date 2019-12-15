@@ -345,31 +345,34 @@ func Check(req *http.Request) *CheckResponse {
 		RunAt: time.Now(),
 	}
 
-	var checkError error
-
 	if err != nil {
 		log.Println("Error when perform http check request", req.URL, err)
-		checkError = err
+
+		metric.Error = true
+		metric.ErrorMessage = err.Error()
+		metric.Timing = result.ToCheckTiming()
+		return metric
 	}
+
 	body, err := ioutil.ReadAll(res.Body)
+	result.End(time.Now())
+
 	if err != nil {
 		log.Println("Cannot read body", req.URL, err)
-		checkError = err
+
+		metric.Error = true
+		metric.ErrorMessage = err.Error()
+		metric.Timing = result.ToCheckTiming()
+		return metric
 	}
-	result.End(time.Now())
 
 	metric.StatusCode = res.StatusCode
 	metric.Status = res.Status
 	metric.ContentLength = res.ContentLength
 	metric.Header = res.Header
+	metric.Error = false
+	metric.Body = string(body)
 	metric.Timing = result.ToCheckTiming()
-
-	if checkError != nil {
-		metric.Error = true
-		metric.ErrorMessage = checkError.Error()
-	} else {
-		metric.Body = string(body)
-	}
 
 	//log.Printf("Response metric %v\n", metric)
 	log.Printf("Scanner Timing %v", result.Durations())
