@@ -60,7 +60,6 @@ func (s *Server) SetupRoute() {
 		version := c.QueryParam("version")
 		ip := c.RealIP()
 
-		log.Println("yo man")
 		conn, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
 		if err != nil {
 			log.Println(err)

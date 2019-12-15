@@ -341,25 +341,34 @@ func Check(req *http.Request) *CheckResponse {
 		defer res.Body.Close()
 	}
 
+	metric := &CheckResponse{
+		RunAt: time.Now(),
+	}
+
+	var checkError error
+
 	if err != nil {
-		log.Println("Error when perform http check request")
-		return nil
+		log.Println("Error when perform http check request", req.URL, err)
+		checkError = err
 	}
 	body, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		log.Println("Cannot read body", err)
-		return nil
+		log.Println("Cannot read body", req.URL, err)
+		checkError = err
 	}
 	result.End(time.Now())
 
-	metric := &CheckResponse{
-		RunAt:         time.Now(),
-		StatusCode:    res.StatusCode,
-		Status:        res.Status,
-		ContentLength: res.ContentLength,
-		Header:        res.Header,
-		Timing:        result.ToCheckTiming(),
-		Body:          string(body),
+	metric.StatusCode = res.StatusCode
+	metric.Status = res.Status
+	metric.ContentLength = res.ContentLength
+	metric.Header = res.Header
+	metric.Timing = result.ToCheckTiming()
+
+	if checkError != nil {
+		metric.Error = true
+		metric.ErrorMessage = checkError.Error()
+	} else {
+		metric.Body = string(body)
 	}
 
 	//log.Printf("Response metric %v\n", metric)
