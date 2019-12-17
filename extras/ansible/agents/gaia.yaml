@@ -1,25 +1,40 @@
 ---
 - hosts: gaia
+  vars:
+    - gaia_version: 0.3.3
   remote_user: root
   tasks:
 
-  - name: Ensure gaia exist
+  - name: Download gaia tar ball
     get_url:
-      url: https://github.com/notyim/notyim/releases/download/gaia-0.1.1/gaia-agent
-      dest: /usr/bin/gaia-agent
-      mode: '0700'
+      url: https://github.com/notyim/notyim/releases/download/{{ gaia_version }}/notyim_{{ gaia_version }}_Linux_x86_64.tar.gz
+      dest: /tmp/notyim_{{ gaia_version }}_Linux_x86_64.tar.gz
+
+  - name: ensure create directory noty
+    file:
+      path: /var/lib/noty
+      state: directory
+
+  - name: Extract tar ball
+    unarchive:
+      # This file is download per remote host, so set copy to false to not attempting copying from control machine
+      copy: false
+      src: /tmp/notyim_{{ gaia_version }}_Linux_x86_64.tar.gz
+      dest: /var/lib/noty/
 
   - name: Ensure systemd file
     template:
       src: systemd.j2
       dest: /etc/systemd/system/gaia.service
-    notify:
-    - restart gaia
 
-  handlers:
-   - name: restart gaia
-     systemd:
-       name: gaia
-       state: restarted
-       enabled: yes
-       daemon_reload: yes
+  - name: Cleanup
+    file:
+      path: /tmp/notyim_{{ gaia_version }}_Linux_x86_64.tar.gz
+      state: absent
+
+  - name: restart gaia
+    systemd:
+     name: gaia
+     state: restarted
+     enabled: yes
+     daemon_reload: yes
