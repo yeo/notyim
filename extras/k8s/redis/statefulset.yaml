@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: noty
+spec:
+  ports:
+  - port: 6379
+    name: redis
+  selector:
+    app: redis
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis
+  namespace: noty
+spec:
+  serviceName: "redis"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - image: "redis:5.0"
+        name: redis
+        args: ['redis-server', '/usr/local/etc/redis/redis.conf']
+        resources:
+          requests:
+            memory: "512Mi"
+          limits:
+            memory: "512Mi"
+        ports:
+        - containerPort: 6379
+          name: redis
+        volumeMounts:
+        - name: redis-conf-dir
+          mountPath: /usr/local/etc/redis/redis.conf
+          subPath: redis.conf
+      volumes:
+      - name: redis-conf-dir
+        hostPath:
+          path: /opt/k8s/data/noty/redis/config
+          type: Directory
