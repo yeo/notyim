@@ -1,0 +1,83 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: gaia
+  namespace: noty
+  labels:
+    app: gaia
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gaia
+  template:
+    metadata:
+      labels:
+        app: gaia
+        name: gaia
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+      - image: notyim/gaia:${version}
+        imagePullPolicy: Always
+        name: gaia
+        ports:
+        - containerPort: 28300
+          name: gaia
+        env:
+          - name: APPENV
+            value: production
+          - name: MONGO_URI
+            value: "mongodb://mongodb.noty:27017"
+          - name: MONGO_DBNAME
+            value: "noty_production"
+          - name: REDIS_ADDR
+            value: "redis:6379"
+          - name: REDIS_DB
+            value: "0"
+          - name: INFLUXDB_HOST
+            value: "http://influx.influx:8086"
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: GAIA_SENTRY_DSN
+          - name: APIKEY
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: GAIA_PRESHARED_KEY
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gaia
+  namespace: noty
+spec:
+  ports:
+  - port: 80
+    targetPort: gaia
+    name: gaia
+  selector:
+    app: gaia
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "gaia-ingress"
+  namespace: noty
+spec:
+  tls:
+  - hosts:
+    - laputa.noty.im
+    secretName: tls
+  rules:
+  - host: "laputa.noty.im"
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: gaia
+          servicePort: gaia
