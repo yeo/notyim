@@ -19,7 +19,7 @@ namespace :influxdb do
   end
 
   desc 'Configure query and retention policy'
-  task setup: [:create_db, :environment] do
+  task setup: %i[create_db environment] do
     client = Trinity::InfluxDB.client
     RPS.call.each do |q|
       client.query q
