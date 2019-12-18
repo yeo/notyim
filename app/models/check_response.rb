@@ -22,6 +22,9 @@ class CheckResponse
   #   - from_region:
   field :raw_result, type: Hash
 
+  field :region, type: String
+  field :agent, type: String
+
   # The reason we use two associated here is to improve
   # how we fetch the incident since we don't have join
   belongs_to :assertion

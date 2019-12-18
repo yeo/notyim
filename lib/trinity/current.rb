@@ -28,7 +28,7 @@ module Trinity
         load_default_team_for_user
       end
     rescue StandardError => e
-      Bugsnag.notify e
+      Raven.capture_exception(e)
       session[:team] = nil
       raise e
     end
@@ -82,7 +82,7 @@ module Trinity
 
       session[:team] = @team.id.to_s
     rescue Mongoid::Errors::DocumentNotFound => e
-      Bugsnag.notify e
+      Raven.capture_exception(e)
 
       not_found
     end

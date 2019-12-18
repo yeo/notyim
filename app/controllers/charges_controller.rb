@@ -21,13 +21,13 @@ class ChargesController < DashboardController
 
   def stripe_card_error(err)
     flash[:error] = err.message
-    Bugsnag.notify(e)
+    Raven.capture_exception(err, extra: { user: current.user.id.to_s, email: current.user.email })
 
     redirect_back fallback_location: user_show_billings_path, alert: t('payment.card_error')
   end
 
   def generic_charge_error(err)
-    Bugsnag.notify(err)
+    Raven.capture_exception(err, extra: { user: current.user.id.to_s, email: current.user.email })
 
     redirect_to users_show_billings_path, notice: t('payment.fail_charge')
   end

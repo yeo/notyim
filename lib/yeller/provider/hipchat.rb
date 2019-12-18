@@ -24,7 +24,7 @@ module Yeller
           incident: incident.id.to_s
         )
 
-        Bugsnag.notify(notification)
+        Raven.capture_exception(notification)
       end
     end
   end

@@ -73,8 +73,7 @@ module Yeller
         return ::Yeller::Transporter::SmsTest.send(receiver.handler, content) if incident.user.internal_tester?
 
         unless TeamCreditService.enough_credit_sms?(incident.team)
-          Bugsnag.notify(Exception.new(message: 'no sms balance', user: user.id.to_s))
-
+          Raven.capture_exception(Exception.new(message: 'no sms balance', user: user.id.to_s))
           return
         end
         send_and_deduct_credit!(incident, receiver, content)

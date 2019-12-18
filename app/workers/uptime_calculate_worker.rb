@@ -28,13 +28,7 @@ class UptimeCalculateWorker
     begin
       check.save!
     rescue Mongoid::Errors::Validations => e
-      Bugsnag.notify(e) do |report|
-        # Adjust the severity of this error
-        report.severity = 'error'
-
-        # Add customer information to this report
-        report.add_tab(:check, id: check.id.to_s)
-      end
+      Raven.capture_exception(e, extra: { check: check_id })
     end
 
     calculate_daily_uptime(check)

@@ -19,7 +19,7 @@ gem 'webpacker'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'bugsnag'
+gem "sentry-raven"
 gem 'connection_pool'
 gem 'devise'
 gem 'hipchat'

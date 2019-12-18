@@ -59,7 +59,7 @@ module Yeller
       def self.send_and_deduct_credit!(incident, receiver, url)
         if TeamCreditService.enough_credit_voice?(incident.team)
           e = Exception.new(message: 'no voice balance', user: user.id.to_s)
-          Bugsnag.notify e
+          Raven.capture_exception(e)
 
           return
         end

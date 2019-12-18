@@ -71,8 +71,6 @@ GEM
     bootsnap (1.4.5)
       msgpack (~> 1.0)
     bson (4.6.0)
-    bugsnag (6.12.2)
-      concurrent-ruby (~> 1.0)
     builder (3.2.3)
     byebug (11.0.1)
     capistrano (3.11.2)
@@ -362,6 +360,8 @@ GEM
       sprockets (> 3.0)
       sprockets-rails
       tilt
+    sentry-raven (2.12.3)
+      faraday (>= 0.7.6, < 1.0)
     sidekiq (5.2.7)
       connection_pool (~> 2.2, >= 2.2.2)
       rack (>= 1.5.0)
@@ -436,7 +436,6 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   bootsnap
-  bugsnag
   byebug
   capistrano
   capistrano-bundler
@@ -469,6 +468,7 @@ DEPENDENCIES
   rspec-rails
   rspec_junit_formatter
   rubocop
+  sentry-raven
   sidekiq
   slack-notifier
   spring
