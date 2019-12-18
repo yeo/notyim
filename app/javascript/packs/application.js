@@ -15,3 +15,5 @@ import '../src/application.scss';
 import * as Chartist from 'chartist';
 window.Chartist = Chartist;
 
+// Stimulus
+import "../controllers"

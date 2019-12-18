@@ -14,13 +14,8 @@ require.context('../images', true);
 import '../src/application.scss';
 import * as Chartist from 'chartist';
 
-import {
-  Elm as AssertEditor
-} from '../AssertEditor';
-
-import {
-  Elm as TeamPicker
-} from '../TeamPicker'
+import { Elm as AssertEditor } from '../AssertEditor';
+import { Elm as TeamPicker } from '../TeamPicker'
 
 
 window.Chartist = Chartist;
