@@ -43,6 +43,10 @@ services:
     image: mongo
     volumes:
       - mongo:/data/db
+    command:
+      - mongod
+      - --replSet
+      - noty
     ports:
       - 27017:27017
 
