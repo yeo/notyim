@@ -53,6 +53,7 @@ app/assets/javascripts/components/elm/elm-stuff
 /public/packs-test
 /node_modules
 extras
+!extras/docker
 
 .byebug_history
 
