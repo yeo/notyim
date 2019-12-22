@@ -1,4 +1,45 @@
-<%= form_for(check) do |f| %>
+<div data-controller="check">
+  <section class="tile">
+    <div class="card">
+      <div class="card-image">
+
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <h2>
+            <button data-action="click->check#pick" data-check-type="<%= Check::TYPE_TCP %>">TCP</button>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-image">
+
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <h2>
+            <button data-action="click->check#pick" data-check-type="<%= Check::TYPE_HTTP %>">HTTP</button>
+          </h2>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-image">
+
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <h2>
+            <button data-action="click->check#pick" data-check-type="<%= Check::TYPE_HEARTBEAT %>">Heartbeat</button>
+          </h2>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <% if check.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(check.errors.count, "error") %> prohibited this check from being saved:</h2>
@@ -11,67 +52,173 @@
     </div>
   <% end %>
 
-  <div class="card">
-    <div class="card-content">
-      <div class="1columns">
 
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <%= f.label :type, class: 'label' %>
+  <%= form_for(check, namespace: 'http') do |f| %>
+    <%= f.hidden_field :type, value: Check::TYPE_HTTP %>
+    <div class="card is-hidden" data-target="check.httpForm">
+      <div class="card-content">
+        <div class="1columns">
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :name, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_field :name, class: 'input', placeholder: 'Name', id: nil %>
+            </div>
           </div>
-          <div class="field-body">
-              <span class='select'>
-                <%= f.select :type, format_type_enum_for_select(check) %>
-              </span>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label 'URL', class: 'label' %>
+            </div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  <%= f.text_field :uri, class: 'input', placeholder: 'URL to check', id: nil %>
+                </p>
+                <p class="control">
+                  <%= f.submit 'Save', class: 'button is-primary' %>
+                </p>
+              </div>
+            </div>
           </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label 'Header', class: 'label' %>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label 'Body', class: 'label' %>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label 'Auth', class: 'label' %>
+            </div>
+          </div>
+
         </div>
+      </div>
+    </div>
+  <% end %>
 
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <%= f.label :name, class: 'label' %>
-          </div>
-          <div class="field-body">
-            <%= f.text_field :name, class: 'input', placeholder: 'Name' %>
-          </div>
-        </div>
+  <%= form_for(check, namespace: 'tcp') do |f| %>
+    <%= f.hidden_field :type, value: Check::TYPE_TCP %>
+    <div class="card is-hidden" data-target="check.tcpForm">
+      <div class="card-content">
+        <div class="1columns">
 
-        <div class="field is-horizontal">
-          <div class="field-label is-normal">
-            <%= f.label 'URL', class: 'label' %>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :name, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_field :name, class: 'input', placeholder: 'Name', id: nil %>
+            </div>
           </div>
-          <div class="field-body">
-            <div class="field has-addons">
-              <p class="control is-expanded">
-                <%= f.text_field :uri, class: 'input', placeholder: 'URL to check' %>
-              </p>
-              <p class="control">
-                <%= f.submit 'Save', class: 'button is-primary' %>
-              </p>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label 'Address', class: 'label' %>
+            </div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  <%= f.text_field :uri, class: 'input', placeholder: 'host:port', id: nil %>
+                </p>
+                <p class="control">
+                  <%= f.submit 'Save', class: 'button is-primary' %>
+                </p>
+              </div>
             </div>
           </div>
         </div>
-
-
       </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
-<% if check.persisted? %>
-  <%= render 'public_page', check: @check %>
+  <%= form_for(check, namespace: 'heartbeat') do |f| %>
+    <%= f.hidden_field :type, value: Check::TYPE_HEARTBEAT %>
+    <div class="card is-hidden" data-target="check.heartbeatForm">
+      <div class="card-content">
+        <div class="1columns">
 
-  <%= render 'assertions/index', assertions: check.assertions %>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :name, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_field :name, class: 'input', placeholder: 'Name', id: nil %>
+            </div>
+          </div>
 
-  <section class="section" id="add-asertion">
-  <div class="container">
-    <div class="columns">
-      <div class="column">
-        <div class="box">
-          <%= render 'assertions/form', assertion: Assertion.new(check: check) %>
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  In heartbeat job, noty will give you an URL which you can ping us to tell us that
+                  your job is alive and run well. We can also alert by the time between event of heartbeat(start, success, error etc)
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  </section>
+  <% end %>
 
-<% end %>
+  <%= form_for(check, namespace: 'cron') do |f| %>
+    <%= f.hidden_field :type, id: nil, value: 'cron'%>
+    <div class="card is-hidden" data-target="check.cronForm">
+      <div class="card-content">
+        <div class="1columns">
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :name, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_field :name, class: 'input', placeholder: 'Name', id: nil %>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  In cronjob, noty will give you an URL which you can ping us to tell us that
+                  your cronjob is alive and run.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+
+  <% if check.persisted? %>
+    <%= render 'public_page', check: @check %>
+
+    <%= render 'assertions/index', assertions: check.assertions %>
+
+    <section class="section" id="add-asertion">
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <div class="box">
+              <%= render 'assertions/form', assertion: Assertion.new(check: check) %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  <% end %>
+</div>
