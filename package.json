@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Trinity",
   "main": "index.js",
-  "repository": "git@github.com:notyim/trinity.git",
+  "repository": "git@github.com:notyim/noty.git",
   "author": "Vinh Nguyen <vinh@noty.im>",
   "license": "AGPL-3.0-or-later",
   "dependencies": {
@@ -16,7 +16,6 @@
     "@rails/webpacker": "^4.0.7",
     "babel-loader": "^8.0",
     "babelify": "7.2.0",
-    "balloon-css": "^0.4.0",
     "bulma": "^0.8.0",
     "chartist": "^0.11.4",
     "core-js": "^3.3.6",
