@@ -1,0 +1,10 @@
+.notification-is-notice {
+  background-color: nth(map-get($colors, info), 1);
+  color: nth(map-get($colors, info), 2);
+}
+
+.notification-is-alert,
+.notification-is-error {
+  background-color: nth(map-get($colors, danger), 1);
+  color: nth(map-get($colors, danger), 2);
+}

@@ -1,11 +1,11 @@
 <% unless flash.empty? %>
-  <section class='section flash-message'>
+  <section class='section flash-message' data-controller="flash">
     <div class="container">
       <% flash.each do |key, value|%>
-       <div class="notification notification-is-<%=key%>">
-        <button href="#" class="delete">_</button>
-         <%= value %>
-       </div>
+        <div class="notification notification-is-<%=key%>" data-target="flash.messageContainer">
+          <button class="delete" data-action="click->flash#hide"></button>
+          <%= value %>
+        </div>
       <% end %>
     </div>
   </section>
