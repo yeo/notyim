@@ -20,9 +20,8 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
-
   dashboard:
+    default_title: 'noty - notification platform for monitoring'
     check_created: 'Check was successfully created.'
 
   bot:
@@ -39,6 +38,9 @@ en:
     error_enable: 'Cannot enable public page'
 
   membership:
+
+  check:
+    destroy_schedule: 'Check are scheduled to be removed from our system. All associated data will be deleted too'
 
   payment:
     card_error: 'Invalid credit card'

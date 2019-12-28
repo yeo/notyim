@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+
 <html>
   <head>
-    <title>NotyIM - Uptime monitoring</title>
+    <%= stylesheet_pack_tag 'dashboard', media: 'all' %>
+    <%= render 'partials/dashboard/title' %>
     <%= csrf_meta_tags %>
-
-    <%= stylesheet_pack_tag 'application', media: 'all' %>
-    <%= javascript_pack_tag 'dashboard'  %>
     <%= render 'partials/meta' %>
+
+    <%= javascript_pack_tag 'dashboard'  %>
   </head>
 
   <body class="layout-default">
