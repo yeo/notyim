@@ -1,0 +1,330 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: noty
+  namespace: noty
+  labels:
+    app: noty
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: noty
+  template:
+    metadata:
+      labels:
+        app: noty
+        name: noty
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: notyim/notyim:${revision}-app
+        imagePullPolicy: Always
+        name: rails
+        ports:
+        - containerPort: 3000
+          name: puma
+        env:
+          - name: RAILS_MAX_THREADS
+            value: "50"
+          - name: RACK_ENV
+            value: production
+          - name: RAILS_ENV
+            value: production
+          - name: NEWRELIC
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: NEWRELIC
+          - name: STRIPE_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: STRIPE_SECRET_KEY
+          - name: STRIPE_PUBLISHABLE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: STRIPE_PUBLISHABLE_KEY
+          - name: SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SECRET_KEY_BASE
+          - name: BUGSNAG_KEY
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: BUGSNAG_KEY
+          - name: SENTRY_DSN
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SENTRY_DSN
+          - name: GITHUB_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: GITHUB_CLIENT_ID
+          - name: TWITTER_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: TWITTER_CLIENT_ID
+          - name: TWITTER_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: TWITTER_CLIENT_SECRET
+          - name: SMTP_FROM
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_FROM
+          - name: SMTP_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_ADDRESS
+          - name: SMTP_DOMAIN
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_DOMAIN
+          - name: SMTP_USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_USER_NAME
+          - name: SMTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_PASSWORD
+          - name: TWILIO_ACCOUNT_SID
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: TWILIO_ACCOUNT_SID
+          - name: TWILIO_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: TWILIO_AUTH_TOKEN
+          - name: PHONE_FROM
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: PHONE_FROM
+          - name: REDIS_CACHE
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: REDIS_CACHE
+          - name: REDIS
+            value: redis://redis:6379/2
+          - name: REDIS_URL
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: REDIS_URL
+          - name: MONGODB_URI
+            value: "mongodb://mongodb.noty:27017/noty_production"
+          - name: SLACK_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SLACK_CLIENT_SECRET
+          - name: INFLUXDB_HOSTS
+            value: influx.influx
+
+      - image: notyim/notyim:${revision}-web
+        imagePullPolicy: Always
+        name: nginx
+        ports:
+        - containerPort: 80
+          name: proxy
+
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: sidekiq
+  namespace: noty
+  labels:
+    app: sidekiq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sidekiq
+  template:
+    metadata:
+      labels:
+        app: sidekiq
+        name: sidekiq
+    spec:
+      terminationGracePeriodSeconds: 60
+      containers:
+      - image: notyim/notyim:${revision}-app
+        imagePullPolicy: Always
+        name: sidekiq
+        command: ["bundle", "exec", "sidekiq", "-e", "production", "-C", "config/sidekiq.yml"]
+        env: &env
+          - name: RAILS_MAX_THREADS
+            value: "50"
+          - name: RACK_ENV
+            value: production
+          - name: RAILS_ENV
+            value: production
+          - name: NEWRELIC
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: NEWRELIC
+          - name: STRIPE_SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: STRIPE_SECRET_KEY
+          - name: STRIPE_PUBLISHABLE_KEY
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: STRIPE_PUBLISHABLE_KEY
+          - name: SECRET_KEY_BASE
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SECRET_KEY_BASE
+          - name: BUGSNAG_KEY
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: BUGSNAG_KEY
+          - name: GITHUB_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: GITHUB_CLIENT_ID
+          - name: TWITTER_CLIENT_ID
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: TWITTER_CLIENT_ID
+          - name: TWITTER_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: TWITTER_CLIENT_SECRET
+          - name: SMTP_FROM
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_FROM
+          - name: SMTP_ADDRESS
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_ADDRESS
+          - name: SMTP_DOMAIN
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_DOMAIN
+          - name: SMTP_USER_NAME
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_USER_NAME
+          - name: SMTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SMTP_PASSWORD
+          - name: TWILIO_ACCOUNT_SID
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: TWILIO_ACCOUNT_SID
+          - name: TWILIO_AUTH_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: TWILIO_AUTH_TOKEN
+          - name: PHONE_FROM
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: PHONE_FROM
+          - name: REDIS_CACHE
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: REDIS_CACHE
+          - name: REDIS_URL
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: REDIS_URL
+          - name: MONGODB_URI
+            value: "mongodb://mongodb.noty:27017/noty_production"
+          - name: SLACK_CLIENT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: noty
+                key: SLACK_CLIENT_SECRET
+          - name: INFLUXDB_HOSTS
+            value: influx.influx
+
+      - image: notyim/notyim:${revision}-app
+        imagePullPolicy: Always
+        name: sidekiq-checks
+        command: ["bundle", "exec", "sidekiq", "-e", "production", "-q", "checks"]
+        env: *env
+
+      - image: notyim/notyim:${revision}-app
+        imagePullPolicy: Always
+        name: sidekiq-mailers
+        command: ["bundle", "exec", "sidekiq", "-e", "production", "-q", "mailers"]
+        env: *env
+
+      - image: notyim/notyim:${revision}-app
+        name: sidekiq-low
+        command: ["bundle", "exec", "sidekiq", "-e", "production", "-q", "default,4", "-q", "low"]
+        env: *env
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: noty
+  namespace: noty
+spec:
+  ports:
+  - port: 80
+    targetPort: proxy
+    name: proxy
+  selector:
+    app: noty
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "noty-ingress"
+  namespace: noty
+spec:
+  tls:
+  - hosts:
+    - next.noty.im
+    secretName: tls
+  rules:
+  - host: "next.noty.im"
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: noty
+          servicePort: proxy
