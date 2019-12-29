@@ -13,6 +13,19 @@ class Check
   TYPE_HEARTBEAT = 'heartbeat'
   TYPES = [TYPE_HTTP, TYPE_TCP, TYPE_HEARTBEAT].freeze
 
+  HTTP_METHOD_HEAD = 'HEAD'
+  HTTP_METHOD_GET = 'GET'
+  HTTP_METHOD_POST = 'POST'
+  HTTP_METHOD_PUT = 'PUT'
+  HTTP_METHODS = [
+    HTTP_METHOD_HEAD,
+    HTTP_METHOD_GET,
+    HTTP_METHOD_POST,
+    HTTP_METHOD_PUT,
+  ].freeze
+
+  BODY_TYPES = %w(none raw josn form).freeze
+
   field :name, type: String
   field :uri, type: String
   field :type, type: String
@@ -24,6 +37,15 @@ class Check
 
   field :status_page_enable, type: Boolean
   field :status_page_domain
+
+  # Check payload
+  field :http_method, type: String
+  field :body_type, type: String
+  field :body, type: String
+  field :http_headers, type: Array
+  field :require_auth, type: Boolean
+  field :auth_username, type: String
+  field :auth_password, type: String
 
   belongs_to :user
   has_many :assertions, dependent: :destroy
@@ -38,6 +60,7 @@ class Check
   validates_presence_of :name, :uri, :type
   validates :type, inclusion: { in: TYPES }
   validates :uri, format: URI.regexp(%w[tcp udp http https])
+  validates :body_type, inclusion: { in: BODY_TYPES }
 
   def type_enum
     TYPES
@@ -64,5 +87,10 @@ class Check
     rescue Mongoid::Errors::DocumentNotFound
       nil
     end.select(&:present?)
+  end
+
+  # TODO: Extract this method out
+  def http_headers_to_text_field
+    http_headers&.join("\n")
   end
 end

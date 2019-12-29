@@ -4,6 +4,7 @@ export default class extends Controller {
   static targets = [ "tcpForm", "httpForm", "cronForm", "heartbeatForm" ]
 
   connect() {
+    this.hideAuth = true
   }
 
   hide() {
@@ -29,5 +30,9 @@ export default class extends Controller {
         this.heartbeatFormTarget.classList.remove("is-hidden")
         break;
     }
+  }
+
+  toggleAuth() {
+    this.hideAuth = !this.hideAuth
   }
 }

@@ -26,7 +26,7 @@ class ChecksController < DashboardController
   end
 
   def update
-    if @check.update(check_params)
+    if @check.update(format_check_params)
       redirect_to @check, notice: 'Check was successfully updated'
     else
       render :edit
@@ -34,8 +34,8 @@ class ChecksController < DashboardController
   end
 
   def destroy
-    @check.destroy
-    redirect_to checks_url, notice: 'Check was successfully destroyed.'
+    DestroyCheckWorker.perform_async(@check.id.to_s)
+    redirect_to checks_url, notice: t('check.destroy_schedule')
   end
 
   private
@@ -51,14 +51,26 @@ class ChecksController < DashboardController
   end
 
   def check_params
-    params.require(:check).permit(:name, :uri, :type)
+    params.require(:check).permit(:name, :uri, :type, :require_auth,
+                                  :http_method, :body, :body_type,
+                                  :auth_username, :auth_password, :http_headers)
   end
 
   def build_check
-    @check = Check.new(check_params)
+    @check = Check.new(format_check_params)
     auto_prefix
     @check.user = current.user
     @check.team = current.team
+  end
+
+  def format_check_params
+    input = check_params
+
+    if input['http_headers'].is_a?(String)
+      input['http_headers'] = input['http_headers'].split("\n").map(&:strip).reject(&:empty?)
+    end
+
+    input
   end
 
   def auto_prefix

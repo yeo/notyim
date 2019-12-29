@@ -1,24 +1,6 @@
 <h1 class="title">Configure Check <strong><%= link_to @check.name, check_path(@check) %></strong><code class="is-small">(#<%= @check.id %>)</code></h1>
 
 <%= render 'form', check: @check %>
-<%= render 'receiver', check: @check %>
 
 <hr>
 <%= link_to 'Back to check stat', @check, class: 'button is-primary' %>
-
-<hr>
-<div class="hero is-warning">
-  <div class="hero-body">
-    <div class="container">
-      <div class='columns is-vcentered'>
-        <div class='column is-two-third is-left'>
-          <p class="title">Permanently Destroy</p>
-          <p>Destroy check will remove all of its historical data!</p>
-        </div>
-        <div class='column'>
-          <%= link_to 'Destroy!', @check, method: :delete, data: { confirm: 'Are you sure?' }, class: 'button is-large' %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>

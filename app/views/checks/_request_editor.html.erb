@@ -1,0 +1,236 @@
+<div data-target="tabs.panel">
+  <% unless check.persisted? %>
+    <section class="tile">
+      <div class="card">
+        <div class="card-image">
+
+        </div>
+        <div class="card-content">
+          <div class="content">
+            <h2>
+              <button data-action="click->check#pick" data-check-type="<%= Check::TYPE_TCP %>">TCP</button>
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-image">
+
+        </div>
+        <div class="card-content">
+          <div class="content">
+            <h2>
+              <button data-action="click->check#pick" data-check-type="<%= Check::TYPE_HTTP %>">HTTP</button>
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-image">
+
+        </div>
+        <div class="card-content">
+          <div class="content">
+            <h2>
+              <button data-action="click->check#pick" data-check-type="<%= Check::TYPE_HEARTBEAT %>">Heartbeat</button>
+            </h2>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <%= form_for(check, namespace: 'http', as: :check) do |f| %>
+    <%= f.hidden_field :type, value: Check::TYPE_HTTP %>
+    <section class="card <%= hide_form_for_check_type(check, Check::TYPE_HTTP) %>" data-target="check.httpForm">
+      <div class="card-content">
+        <div class="1columns">
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :name, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_field :name, class: 'input', placeholder: 'Name', id: nil %>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label 'URL', class: 'label' %>
+            </div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  <%= f.text_field :uri, class: 'input', placeholder: 'URL to check', id: nil %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="checkbox">
+                Required Auth?
+                <%= f.check_box :require_auth, class: 'checkbox' %>
+              </label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control is-expanded has-icons-left">
+                  <%= f.text_field :auth_username, class: 'input', placeholder: 'username' %>
+                  <%= f.password_field :auth_password, class: 'input', placeholder: 'password' %>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :headers, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_area :http_headers_to_text_field, class: 'textarea', placeholder: "header1=value1\nheader2=value2", id: nil, name: 'check[http_headers]' %>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :http_method, 'Http Method', class: 'label' %>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="select is-fullwidth">
+                  <%= f.select :http_method, format_select_for_httpmethod(check) %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :body, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <%= f.select :body_type, Check::BODY_TYPES %>
+                </div>
+                <%= f.text_area :body, class: 'textarea', placeholder: 'param=value or raw_json_body', id: nil %>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label">
+              <!-- Left empty for spacing -->
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <%= f.submit 'Save', class: 'button is-primary' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <%= form_for(check, namespace: 'tcp') do |f| %>
+    <%= f.hidden_field :type, value: Check::TYPE_TCP %>
+    <section class="card <%= hide_form_for_check_type(check, Check::TYPE_TCP) %>" data-target="check.tcpForm">
+      <div class="card-content">
+        <div class="1columns">
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :name, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_field :name, class: 'input', placeholder: 'Name', id: nil %>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label 'Address', class: 'label' %>
+            </div>
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  <%= f.text_field :uri, class: 'input', placeholder: 'host:port', id: nil %>
+                </p>
+                <p class="control">
+                  <%= f.submit 'Save', class: 'button is-primary' %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <%= form_for(check, namespace: 'heartbeat') do |f| %>
+    <%= f.hidden_field :type, value: Check::TYPE_HEARTBEAT %>
+    <section class="card <%= hide_form_for_check_type(check, Check::TYPE_HEARTBEAT) %>" data-target="check.heartbeatForm">
+      <div class="card-content">
+        <div class="1columns">
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :name, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_field :name, class: 'input', placeholder: 'Name', id: nil %>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  In heartbeat job, noty will give you an URL which you can ping us to tell us that
+                  your job is alive and run well. We can also alert by the time between event of heartbeat(start, success, error etc)
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <%= form_for(check, namespace: 'cron') do |f| %>
+    <%= f.hidden_field :type, id: nil, value: 'cron'%>
+    <section class="card is-hidden" data-target="check.cronForm">
+      <div class="card-content">
+        <div class="1columns">
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <%= f.label :name, class: 'label' %>
+            </div>
+            <div class="field-body">
+              <%= f.text_field :name, class: 'input', placeholder: 'Name', id: nil %>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-body">
+              <div class="field has-addons">
+                <p class="control is-expanded">
+                  In cronjob, noty will give you an URL which you can ping us to tell us that
+                  your cronjob is alive and run.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
+</div>

@@ -10,6 +10,9 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
+import Rails from '@rails/ujs';
+Rails.start();
+
 require.context('../images', true);
 import '../src/application.scss';
 import * as Chartist from 'chartist';
