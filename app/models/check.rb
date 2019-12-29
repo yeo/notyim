@@ -48,8 +48,10 @@ class Check
   field :auth_password, type: String
 
   belongs_to :user
+
   has_many :assertions, dependent: :destroy
   has_many :incidents, dependent: :destroy
+  has_many :check_logs, dependent: :destroy
   has_one :daily_uptime, dependent: :destroy
 
   index({ created_at: 1, updated_at: 1 }, background: true)

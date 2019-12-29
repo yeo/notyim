@@ -13,6 +13,9 @@ class CheckToCreateIncidentWorker
     check = Check.find(check_id)
     logger.info raw_check_response
 
+    # TODO: CheckLog should be in a circular buffer
+    CheckLog.create!(response: JSON.parse(raw_check_response), check: check)
+
     check_response = CheckResponse.create_from_raw_result raw_check_response
 
     # TODO: check for down/non 2xx,3xx event if no assertion was created
