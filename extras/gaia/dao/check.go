@@ -42,6 +42,15 @@ type Check struct {
 	URI       string             `bson:"uri"`
 	CreatedAt time.Time          `bson:"created_at"`
 	UpdatedAt time.Time          `bson:"updated_at"`
+
+	// Check payload
+	HttpMethod   string   `bson:"http_method"`
+	BodyType     string   `bson:"body_type"`
+	Body         string   `bson:"body"`
+	HttpHeaders  []string `bson:"http_headers"`
+	RequireAuth  bool     `bson:"require_auth"`
+	AuthUsername string   `bson:"auth_username"`
+	AuthPassword string   `bson:"auth_password"`
 }
 
 func (c *Check) IsHttp() bool {
@@ -49,7 +58,6 @@ func (c *Check) IsHttp() bool {
 }
 
 func (c *Check) IsTCP() bool {
-	log.Println(c.ID.Hex(), "has type", c.Type)
 	return c.Type == "tcp"
 }
 

@@ -2,8 +2,10 @@ package scanner
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/notyim/gaia"
@@ -57,15 +59,57 @@ func checkTCP(check *dao.Check, agent MetricWriter) {
 	agent.PushToServer(resultPayload)
 }
 
+func buildHTTPRequest(check *dao.Check) (*http.Request, error) {
+	var req *http.Request
+	var err error
+
+	req, err = http.NewRequest(check.HttpMethod, check.URI, nil)
+	if err != nil {
+		return req, err
+	}
+
+	if check.Body != "" {
+		body := strings.NewReader(check.Body)
+		// request Body wants a io.ReadCloser while we had io.Reader
+		req.Body = ioutil.NopCloser(body)
+	}
+
+	switch check.BodyType {
+	case "form":
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	case "json":
+		req.Header.Set("Content-Type", "application/json")
+	}
+
+	if check.RequireAuth {
+		req.SetBasicAuth(check.AuthUsername, check.AuthPassword)
+	}
+
+	if check.HttpHeaders != nil && len(check.HttpHeaders) >= 1 {
+		for _, v := range check.HttpHeaders {
+			header := strings.Split(v, "=")
+			if len(header) >= 2 {
+				req.Header.Set(header[0], header[1])
+			} else {
+				req.Header.Set(header[0], "")
+			}
+		}
+	}
+
+	return req, err
+}
+
 func checkHTTP(check *dao.Check, agent MetricWriter) {
 	t0 := time.Now()
 	defer func() {
 		// Telegram hook to report abnormal thing
 		log.Printf("Check %s finish in %v", check.URI, time.Now().Sub(t0))
 	}()
-	req, err := http.NewRequest("GET", check.URI, nil)
+
+	req, err := buildHTTPRequest(check)
+
 	if err != nil {
-		log.Println("Error creating http request for")
+		errorlog.Capture(err)
 		return
 	}
 

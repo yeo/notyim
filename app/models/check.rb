@@ -24,7 +24,7 @@ class Check
     HTTP_METHOD_PUT,
   ].freeze
 
-  BODY_TYPES = %w(none raw josn form).freeze
+  BODY_TYPES = %w(none raw json form).freeze
 
   field :name, type: String
   field :uri, type: String
@@ -62,7 +62,8 @@ class Check
   validates_presence_of :name, :uri, :type
   validates :type, inclusion: { in: TYPES }
   validates :uri, format: URI.regexp(%w[tcp udp http https])
-  validates :body_type, inclusion: { in: BODY_TYPES }
+  validates :body_type, inclusion: { in: BODY_TYPES }, allow_nil: true
+  validates :http_method, inclusion: { in: HTTP_METHODS }, allow_nil: true
 
   def type_enum
     TYPES

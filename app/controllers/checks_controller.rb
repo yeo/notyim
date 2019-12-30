@@ -7,7 +7,9 @@ class ChecksController < DashboardController
     @checks = current.user.checks.where(team: current.team)
   end
 
-  def show; end
+  def show
+    load_response_log
+  end
 
   def new
     @check = Check.new
@@ -39,6 +41,10 @@ class ChecksController < DashboardController
   end
 
   private
+
+  def load_response_log
+    @response_log = @check.check_logs.order_by(_id: -1).limit(30).lazy.map { |d| d.response }
+  end
 
   def set_check
     @check = Check.find(params[:id])

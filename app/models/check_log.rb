@@ -10,4 +10,5 @@ class CheckLog
 
   belongs_to :check
 
+  index({check_id: -1}, {background: true})
 end

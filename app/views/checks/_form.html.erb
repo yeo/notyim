@@ -24,42 +24,42 @@
 
   <%= render "request_editor", check: check %>
 
-<% if check.persisted? %>
-  <div class="tab is-hidden" data-target="tabs.panel">
-    <%= render 'assertions/index', assertions: check.assertions %>
-    <section class="section" id="add-asertion">
-      <div class="container">
-        <div class="columns">
-          <div class="column">
-            <div class="box">
-              <%= render 'assertions/form', assertion: Assertion.new(check: check) %>
+  <% if check.persisted? %>
+    <div class="tab is-hidden" data-target="tabs.panel">
+      <%= render 'assertions/index', assertions: check.assertions %>
+      <section class="section" id="add-asertion">
+        <div class="container">
+          <div class="columns">
+            <div class="column">
+              <div class="box">
+                <%= render 'assertions/form', assertion: Assertion.new(check: check) %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <%= render 'receiver', check: @check %>
+    </div>
+
+    <div class="tab is-hidden" data-target="tabs.panel">
+      <%= render 'public_page', check: @check %>
+    </div>
+
+    <div class="hero is-warning" data-target="tabs.panel">
+      <div class="hero-body">
+        <div class="container">
+          <div class='columns is-vcentered'>
+            <div class='column is-two-third is-left'>
+              <p class="title">Permanently Destroy</p>
+              <p>Destroy check will remove all of its historical data!</p>
+            </div>
+            <div class='column'>
+              <%= link_to 'Destroy!', @check, method: :delete, data: { confirm: 'Are you sure to delete check? You cannot restore its data' }, class: 'button is-large' %>
             </div>
           </div>
         </div>
       </div>
-    </section>
-    <%= render 'receiver', check: @check %>
-  </div>
-
-  <div class="tab is-hidden" data-target="tabs.panel">
-    <%= render 'public_page', check: @check %>
-  </div>
-
-  <div class="hero is-warning" data-target="tabs.panel">
-    <div class="hero-body">
-      <div class="container">
-        <div class='columns is-vcentered'>
-          <div class='column is-two-third is-left'>
-            <p class="title">Permanently Destroy</p>
-            <p>Destroy check will remove all of its historical data!</p>
-          </div>
-          <div class='column'>
-            <%= link_to 'Destroy!', @check, method: :delete, data: { confirm: 'Are you sure to delete check? You cannot restore its data' }, class: 'button is-large' %>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
-<% end %>
+  <% end %>
 
 </div>
