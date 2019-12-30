@@ -18,10 +18,10 @@ class Check
   HTTP_METHOD_POST = 'POST'
   HTTP_METHOD_PUT = 'PUT'
   HTTP_METHODS = [
-    HTTP_METHOD_HEAD,
     HTTP_METHOD_GET,
     HTTP_METHOD_POST,
     HTTP_METHOD_PUT,
+    HTTP_METHOD_HEAD,
   ].freeze
 
   BODY_TYPES = %w(none raw json form).freeze
@@ -39,7 +39,7 @@ class Check
   field :status_page_domain
 
   # Check payload
-  field :http_method, type: String
+  field :http_method, type: String, default: HTTP_METHOD_GET
   field :body_type, type: String
   field :body, type: String
   field :http_headers, type: Hash

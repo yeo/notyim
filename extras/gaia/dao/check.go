@@ -53,6 +53,14 @@ type Check struct {
 	AuthPassword string            `bson:"auth_password"`
 }
 
+func (c *Check) GetHTTPMethod() string {
+	if c.HttpMethod == "" {
+		return "GET"
+	}
+
+	return c.HttpMethod
+}
+
 func (c *Check) IsHttp() bool {
 	return c.Type == "http"
 }

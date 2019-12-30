@@ -16,6 +16,9 @@ webpack:
 server:
 	bin/rails s
 
+worker:
+	bundle exec sidekiq
+
 console:
 	bin/rails c
 
@@ -29,6 +32,8 @@ docker-web:
 docker-app:
 	$(d) build $(df) -t ${DOCKER_TAG}-app --target app .
 
+up:
+	docker-compose up --abort-on-container-exit  --remove-orphans
 
 lint:
 	bundle exec rubocop
