@@ -42,7 +42,7 @@ class Check
   field :http_method, type: String
   field :body_type, type: String
   field :body, type: String
-  field :http_headers, type: Array
+  field :http_headers, type: Hash
   field :require_auth, type: Boolean
   field :auth_username, type: String
   field :auth_password, type: String
@@ -94,6 +94,6 @@ class Check
 
   # TODO: Extract this method out
   def http_headers_to_text_field
-    http_headers&.join("\n")
+    http_headers&.map { |kv| kv.join '=' }.join("\n")
   end
 end

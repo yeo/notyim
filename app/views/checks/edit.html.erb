@@ -1,6 +1,3 @@
 <h1 class="title">Configure Check <strong><%= link_to @check.name, check_path(@check) %></strong><code class="is-small">(#<%= @check.id %>)</code></h1>
 
 <%= render 'form', check: @check %>
-
-<hr>
-<%= link_to 'Back to check stat', @check, class: 'button is-primary' %>

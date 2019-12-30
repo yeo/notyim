@@ -73,7 +73,7 @@ class ChecksController < DashboardController
     input = check_params
 
     if input['http_headers'].is_a?(String)
-      input['http_headers'] = input['http_headers'].split("\n").map(&:strip).reject(&:empty?)
+      input['http_headers'] = input['http_headers'].split("\n").map(&:strip).reject(&:empty?).map { |h| h.split('=', 2) }.to_h
     end
 
     input

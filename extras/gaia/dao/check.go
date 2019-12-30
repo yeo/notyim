@@ -44,13 +44,13 @@ type Check struct {
 	UpdatedAt time.Time          `bson:"updated_at"`
 
 	// Check payload
-	HttpMethod   string   `bson:"http_method"`
-	BodyType     string   `bson:"body_type"`
-	Body         string   `bson:"body"`
-	HttpHeaders  []string `bson:"http_headers"`
-	RequireAuth  bool     `bson:"require_auth"`
-	AuthUsername string   `bson:"auth_username"`
-	AuthPassword string   `bson:"auth_password"`
+	HttpMethod   string            `bson:"http_method"`
+	BodyType     string            `bson:"body_type"`
+	Body         string            `bson:"body"`
+	HttpHeaders  map[string]string `bson:"http_headers"`
+	RequireAuth  bool              `bson:"require_auth"`
+	AuthUsername string            `bson:"auth_username"`
+	AuthPassword string            `bson:"auth_password"`
 }
 
 func (c *Check) IsHttp() bool {

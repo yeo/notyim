@@ -86,13 +86,8 @@ func buildHTTPRequest(check *dao.Check) (*http.Request, error) {
 	}
 
 	if check.HttpHeaders != nil && len(check.HttpHeaders) >= 1 {
-		for _, v := range check.HttpHeaders {
-			header := strings.Split(v, "=")
-			if len(header) >= 2 {
-				req.Header.Set(header[0], header[1])
-			} else {
-				req.Header.Set(header[0], "")
-			}
+		for k, v := range check.HttpHeaders {
+			req.Header.Set(k, v)
 		}
 	}
 
