@@ -8,6 +8,5 @@ export default class extends Controller {
 
   hide(event) {
     this.messageContainerTarget.parentNode.removeChild(this.messageContainerTarget)
-
   }
 }
