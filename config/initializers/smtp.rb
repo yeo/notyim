@@ -3,7 +3,7 @@
 Rails.application.config.action_mailer.smtp_settings = {
   authentication: :plain,
   address: ENV['SMTP_ADDRESS'] || Rails.application.credentials[:SMTP_ADDRESS],
-  from: ENV.fetch('SMTP_FROM', 'oncall@alert.noty.im'),
+  from: ENV.fetch('SMTP_FROM', 'oncall@em4957.alert.noty.im'),
   port: 587,
   domain: ENV['SMTP_DOMAIN'] || Rails.application.credentials[:SMTP_DOMAIN],
   user_name: ENV['SMTP_USER_NAME'] || Rails.application.credentials[:SMTP_USER_NAME],
