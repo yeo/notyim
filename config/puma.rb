@@ -14,6 +14,14 @@ threads min_threads_count, max_threads_count
 #
 port        ENV.fetch('PORT') { 3000 }
 
+if ENV.fetch("RAILS_ENV") == 'development'
+  ssl_bind '127.0.0.1', '3001', {
+    key: ENV.fetch("SSL_KEY_PATH", Rails.root.join('extras/certs/noty-key.pem')),
+    cert: ENV.fetch("SSL_CERT_PATH", Rails.root.join('extras/certs/noty.pem')),
+    verify_mode: 'none'
+  }
+end
+
 # Specifies the `environment` that Puma will run in.
 #
 environment ENV.fetch('RAILS_ENV') { 'development' }
