@@ -181,21 +181,21 @@
 
   <section class="section">
     <h1 class="title">Check Log</h1>
-    <h2 class="subtitle">Last 30 response from our checks</h1>
+    <h2 class="subtitle">Last 10 response from our checks</h1>
     <hr>
     <div class="container day-uptime">
-      <%= @response_log.each do |res| %>
+      <% @response_log.each do |res| %>
         <div class="" data-controller="modal">
-          <button data-target="modal.show" data-action="click->modal#show"><%= res['run_at'] %></button>
+          <%= res.region %>. Agent: <%= res.ip %> at <a data-target="modal.show" data-action="click->modal#show"><%= res.response&.dig('run_at') %></a>
           <div class="modal" data-target="modal.dialog">
             <div class="modal-background"></div>
             <div class="modal-card">
               <header class="modal-card-head">
-                <p class="modal-card-title"><%= h res['run_at'] %></p>
+                <p class="modal-card-title"><%= h res.response&.dig('run_at') %></p>
                 <button class="delete" data-action="click->modal#hide" aria-label="close"></button>
               </header>
               <div class="modal-card-body">
-                <pre><%= h res['body'] %></pre>
+                <pre><%= h res.response&.dig('body') %></pre>
               </div>
             </div>
           </div>

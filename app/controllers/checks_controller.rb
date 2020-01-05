@@ -43,7 +43,7 @@ class ChecksController < DashboardController
   private
 
   def load_response_log
-    @response_log = @check.check_logs.order_by(_id: -1).limit(30).lazy.map { |d| d.response }
+    @response_log = @check.check_logs.order_by(_id: -1).limit(10)
   end
 
   def set_check

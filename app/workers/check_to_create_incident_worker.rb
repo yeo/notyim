@@ -14,7 +14,8 @@ class CheckToCreateIncidentWorker
     logger.info raw_check_response
 
     # TODO: CheckLog should be in a circular buffer
-    CheckLog.create!(response: JSON.parse(raw_check_response), check: check)
+    check_response = JSON.parse(raw_check_response)
+    CheckLog.create!(response: check_response.dig('result'), check: check, region: check_response['region'], ip: check_response['ip'])
 
     check_response = CheckResponse.create_from_raw_result raw_check_response
 
