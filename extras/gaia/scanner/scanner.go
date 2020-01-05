@@ -81,7 +81,7 @@ func buildHTTPRequest(check *dao.Check) (*http.Request, error) {
 		req.Header.Set("Content-Type", "application/json")
 	}
 
-	if check.RequireAuth {
+	if check.AuthUsername != "" && check.AuthPassword != "" {
 		req.SetBasicAuth(check.AuthUsername, check.AuthPassword)
 	}
 
@@ -118,5 +118,6 @@ func checkHTTP(check *dao.Check, agent MetricWriter) {
 		Result:    metric,
 	}
 	resultPayload, _ := json.Marshal(runResult)
+
 	agent.PushToServer(resultPayload)
 }

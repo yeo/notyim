@@ -58,6 +58,7 @@ func (s *Sink) Run() {
 			if payload, err := evt.QueuePayload(); err == nil {
 				s.Queue.Enqueue("CheckToCreateIncidentWorker", []interface{}{evt.CheckID(), string(payload)}, "check")
 			} else {
+				log.Println(err)
 				errorlog.Capture(err)
 			}
 

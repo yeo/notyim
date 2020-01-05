@@ -45,11 +45,11 @@ type EventCheckDelete struct {
 }
 
 type EventCheckHTTPResult struct {
-	EventType EventType `json:"event_type"`
-	ID        string
-	IP        string
-	Region    string
-	Result    *httpscanner.CheckResponse
+	EventType EventType                  `json:"event_type"`
+	ID        string                     `json:"id"`
+	IP        string                     `json:"ip"`
+	Region    string                     `json:"region"`
+	Result    *httpscanner.CheckResponse `json:"result"`
 }
 
 func (e *EventCheckHTTPResult) MetricPayload() (map[string]interface{}, error) {
@@ -77,7 +77,7 @@ func (e *EventCheckHTTPResult) CheckType() string {
 }
 
 func (e *EventCheckHTTPResult) QueuePayload() ([]byte, error) {
-	payload, err := json.Marshal(e.Result)
+	payload, err := json.Marshal(e)
 	if err != nil {
 		return nil, fmt.Errorf("Cannot encode json %w", err)
 	}
@@ -86,11 +86,11 @@ func (e *EventCheckHTTPResult) QueuePayload() ([]byte, error) {
 }
 
 type EventCheckTCPResult struct {
-	EventType EventType `json:"event_type"`
-	ID        string
-	IP        string
-	Region    string
-	Result    *tcpscanner.CheckResponse
+	EventType EventType                 `json:"event_type"`
+	ID        string                    `json:"id"`
+	IP        string                    `json:"ip"`
+	Region    string                    `json:"region"`
+	Result    *tcpscanner.CheckResponse `json:"result"`
 }
 
 func (e *EventCheckTCPResult) MetricPayload() (map[string]interface{}, error) {
@@ -109,7 +109,7 @@ func (e *EventCheckTCPResult) MetricPayload() (map[string]interface{}, error) {
 }
 
 func (e *EventCheckTCPResult) QueuePayload() ([]byte, error) {
-	payload, err := json.Marshal(e.Result)
+	payload, err := json.Marshal(e)
 	if err != nil {
 		return nil, fmt.Errorf("Cannot encode json %w", err)
 	}

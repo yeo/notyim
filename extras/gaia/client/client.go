@@ -94,7 +94,7 @@ func (a *Agent) IPAddress() string {
 }
 
 func (a *Agent) Region() string {
-	return a.AgentInfo.IPinfo.Region
+	return a.AgentInfo.IPinfo.Region + ", " + a.AgentInfo.IPinfo.Country
 }
 
 func (a *Agent) ReconnectWithRetry(cause error) {

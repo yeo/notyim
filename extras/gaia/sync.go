@@ -220,12 +220,12 @@ func (s *Syncer) ListenFromAgent(name string, sink *Sink) error {
 			continue
 		}
 
-		log.Printf("Receive event %v from agent %s\n", evt, name)
-
 		switch evt.EventType {
 		case EventTypeCheckHTTPResult:
+			log.Printf("Receive event %+v from agent %s\n", evt.EventCheckHTTPResult, name)
 			sink.Pipe <- evt.EventCheckHTTPResult
 		case EventTypeCheckTCPResult:
+			log.Printf("Receive event %+v from agent %s\n", evt.EventCheckHTTPResult, name)
 			sink.Pipe <- evt.EventCheckTCPResult
 		}
 	}
