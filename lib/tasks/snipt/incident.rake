@@ -46,7 +46,7 @@ namespace :snipt do
     task notityf: :environment do
       i = Incident.first
       r = Receiver.find('58c25f328c245582a3495b7b')
-      Yeller::Provider::Hipchat.notify_incident(i, r)
+      Yeller::Provider::Slack.notify_incident(i, r)
     end
 
     desc 'Test notifiy email'

@@ -21,8 +21,6 @@ module Yeller
 
       # Label is used to display as the label of provider when rendering field
       #
-      # Example, if it's hipchat, label can be roomname
-      # otherwise it can just be a name
       def self.label
         @__attributes ||= {}
         @__attributes[:label] || 'Friendly name'

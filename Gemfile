@@ -22,7 +22,6 @@ gem 'webpacker'
 gem "sentry-raven"
 gem 'connection_pool'
 gem 'devise'
-gem 'hipchat'
 gem 'influxdb'
 gem 'kaminari'
 gem 'kaminari-mongoid'
