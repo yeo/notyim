@@ -10,7 +10,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0.2'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder'
