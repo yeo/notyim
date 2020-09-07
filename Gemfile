@@ -10,22 +10,20 @@ git_source(:github) do |repo_name|
 end
 
 gem 'puma'
-gem 'rails', '~> 6.0.0'
+gem 'rails', '~> 6.0'
 
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder'
 gem 'webpacker'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem "sentry-raven"
+gem 'sentry-raven'
 gem 'connection_pool'
 gem 'devise'
 gem 'influxdb'
 gem 'kaminari'
 gem 'kaminari-mongoid'
-gem 'mongoid', '~> 7.0.0'
+gem 'mongoid', '~> 7.1.2'
 gem 'omniauth-github'
 gem 'omniauth-twitter'
 gem 'redis', '~>3.2'
