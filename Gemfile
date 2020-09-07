@@ -66,7 +66,7 @@ end
 
 group :test do
   gem 'capybara'
-  gem 'coveralls', '~> 0.7.1', require: false
+  gem 'coveralls', '~> 0.8.23', require: false
   gem 'database_cleaner'
   gem 'rspec_junit_formatter'
   gem 'timecop'
