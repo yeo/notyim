@@ -104,8 +104,8 @@ GEM
       simplecov (>= 0.7)
       term-ansicolor
       thor
-    crack (0.4.3)
-      safe_yaml (~> 1.0.0)
+    crack (0.4.5)
+      rexml
     crass (1.0.6)
     database_cleaner (1.8.5)
     devise (4.7.2)
@@ -346,7 +346,6 @@ GEM
     rubocop-ast (0.3.0)
       parser (>= 2.7.1.4)
     ruby-progressbar (1.10.1)
-    safe_yaml (1.0.5)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -410,7 +409,7 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webmock (3.8.3)
+    webmock (3.11.1)
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
